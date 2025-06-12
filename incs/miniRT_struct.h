@@ -12,12 +12,7 @@ typedef struct S_coord
 	double	z;
 }	t_coord;
 
-typedef struct S_vector
-{
-	float	x;
-	float	y;
-	float	z;
-}	t_vec;
+typedef t_coord t_vec;
 
 typedef struct S_rgb
 {
@@ -25,5 +20,15 @@ typedef struct S_rgb
 	t_minuint	g;
 	t_minuint	b;
 }	t_rgb;
+
+typedef enum E_obj_type
+{
+	AMBIENT_LIGHT,
+	CAMERA,
+	LIGHT,
+	SPHERE,
+	PLANE,
+	CYLINDER
+}	t_obj_type;
 
 #endif

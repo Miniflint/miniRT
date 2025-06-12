@@ -23,6 +23,7 @@ void    ft_zeroes(t_all *all)
 static int  __parse_file(t_all *all)
 {
     char    *str;
+    char    *tmp;
     const int fd = open(all->argv[1], O_RDONLY);
 
 	if (fd == -1)
@@ -30,8 +31,10 @@ static int  __parse_file(t_all *all)
 	str = readfile(fd);
 	if (!str)
 		return (printf("File is empty/error occured while trying to read\n"), 1);
-    printf("%s", str);
-    free(str);
+    tmp = str;
+    if (__set_values(all, &str) == 1)
+        return (free(tmp), 1);
+    free(tmp);
     return (0);
 
 }

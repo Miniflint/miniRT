@@ -1,8 +1,11 @@
 NAME	=	miniRT
 
-SRCS	=	./srcs/main.c ./srcs/utils.c ./srcs/__init__.c ./srcs/__fake_globals.c
+SRCS	=	./srcs/main.c ./srcs/utils.c ./srcs/__init__.c ./srcs/__fake_globals.c ./srcs/utils_util.c \
+			./srcs/__init_utils.c ./srcs/a_light_camera_light.c
 
 INC_DIR := ./incs/
+
+MATH_LIB = -lm
 
 OBJS	=	$(SRCS:%.c=%.o)
 CC		=/usr/bin/gcc
@@ -25,10 +28,10 @@ all:	$(NAME)
 
 %.o: %.c
 	@printf "Compiling %-100s \r" $<
-	@$(CC) -I$(INC_DIR) $(CFLAGS) -c $< -o $@
+	@$(CC) $(CFLAGS) -I$(INC_DIR) -c $< -o $@ $(MATH_LIB)
 
 $(NAME)	: $(OBJS)
-	@$(CC) $(CFLAGS) -I$(INC_DIR) $(OBJS) -o $(NAME)
+	@$(CC) $(CFLAGS) -I$(INC_DIR) $(OBJS) -o $(NAME) $(MATH_LIB)
 	@printf "\n$(GREEN)$(NAME) Ready.\n$(NONE)"
 
 norm:

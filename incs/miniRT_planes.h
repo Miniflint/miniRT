@@ -18,7 +18,7 @@ typedef struct S_camera
 
 typedef struct S_light
 {
-	t_coord		c;
+	t_coord		coord;
 	double		ratio;
 	t_rgb		rgb;
 	struct S_light	*next;
@@ -26,7 +26,7 @@ typedef struct S_light
 
 typedef struct S_sphere
 {
-	t_coord 	c;
+	t_coord 	coord;
 	float		diameter;
 	t_rgb		rgb;
 	struct S_sphere	*next;
@@ -34,7 +34,7 @@ typedef struct S_sphere
 
 typedef struct S_plane
 {
-	t_coord 	c;
+	t_coord 	coord;
 	t_vec		vec;
 	t_rgb		rgb;
 	struct S_plane	*next;
@@ -42,7 +42,7 @@ typedef struct S_plane
 
 typedef struct S_cylinder
 {
-	t_coord 		c;
+	t_coord 		coord;
 	t_vec			vec;
 	double			diameter;
 	double			height;

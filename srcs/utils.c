@@ -1,14 +1,36 @@
 #include "miniRT.h"
 
-int	ft_strlen(char *str)
+unsigned int ft_atoi(char **s)
 {
-	int i;
+    unsigned int   n;
 
-	i = 0;
-	if (str)
-		while (str[i])
-			i++;
-	return (i);
+    n = 0;
+    while (**s >= '0' && **s <= '9')
+        n = n * 10 + *((*s)++) - '0';
+    return (n);
+}
+
+double ft_atof(char **s)
+{
+    int n;
+    int dec;
+    int neg;
+
+    neg = 1;
+    if (**s == '-')
+        neg = -1;
+    n = ft_atoi(s);
+    if (!(**s) || (*(*s)++) != '.')
+        return ((double)n);
+    dec = ft_atoi(s);
+    return ((n + ((double)dec / pow(10, ft_nblen(dec)))) * neg);
+}
+
+int ft_iswhitespace(char c)
+{
+    if (c == ' ' || (c >= 8 && c <= 13))
+        return (1);
+    return (0);
 }
 
 char	*ft_strjoin(char *s1, char *s2)
