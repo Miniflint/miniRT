@@ -25,17 +25,10 @@ double ft_atof(char **s)
     }
     n = ft_atoi(s);
     if (!(**s) || **s != '.')
-        return ((double)n);
+        return ((double)n * neg);
     (*s)++;
     dec = ft_atoi(s);
     return ((n + ((double)dec / pow(10, ft_nblen(dec)))) * neg);
-}
-
-int ft_iswhitespace(char c)
-{
-    if (c == ' ' || (c >= 8 && c <= 13))
-        return (1);
-    return (0);
 }
 
 char	*ft_strjoin(char *s1, char *s2)
@@ -60,15 +53,37 @@ char	*ft_strjoin(char *s1, char *s2)
 	return (new_str);
 }
 
-void    *ft_memset(void *b, int c, size_t len)
+
+int skip_till_number(char **s, int nb)
 {
-    unsigned char    *tmp_ptr;
-    
-    tmp_ptr = (unsigned char *)b;
-    while (len > 0)
+    while (nb--)
+        (*s)++;
+    while (**s && !(**s >= '0' && **s <= '9') && **s != '\n' && **s != '+' && **s != '-')
     {
-        *(tmp_ptr++) = (unsigned char)c;
-        len--;
+        if (**s >= 33)
+            return (3);
+        (*s)++;
     }
-    return (b);
+    return (0);
+}
+
+int skip_whitespace_hashtag(char **s)
+{
+    int backslash_n;
+
+    backslash_n = 3;
+    while (ft_iswhitespace(**s) || **s == '#')
+    {
+        if (**s == '\n')
+        {
+            __get_all()->line_count += 1;
+            backslash_n = 0;
+        }
+        if (**s == '#')
+            while (**s && **s != '\n')
+                (*s)++;
+        else
+            (*s)++;
+    }
+    return (backslash_n);
 }

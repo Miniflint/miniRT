@@ -15,6 +15,7 @@ void    ft_zeroes(t_all *all)
     all->camera.vec.y = 0;
     all->camera.vec.z = 0;
     all->camera.fov = 0;
+    all->line_count = 1;
     all->cylinders = 0;
     all->spheres = 0;
     all->planes = 0;
@@ -34,7 +35,7 @@ static int  __parse_file(t_all *all)
 	if (!str)
 		return (printf("File is empty/error occured while trying to read\n"), 1);
     tmp = str;
-    if (__set_values(all, &str, &tmp) == 1)
+    if (__set_values(all, &str) == 1)
         return (free(tmp), 1);
     free(tmp);
     return (0);

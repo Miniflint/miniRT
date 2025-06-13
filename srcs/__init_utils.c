@@ -26,7 +26,7 @@ void    print_all_structs(t_all *all)
     print_cy(all->cylinders, 0);
 }
 
-int	__set_values(t_all *all, char **s, char **tmp)
+int	__set_values(t_all *all, char **s)
 {
     int err;
 
@@ -38,7 +38,7 @@ int	__set_values(t_all *all, char **s, char **tmp)
         if (err == 1)
             return (err);
         else if (err == 3)
-            return (printf("Error: Unwanted character: ['%c'] place in string: [%ld]\n", **s, (*s - *tmp)), err);
+            return (printf("Error: Unwanted character: ['%c'] place in line: [%u]\n", **s, all->line_count), err);
     }
     print_all_structs(all);
     return (0);

@@ -19,13 +19,14 @@
 
 typedef struct S_all
 {
-	t_amb_light ambient_light;
-	t_cam		camera;
-	t_light		*lights;
-	t_sphere	*spheres;
-	t_plane		*planes;
-	t_cylinder	*cylinders;
-	char        **argv;
+	t_amb_light     ambient_light;
+	t_cam		    camera;
+	t_light		    *lights;
+	t_sphere	    *spheres;
+	t_plane		    *planes;
+	t_cylinder	    *cylinders;
+	char            **argv;
+    unsigned int    line_count;
 }	t_all;
 
 /* UTILS */
@@ -37,7 +38,7 @@ int             ft_nblen(int nb);
 int	            ft_strlen(char *str);
 unsigned int    ft_atoi(char **s);
 double          ft_atof(char **s);
-void            skip_till_number(char **s);
+int             skip_till_number(char **s, int nb);
 int             skip_whitespace_hashtag(char **s);
 void            *ft_memset(void *b, int c, size_t len);
 
@@ -63,7 +64,7 @@ void print_cy(t_cylinder *cylinder, int depth);
 
 /* INIT */
 int	__init__(t_all *all, char **argv);
-int	__set_values(t_all *all, char **s, char **tmp);
+int	__set_values(t_all *all, char **s);
 
 /* PARSING */
 int get_rgb(t_rgb *rgb, char **s);

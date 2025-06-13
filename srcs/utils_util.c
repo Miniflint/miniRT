@@ -24,26 +24,23 @@ int	ft_strlen(char *str)
 	return (i);
 }
 
-void skip_till_number(char **s)
+void    *ft_memset(void *b, int c, size_t len)
 {
-    while (**s && !(**s >= '0' && **s <= '9') && **s != '\n' && (**s != '+' && **s != '-'))
-        (*s)++;
+    unsigned char    *tmp_ptr;
+    
+    tmp_ptr = (unsigned char *)b;
+    while (len > 0)
+    {
+        *(tmp_ptr++) = (unsigned char)c;
+        len--;
+    }
+    return (b);
 }
 
-int skip_whitespace_hashtag(char **s)
-{
-    int backslash_n;
 
-    backslash_n = 3;
-    while (ft_iswhitespace(**s) || **s == '#')
-    {
-        if (**s == '\n')
-            backslash_n = 0;
-        if (**s == '#')
-            while (**s && **s != '\n')
-                (*s)++;
-        else
-            (*s)++;
-    }
-    return (backslash_n);
+int ft_iswhitespace(char c)
+{
+    if (c == ' ' || (c >= 8 && c <= 13))
+        return (1);
+    return (0);
 }
