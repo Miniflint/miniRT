@@ -5,12 +5,14 @@
 
 typedef struct S_ambient_light
 {
+    t_minuint       nb;
 	double			ratio;
 	t_rgb			rgb;
 }	t_amb_light;
 
 typedef struct S_camera
 {
+    t_minuint       nb;
 	t_coord		viewpoint;
 	t_vec		vec;
 	t_minuint	fov;

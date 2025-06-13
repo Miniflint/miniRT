@@ -26,24 +26,9 @@ int	ft_strlen(char *str)
 
 void skip_till_number(char **s)
 {
-    while (**s && !(**s >= '0' && **s <= '9') && **s != '\n' && **s != '+' && **s != '-')
+    while (**s && !(**s >= '0' && **s <= '9') && **s != '\n' && (**s != '+' && **s != '-'))
         (*s)++;
 }
-
-/*
-int skip_whitespace_hashtag(char **s)
-{
-    while (**s != '\n' && ft_iswhitespace(**s))
-        (*s)++;
-    if (**s != '#' && **s != '\n')
-        return (1);
-    while (**s && **s != '\n')
-        (*s)++;
-    while (**s == '\n')
-        (*s)++;
-    return (0);
-}
-*/
 
 int skip_whitespace_hashtag(char **s)
 {

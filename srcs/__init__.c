@@ -6,9 +6,11 @@ void    ft_zeroes(t_all *all)
     all->ambient_light.rgb.r = 0;
     all->ambient_light.rgb.g = 0;
     all->ambient_light.rgb.b = 0;
+    all->ambient_light.nb = 0;
     all->camera.viewpoint.x = 0;
     all->camera.viewpoint.y = 0;
     all->camera.viewpoint.z = 0;
+    all->camera.nb = 0;
     all->camera.vec.x = 0;
     all->camera.vec.y = 0;
     all->camera.vec.z = 0;
@@ -32,7 +34,7 @@ static int  __parse_file(t_all *all)
 	if (!str)
 		return (printf("File is empty/error occured while trying to read\n"), 1);
     tmp = str;
-    if (__set_values(all, &str) == 1)
+    if (__set_values(all, &str, &tmp) == 1)
         return (free(tmp), 1);
     free(tmp);
     return (0);

@@ -17,11 +17,16 @@ double ft_atof(char **s)
     int neg;
 
     neg = 1;
-    if (**s == '-')
-        neg = -1;
+    if (**s == '-' || **s == '+')
+    {
+        if (**s == '-')
+            neg = -1;
+        (*s)++;
+    }
     n = ft_atoi(s);
-    if (!(**s) || (*(*s)++) != '.')
+    if (!(**s) || **s != '.')
         return ((double)n);
+    (*s)++;
     dec = ft_atoi(s);
     return ((n + ((double)dec / pow(10, ft_nblen(dec)))) * neg);
 }
@@ -53,4 +58,17 @@ char	*ft_strjoin(char *s1, char *s2)
 			new_str[i++] = *(s2++);
 	new_str[i] = 0;
 	return (new_str);
+}
+
+void    *ft_memset(void *b, int c, size_t len)
+{
+    unsigned char    *tmp_ptr;
+    
+    tmp_ptr = (unsigned char *)b;
+    while (len > 0)
+    {
+        *(tmp_ptr++) = (unsigned char)c;
+        len--;
+    }
+    return (b);
 }

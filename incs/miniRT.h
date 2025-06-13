@@ -39,13 +39,24 @@ unsigned int    ft_atoi(char **s);
 double          ft_atof(char **s);
 void            skip_till_number(char **s);
 int             skip_whitespace_hashtag(char **s);
+void            *ft_memset(void *b, int c, size_t len);
+
+/* NODES */
+void    *create_empty_node(size_t size);
 
 /* GET STRUCTS */
 t_all	*__get_all(void);
 
+/* PRINTING */
+void    print_AC(t_amb_light *ambient_light, t_cam *camera);
+void print_L(t_light *light, int depth);
+void print_sp(t_sphere *sphere, int depth);
+void print_pl(t_plane *plane, int depth);
+void print_cy(t_cylinder *cylinder, int depth);
+
 /* INIT */
 int	__init__(t_all *all, char **argv);
-int	__set_values(t_all *all, char **s);
+int	__set_values(t_all *all, char **s, char **tmp);
 
 /* PARSING */
 int get_rgb(t_rgb *rgb, char **s);
@@ -54,9 +65,9 @@ int get_coord(t_coord *coord, char **s);
 
 int get_ambient_light(t_amb_light *a_light, char **s);
 int get_camera(t_cam *camera, char **s);
-int get_light(t_light *light, char **s, t_light **head);
-int get_sphere(t_sphere *sphere, char **s, t_sphere **head);
-int get_plane(t_plane *plane, char **s, t_plane **head);
-int get_cylinder(t_cylinder *cylinder, char **s, t_cylinder **head);
+int get_light(t_light **head, char **s);
+int get_sphere(t_sphere **head, char **s);
+int get_plane(t_plane **head, char **s);
+int get_cylinder(t_cylinder **head, char **s);
 
 #endif
