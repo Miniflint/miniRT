@@ -34,7 +34,7 @@ int skip_whitespace_hashtag(char **s)
 {
     int backslash_n;
 
-    backslash_n = 1;
+    backslash_n = 3;
     while (ft_iswhitespace(**s) || **s == '#')
     {
         if (**s == '\n')

@@ -36,10 +36,9 @@ int	__set_values(t_all *all, char **s, char **tmp)
     {
         err = parse_type(all, s);
         if (err == 1)
-        {
-            printf("Error: Unwanted character: ['%c'] place in string: [%ld]\n", **s, (*s - *tmp));
             return (err);
-        }
+        else if (err == 3)
+            return (printf("Error: Unwanted character: ['%c'] place in string: [%ld]\n", **s, (*s - *tmp)), err);
     }
     print_all_structs(all);
     return (0);

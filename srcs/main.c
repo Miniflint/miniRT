@@ -31,7 +31,9 @@ int main(int argc, char **argv)
     all = __get_all();
     if (__init__(all, argv))
     {
+        free_all(all);
         return (1);
     }
+    free_all(all);
 	return (0);
 }

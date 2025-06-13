@@ -47,6 +47,13 @@ void    *create_empty_node(size_t size);
 /* GET STRUCTS */
 t_all	*__get_all(void);
 
+/* FREE */
+void free_L(t_light *light);
+void free_sp(t_sphere *sphere);
+void free_pl(t_plane *plane);
+void free_cy(t_cylinder *cylinder);
+void free_all(t_all *all);
+
 /* PRINTING */
 void    print_AC(t_amb_light *ambient_light, t_cam *camera);
 void print_L(t_light *light, int depth);

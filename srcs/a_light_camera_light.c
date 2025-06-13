@@ -132,14 +132,14 @@ int get_sphere(t_sphere **head, char **s)
         return (1);
     skip_till_number(s);
     if (get_coord(&sphere->coord, s))
-        return (free(sphere), printf("\tSpheres problem"), 1);
+        return (free(sphere), printf("\tSpheres problem\n"), 1);
     skip_till_number(s);
     sphere->diameter = ft_atof(s);
     if (sphere->diameter < 0.00)
         return (free(sphere), printf("Error: Spheres diameter value < 0.0\n"), 1);
     skip_till_number(s);
     if (get_rgb(&sphere->rgb, s))
-        return (free(sphere), printf("\tSpheres problem"), 1);
+        return (free(sphere), printf("\tSpheres problem\n"), 1);
     sphere->next = *head;
     *head = sphere;
     if (!**s)
@@ -156,13 +156,13 @@ int get_plane(t_plane **head, char **s)
         return (1);
     skip_till_number(s);
     if (get_coord(&plane->coord, s))
-        return (free(plane), printf("\tPlanes problems"), 1);
+        return (free(plane), printf("\tPlanes problems\n"), 1);
     skip_till_number(s);
     if (get_vec(&plane->vec, s))
-        return (free(plane), printf("\tPlanes problems"), 1);
+        return (free(plane), printf("\tPlanes problems\n"), 1);
     skip_till_number(s);
     if (get_rgb(&plane->rgb, s))
-        return (free(plane), printf("\tPlanes problems"), 1);
+        return (free(plane), printf("\tPlanes problems\n"), 1);
     plane->next = *head;
     *head = plane;
     if (!**s)

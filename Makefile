@@ -1,7 +1,8 @@
 NAME	=	miniRT
 
 SRCS	=	./srcs/main.c ./srcs/utils.c ./srcs/__init__.c ./srcs/__fake_globals.c ./srcs/utils_util.c \
-			./srcs/__init_utils.c ./srcs/a_light_camera_light.c ./srcs/nodes.c ./srcs/printing.c
+			./srcs/__init_utils.c ./srcs/a_light_camera_light.c ./srcs/nodes.c ./srcs/printing.c \
+			./srcs/free_structs.c
 
 INC_DIR := ./incs/
 
