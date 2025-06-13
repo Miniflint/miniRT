@@ -113,16 +113,16 @@ int get_light(t_light **head, char **s)
     if (!light)
         return (1);
     if(skip_till_number(s, 2))
-        return (3);
+        return (free(light), 3);
     if (get_coord(&light->coord, s))
         return (free(light), printf("\tLights problems\n"), 1);
     if(skip_till_number(s, 0))
-        return (3);
+        return (free(light), 3);
     light->ratio = ft_atof(s);
     if (light->ratio < 0.0 || light->ratio > 1.0)
         return (free(light), printf("Error: lights ratio value < 0.0 || > 1.0\n"), 1);
     if(skip_till_number(s, 0))
-        return (3);
+        return (free(light), 3);
     if (get_rgb(&light->rgb, s))
         return (free(light), printf("\tLights problems\n"), 1);
     light->next = *head;
@@ -140,16 +140,16 @@ int get_sphere(t_sphere **head, char **s)
     if (!sphere)
         return (1);
     if(skip_till_number(s, 2))
-        return (3);
+        return (free(sphere), 3);
     if (get_coord(&sphere->coord, s))
         return (free(sphere), printf("\tSpheres problem\n"), 1);
     if(skip_till_number(s, 0))
-        return (3);
+        return (free(sphere), 3);
     sphere->diameter = ft_atof(s);
     if (sphere->diameter < 0.00)
         return (free(sphere), printf("Error: Spheres diameter value < 0.0\n"), 1);
     if(skip_till_number(s, 0))
-        return (3);
+        return (free(sphere), 3);
     if (get_rgb(&sphere->rgb, s))
         return (free(sphere), printf("\tSpheres problem\n"), 1);
     sphere->next = *head;
@@ -167,15 +167,15 @@ int get_plane(t_plane **head, char **s)
     if (!plane)
         return (1);
     if(skip_till_number(s, 2))
-        return (3);
+        return (free(plane), 3);
     if (get_coord(&plane->coord, s))
         return (free(plane), printf("\tPlanes problems\n"), 1);
     if(skip_till_number(s, 0))
-        return (3);
+        return (free(plane), 3);
     if (get_vec(&plane->vec, s))
         return (free(plane), printf("\tPlanes problems\n"), 1);
     if(skip_till_number(s, 0))
-        return (3);
+        return (free(plane), 3);
     if (get_rgb(&plane->rgb, s))
         return (free(plane), printf("\tPlanes problems\n"), 1);
     plane->next = *head;
@@ -194,25 +194,25 @@ int get_cylinder(t_cylinder **head, char **s)
     if (!cylinder)
         return (1);
     if(skip_till_number(s, 2))
-        return (3);
+        return (free(cylinder), 3);
     if (get_coord(&cylinder->coord, s))
         return (free(cylinder), printf("\tCylinders problems\n"), 1);
     if(skip_till_number(s, 0))
-        return (3);
+        return (free(cylinder), 3);
     if (get_vec(&cylinder->vec, s))
         return (free(cylinder), printf("\tCylinders problems\n"), 1);
     if(skip_till_number(s, 0))
-        return (3);
+        return (free(cylinder), 3);
     cylinder->diameter = ft_atof(s);
     if (cylinder->diameter < 0.00)
         return (free(cylinder), printf("Error: Cylinders diameter value < 0.0\n"), 1);
     if(skip_till_number(s, 0))
-        return (3);
+        return (free(cylinder), 3);
     cylinder->height = ft_atof(s);
     if (cylinder->height < 0.00)
         return (free(cylinder), printf("Error: Cylinders height value < 0.0\n"), 1);
     if(skip_till_number(s, 0))
-        return (3);
+        return (free(cylinder), 3);
     if (get_rgb(&cylinder->rgb, s))
         return (free(cylinder), printf("\tCylinders problems\n"), 1);
     cylinder->next = *head;
