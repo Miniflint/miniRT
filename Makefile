@@ -6,9 +6,9 @@ INC_DIR := ./incs
 OBJS_DIR := ./objs
 
 SRC := main.c
-SRCS_PARSING := utils.c __init__.c __fake_globals.c utils_util.c \
-                __init_utils.c a_light_camera_light.c nodes.c printing.c \
-                free_structs.c
+SRCS_PARSING := utils.c __init__.c __fake_globals.c utils_util.c __init_utils.c nodes.c printing.c \
+				free_structs.c \
+                function_parsing_shape.c function_parsing_get_value_utils.c function_parsing_light_camera.c
 
 SRC_FILES := $(addprefix $(SRC_DIR)/, $(SRC))
 PRS_FILES := $(addprefix $(PRS_DIR)/, $(SRCS_PARSING))
