@@ -3,8 +3,6 @@
 
 # include "miniRT.h"
 
-typedef unsigned char	t_minuint;
-
 typedef struct S_coord
 {
 	double	x;
@@ -12,7 +10,8 @@ typedef struct S_coord
 	double	z;
 }	t_coord;
 
-typedef t_coord t_vec;
+typedef unsigned char	t_minuint;
+typedef t_coord			t_vec;
 
 typedef struct S_rgb
 {

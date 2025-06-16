@@ -1,14 +1,19 @@
 NAME	=	miniRT
 
-SRCS	=	./srcs/main.c ./srcs/utils.c ./srcs/__init__.c ./srcs/__fake_globals.c ./srcs/utils_util.c \
-			./srcs/__init_utils.c ./srcs/a_light_camera_light.c ./srcs/nodes.c ./srcs/printing.c \
-			./srcs/free_structs.c
+SRCS_PARSING	=	main.c utils.c __init__.c __fake_globals.c utils_util.c \
+			__init_utils.c a_light_camera_light.c nodes.c printing.c \
+			free_structs.c
 
 INC_DIR := ./incs/
 
+SRC_DIR := ./srcs
+PRS_DIR := $(SRC_DIR)/parsing
+
+FILES := $(addprefix $(PRS_DIR), $(SRCS_PARSING))
+
 MATH_LIB = -lm
 
-OBJS	=	$(SRCS:%.c=%.o)
+OBJS	=	$(FILES:%.c=%.o)
 CC		=/usr/bin/gcc
 RM		=rm -f
 

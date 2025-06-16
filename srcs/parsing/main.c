@@ -2,7 +2,7 @@
 
 char	*readfile(int fd)
 {
-	int	rd;
+	int		rd;
 	char	buf[BUFF_SIZE + 1];
 	char	*final;
 
@@ -22,18 +22,18 @@ char	*readfile(int fd)
 	return (final);
 }
 
-int main(int argc, char **argv)
+int	main(int argc, char **argv)
 {
-    t_all *all;
-    
+	t_all	*all;
+
 	if (argc < 2)
 		return (printf("Not enough arguments\n"), 1);
-    all = __get_all();
-    if (__init__(all, argv))
-    {
-        free_all(all);
-        return (1);
-    }
-    free_all(all);
+	all = __get_all();
+	if (__init__(all, argv))
+	{
+		free_all(all);
+		return (1);
+	}
+	free_all(all);
 	return (0);
 }
