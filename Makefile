@@ -1,61 +1,68 @@
-NAME	=	miniRT
-
-SRCS_PARSING	=	main.c utils.c __init__.c __fake_globals.c utils_util.c \
-			__init_utils.c a_light_camera_light.c nodes.c printing.c \
-			free_structs.c
-
-INC_DIR := ./incs/
+NAME := miniRT
 
 SRC_DIR := ./srcs
 PRS_DIR := $(SRC_DIR)/parsing
+INC_DIR := ./incs
+OBJS_DIR := ./objs
 
-FILES := $(addprefix $(PRS_DIR), $(SRCS_PARSING))
+SRC := main.c
+SRCS_PARSING := utils.c __init__.c __fake_globals.c utils_util.c \
+                __init_utils.c a_light_camera_light.c nodes.c printing.c \
+                free_structs.c
 
-MATH_LIB = -lm
+SRC_FILES := $(addprefix $(SRC_DIR)/, $(SRC))
+PRS_FILES := $(addprefix $(PRS_DIR)/, $(SRCS_PARSING))
+ALL_SRC := $(SRC_FILES) $(PRS_FILES)
 
-OBJS	=	$(FILES:%.c=%.o)
-CC		=/usr/bin/gcc
-RM		=rm -f
+OBJS := $(patsubst $(SRC_DIR)/%.c, $(OBJS_DIR)/%.o, $(SRC_FILES)) \
+        $(patsubst $(PRS_DIR)/%.c, $(OBJS_DIR)/%.o, $(PRS_FILES))
 
-CFLAGS	=	-Wall -Wextra -Werror -g -std=c89
+CC := /usr/bin/gcc
+CFLAGS := -Wall -Wextra -Werror -g -std=c89 -I$(INC_DIR)
+LDFLAGS := -lm
 
 ifeq ($(DEBUG), 1)
 	CFLAGS += -fsanitize=address -g3
 endif
 
-BLUE	= \033[0;34m
-VIOLET	= \033[0;36m
-GREEN	= \033[0;32m
-RED		= \033[0;31m
-YELLOW	= \033[0;33m
-NONE	= \033[0m
+GREEN := \033[0;32m
+RED := \033[0;31m
+VIOLET := \033[0;36m
+NONE := \033[0m
 
-all:	$(NAME)
+all: $(NAME)
 
-%.o: %.c
-	@printf "Compiling %-100s \r" $<
-	@$(CC) $(CFLAGS) -I$(INC_DIR) -c $< -o $@ $(MATH_LIB)
+$(OBJS_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJS_DIR)
+	@printf "Compiling %-50s\r" $<
+	@$(CC) $(CFLAGS) -c $< -o $@ $(LDFLAGS)
 
-$(NAME)	: $(OBJS)
-	@$(CC) $(CFLAGS) -I$(INC_DIR) $(OBJS) -o $(NAME) $(MATH_LIB)
-	@printf "\n$(GREEN)$(NAME) Ready.\n$(NONE)"
+$(OBJS_DIR)/%.o: $(PRS_DIR)/%.c | $(OBJS_DIR)
+	@printf "Compiling %-50s\r" $<
+	@$(CC) $(CFLAGS) -c $< -o $@ $(LDFLAGS)
+
+$(NAME): $(OBJS)
+	@$(CC) $(CFLAGS) $(OBJS) -o $(NAME) $(LDFLAGS)
+	@printf "\n$(GREEN)[OK]$(NONE) Executable $(NAME) built.\n"
+
+$(OBJS_DIR):
+	@mkdir -p $(OBJS_DIR)
 
 norm:
 	@echo "$(VIOLET)[NORM - START]$(NONE)"
-	@norminette srcs/*/*.*
+	@norminette srcs/ incs/
 	@echo "$(VIOLET)[NORM - END]$(NONE)"
 
 clean:
-	@$(RM) $(OBJS)
-	@printf "$(GREEN)OBJS removed.\n$(NONE)"
+	@rm -rf $(OBJS)
+	@printf "$(GREEN)[CLEAN]$(NONE) Object files removed.\n"
 
-fclean:	clean
-	@$(RM) $(NAME)
-	@printf "$(GREEN)$(NAME) removed.\n$(NONE)"
+fclean: clean
+	@rm -f $(NAME)
+	@printf "$(RED)[FCLEAN]$(NONE) Executable removed.\n"
 
 re: fclean all
 
 bonus: all
 
-.PHONY:	all clean fclean re bonus
-.SILENT: $(NAME) bonus clean fclean re
+.PHONY: all clean fclean re bonus norm
+.SILENT: $(NAME) clean fclean re bonus
