@@ -1,0 +1,74 @@
+NAME := miniRT
+
+SRC_DIR := ./srcs
+PRS_DIR := $(SRC_DIR)/parsing
+INC_DIR := ./incs
+OBJS_DIR := ./objs
+
+MLX_INC = ./libs/tri_lib/mlx/
+TRILIB_INC = ./libs/tri_lib/
+
+MLX_TARGET = ./libs/tri_lib/mlx/libmlx.a
+TRILIB_INC_TARGET = ./libs/tri_lib/trilib.a
+
+
+SRC_FILES := $(addprefix $(SRC_DIR)/, $(SRC))
+PRS_FILES := $(addprefix $(PRS_DIR)/, $(SRCS_PARSING))
+
+OBJS := $(patsubst $(SRC_DIR)/%.c, $(OBJS_DIR)/%.o, $(SRC_FILES)) \
+        $(patsubst $(PRS_DIR)/%.c, $(OBJS_DIR)/%.o, $(PRS_FILES))
+
+CC := /usr/bin/gcc
+CFLAGS := -Wall -Wextra -Werror -g -std=c89 -I$(INC_DIR)
+LDFLAGS := -lm
+
+ifeq ($(DEBUG), 1)
+	CFLAGS += -fsanitize=address -g3
+endif
+
+GREEN := \033[0;32m
+RED := \033[0;31m
+VIOLET := \033[0;36m
+NONE := \033[0m
+
+all: libs $(NAME)
+
+libs:
+	make -C ./libs/tri_lib
+
+$(OBJS_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJS_DIR)
+	@printf "Compiling %-50s\r" $<
+	@$(CC) $(CFLAGS) -c $< -o $@ $(LDFLAGS)
+
+$(OBJS_DIR)/%.o: $(PRS_DIR)/%.c | $(OBJS_DIR)
+	@printf "Compiling %-50s\r" $<
+	@$(CC) $(CFLAGS) -c $< -o $@ $(LDFLAGS)
+
+$(NAME): $(OBJS) 
+	@$(CC) $(CFLAGS) $(OBJS) -o $(NAME) $(LDFLAGS) $(MLX_TARGET) $(TRILIB_INC_TARGET)
+	@printf "\n$(GREEN)[OK]$(NONE) Executable $(NAME) built.\n"
+
+$(OBJS_DIR):
+	@mkdir -p $(OBJS_DIR)
+
+norm:
+	@echo "$(VIOLET)[NORM - START]$(NONE)"
+	@norminette srcs/ incs/
+	@echo "$(VIOLET)[NORM - END]$(NONE)"
+
+clean:
+	@make -C ./libs/tri_lib clean
+	@rm -rf $(OBJS)
+	@printf "$(GREEN)[CLEAN]$(NONE) Object files removed.\n"
+
+fclean: clean
+	@make -C ./libs/tri_lib fclean
+	@rm -f $(NAME)
+	@printf "$(RED)[FCLEAN]$(NONE) Executable removed.\n"
+
+re: fclean all
+
+bonus: all
+
+.PHONY: all clean fclean re bonus norm libs	
+.SILENT: $(NAME) clean fclean re bonus libs
