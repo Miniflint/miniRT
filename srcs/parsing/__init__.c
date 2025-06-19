@@ -47,5 +47,10 @@ int	__init__(t_all *all, char **argv)
 	all->argv = argv;
 	if (__parse_file(all))
 		return (1);
+	if (all->ambient_light.nb <= 0)
+		return (printf("Error: you must have 1 ambient light\n") > 1);
+	if (all->camera.nb <= 0)
+		return (printf("Error: you must have 1 camera\n") > 1);
+	print_all_structs(all);
 	return (0);
 }

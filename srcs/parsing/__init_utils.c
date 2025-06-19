@@ -41,6 +41,5 @@ int	__set_values(t_all *all, char **s)
 			return (printf("Error:\nUnwanted character: ['%c'] \
 				\nin line: [%u]\n", **s, all->line_count), err);
 	}
-	print_all_structs(all);
 	return (0);
 }

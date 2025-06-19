@@ -56,6 +56,7 @@ void			free_cy(t_cylinder *cylinder);
 void			free_all(t_all *all);
 
 /* PRINTING */
+void			print_all_structs(t_all *all);
 void			print_ac(t_amb_light *ambient_light, t_cam *camera);
 void			print_l(t_light *light, int depth);
 void			print_sp(t_sphere *sphere, int depth);
