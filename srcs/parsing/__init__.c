@@ -41,10 +41,40 @@ static int	__parse_file(t_all *all)
 	return (0);
 }
 
+static int	check_ext(char **argv)
+{
+	int			i;
+	const char	exts[2][4] = {".rt", ".obj"};
+	int			max_len_str;
+	int			max_len_ext;
+
+	i = 1;
+	while (argv[i])
+	{
+		max_len_str = ft_strlen(argv[i]);
+		max_len_ext = ft_strlen((char *)exts[i > 1]);
+		if (max_len_ext > max_len_str)
+			return (printf("Error: extension doesn't match: %s\n",
+					exts[i > 1]), 1);
+		while (max_len_ext > 0 && max_len_str > 0
+			&& argv[i][max_len_str] == exts[i > 1][max_len_ext])
+		{
+			max_len_str--;
+			max_len_ext--;
+		}
+		if (argv[i][max_len_str] != exts[i > 1][max_len_ext])
+			return (printf("Extension doesn't match %s\n", exts[i > 1]), 1);
+		i++;
+	}
+	return (0);
+}
+
 int	__init__(t_all *all, char **argv)
 {
 	ft_zeroes(all);
 	all->argv = argv;
+	if (check_ext(all->argv))
+		return (1);
 	if (__parse_file(all))
 		return (1);
 	if (all->ambient_light.nb <= 0)

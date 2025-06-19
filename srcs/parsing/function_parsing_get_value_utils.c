@@ -1,11 +1,4 @@
 #include "miniRT.h"
-#define ERROR_X_DECODE "Error decoding (X)YZ coordinates @: [%d|%c]\n"
-#define ERROR_Y_DECODE "Error decoding X(Y)Z coordinates @: [%d|%c]\n"
-#define ERROR_Z_DECODE "Error decoding XY(Z) coordinates @: [%d|%c]\n"
-
-#define ERROR_R_DECODE "Error decoding (R)GB color @: [%d|%c]\n"
-#define ERROR_G_DECODE "Error decoding R(G)B color @: [%d|%c]\n"
-#define ERROR_B_DECODE "Error decoding RG(B) color @: [%d|%c]\n"
 
 int	get_rgb(t_rgb *rgb, char **s)
 {

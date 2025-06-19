@@ -14,6 +14,7 @@
 
 # include "miniRT_struct.h"
 # include "miniRT_planes.h"
+# include "miniRT_objs.h"
 
 # define BUFF_SIZE 5096
 
