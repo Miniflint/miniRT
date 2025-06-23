@@ -6,7 +6,7 @@
 /*   By: hermesrolle <hermesrolle@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 03:38:29 by hermesrolle       #+#    #+#             */
-/*   Updated: 2025/06/15 22:26:01 by hermesrolle      ###   ########.fr       */
+/*   Updated: 2025/06/23 07:30:49 by hermesrolle      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,12 +67,68 @@ typedef struct s_img_render
 	t_render	_render;
 }				t_img_render;
 
+typedef enum e_event_type
+{
+	MOUSE_PRESS,
+	MOUSE_RELEASE,
+	MOUSE_MOVE,
+	KEY_PRESS,
+	KEY_RELEASE,
+	WINDOW,
+	LOOP
+}	t_event_type;
+
+typedef struct s_mouse_event
+{
+	int		x;
+	int		y;
+	char	right_press;
+	char	left_press;
+	char	right_release;
+	char	left_release;
+}			t_mouse_event;
+
+typedef struct s_win_event
+{
+	char	cross;
+	char	minimize;
+}			t_win_event;
+
+enum
+{
+	KEY_BACKSPACE = 8,
+	KEY_ESC = 27,
+	KEY_DEL = 127,
+	KEY_UP,
+	KEY_DOWN,
+	KEY_LEFT,
+	KEY_RIGHT,
+	KEY_ALT_LEFT,
+	KEY_ALT_RIGHT,
+	KEY_CMD_LEFT,
+	KEY_CMD_RIGHT,
+	KEY_SHIFT_LEFT,
+	KEY_SHIFT_RIGHT,
+	KEY_CTRL
+};
+
+typedef struct s_event
+{
+	t_event_type	type;
+	t_win			*win_id;
+	t_mouse_event	mouse;
+	unsigned char	key_id;
+	unsigned char	key[KEY_CTRL];
+	t_win_event		window;
+}					t_event;
+
 struct s_win
 {
 	void			*_win;
 	int				_width;
 	int				_height;
 	char			*_name;
+	t_event			event;
 	t_img_render	_base_render;
 	t_render		*_renders;
 	t_render		*_last_render;
@@ -83,6 +139,8 @@ struct s_tri_lib
 {
 	t_tri_lib		*(*init)(void);
 	void			(*destroy)(void);
+	int				(*_user_main)(t_tri_lib *, void *);
+	void			*_user_content;
 	t_win			*(*create_window)(char *name, int width, int height);
 	void			(*refresh)(t_win *win);
 	t_img			*(*open_img)(char *path);
@@ -109,6 +167,7 @@ struct s_tri_lib
 	void			(*change_background)(unsigned int	color);
 	t_win			*_windows;
 	t_img			*_imgs;
+	t_event			*event;
 	const char		*_error_msg[TRI_N_ERROR];
 	int				_ernum;
 	void			*_mlx;
@@ -181,5 +240,15 @@ void				_draw_render_to_render(t_render *top, t_render *base);
 void				_draw_window(t_win *win);
 void				_draw_windows(void);
 void				_change_background(unsigned int	color);
+
+/*-----------------------TRI_EVENT_INIT-----------------------*/
+
+void				_init_key_event(unsigned char key[KEY_CTRL]);
+void				_init_mouse_event(t_mouse_event *mouse);
+void				_init_win_event(t_win_event *win);
+void				_init_event(t_event *event, t_win *win);
+
+int	_get_key_press(int keycode, t_win *win);
+int	_get_key_release(int keycode, t_win *win);
 
 #endif

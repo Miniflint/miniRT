@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tri_lib.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hermesrolle <hermesrolle@student.42.fr>    +#+  +:+       +#+        */
+/*   By: herolle <herolle@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 03:38:27 by hermesrolle       #+#    #+#             */
-/*   Updated: 2025/06/15 20:54:51 by hermesrolle      ###   ########.fr       */
+/*   Updated: 2025/06/19 20:02:16 by herolle          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,8 +77,9 @@ t_tri_lib	*tri_lib(void)
 		.erase_render = _erase_render, .erase_window = _erase_window,
 		.erase_windows = _erase_windows, .draw_window = _draw_window,
 		.draw_windows = _draw_windows, .change_background = _change_background,
-		._imgs = NULL, ._windows = NULL, ._mlx = NULL,
-		._bg_color = BACKGROUND_COLOR, ._ernum = TRI_SUCCESS,
+		._imgs = NULL, ._windows = NULL, ._mlx = NULL, .event = NULL,
+		._user_content = NULL, ._bg_color = BACKGROUND_COLOR,
+		._ernum = TRI_SUCCESS,
 		._error_msg = {"TRI Error : succes\n", "TRI Error : failure\n",
 		"TRI Error : tri_lib unitialised\n", "TRI Exit : succes\n",
 		"TRI Error : malloc failure\n", "TRI Error : create window failure\n",

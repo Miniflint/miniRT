@@ -1,0 +1,1 @@
+gcc -Wall -Werror -Wextra -g3 -Imlx -Itri_lib -D LINUX -Lmlx -lmlx -lXext -lX11 -lm mlx/libmlx.a tri_lib/libtri.a

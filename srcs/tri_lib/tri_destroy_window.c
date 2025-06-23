@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tri_destroy_window.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hermesrolle <hermesrolle@student.42.fr>    +#+  +:+       +#+        */
+/*   By: herolle <herolle@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 22:31:44 by herolle           #+#    #+#             */
-/*   Updated: 2025/06/15 20:32:41 by hermesrolle      ###   ########.fr       */
+/*   Updated: 2025/06/19 16:35:03 by herolle          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 static void	_destroy_window_node(t_tri_lib *lib, t_win *win)
 {
+	if (lib->event && lib->event->win_id == win)
+		lib->event = NULL;
 	mlx_destroy_window(lib->_mlx, win->_win);
 	win->_win = NULL;
 	if (win->_renders)
