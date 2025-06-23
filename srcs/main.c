@@ -35,6 +35,14 @@ int	ab(int keycode, void *data)
 	return (0);
 }
 
+int looped(t_tri_lib *lib, void *a)
+{
+	(void)a, (void)lib;
+	//if (lib->event && lib->event->type == KEY_PRESS)
+	//	printf("%s [%d][%c] \n", lib->event->win_id->_name, lib->event->key_id, lib->event->key_id);
+	return (0);
+}
+
 int	main(int argc, char **argv)
 {
 	t_all	*all;
@@ -48,5 +56,9 @@ int	main(int argc, char **argv)
 		return (1);
 	}
 	free_all(all);
+	tri_lib()->init();
+	tri_lib()->create_window("QQQQQQQQQQQ,", 800, 600);
+	tri_lib()->create_window("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAa,", 800, 600);
+	tri_lib()->loop(looped, NULL);
 	return (0);
 }
