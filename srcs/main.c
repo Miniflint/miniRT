@@ -23,6 +23,18 @@ char	*readfile(int fd)
 	return (final);
 }
 
+int	aa(int keycode, void *data)
+{
+	printf("%d - %p\n", keycode, data ? data : NULL);
+	return (0);
+}
+
+int	ab(int keycode, void *data)
+{
+	printf("%d - %p\n", keycode, data ? data : NULL);
+	return (0);
+}
+
 int	main(int argc, char **argv)
 {
 	t_all	*all;
