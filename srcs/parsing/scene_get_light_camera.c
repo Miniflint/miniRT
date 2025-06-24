@@ -17,7 +17,7 @@ int	get_ambient_light(t_amb_light *a_light, char **s)
 		return (printf("\nAmbient light problem\n"), 1);
 	if (!**s)
 		return (2);
-	return (skip_whitespace_hashtag(s));
+	return (skip_whitespace_hashtag(s, &(__get_all()->line_count)));
 }
 
 int	get_camera(t_cam *camera, char **s)
@@ -40,7 +40,7 @@ int	get_camera(t_cam *camera, char **s)
 		return (printf("Error: camera fov < 0.0 || > 180.0\n"), 1);
 	if (!**s)
 		return (2);
-	return (skip_whitespace_hashtag(s));
+	return (skip_whitespace_hashtag(s, &(__get_all()->line_count)));
 }
 
 int	get_light(t_light **head, char **s)
@@ -68,5 +68,5 @@ int	get_light(t_light **head, char **s)
 	*head = light;
 	if (!**s)
 		return (2);
-	return (skip_whitespace_hashtag(s));
+	return (skip_whitespace_hashtag(s, &(__get_all()->line_count)));
 }

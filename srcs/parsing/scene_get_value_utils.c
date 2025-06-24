@@ -59,3 +59,4 @@ int	get_vec(t_vec *vec, char **s)
 		return (printf("Error: XY(Z) value < -1.0 || > 1.0\n"), 1);
 	return (0);
 }
+

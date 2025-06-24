@@ -25,7 +25,7 @@ int	get_sphere(t_sphere **head, char **s)
 	*head = sphere;
 	if (!**s)
 		return (2);
-	return (skip_whitespace_hashtag(s));
+	return (skip_whitespace_hashtag(s, &(__get_all()->line_count)));
 }
 
 int	get_plane(t_plane **head, char **s)
@@ -51,7 +51,7 @@ int	get_plane(t_plane **head, char **s)
 	*head = plane;
 	if (!**s)
 		return (2);
-	return (skip_whitespace_hashtag(s));
+	return (skip_whitespace_hashtag(s, &(__get_all()->line_count)));
 }
 
 t_cylinder	*create_cylinder(char **s, int *code)
@@ -107,5 +107,5 @@ int	get_cylinder(t_cylinder **head, char **s)
 	*head = cylinder;
 	if (!**s)
 		return (2);
-	return (skip_whitespace_hashtag(s));
+	return (skip_whitespace_hashtag(s, &(__get_all()->line_count)));
 }

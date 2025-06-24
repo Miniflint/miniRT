@@ -17,13 +17,15 @@ void	ft_zeroes(t_all *all)
 	all->camera.fov = 0;
 	all->line_count = 1;
 	all->cylinders = 0;
+	all->head_obj = 0;
+	all->objects = 0;
 	all->spheres = 0;
 	all->planes = 0;
 	all->lights = 0;
 	all->argv = 0;
 }
 
-static int	__parse_file(t_all *all)
+static int	__parse_file_scene(t_all *all)
 {
 	char		*str;
 	char		*tmp;
@@ -32,12 +34,58 @@ static int	__parse_file(t_all *all)
 	if (fd == -1)
 		return (printf("File cannot be accessed\n"), 1);
 	str = readfile(fd);
+	close(fd);
 	if (!str)
 		return (printf("File is empty/error occured while trying to read\n"), 1);
 	tmp = str;
-	if (__set_values(all, &str) == 1)
+	if (__set_values_scene(all, &str) == 1)
 		return (free(tmp), 1);
 	free(tmp);
+	return (0);
+}
+
+static void zeroes_two(t_object *object, char *path)
+{
+	object->line_count = 1;
+	object->nb_faces = 0;
+	object->nb_vertexes = 0;
+	object->nb_points = 0;
+	object->name[0] = 0;
+	object->path = path;
+}
+
+static int	__parse_file_objs(t_all *all)
+{
+	char	*str;
+	char	*tmp;
+	int		fd;
+	int		i;
+
+	i = 2;
+	printf("%u\n", BUFF_SIZE);
+	while (i < all->argc)
+	{
+		fd = open(all->argv[i], O_RDONLY);
+		if (fd == -1)
+			return (printf("File cannot be accessed\n"), 1);
+		write(1, "Starting read\n", 14);
+		str = readfile(fd);
+		if (!str)
+			return (printf("File is empty/error occured while trying to read\n"), 1);
+		write(1, "Ending read\n", 12);
+		tmp = str;
+		all->objects = (t_object *)create_empty_node(sizeof(t_object) * 1);
+		if (!all->objects)
+			return (printf("malloc error\n"), 1);
+		zeroes_two(all->objects, all->argv[i]);
+		(void)__get_head(all->objects);
+		if (__set_values_objs(all->objects, &str) == 1)
+			return (free(tmp), 1);
+		all->objects->next = all->head_obj;
+		all->head_obj = all->objects;
+		free(tmp);
+		i++;
+	}
 	return (0);
 }
 
@@ -69,18 +117,21 @@ static int	check_ext(char **argv)
 	return (0);
 }
 
-int	__init__(t_all *all, char **argv)
+int	__init__(t_all *all, char **argv, int argc)
 {
 	ft_zeroes(all);
 	all->argv = argv;
+	all->argc = argc;
 	if (check_ext(all->argv))
 		return (1);
-	if (__parse_file(all))
+	if (__parse_file_scene(all))
+		return (1);
+	if (__parse_file_objs(all))
 		return (1);
 	if (all->ambient_light.nb <= 0)
 		return (printf("Error: you must have 1 ambient light\n") > 1);
 	if (all->camera.nb <= 0)
 		return (printf("Error: you must have 1 camera\n") > 1);
-	print_all_structs(all);
+	//print_all_structs(all);
 	return (0);
 }
