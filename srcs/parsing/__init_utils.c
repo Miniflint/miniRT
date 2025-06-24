@@ -21,10 +21,12 @@ int	parse_type_objs(t_object *object, char **s)
 {
 	if (**s == 'o' && ft_iswhitespace(*((*s) + 1)))
 		return (get_name(object->name, s));
-	//else if (**s == 'f' && ft_iswhitespace(*((*s) + 1)))
-	//	return (get_camera(&all->camera, s));
-	//else if (**s == 's' && ft_iswhitespace(*((*s) + 1)))
-	//	return (get_light(&all->lights, s));
+	else if (**s == 'v' && ft_iswhitespace(*((*s) + 1)))
+		return (get_vertices(&(object->vertices[object->indexes[I_VERTEX]]), s, &(object->indexes[I_VERTEX])));
+	else if (**s == 'f' && ft_iswhitespace(*((*s) + 1)))
+		return (get_faces(&(object->faces[object->indexes[I_FACES]]), s, object->curr_smoothing, &(object->indexes[I_FACES])));
+	else if (**s == 's' && ft_iswhitespace(*((*s) + 1)))
+		return (get_smoothing(&object->curr_smoothing, s));
 	//else if (**s == 'g' && ft_iswhitespace(*((*s) + 1)))
 	//	return (get_sphere(&all->spheres, s));
 	//else if (**s == 'p' && ft_iswhitespace(*((*s) + 1)))
@@ -63,9 +65,9 @@ int	__mallocate_objs_values(t_object *object, char *s)
 {
 	if (get_letters(object, s))
 		return (1);
-	object->vertexes = malloc(sizeof(t_vertex) * object->nb_vertexes);
-	if (!object->vertexes)
-		return (printf("malloc error - vertexes\n"), 1);
+	object->vertices = malloc(sizeof(t_vertice) * object->nb_vertices);
+	if (!object->vertices)
+		return (printf("malloc error - verticees\n"), 1);
 	object->faces = malloc(sizeof(t_face) * object->nb_faces);
 	if (!object->faces)
 		return (printf("malloc error - faces\n"), 1);
@@ -91,5 +93,8 @@ int	__set_values_objs(t_object *object, char **s)
 			return (printf("Error:\nUnwanted character: ['%c'] \
 				\nin line: [%lu]\n", **s, object->line_count), err);
 	}
+	printf("x%f y%f z%f\n", object->vertices[2].x, object->vertices[2].y, object->vertices[2].z);
+	printf("1:%lu 2:%lu 3:%lu smoothing:%d\n", object->faces[0].p_one, object->faces[0].p_two, object->faces[0].p_three, object->faces[0].smoothing);
+	printf("1:%lu 2:%lu 3:%lu smoothing:%d\n", object->faces[1].p_one, object->faces[1].p_two, object->faces[1].p_three, object->faces[1].smoothing);
 	return (0);
 }

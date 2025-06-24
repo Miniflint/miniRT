@@ -48,10 +48,13 @@ static void zeroes_two(t_object *object, char *path)
 {
 	object->line_count = 1;
 	object->nb_faces = 0;
-	object->nb_vertexes = 0;
+	object->nb_vertices = 0;
 	object->nb_points = 0;
 	object->name[0] = 0;
 	object->path = path;
+	object->indexes[I_VERTEX] = 0;
+	object->indexes[I_FACES] = 0;
+	object->indexes[I_POINTS] = 0;
 }
 
 static int	__parse_file_objs(t_all *all)

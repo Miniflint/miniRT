@@ -85,6 +85,8 @@ int	skip_whitespace_hashtag(char **s, unsigned int *line_count)
 		else
 			(*s)++;
 	}
+	if (!**s)
+		return (2);
 	return (backslash_n);
 }
 
@@ -106,5 +108,7 @@ int	skip_whitespace_hashtag_u(char **s, unsigned long *line_count)
 		else
 			(*s)++;
 	}
+	if (!**s)
+		return (2);
 	return (backslash_n);
 }
