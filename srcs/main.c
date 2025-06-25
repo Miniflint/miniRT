@@ -33,18 +33,6 @@ char	*readfile(int fd)
 	return (final);
 }
 
-int	aa(int keycode, void *data)
-{
-	printf("%d - %p\n", keycode, data ? data : NULL);
-	return (0);
-}
-
-int	ab(int keycode, void *data)
-{
-	printf("%d - %p\n", keycode, data ? data : NULL);
-	return (0);
-}
-
 void	event_key_press(t_tri_lib *lib, void *a)
 {
 	(void)a;
@@ -56,7 +44,7 @@ int looped(t_tri_lib *lib, void *a)
 {
 	(void)a;
 	if (lib->event && lib->event->type == KEY_PRESS)
-		(printf("%d\n", lib->event->key_id), event_key_press(lib, a));
+		event_key_press(lib, a);
 	return (0);
 }
 

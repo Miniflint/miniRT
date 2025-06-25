@@ -11,10 +11,11 @@ v 0.5 1.0 0.5   # v5: top point
 
 # Face list (1-based indexing, counter-clockwise order)
 s 1
-f 1 2 3 3     # Base face
-f 1 2 5         # Side face
+f 1 2 3        # Base face
+f 1 5 5 4      # Side face
 s 3
-f 2 3 5         # Side face
+f 2 3 5        # Side face
+f 1 3 5
 f 3 4 5         # Side face
 s off
 f 4 1 5         # Side face

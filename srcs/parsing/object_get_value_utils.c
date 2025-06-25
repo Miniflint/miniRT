@@ -48,18 +48,19 @@ static int get_each_part_face(t_face *face, char **s, unsigned char ind[3])
 	if (!(**s >= '0' && **s <= '9'))
 		return (3);
 	tmp = ft_atoi(s);
-	if (tmp <= 0 && tmp >= __get_head(NULL)->nb_vertices)
-		return (printf("Error: Number cannot be less than 1\n"), 1);
+	if (tmp <= 0)
+		return (printf("Error: Number cannot be less than 1\n"), --(*s), 3);
+	if (tmp > __get_head(NULL)->nb_vertices)
+		return (printf("Error: Number cannot more than %ld\n",
+			__get_head(NULL)->nb_vertices), --(*s), 3);
 	tmp -= 1;
 	face->vertices[ind[0]] = &(__get_head(NULL)->vertices[tmp]);
 	face->v_indexes[ind[0]] = tmp;
 	ind[0] += 1;
-	if (ind[0] < 3 && ft_iswhitespace(*(++(*s))))
-		return (printf("Error decoding the vertice %d @ [%d|%c]\n", ind[0], *((*s)), *((*s))), 1);
-	else if (ind[0] == 3 && !ft_iswhitespace(*(++(*s))))
-		return (4);
 	if (skip_till_number(s, 0) && (**s >= '0' && **s <= '9'))
-		return (printf("CURR CHAR: [%d][%c]", **s, **s), 3);
+		return (3);
+	if (ind[0] == 3 && (**s >= '0' && **s <= '9'))
+			return (4);
 	return (0);
 }
 
@@ -76,25 +77,27 @@ int	get_faces(t_face *face, char **s, t_minuint curr_smoothing, unsigned long *i
 {
 	unsigned char vert_ind[3];
 	int	err;
+	int	i;
 
 	err = 0;
+	i = 0;
 	ft_memset(vert_ind, 0, sizeof(vert_ind));
 	ft_memset(face->vertices, 0, sizeof(face->vertices));
 	if (skip_till_number(s, 1) && (**s >= '0' && **s <= '9'))
 		return (free(face), 3);
-	err = get_each_part_face(face, s, vert_ind);
-	if (err)
-		return (printf("1: %d\n", err), err);
-	err = get_each_part_face(face, s, vert_ind);
-	if (err)
-		return (printf("2: %d\n", err), err);
-	err = get_each_part_face(face, s, vert_ind);
-	if (err && err != 4)
-		return (printf("3: %d\n", err), err);
+	while (i < 3)
+	{
+		err = get_each_part_face(face, s, vert_ind);
+		if (err && err != 4)
+			return (err);
+		if (i == 2 && err == 4)
+			break ; 
+		i++;
+	}
 	if (err == 4)
 		err = get_each_part_face(face, s, vert_ind);
 	if (err)
-		return (printf("4: %d\n", err), err);
+		return (err);
 	face->is_wrong = count_duplicates((void *)face->vertices);
 	face->smoothing = curr_smoothing;
 	(*index)++;
