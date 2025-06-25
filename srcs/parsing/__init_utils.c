@@ -56,7 +56,7 @@ int	__set_values_scene(t_all *all, char **s)
 			return (err);
 		else if (err == 3)
 			return (printf("Error:\nUnwanted character: ['%c'] \
-				\nin line: [%u]\n", **s, all->line_count), err);
+				\nin line: [%u]\n", **s, all->line_count), 1);
 	}
 	return (0);
 }
@@ -91,10 +91,17 @@ int	__set_values_objs(t_object *object, char **s)
 			return (err);
 		else if (err == 3)
 			return (printf("Error:\nUnwanted character: ['%c'] \
-				\nin line: [%lu]\n", **s, object->line_count), err);
+				\nin line: [%lu]\n", **s, object->line_count), 1);
 	}
-	printf("x%f y%f z%f\n", object->vertices[2].x, object->vertices[2].y, object->vertices[2].z);
-	printf("1:%lu 2:%lu 3:%lu smoothing:%d\n", object->faces[0].p_one, object->faces[0].p_two, object->faces[0].p_three, object->faces[0].smoothing);
-	printf("1:%lu 2:%lu 3:%lu smoothing:%d\n", object->faces[1].p_one, object->faces[1].p_two, object->faces[1].p_three, object->faces[1].smoothing);
+	printf("===============   VERTICES   ================\n");
+	for (unsigned long i = 0; i < object->nb_vertices; i++) {
+		printf("\t%li: %p\n", i + 1, &(object->vertices[i]));
+	}
+	printf("===============   FACES   ================\n");
+	for (unsigned long i = 0; i < object->nb_faces; i++) {
+		printf("\t%li: 1:%p 2:%p 3:%p 4:%p s:%i\n", i + 1,
+			object->faces[i].vertices[0], object->faces[i].vertices[1],
+			object->faces[i].vertices[2], object->faces[i].vertices[3], object->faces[i].smoothing);
+	}
 	return (0);
 }

@@ -95,6 +95,8 @@ int	skip_whitespace_hashtag_u(char **s, unsigned long *line_count)
 	int	backslash_n;
 
 	backslash_n = 3;
+	if (!**s)
+		return (2);
 	while (ft_iswhitespace(**s) || **s == '#')
 	{
 		if (**s == '\n')

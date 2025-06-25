@@ -56,7 +56,7 @@ int looped(t_tri_lib *lib, void *a)
 {
 	(void)a;
 	if (lib->event && lib->event->type == KEY_PRESS)
-		event_key_press(lib, a);
+		(printf("%d\n", lib->event->key_id), event_key_press(lib, a));
 	return (0);
 }
 

@@ -19,7 +19,9 @@ typedef t_vertice t_vertice_normale;
 
 typedef struct S_point
 {
-	unsigned long	value;
+	char				is_wrong;
+	unsigned long		v_indexes;
+	t_vertice			*vertices;
 	struct S_point	*next;
 }	t_point;
 
@@ -36,9 +38,9 @@ typedef struct S_point
  // TODO. POINTER ON VERTEXES, VERTEXES TEXTURES, VERTEX NORMALES
 typedef struct S_face
 {
-	unsigned long		p_one;
-	unsigned long		p_two;
-	unsigned long		p_three;
+	char				is_wrong;
+	unsigned long		v_indexes[4];
+	t_vertice			*vertices[4];
 	t_minuint	smoothing;
 }				t_face;
 
