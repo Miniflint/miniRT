@@ -60,6 +60,7 @@ int	main(int argc, char **argv)
 		free_all(all);
 		return (1);
 	}
+	free_all(all);
 	tri_lib()->init();
 	tri_lib()->create_window("QQQQQQQQQQQ,", 800, 600);
 	tri_lib()->loop(looped, all);
