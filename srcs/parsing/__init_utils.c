@@ -60,7 +60,7 @@ int	__set_values_scene(t_all *all, char **s)
 			return (err);
 		else if (err == 3)
 			return (printf("Error:\nUnwanted character: ['%c'] \
-				\nin line: [%u]\n", **s, all->line_count), 1);
+				\nin line: [%lu]\n", **s, all->line_count), 1);
 	}
 	return (0);
 }
@@ -93,7 +93,7 @@ int	__set_values_objs(t_object *object, char **s)
 {
 	int	err;
 
-	skip_whitespace_hashtag_u(s, &(object->line_count));
+	skip_whitespace_hashtag(s, &(object->line_count));
 	__mallocate_objs_values(object, *s);
 	err = 0;
 	while (err != 2)
@@ -105,33 +105,33 @@ int	__set_values_objs(t_object *object, char **s)
 			return (printf("Error:\nUnwanted character: ['%c'] \
 				\nin line: [%lu]\n", **s, object->line_count), 1);
 	}
-	printf("===============   VERTICES   ================\n");
-	for (unsigned long i = 0; i < object->nb_vertices; i++) {
-		printf("\t%li: %p\n", i + 1, &(object->vertices[i]));
-	}
-	printf("===========   VERTICES TEXTURE   ============\n");
-	for (unsigned long i = 0; i < object->nb_vt; i++) {
-		printf("\t%li: %p\n", i + 1, &(object->vt[i]));
-	}
-	printf("===========   VERTICES NORMALE  ============\n");
-	for (unsigned long i = 0; i < object->nb_vn; i++) {
-		printf("\t%li: %p\n", i + 1, &(object->vn[i]));
-	}
-	printf("===============   FACES   ================\n");
-	for (unsigned long i = 0; i < object->nb_faces; i++) {
-		printf("%li:\n\t", i + 1);
-		for (unsigned long j = 0; j < 4; j++) {
-			printf("%ld:(%ld) %p ", j + 1, object->faces[i].v_indexes[j] + 1, (object->faces[i].vertices[j]));
-		}
-		printf("\n\t");
-		for (unsigned long j = 0; j < 4; j++) {
-			printf("%ld:(%ld) %p ", j + 1, object->faces[i].vt_indexes[j] + 1, (object->faces[i].v_texture[j]));
-		}
-		printf("\n\t");
-		for (unsigned long j = 0; j < 4; j++) {
-			printf("%ld:(%ld) %p ", j + 1, object->faces[i].vn_indexes[j] + 1, (object->faces[i].v_normale[j]));
-		}
-		printf(" s:%i\n", object->faces[i].smoothing);
-	}
+	//printf("===============   VERTICES   ================\n");
+	//for (unsigned long i = 0; i < object->nb_vertices; i++) {
+	//	printf("\t%li: %p\n", i + 1, &(object->vertices[i]));
+	//}
+	//printf("===========   VERTICES TEXTURE   ============\n");
+	//for (unsigned long i = 0; i < object->nb_vt; i++) {
+	//	printf("\t%li: %p\n", i + 1, &(object->vt[i]));
+	//}
+	//printf("===========   VERTICES NORMALE  ============\n");
+	//for (unsigned long i = 0; i < object->nb_vn; i++) {
+	//	printf("\t%li: %p\n", i + 1, &(object->vn[i]));
+	//}
+	//printf("===============   FACES   ================\n");
+	//for (unsigned long i = 0; i < object->nb_faces; i++) {
+	//	printf("%li:\n\t", i + 1);
+	//	for (unsigned long j = 0; j < 4; j++) {
+	//		printf("%ld:(%ld) %p ", j + 1, object->faces[i].v_indexes[j] + 1, (object->faces[i].vertices[j]));
+	//	}
+	//	printf("\n\t");
+	//	for (unsigned long j = 0; j < 4; j++) {
+	//		printf("%ld:(%ld) %p ", j + 1, object->faces[i].vt_indexes[j] + 1, (object->faces[i].v_texture[j]));
+	//	}
+	//	printf("\n\t");
+	//	for (unsigned long j = 0; j < 4; j++) {
+	//		printf("%ld:(%ld) %p ", j + 1, object->faces[i].vn_indexes[j] + 1, (object->faces[i].v_normale[j]));
+	//	}
+	//	printf(" s:%i\n", object->faces[i].smoothing);
+	//}
 	return (0);
 }

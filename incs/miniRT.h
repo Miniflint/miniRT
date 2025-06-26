@@ -31,7 +31,7 @@ typedef struct S_all
 	t_object		*head_obj;
 	char			**argv;
 	int				argc;
-	unsigned int	line_count;
+	unsigned long	line_count;
 }	t_all;
 
 /* UTILS */
@@ -44,8 +44,7 @@ int				ft_strlen(char *str);
 unsigned int	ft_atoi(char **s);
 double			ft_atof(char **s);
 int				skip_till_number(char **s, int nb);
-int				skip_whitespace_hashtag(char **s, unsigned int *line_count);
-int				skip_whitespace_hashtag_u(char **s, unsigned long *line_count);
+int				skip_whitespace_hashtag(char **s, unsigned long *line_count);
 void			*ft_memset(void *b, int c, size_t len);
 int				ft_strncmp(char *s1, const char *s2, size_t n);
 

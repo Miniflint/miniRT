@@ -6,20 +6,20 @@ int	get_vertices(t_vertice *vertice, char **s, int skip)
 		return (free(vertice), 3);
 	vertice->x = ft_atof(s);
 	if (ft_iswhitespace(*(++(*s))))
-		return (printf(ERROR_X_DECODE, *((*s) - 1), *((*s) - 1)), 1);
+		return (printf(ERROR_X_DECODE, *((*s) - 1), *((*s) - 1), __get_head(NULL)->line_count), 1);
 	if (skip_till_number(s, 0))
 		return (3);
 	vertice->y = ft_atof(s);
 	if (ft_iswhitespace(*(++(*s))))
-		return (printf(ERROR_Y_DECODE, *((*s) - 1), *((*s) - 1)), 1);
+		return (printf(ERROR_Y_DECODE, *((*s) - 1), *((*s) - 1), __get_head(NULL)->line_count), 1);
 	if (skip_till_number(s, 0))
 		return (3);
 	vertice->z = ft_atof(s);
 	if (**s && !ft_iswhitespace(**s))
-		return (printf(ERROR_Z_DECODE, **s, **s), 1);
+		return (printf(ERROR_Z_DECODE, **s, **s, __get_head(NULL)->line_count), 1);
 	if (!**s)
 		return (2);
-	return (skip_whitespace_hashtag_u(s, &(__get_head(NULL)->line_count)));
+	return (skip_whitespace_hashtag(s, &(__get_head(NULL)->line_count)));
 }
 
 int	get_smoothing(t_minuint *curr_smoothing, char **s)
@@ -31,13 +31,13 @@ int	get_smoothing(t_minuint *curr_smoothing, char **s)
 	if (**s && !ft_iswhitespace(**s))
 	{
 		if (ft_strncmp(*s, "off", 3) && !ft_iswhitespace(**s))
-			return (printf("Error decoding smoothing @: [%d|%c]\n", **s, **s), 1);
+			return (printf("Error decoding smoothing @: [%d|%c]\nline [%lu]\n", **s, **s, __get_head(NULL)->line_count), 1);
 		*s += 3;
 		*curr_smoothing = 0;
 	}
 	if (!**s)
 		return (2);
-	return (skip_whitespace_hashtag_u(s, &(__get_head(NULL)->line_count)));
+	return (skip_whitespace_hashtag(s, &(__get_head(NULL)->line_count)));
 }
 
 static void set_face_value_on_slash(t_face *face, unsigned long tmp, unsigned char slashes, unsigned char ind[3])
@@ -142,7 +142,7 @@ int	get_faces(t_face *face, char **s, t_minuint curr_smoothing, unsigned long *i
 	face->is_wrong = count_duplicates((void *)face->vertices);
 	face->smoothing = curr_smoothing;
 	(*index)++;
-	return (skip_whitespace_hashtag_u(s, &(__get_head(NULL)->line_count)));
+	return (skip_whitespace_hashtag(s, &(__get_head(NULL)->line_count)));
 }
 
 int get_name(char name[128], char **s)
@@ -159,7 +159,7 @@ int get_name(char name[128], char **s)
 	}
 	name[i] = 0;
 	printf("name: [%s]\n", name);
-	return (skip_whitespace_hashtag_u(s, &(__get_head(NULL)->line_count)));
+	return (skip_whitespace_hashtag(s, &(__get_head(NULL)->line_count)));
 }
 
 int	get_letters(t_object *object, const char *restrict s)

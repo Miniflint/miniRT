@@ -67,36 +67,11 @@ int	skip_till_number(char **s, int nb)
 	return (0);
 }
 
-int	skip_whitespace_hashtag(char **s, unsigned int *line_count)
+int	skip_whitespace_hashtag(char **s, unsigned long *line_count)
 {
 	int	backslash_n;
 
 	backslash_n = 3;
-	while (ft_iswhitespace(**s) || **s == '#')
-	{
-		if (**s == '\n')
-		{
-			*line_count += 1;
-			backslash_n = 0;
-		}
-		if (**s == '#')
-			while (**s && **s != '\n')
-				(*s)++;
-		else
-			(*s)++;
-	}
-	if (!**s)
-		return (2);
-	return (backslash_n);
-}
-
-int	skip_whitespace_hashtag_u(char **s, unsigned long *line_count)
-{
-	int	backslash_n;
-
-	backslash_n = 3;
-	if (!**s)
-		return (2);
 	while (ft_iswhitespace(**s) || **s == '#')
 	{
 		if (**s == '\n')
