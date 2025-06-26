@@ -21,8 +21,12 @@ int	parse_type_objs(t_object *object, char **s)
 {
 	if (**s == 'o' && ft_iswhitespace(*((*s) + 1)))
 		return (get_name(object->name, s));
+	else if (**s == 'v' && *((*s) + 1) == 't' && ft_iswhitespace(*((*s) + 2)))
+		return (get_vertices(&(object->vt[object->indexes[I_VT]]), s, &(object->indexes[I_VT]), 2));
+	else if (**s == 'v' && *((*s) + 1) == 'n' && ft_iswhitespace(*((*s) + 2)))
+		return (get_vertices(&(object->vn[object->indexes[I_VN]]), s, &(object->indexes[I_VN]), 2));
 	else if (**s == 'v' && ft_iswhitespace(*((*s) + 1)))
-		return (get_vertices(&(object->vertices[object->indexes[I_VERTEX]]), s, &(object->indexes[I_VERTEX])));
+		return (get_vertices(&(object->vertices[object->indexes[I_V]]), s, &(object->indexes[I_V]), 1));
 	else if (**s == 'f' && ft_iswhitespace(*((*s) + 1)))
 		return (get_faces(&(object->faces[object->indexes[I_FACES]]), s, object->curr_smoothing, &(object->indexes[I_FACES])));
 	else if (**s == 's' && ft_iswhitespace(*((*s) + 1)))
@@ -67,7 +71,15 @@ int	__mallocate_objs_values(t_object *object, char *s)
 		return (1);
 	object->vertices = malloc(sizeof(t_vertice) * object->nb_vertices);
 	if (!object->vertices)
-		return (printf("malloc error - verticees\n"), 1);
+		return (printf("malloc error - vertices\n"), 1);
+	if (object->nb_vt)
+		object->vt = malloc(sizeof(t_vertice) * object->nb_vt);
+	if (object->nb_vt && !object->vt)
+		return (printf("malloc error - vertices texture\n"), 1);
+	if (object->nb_vn)
+		object->vn = malloc(sizeof(t_vertice) * object->nb_vn);
+	if (object->nb_vn && !object->vn)
+		return (printf("malloc error - vertices normale\n"), 1);
 	object->faces = malloc(sizeof(t_face) * object->nb_faces);
 	if (!object->faces)
 		return (printf("malloc error - faces\n"), 1);
@@ -96,6 +108,14 @@ int	__set_values_objs(t_object *object, char **s)
 	printf("===============   VERTICES   ================\n");
 	for (unsigned long i = 0; i < object->nb_vertices; i++) {
 		printf("\t%li: %p\n", i + 1, &(object->vertices[i]));
+	}
+	printf("===========   VERTICES TEXTURE   ============\n");
+	for (unsigned long i = 0; i < object->nb_vt; i++) {
+		printf("\t%li: %p\n", i + 1, &(object->vt[i]));
+	}
+	printf("===========   VERTICES NORMALE  ============\n");
+	for (unsigned long i = 0; i < object->nb_vn; i++) {
+		printf("\t%li: %p\n", i + 1, &(object->vn[i]));
 	}
 	printf("===============   FACES   ================\n");
 	for (unsigned long i = 0; i < object->nb_faces; i++) {

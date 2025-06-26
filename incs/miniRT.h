@@ -93,7 +93,7 @@ int 			get_name(char name[128], char **s);
 int				get_letters(t_object *object, const char *restrict s);
 int				__mallocate_objs_values(t_object *object, char *str);
 
-int				get_vertices(t_vertice *vertice, char **s, unsigned long *index);
+int				get_vertices(t_vertice *vertice, char **s, unsigned long *index, int skip);
 int				get_faces(t_face *face, char **s,
 					t_minuint curr_smoothing, unsigned long *index);
 int				get_smoothing(t_minuint *curr_smoothing, char **s);

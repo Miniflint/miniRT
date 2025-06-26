@@ -1,8 +1,8 @@
 #include "miniRT.h"
 
-int	get_vertices(t_vertice *vertice, char **s, unsigned long *index)
+int	get_vertices(t_vertice *vertice, char **s, unsigned long *index, int skip)
 {
-	if (skip_till_number(s, 1))
+	if (skip_till_number(s, skip))
 		return (free(vertice), 3);
 	vertice->x = ft_atof(s);
 	if (ft_iswhitespace(*(++(*s))))
@@ -41,22 +41,59 @@ int	get_smoothing(t_minuint *curr_smoothing, char **s)
 	return (skip_whitespace_hashtag_u(s, &(__get_head(NULL)->line_count)));
 }
 
+static void set_face_value_on_slash(t_face *face, unsigned long tmp, unsigned char slashes, unsigned char ind[3])
+{
+	if (slashes == 0)
+	{
+		face->vertices[ind[slashes]] = &(__get_head(NULL)->vertices[tmp]);
+		face->v_indexes[ind[slashes]] = tmp;
+	}
+	else if (slashes == 1)
+	{
+		face->v_texture[ind[slashes]] = &(__get_head(NULL)->vt[tmp]);
+		face->vt_indexes[ind[slashes]] = tmp;
+	}
+	else if (slashes == 2)
+	{
+		face->v_normale[ind[slashes]] = &(__get_head(NULL)->vn[tmp]);
+		face->vt_indexes[ind[slashes]] = tmp;
+	}
+	ind[slashes] += 1;
+}
+
 static int get_each_part_face(t_face *face, char **s, unsigned char ind[3])
 {
 	unsigned long	tmp;
+	unsigned char	slashes;
 	
-	if (!(**s >= '0' && **s <= '9'))
-		return (3);
-	tmp = ft_atoi(s);
-	if (tmp <= 0)
-		return (printf("Error: Number cannot be less than 1\n"), --(*s), 3);
-	if (tmp > __get_head(NULL)->nb_vertices)
-		return (printf("Error: Number cannot more than %ld\n",
-			__get_head(NULL)->nb_vertices), --(*s), 3);
-	tmp -= 1;
-	face->vertices[ind[0]] = &(__get_head(NULL)->vertices[tmp]);
-	face->v_indexes[ind[0]] = tmp;
-	ind[0] += 1;
+	slashes = 0;
+	while (slashes <= 2)
+	{
+		if (!(**s >= '0' && **s <= '9'))
+			return (3);
+		tmp = ft_atoi(s);
+		if (tmp <= 0)
+			return (printf("Error: Number cannot be less than 1\n"), --(*s), 3);
+		if (slashes == 0 && tmp > __get_head(NULL)->nb_vertices)
+			return (printf("Error: Number cannot more than %ld\n",
+				__get_head(NULL)->nb_vertices), --(*s), 3);
+		else if (slashes == 1 && tmp > __get_head(NULL)->nb_vt)
+			return (printf("Error: Number cannot more than %ld\n",
+				__get_head(NULL)->nb_vt), --(*s), 3);
+		else if (slashes == 2 && tmp > __get_head(NULL)->nb_vn)
+			return (printf("Error: Number cannot more than %ld\n",
+				__get_head(NULL)->nb_vn), --(*s), 3);
+		tmp -= 1;
+		set_face_value_on_slash(face, tmp, slashes, ind);
+		if (**s == '/')
+			while (*((*s)) == '/')
+			{
+				slashes += 1;
+				(*s)++;
+			}
+		else
+			break ;
+	}
 	if (skip_till_number(s, 0) && (**s >= '0' && **s <= '9'))
 		return (3);
 	if (ind[0] == 3 && (**s >= '0' && **s <= '9'))
@@ -83,6 +120,8 @@ int	get_faces(t_face *face, char **s, t_minuint curr_smoothing, unsigned long *i
 	i = 0;
 	ft_memset(vert_ind, 0, sizeof(vert_ind));
 	ft_memset(face->vertices, 0, sizeof(face->vertices));
+	ft_memset(face->v_texture, 0, sizeof(face->v_texture));
+	ft_memset(face->v_normale, 0, sizeof(face->v_normale));
 	if (skip_till_number(s, 1) && (**s >= '0' && **s <= '9'))
 		return (free(face), 3);
 	while (i < 3)
@@ -127,6 +166,9 @@ int	get_letters(t_object *object, const char *restrict s)
 	{
 		object->nb_faces += (*s == 'f' && *(s + 1) == ' ');
 		object->nb_vertices += (*s == 'v' && *(s + 1) == ' ');
+		object->nb_vt += (*s == 'v' && *(s + 1) == 't' && *(s + 2) == ' ');
+		object->nb_vn += (*s == 'v' && *(s + 1) == 'n' && *(s + 2) == ' ');
+		object->nb_vertices += (*s == 'v' && *(s + 1) == ' ');
 		object->nb_points += (*s == 'p' && *(s + 1) == ' ');
 		s++;
 		while (*s && *s != '\n')
@@ -141,8 +183,10 @@ int	get_letters(t_object *object, const char *restrict s)
 		}
 	}
 	if (!object->nb_vertices)
-		return (printf("Error: Cannot have empty vertexes\n"), 1);
+		return (printf("Error: Cannot have empty vertices\n"), 1);
 	if (object->nb_vertices < 2 && object->nb_faces >= 1)
 		return (printf("Error: Cannot have a face without 3 vertexes\n"),1);
+	printf("v[%ld] vt[%ld] vn[%ld] f[%ld] p[%ld]\n",
+		object->nb_vertices ,object->nb_vt, object->nb_vn, object->nb_faces, object->nb_points);
 	return (0);
 }
