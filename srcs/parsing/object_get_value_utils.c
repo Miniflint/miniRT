@@ -52,11 +52,12 @@ static void set_face_value_on_slash(t_face *face, unsigned long tmp, unsigned ch
 	{
 		face->v_texture[ind[slashes]] = &(__get_head(NULL)->vt[tmp]);
 		face->vt_indexes[ind[slashes]] = tmp;
+		printf("slashes: %d\n", ind[slashes]);
 	}
 	else if (slashes == 2)
 	{
 		face->v_normale[ind[slashes]] = &(__get_head(NULL)->vn[tmp]);
-		face->vt_indexes[ind[slashes]] = tmp;
+		face->vn_indexes[ind[slashes]] = tmp;
 	}
 	ind[slashes] += 1;
 }
@@ -165,7 +166,6 @@ int	get_letters(t_object *object, const char *restrict s)
 	while (*s)
 	{
 		object->nb_faces += (*s == 'f' && *(s + 1) == ' ');
-		object->nb_vertices += (*s == 'v' && *(s + 1) == ' ');
 		object->nb_vt += (*s == 'v' && *(s + 1) == 't' && *(s + 2) == ' ');
 		object->nb_vn += (*s == 'v' && *(s + 1) == 'n' && *(s + 2) == ' ');
 		object->nb_vertices += (*s == 'v' && *(s + 1) == ' ');

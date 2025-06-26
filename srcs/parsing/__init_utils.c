@@ -73,11 +73,11 @@ int	__mallocate_objs_values(t_object *object, char *s)
 	if (!object->vertices)
 		return (printf("malloc error - vertices\n"), 1);
 	if (object->nb_vt)
-		object->vt = malloc(sizeof(t_vertice) * object->nb_vt);
+		object->vt = malloc(sizeof(t_vertice_t) * object->nb_vt);
 	if (object->nb_vt && !object->vt)
 		return (printf("malloc error - vertices texture\n"), 1);
 	if (object->nb_vn)
-		object->vn = malloc(sizeof(t_vertice) * object->nb_vn);
+		object->vn = malloc(sizeof(t_vertice_n) * object->nb_vn);
 	if (object->nb_vn && !object->vn)
 		return (printf("malloc error - vertices normale\n"), 1);
 	object->faces = malloc(sizeof(t_face) * object->nb_faces);
@@ -119,9 +119,19 @@ int	__set_values_objs(t_object *object, char **s)
 	}
 	printf("===============   FACES   ================\n");
 	for (unsigned long i = 0; i < object->nb_faces; i++) {
-		printf("\t%li: 1:%p 2:%p 3:%p 4:%p s:%i\n", i + 1,
-			object->faces[i].vertices[0], object->faces[i].vertices[1],
-			object->faces[i].vertices[2], object->faces[i].vertices[3], object->faces[i].smoothing);
+		printf("%li:\n\t", i + 1);
+		for (unsigned long j = 1; j < 5; j++) {
+			printf("%ld:%p ", j, (object->faces[i].vertices[j - 1]));
+		}
+		printf("\n\t");
+		for (unsigned long k = 1; k < 5; k++) {
+			printf("%ld:%p ", k, (object->faces[i].v_texture[k - 1]));
+		}
+		printf("\n\t");
+		for (unsigned long l = 1; l < 5; l++) {
+			printf("%ld:%p ", l, (object->faces[i].v_normale[l - 1]));
+		}
+		printf(" s:%i\n", object->faces[i].smoothing);
 	}
 	return (0);
 }
