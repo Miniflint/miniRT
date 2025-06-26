@@ -5,11 +5,11 @@
 # include <errno.h>
 # include <stdio.h>
 # include <math.h>
-# ifdef __unix__
+# if defined(_WIN32) || defined(WIN32)
+#  include <windows.h>
+# else
 #  include <fcntl.h>
 #  include <unistd.h>
-# elif defined(_WIN32) || defined(WIN32)
-#  include <windows.h>
 # endif
 
 # include "miniRT_struct.h"

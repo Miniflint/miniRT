@@ -81,15 +81,15 @@ $(OBJS_DIR):
 
 $(OBJS_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJS_DIR)
 	@printf "Compiling %-50s\r" $<
-	@$(CC) $(CFLAGS) -c $< -o $@ $(LDFLAGS)
+	@$(CC) $(CFLAGS) -c $< -o $@
 
 $(OBJS_DIR)/%.o: $(PRS_DIR)/%.c | $(OBJS_DIR)
 	@printf "Compiling %-50s\r" $<
-	@$(CC) $(CFLAGS) -c $< -o $@ $(LDFLAGS)
+	@$(CC) $(CFLAGS) -c $< -o $@
 
 $(OBJS_DIR)/%.o: $(TRI_DIR)/%.c | $(OBJS_DIR)
 	@printf "Compiling %-50s\r" $<
-	@$(CC) $(CFLAGS) -c $< -o $@ $(LDFLAGS)
+	@$(CC) $(CFLAGS) -c $< -o $@
 
 $(NAME): $(OBJS)
 	@make -C $(MLX_DIR)

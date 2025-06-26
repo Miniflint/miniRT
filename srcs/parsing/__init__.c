@@ -95,7 +95,7 @@ static int	__parse_file_objs(t_all *all)
 static int	check_ext(char **argv)
 {
 	int			i;
-	const char	exts[2][4] = {".rt", ".obj"};
+	const char	exts[2][5] = {".rt", ".obj"};
 	int			max_len_str;
 	int			max_len_ext;
 

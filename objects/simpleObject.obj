@@ -9,6 +9,8 @@ v 1.0 0.0 1.0   # v3: base back-right
 v 0.0 0.0 1.0   # v4: base back-left
 v 0.5 1.0 0.5   # v5: top point
 
+vt 0.1 0.2 0.3
+
 vn 0.1 0.2 0.3
 
 # Face list (1-based indexing, counter-clockwise order)
