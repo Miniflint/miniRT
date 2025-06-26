@@ -22,11 +22,11 @@ int	parse_type_objs(t_object *object, char **s)
 	if (**s == 'o' && ft_iswhitespace(*((*s) + 1)))
 		return (get_name(object->name, s));
 	else if (**s == 'v' && *((*s) + 1) == 't' && ft_iswhitespace(*((*s) + 2)))
-		return (get_vertices(&(object->vt[object->indexes[I_VT]]), s, &(object->indexes[I_VT]), 2));
+		return (get_vertices(&(object->vt[object->indexes[I_VT]]), s, 2));
 	else if (**s == 'v' && *((*s) + 1) == 'n' && ft_iswhitespace(*((*s) + 2)))
-		return (get_vertices(&(object->vn[object->indexes[I_VN]]), s, &(object->indexes[I_VN]), 2));
+		return (get_vertices(&(object->vn[object->indexes[I_VN]]), s, 2));
 	else if (**s == 'v' && ft_iswhitespace(*((*s) + 1)))
-		return (get_vertices(&(object->vertices[object->indexes[I_V]]), s, &(object->indexes[I_V]), 1));
+		return (get_vertices(&(object->vertices[object->indexes[I_V]]), s, 1));
 	else if (**s == 'f' && ft_iswhitespace(*((*s) + 1)))
 		return (get_faces(&(object->faces[object->indexes[I_FACES]]), s, object->curr_smoothing, &(object->indexes[I_FACES])));
 	else if (**s == 's' && ft_iswhitespace(*((*s) + 1)))
@@ -120,16 +120,16 @@ int	__set_values_objs(t_object *object, char **s)
 	printf("===============   FACES   ================\n");
 	for (unsigned long i = 0; i < object->nb_faces; i++) {
 		printf("%li:\n\t", i + 1);
-		for (unsigned long j = 1; j < 5; j++) {
-			printf("%ld:%p ", j, (object->faces[i].vertices[j - 1]));
+		for (unsigned long j = 0; j < 4; j++) {
+			printf("%ld:(%ld) %p ", j + 1, object->faces[i].v_indexes[j] + 1, (object->faces[i].vertices[j]));
 		}
 		printf("\n\t");
-		for (unsigned long k = 1; k < 5; k++) {
-			printf("%ld:%p ", k, (object->faces[i].v_texture[k - 1]));
+		for (unsigned long j = 0; j < 4; j++) {
+			printf("%ld:(%ld) %p ", j + 1, object->faces[i].vt_indexes[j] + 1, (object->faces[i].v_texture[j]));
 		}
 		printf("\n\t");
-		for (unsigned long l = 1; l < 5; l++) {
-			printf("%ld:%p ", l, (object->faces[i].v_normale[l - 1]));
+		for (unsigned long j = 0; j < 4; j++) {
+			printf("%ld:(%ld) %p ", j + 1, object->faces[i].vn_indexes[j] + 1, (object->faces[i].v_normale[j]));
 		}
 		printf(" s:%i\n", object->faces[i].smoothing);
 	}

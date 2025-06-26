@@ -1,6 +1,6 @@
 #include "miniRT.h"
 
-int	get_vertices(t_vertice *vertice, char **s, unsigned long *index, int skip)
+int	get_vertices(t_vertice *vertice, char **s, int skip)
 {
 	if (skip_till_number(s, skip))
 		return (free(vertice), 3);
@@ -17,7 +17,6 @@ int	get_vertices(t_vertice *vertice, char **s, unsigned long *index, int skip)
 	vertice->z = ft_atof(s);
 	if (**s && !ft_iswhitespace(**s))
 		return (printf(ERROR_Z_DECODE, **s, **s), 1);
-	(*index)++;
 	if (!**s)
 		return (2);
 	return (skip_whitespace_hashtag_u(s, &(__get_head(NULL)->line_count)));
@@ -52,7 +51,6 @@ static void set_face_value_on_slash(t_face *face, unsigned long tmp, unsigned ch
 	{
 		face->v_texture[ind[slashes]] = &(__get_head(NULL)->vt[tmp]);
 		face->vt_indexes[ind[slashes]] = tmp;
-		printf("slashes: %d\n", ind[slashes]);
 	}
 	else if (slashes == 2)
 	{
@@ -123,6 +121,9 @@ int	get_faces(t_face *face, char **s, t_minuint curr_smoothing, unsigned long *i
 	ft_memset(face->vertices, 0, sizeof(face->vertices));
 	ft_memset(face->v_texture, 0, sizeof(face->v_texture));
 	ft_memset(face->v_normale, 0, sizeof(face->v_normale));
+	ft_memset(face->v_indexes, 0, sizeof(face->v_indexes));
+	ft_memset(face->vt_indexes, 0, sizeof(face->vt_indexes));
+	ft_memset(face->vn_indexes, 0, sizeof(face->vn_indexes));
 	if (skip_till_number(s, 1) && (**s >= '0' && **s <= '9'))
 		return (free(face), 3);
 	while (i < 3)

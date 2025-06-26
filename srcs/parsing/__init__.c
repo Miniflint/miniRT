@@ -16,13 +16,12 @@ void	ft_zeroes(t_all *all)
 	all->camera.vec.z = 0;
 	all->camera.fov = 0;
 	all->line_count = 1;
-	all->cylinders = 0;
-	all->head_obj = 0;
-	all->objects = 0;
-	all->spheres = 0;
-	all->planes = 0;
-	all->lights = 0;
-	all->argv = 0;
+	all->cylinders = NULL;
+	all->head_obj = NULL;
+	all->objects = NULL;
+	all->spheres = NULL;
+	all->planes = NULL;
+	all->lights = NULL;
 }
 
 static int	__parse_file_scene(t_all *all)
@@ -46,15 +45,14 @@ static int	__parse_file_scene(t_all *all)
 
 static void zeroes_two(t_object *object, char *path)
 {
-	object->line_count = 1;
-	object->nb_faces = 0;
+	object->indexes[I_POINTS] = 0;
+	object->indexes[I_FACES] = 0;
 	object->nb_vertices = 0;
+	object->line_count = 1;
 	object->nb_points = 0;
+	object->nb_faces = 0;
 	object->name[0] = 0;
 	object->path = path;
-	object->indexes[I_VERTEX] = 0;
-	object->indexes[I_FACES] = 0;
-	object->indexes[I_POINTS] = 0;
 }
 
 static int	__parse_file_objs(t_all *all)
@@ -129,12 +127,12 @@ int	__init__(t_all *all, char **argv, int argc)
 		return (1);
 	if (__parse_file_scene(all))
 		return (1);
+	print_all_structs(all);
 	if (__parse_file_objs(all))
 		return (1);
 	if (all->ambient_light.nb <= 0)
 		return (printf("Error: you must have 1 ambient light\n") > 1);
 	if (all->camera.nb <= 0)
 		return (printf("Error: you must have 1 camera\n") > 1);
-	//print_all_structs(all);
 	return (0);
 }

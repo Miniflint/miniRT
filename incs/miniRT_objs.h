@@ -3,9 +3,8 @@
 
 # include "miniRT.h"
 
-# define I_VERTEX 0
-# define I_FACES 1
-# define I_POINTS 2
+# define I_FACES 0
+# define I_POINTS 1
 
 # define I_V 0
 # define I_VT 1
@@ -62,7 +61,7 @@ typedef struct S_object
 	t_face			*faces;
 	t_point			*points;
 	t_minuint		curr_smoothing;
-	unsigned long	indexes[3];
+	unsigned long	indexes[2];
 	unsigned long	line_count;
 	unsigned long	nb_vertices;
 	unsigned long	nb_vt;

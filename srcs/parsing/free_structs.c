@@ -1,49 +1,46 @@
 #include "miniRT.h"
 
-void	free_l(t_light *light)
+t_light 	*free_l(t_light *light)
 {
 	if (!light)
-		return ;
+		return (NULL);
 	free_l(light->next);
 	free(light);
-	light = NULL;
+	return (NULL);
 }
 
-void	free_sp(t_sphere *sphere)
+t_sphere	*free_sp(t_sphere *sphere)
 {
 	if (!sphere)
-		return ;
+		return (NULL);
 	free_sp(sphere->next);
 	free(sphere);
-	sphere = NULL;
+	return (NULL);
 }
 
-void	free_pl(t_plane *plane)
+t_plane	*free_pl(t_plane *plane)
 {
 	if (!plane)
-		return ;
+		return (NULL);
 	free_pl(plane->next);
 	free(plane);
-	plane = NULL;
+	return (NULL);
 }
 
-void	free_cy(t_cylinder *cylinder)
+t_cylinder	*free_cy(t_cylinder *cylinder)
 {
 	if (!cylinder)
-		return ;
+		return (NULL);
 	free_cy(cylinder->next);
 	free(cylinder);
-	cylinder = NULL;
+	return (NULL);
 }
 
 void	free_all(t_all *all)
 {
-	free_l(all->lights);
-	all->lights = NULL;
-	free_sp(all->spheres);
-	all->spheres = NULL;
-	free_pl(all->planes);
-	all->planes = NULL;
-	free_cy(all->cylinders);
-	all->cylinders = NULL;
+	all->lights = free_l(all->lights);
+	all->spheres = free_sp(all->spheres);
+	all->planes = free_pl(all->planes);
+	all->cylinders = free_cy(all->cylinders);
+	all->objects = free_objs(all->objects);
 }

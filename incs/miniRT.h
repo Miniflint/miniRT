@@ -57,10 +57,11 @@ t_all			*__get_all(void);
 t_object		*__get_head(t_object *curr_head);
 
 /* FREE */
-void			free_l(t_light *light);
-void			free_sp(t_sphere *sphere);
-void			free_pl(t_plane *plane);
-void			free_cy(t_cylinder *cylinder);
+t_light			*free_l(t_light *light);
+t_sphere		*free_sp(t_sphere *sphere);
+t_plane			*free_pl(t_plane *plane);
+t_cylinder		*free_cy(t_cylinder *cylinder);
+t_object		*free_objs(t_object *obj);
 void			free_all(t_all *all);
 
 /* PRINTING */
@@ -93,7 +94,7 @@ int 			get_name(char name[128], char **s);
 int				get_letters(t_object *object, const char *restrict s);
 int				__mallocate_objs_values(t_object *object, char *str);
 
-int				get_vertices(t_vertice *vertice, char **s, unsigned long *index, int skip);
+int				get_vertices(t_vertice *vertice, char **s, int skip);
 int				get_faces(t_face *face, char **s,
 					t_minuint curr_smoothing, unsigned long *index);
 int				get_smoothing(t_minuint *curr_smoothing, char **s);
