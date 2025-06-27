@@ -63,17 +63,14 @@ static int	__parse_file_objs(t_all *all)
 	int		i;
 
 	i = 2;
-	printf("%u\n", BUFF_SIZE);
 	while (i < all->argc)
 	{
 		fd = open(all->argv[i], O_RDONLY);
 		if (fd == -1)
 			return (printf("File cannot be accessed\n"), 1);
-		write(1, "Starting read\n", 14);
 		str = readfile(fd);
 		if (!str)
 			return (printf("File is empty/error occured while trying to read\n"), 1);
-		write(1, "Ending read\n", 12);
 		tmp = str;
 		all->objects = (t_object *)create_empty_node(sizeof(t_object) * 1);
 		if (!all->objects)

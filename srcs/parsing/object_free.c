@@ -20,13 +20,13 @@ t_object	*free_objs(t_object *obj)
 		free(obj->vertices);
 	if (obj->nb_vt)
 		free(obj->vt);
-	if (obj->nb_vn )
+	if (obj->nb_vn)
 		free(obj->vn);
+	if (obj->faces)
+		free(obj->faces);
 	i = -1;
-	while (i < obj->nb_points)
-	{
+	while (obj->nb_points && i < obj->nb_points)
 		free_pts(++i + obj->points);
-	}
 	free(obj);
 	return (NULL);
 }

@@ -30,6 +30,7 @@ char	*readfile(int fd)
 		free(buf);
 		i += (i < 18);
 	}
+	free(buf);
 	return (final);
 }
 
