@@ -62,6 +62,7 @@ typedef struct S_object
 	t_point			*points;
 	t_minuint		curr_smoothing;
 	unsigned long	indexes[2];
+	unsigned long	i_vertice[3];
 	unsigned long	line_count;
 	unsigned long	nb_vertices;
 	unsigned long	nb_vt;

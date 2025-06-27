@@ -1,6 +1,6 @@
 #include "miniRT.h"
 
-int	get_vertices(t_vertice *vertice, char **s, int skip)
+int	get_vertices(t_vertice *vertice, char **s, int skip, unsigned long *index)
 {
 	if (skip_till_number(s, skip))
 		return (free(vertice), 3);
@@ -19,6 +19,7 @@ int	get_vertices(t_vertice *vertice, char **s, int skip)
 		return (printf(ERROR_Z_DECODE, **s, **s, __get_head(NULL)->line_count), 1);
 	if (!**s)
 		return (2);
+	(*index)++;
 	return (skip_whitespace_hashtag(s, &(__get_head(NULL)->line_count)));
 }
 

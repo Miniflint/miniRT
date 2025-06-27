@@ -47,6 +47,9 @@ static void zeroes_two(t_object *object, char *path)
 {
 	object->indexes[I_POINTS] = 0;
 	object->indexes[I_FACES] = 0;
+	object->i_vertice[I_VT] = 0;
+	object->i_vertice[I_VN] = 0;
+	object->i_vertice[I_V] = 0;
 	object->nb_vertices = 0;
 	object->line_count = 1;
 	object->nb_points = 0;
