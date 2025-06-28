@@ -69,8 +69,9 @@ int	__mallocate_objs_values(t_object *object, char *s)
 {
 	if (get_letters(object, s))
 		return (1);
-	object->vertices = malloc(sizeof(t_vertice) * (object->nb_vertices));
-	if (!object->vertices)
+	if (object->nb_vertices)
+		object->vertices = malloc(sizeof(t_vertice) * (object->nb_vertices));
+	if (object->nb_vertices && !object->vertices)
 		return (printf("malloc error - vertices\n"), 1);
 	if (object->nb_vt)
 		object->vt = malloc(sizeof(t_vertice_t) * (object->nb_vt));
@@ -80,11 +81,13 @@ int	__mallocate_objs_values(t_object *object, char *s)
 		object->vn = malloc(sizeof(t_vertice_n) * (object->nb_vn));
 	if (object->nb_vn && !object->vn)
 		return (printf("malloc error - vertices normale\n"), 1);
-	object->faces = malloc(sizeof(t_face) * (object->nb_faces));
-	if (!object->faces)
+	if (object->nb_faces)
+		object->faces = malloc(sizeof(t_face) * (object->nb_faces));
+	if (object->nb_faces && !object->faces)
 		return (printf("malloc error - faces\n"), 1);
-	object->points = malloc(sizeof(t_point) * (object->nb_points));
-	if (!object->points)
+	if (object->nb_points)
+		object->points = malloc(sizeof(t_point) * (object->nb_points));
+	if (object->nb_points && !object->points)
 		return (printf("malloc error - points\n"), 1);
 	return (0);
 }
