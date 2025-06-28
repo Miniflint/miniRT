@@ -22,11 +22,11 @@ int	parse_type_objs(t_object *object, char **s)
 	if (**s == 'o' && ft_iswhitespace(*((*s) + 1)))
 		return (get_name(object->name, s));
 	else if (**s == 'v' && ft_iswhitespace(*((*s) + 1)))
-		return (get_vertices(&(object->vertices[object->indexes[I_V]]), s, 1, &(object->i_vertice[I_V])));
+		return (get_vertices(&(object->vertices[object->i_vertice[I_V]]), s, 1, &(object->i_vertice[I_V])));
 	else if (**s == 'v' && *((*s) + 1) == 't' && ft_iswhitespace(*((*s) + 2)))
-		return (get_vertices(&(object->vt[object->indexes[I_VT]]), s, 2, &(object->i_vertice[I_VT])));
+		return (get_vertices(&(object->vt[object->i_vertice[I_VT]]), s, 2, &(object->i_vertice[I_VT])));
 	else if (**s == 'v' && *((*s) + 1) == 'n' && ft_iswhitespace(*((*s) + 2)))
-		return (get_vertices(&(object->vn[object->indexes[I_VN]]), s, 2, &(object->i_vertice[I_VN])));
+		return (get_vertices(&(object->vn[object->i_vertice[I_VN]]), s, 2, &(object->i_vertice[I_VN])));
 	else if (**s == 'f' && ft_iswhitespace(*((*s) + 1)))
 		return (get_faces(&(object->faces[object->indexes[I_FACES]]), s, object->curr_smoothing, &(object->indexes[I_FACES])));
 	else if (**s == 's' && ft_iswhitespace(*((*s) + 1)))
@@ -69,21 +69,21 @@ int	__mallocate_objs_values(t_object *object, char *s)
 {
 	if (get_letters(object, s))
 		return (1);
-	object->vertices = malloc(sizeof(t_vertice) * object->nb_vertices);
+	object->vertices = malloc(sizeof(t_vertice) * (object->nb_vertices));
 	if (!object->vertices)
 		return (printf("malloc error - vertices\n"), 1);
 	if (object->nb_vt)
-		object->vt = malloc(sizeof(t_vertice_t) * object->nb_vt);
+		object->vt = malloc(sizeof(t_vertice_t) * (object->nb_vt));
 	if (object->nb_vt && !object->vt)
 		return (printf("malloc error - vertices texture\n"), 1);
 	if (object->nb_vn)
-		object->vn = malloc(sizeof(t_vertice_n) * object->nb_vn);
+		object->vn = malloc(sizeof(t_vertice_n) * (object->nb_vn));
 	if (object->nb_vn && !object->vn)
 		return (printf("malloc error - vertices normale\n"), 1);
-	object->faces = malloc(sizeof(t_face) * object->nb_faces);
+	object->faces = malloc(sizeof(t_face) * (object->nb_faces));
 	if (!object->faces)
 		return (printf("malloc error - faces\n"), 1);
-	object->points = malloc(sizeof(t_point) * object->nb_points);
+	object->points = malloc(sizeof(t_point) * (object->nb_points));
 	if (!object->points)
 		return (printf("malloc error - points\n"), 1);
 	return (0);
@@ -92,10 +92,13 @@ int	__mallocate_objs_values(t_object *object, char *s)
 int	__set_values_objs(t_object *object, char **s)
 {
 	int	err;
+	struct timespec	start, end;
+	double duration;
 
 	skip_whitespace_hashtag(s, &(object->line_count));
 	__mallocate_objs_values(object, *s);
 	err = 0;
+	clock_gettime(CLOCK_MONOTONIC, &start);
 	while (err != 2)
 	{
 		err = parse_type_objs(object, s);
@@ -105,33 +108,41 @@ int	__set_values_objs(t_object *object, char **s)
 			return (printf("Error:\nUnwanted character: ['%c'] \
 				\nin line: [%lu]\n", **s, object->line_count), 1);
 	}
-	printf("===============   VERTICES   ================\n");
-	for (unsigned long i = 0; i < object->nb_vertices; i++) {
-		printf("\t%li: %p\n", i + 1, &(object->vertices[i]));
-	}
-	printf("===========   VERTICES TEXTURE   ============\n");
-	for (unsigned long i = 0; i < object->nb_vt; i++) {
-		printf("\t%li: %p\n", i + 1, &(object->vt[i]));
-	}
-	printf("===========   VERTICES NORMALE  ============\n");
-	for (unsigned long i = 0; i < object->nb_vn; i++) {
-		printf("\t%li: %p\n", i + 1, &(object->vn[i]));
-	}
-	printf("===============   FACES   ================\n");
-	for (unsigned long i = 0; i < object->nb_faces; i++) {
-		printf("%li - is wrong %d - smoothing: %d:\n\t", i + 1, object->faces[i].is_wrong, object->faces[i].smoothing);
-		for (unsigned long j = 0; j < 4; j++) {
-			printf("%ld:(%ld) %p ", j + 1, object->faces[i].v_indexes[j] + 1, (object->faces[i].vertices[j]));
-		}
-		printf("\n\t");
-		for (unsigned long j = 0; j < 4; j++) {
-			printf("%ld:(%ld) %p ", j + 1, object->faces[i].vt_indexes[j] + 1, (object->faces[i].v_texture[j]));
-		}
-		printf("\n\t");
-		for (unsigned long j = 0; j < 4; j++) {
-			printf("%ld:(%ld) %p ", j + 1, object->faces[i].vn_indexes[j] + 1, (object->faces[i].v_normale[j]));
-		}
-		printf("\n");
-	}
+	clock_gettime(CLOCK_MONOTONIC, &end);
+	duration = (end.tv_sec - start.tv_sec)
+		+ (end.tv_nsec - start.tv_nsec) / 1e9;
+	printf("get_object() returned %.9f seconds\n", duration);
+	printf("v: %ld\n", object->i_vertice[0]);
+	printf("vt: %ld\n", object->i_vertice[1]);
+	printf("vt: %ld\n", object->i_vertice[2]);
+	printf("f: %ld\n", object->indexes[0]);
+	//printf("===============   VERTICES   ================\n");
+	//for (unsigned long i = 0; i < object->nb_vertices; i++) {
+	//	printf("\t%li: %p\n", i + 1, &(object->vertices[i]));
+	//}
+	//printf("===========   VERTICES TEXTURE   ============\n");
+	//for (unsigned long i = 0; i < object->nb_vt; i++) {
+	//	printf("\t%li: %p\n", i + 1, &(object->vt[i]));
+	//}
+	//printf("===========   VERTICES NORMALE  ============\n");
+	//for (unsigned long i = 0; i < object->nb_vn; i++) {
+	//	printf("\t%li: %p\n", i + 1, &(object->vn[i]));
+	//}
+	//printf("===============   FACES   ================\n");
+	//for (unsigned long i = 0; i < object->nb_faces; i++) {
+	//	printf("%li - is wrong %d - smoothing: %d:\n\t", i + 1, object->faces[i].is_wrong, object->faces[i].smoothing);
+	//	for (unsigned long j = 0; j < 4; j++) {
+	//		printf("%ld:(%ld) %p ", j + 1, object->faces[i].v_indexes[j] + 1, (object->faces[i].vertices[j]));
+	//	}
+	//	printf("\n\t");
+	//	for (unsigned long j = 0; j < 4; j++) {
+	//		printf("%ld:(%ld) %p ", j + 1, object->faces[i].vt_indexes[j] + 1, (object->faces[i].v_texture[j]));
+	//	}
+	//	printf("\n\t");
+	//	for (unsigned long j = 0; j < 4; j++) {
+	//		printf("%ld:(%ld) %p ", j + 1, object->faces[i].vn_indexes[j] + 1, (object->faces[i].v_normale[j]));
+	//	}
+	//	printf("\n");
+	//}
 	return (0);
 }

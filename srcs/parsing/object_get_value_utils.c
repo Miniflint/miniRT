@@ -165,13 +165,22 @@ int get_name(char name[128], char **s)
 
 int	get_letters(t_object *object, const char *restrict s)
 {
+	struct timespec	start, end;
+	double duration;
+
+	clock_gettime(CLOCK_MONOTONIC, &start);
 	while (*s)
 	{
-		object->nb_faces += (*s == 'f' && *(s + 1) == ' ');
-		object->nb_vt += (*s == 'v' && *(s + 1) == 't' && *(s + 2) == ' ');
-		object->nb_vn += (*s == 'v' && *(s + 1) == 'n' && *(s + 2) == ' ');
-		object->nb_vertices += (*s == 'v' && *(s + 1) == ' ');
-		object->nb_points += (*s == 'p' && *(s + 1) == ' ');
+		if (*s == 'f' && *(s + 1) == ' ')
+			object->nb_faces += 1;
+		else if (*s == 'v' && *(s + 1) == 't' && *(s + 2) == ' ')
+			object->nb_vt += 1;
+		else if (*s == 'v' && *(s + 1) == 'n' && *(s + 2) == ' ')
+			object->nb_vn += 1;
+		else if (*s == 'v' && *(s + 1) == ' ')
+			object->nb_vertices += 1;
+		else if (*s == 'p' && *(s + 1) == ' ')
+			object->nb_points += 1;
 		s++;
 		while (*s && *s != '\n')
 			s++;
@@ -179,11 +188,16 @@ int	get_letters(t_object *object, const char *restrict s)
 		{
 			if (*s == '#')
 				while (*s && *s != '\n')
-					(s)++;
+					s++;
 			else
-				(s)++;
+				s++;
 		}
 	}
+	clock_gettime(CLOCK_MONOTONIC, &end);
+	duration = (end.tv_sec - start.tv_sec)
+		+ (end.tv_nsec - start.tv_nsec) / 1e9;
+
+	printf("get_letters() returned %.9f seconds\n", duration);
 	if (!object->nb_vertices)
 		return (printf("Error: Cannot have empty vertices\n"), 1);
 	if (object->nb_vertices < 2 && object->nb_faces >= 1)

@@ -127,7 +127,7 @@ int	__init__(t_all *all, char **argv, int argc)
 		return (1);
 	if (__parse_file_scene(all))
 		return (1);
-	print_all_structs(all);
+	//print_all_structs(all);
 	if (__parse_file_objs(all))
 		return (1);
 	if (all->ambient_light.nb <= 0)

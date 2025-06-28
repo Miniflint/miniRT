@@ -5,6 +5,7 @@
 # include <errno.h>
 # include <stdio.h>
 # include <math.h>
+# include <time.h>
 # if defined(_WIN32) || defined(WIN32)
 #  include <windows.h>
 # else
