@@ -7,7 +7,7 @@ void	_tri_putstr(int fd, const char *s)
 	i = 0;
 	while (s[i])
 		++i;
-	write(fd, s, i);
+	i = write(fd, s, i);
 }
 
 int	_print_error(int code)

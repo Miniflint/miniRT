@@ -43,7 +43,7 @@ static int	__parse_file_scene(t_all *all)
 	return (0);
 }
 
-static void zeroes_two(t_object *object, char *path)
+void zeroes_two(t_object *object, char *path)
 {
 	object->indexes[I_POINTS] = 0;
 	object->indexes[I_FACES] = 0;
@@ -55,36 +55,22 @@ static void zeroes_two(t_object *object, char *path)
 	object->nb_points = 0;
 	object->nb_faces = 0;
 	object->name[0] = 0;
+	object->coord.x = 0;
+	object->coord.y = 0;
+	object->coord.z = 0;
 	object->path = path;
 }
 
 static int	__parse_file_objs(t_all *all)
 {
-	char	*str;
-	char	*tmp;
-	int		fd;
 	int		i;
 
 	i = 2;
 	while (i < all->argc)
 	{
-		fd = open(all->argv[i], O_RDONLY);
-		if (fd == -1)
-			return (printf("File cannot be accessed\n"), 1);
-		str = readfile(fd);
-		if (!str)
-			return (printf("File is empty/error occured while trying to read\n"), 1);
-		tmp = str;
-		all->objects = (t_object *)create_empty_node(sizeof(t_object) * 1);
+		all->objects = create_obj_path(&all->head_obj, all->argv[i]);
 		if (!all->objects)
-			return (printf("malloc error\n"), 1);
-		zeroes_two(all->objects, all->argv[i]);
-		(void)__get_head(all->objects);
-		if (__set_values_objs(all->objects, &str) == 1)
-			return (free(tmp), 1);
-		all->objects->next = all->head_obj;
-		all->head_obj = all->objects;
-		free(tmp);
+			return (1);
 		i++;
 	}
 	return (0);

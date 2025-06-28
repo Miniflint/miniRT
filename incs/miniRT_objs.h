@@ -61,6 +61,7 @@ typedef struct S_object
 	t_face			*faces;
 	t_point			*points;
 	t_minuint		curr_smoothing;
+	t_coord			coord;
 	unsigned long	indexes[2];
 	unsigned long	i_vertice[3];
 	unsigned long	line_count;
@@ -70,7 +71,6 @@ typedef struct S_object
 	unsigned long	nb_faces;
 	unsigned long	nb_points;
 	struct S_object	*next;
-
 }	t_object;
 
 #endif

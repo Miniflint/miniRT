@@ -1,6 +1,6 @@
 #include "miniRT.h"
 
-int	get_rgb(t_rgb *rgb, char **s)
+int	get_rgb(t_rgb *rgb, char **const restrict s)
 {
 	const t_minuint	max_rgb_val = 255;
 	unsigned int	real_value;
@@ -26,7 +26,7 @@ int	get_rgb(t_rgb *rgb, char **s)
 	return (0);
 }
 
-int	get_coord(t_coord *coord, char **s)
+int	get_coord(t_coord *coord, char **const restrict s)
 {
 	coord->x = ft_atof(s);
 	if (*((*s)++) != ',')
@@ -40,7 +40,7 @@ int	get_coord(t_coord *coord, char **s)
 	return (0);
 }
 
-int	get_vec(t_vec *vec, char **s)
+int	get_vec(t_vec *vec, char **const restrict s)
 {
 	vec->x = ft_atof(s);
 	if (*((*s)++) != ',')
@@ -59,4 +59,3 @@ int	get_vec(t_vec *vec, char **s)
 		return (printf("Error: XY(Z) value < -1.0 || > 1.0\nline [%lu]\n", __get_all()->line_count), 1);
 	return (0);
 }
-

@@ -1,6 +1,6 @@
 #include "miniRT.h"
 
-int	get_ambient_light(t_amb_light *a_light, char **s)
+int	get_ambient_light(t_amb_light *a_light, char **const restrict s)
 {
 	if (a_light->nb > 0)
 		return (printf("Error: too much ambient lights\n"), 1);
@@ -20,7 +20,7 @@ int	get_ambient_light(t_amb_light *a_light, char **s)
 	return (skip_whitespace_hashtag(s, &(__get_all()->line_count)));
 }
 
-int	get_camera(t_cam *camera, char **s)
+int	get_camera(t_cam *camera, char **const restrict s)
 {
 	if (camera->nb > 0)
 		return (printf("Error: too much camera viewpoint\n"), 1);
@@ -43,7 +43,7 @@ int	get_camera(t_cam *camera, char **s)
 	return (skip_whitespace_hashtag(s, &(__get_all()->line_count)));
 }
 
-int	get_light(t_light **head, char **s)
+int	get_light(t_light **head, char **const restrict s)
 {
 	t_light	*light;
 

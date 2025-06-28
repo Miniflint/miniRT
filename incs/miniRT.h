@@ -78,25 +78,28 @@ int				__set_values_scene(t_all *all, char **s);
 int				__set_values_objs(t_object *object, char **s);
 
 /* PARSING */
-int				get_rgb(t_rgb *rgb, char **s);
-int				get_vec(t_vec *vec, char **s);
-int				get_coord(t_coord *coord, char **s);
+int				get_rgb(t_rgb *rgb, char **const restrict s);
+int				get_vec(t_vec *vec, char **const restrict s);
+int				get_coord(t_coord *coord, char **const restrict s);
 
-int				get_ambient_light(t_amb_light *a_light, char **s);
-int				get_camera(t_cam *camera, char **s);
-int				get_light(t_light **head, char **s);
-int				get_sphere(t_sphere **head, char **s);
-int				get_plane(t_plane **head, char **s);
-int				get_cylinder(t_cylinder **head, char **s);
+int				get_ambient_light(t_amb_light *a_light, char **const restrict s);
+int				get_camera(t_cam *camera, char **const restrict s);
+int				get_light(t_light **head, char **const restrict s);
+int				get_sphere(t_sphere **head, char **const restrict s);
+int				get_plane(t_plane **head, char **const restrict s);
+int				get_cylinder(t_cylinder **head, char **const restrict s);
 int				parse_type_scene(t_all *all, char **s);
 int				parse_type_objs(t_object *object, char **s);
-int 			get_name(char name[128], char **s);
+int 			get_name(char name[128], char **const restrict s);
 int				get_letters(t_object *object, const char *restrict s);
 int				__mallocate_objs_values(t_object *object, char *str);
 
-int				get_vertices(t_vertice *vertice, char **s, int skip, unsigned long *index);
-int				get_faces(t_face *face, char **s,
+int				get_vertices(t_vertice *vertice, char **const restrict s, int skip, unsigned long *index);
+int				get_faces(t_face *face, char **const restrict s,
 					t_minuint curr_smoothing, unsigned long *index);
-int				get_smoothing(t_minuint *curr_smoothing, char **s);
+int				get_smoothing(t_minuint *curr_smoothing, char **const restrict s);
+t_object		*create_obj_path(t_object **head, char *path);
+void 			zeroes_two(t_object *object, char *path);
+int				get_obj(t_object **head, char **const restrict s);
 
 #endif

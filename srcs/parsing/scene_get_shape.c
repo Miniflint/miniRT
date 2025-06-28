@@ -1,6 +1,6 @@
 #include "miniRT.h"
 
-int	get_sphere(t_sphere **head, char **s)
+int	get_sphere(t_sphere **head, char **const restrict s)
 {
 	t_sphere	*sphere;
 
@@ -28,7 +28,7 @@ int	get_sphere(t_sphere **head, char **s)
 	return (skip_whitespace_hashtag(s, &(__get_all()->line_count)));
 }
 
-int	get_plane(t_plane **head, char **s)
+int	get_plane(t_plane **head, char **const restrict s)
 {
 	t_plane	*plane;
 
@@ -54,7 +54,7 @@ int	get_plane(t_plane **head, char **s)
 	return (skip_whitespace_hashtag(s, &(__get_all()->line_count)));
 }
 
-t_cylinder	*create_cylinder(char **s, int *code)
+t_cylinder	*create_cylinder(char **const restrict s, int *code)
 {
 	t_cylinder	*cylinder;
 
@@ -81,7 +81,7 @@ t_cylinder	*create_cylinder(char **s, int *code)
 	return (cylinder);
 }
 
-int	get_cylinder(t_cylinder **head, char **s)
+int	get_cylinder(t_cylinder **head, char **const restrict s)
 {
 	t_cylinder	*cylinder;
 	int			code;

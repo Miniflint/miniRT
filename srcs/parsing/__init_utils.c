@@ -14,6 +14,8 @@ int	parse_type_scene(t_all *all, char **s)
 		return (get_plane(&all->planes, s));
 	else if (**s == 'c' && *((*s) + 1) == 'y' && ft_iswhitespace(*((*s) + 2)))
 		return (get_cylinder(&all->cylinders, s));
+	else if (**s == 'o' && *((*s) + 1) == 'b' && ft_iswhitespace(*((*s) + 2)))
+		return (get_obj(&all->objects, s));
 	return (3);
 }
 
@@ -92,6 +94,33 @@ int	__mallocate_objs_values(t_object *object, char *s)
 	return (0);
 }
 
+t_object	*create_obj_path(t_object **head, char *path)
+{
+	int			fd;
+	char		*str;
+	char		*tmp;
+	t_object	*object;
+	
+	fd = open(path, O_RDONLY);
+	if (fd == -1)
+		return (printf("File cannot be accessed\n"), NULL);
+	str = readfile(fd);
+	if (!str)
+		return (printf("File is empty/error occured while trying to read\n"), NULL);
+	tmp = str;
+	object = (t_object *)create_empty_node(sizeof(t_object) * 1);
+	if (!object)
+		return (printf("malloc error\n"), NULL);
+	zeroes_two(object, path);
+	(void)__get_head(object);
+	if (__set_values_objs(object, &str) == 1)
+		return (free(tmp), NULL);
+	free(tmp);
+	object->next = *head;
+	*head = object;
+	return (*head);
+}
+
 int	__set_values_objs(t_object *object, char **s)
 {
 	int	err;
@@ -115,10 +144,6 @@ int	__set_values_objs(t_object *object, char **s)
 	duration = (end.tv_sec - start.tv_sec)
 		+ (end.tv_nsec - start.tv_nsec) / 1e9;
 	printf("get_object() returned %.9f seconds\n", duration);
-	printf("v: %ld\n", object->i_vertice[0]);
-	printf("vt: %ld\n", object->i_vertice[1]);
-	printf("vt: %ld\n", object->i_vertice[2]);
-	printf("f: %ld\n", object->indexes[0]);
 	//printf("===============   VERTICES   ================\n");
 	//for (unsigned long i = 0; i < object->nb_vertices; i++) {
 	//	printf("\t%li: %p\n", i + 1, &(object->vertices[i]));

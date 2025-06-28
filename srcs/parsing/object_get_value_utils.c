@@ -1,6 +1,7 @@
 #include "miniRT.h"
+#include <stdint.h>
 
-int	get_vertices(t_vertice *vertice, char **s, int skip, unsigned long *index)
+int	get_vertices(t_vertice *vertice, char **const restrict s, int skip, unsigned long *index)
 {
 	if (skip_till_number(s, skip))
 		return (free(vertice), 3);
@@ -23,7 +24,7 @@ int	get_vertices(t_vertice *vertice, char **s, int skip, unsigned long *index)
 	return (skip_whitespace_hashtag(s, &(__get_head(NULL)->line_count)));
 }
 
-int	get_smoothing(t_minuint *curr_smoothing, char **s)
+int	get_smoothing(t_minuint *curr_smoothing, char **const restrict s)
 {
 	(void)skip_till_number(s, 1);
 	if ((**s != 'o' && **s != 'O') && !(**s >= '0' && **s <= '9'))
@@ -61,7 +62,7 @@ static void set_face_value_on_slash(t_face *face, unsigned long tmp, unsigned ch
 	ind[slashes] += 1;
 }
 
-static int get_each_part_face(t_face *face, char **s, unsigned char ind[3])
+static int get_each_part_face(t_face *face, char **const restrict s, unsigned char ind[3])
 {
 	unsigned long	tmp;
 	unsigned char	slashes;
@@ -110,7 +111,7 @@ int count_duplicates(void *arr[4])
 				(arr[1] == arr[2]) + (arr[1] == arr[3]) + (arr[2] == arr[3])) >= 2);
 }
 
-int	get_faces(t_face *face, char **s, t_minuint curr_smoothing, unsigned long *index)
+int	get_faces(t_face *face, char **const restrict s, t_minuint curr_smoothing, unsigned long *index)
 {
 	unsigned char vert_ind[3];
 	int	err;
@@ -146,7 +147,7 @@ int	get_faces(t_face *face, char **s, t_minuint curr_smoothing, unsigned long *i
 	return (skip_whitespace_hashtag(s, &(__get_head(NULL)->line_count)));
 }
 
-int get_name(char name[128], char **s)
+int get_name(char name[128], char **const restrict s)
 {
 	int	i;
 
@@ -202,7 +203,37 @@ int	get_letters(t_object *object, const char *restrict s)
 		return (printf("Error: Cannot have empty vertices\n"), 1);
 	if (object->nb_vertices < 2 && object->nb_faces >= 1)
 		return (printf("Error: Cannot have a face without 3 vertexes\n"),1);
-	printf("v[%ld] vt[%ld] vn[%ld] f[%ld] p[%ld]\n",
-		object->nb_vertices ,object->nb_vt, object->nb_vn, object->nb_faces, object->nb_points);
 	return (0);
+}
+
+
+int	get_obj(t_object **head, char **const restrict s)
+{
+	int	i;
+	char name[256];
+	t_object	*new;
+
+	i = 0;
+	printf("IM IN OBJECT\n");
+	if (!skip_till_number(s, 2) && **s != '"')
+		return (3);
+	(*s)++;
+	while (**s && **s != '"' && i < 256)
+	{
+		if (**s == '\n')
+			return (3);
+		name[i++] = **s;
+		(*s)++;
+	}
+	if (!i)
+		return (printf("file path cannot be empty\n"), 3);
+	name[i] = 0;
+	new = create_obj_path(head, &name[0]);
+	if (!new)
+		return (1);
+	if (skip_till_number(s, 1))
+		return (3);
+	if (get_coord(&(new->coord), s))
+		return (1);
+	return (skip_whitespace_hashtag(s, &(__get_head(NULL)->line_count)));
 }
