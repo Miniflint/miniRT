@@ -61,8 +61,8 @@ int	__set_values_scene(t_all *all, char **s)
 		if (err == 1)
 			return (err);
 		else if (err == 3)
-			return (printf("Error:\nUnwanted character: ['%c'] \
-				\nin line: [%lu]\n", **s, all->line_count), 1);
+			return (printf("Unwanted character: ['%c'] in line: [%lu]\n",
+				**s, all->line_count), 1);
 	}
 	return (0);
 }
@@ -137,8 +137,8 @@ int	__set_values_objs(t_object *object, char **s)
 		if (err == 1)
 			return (err);
 		else if (err == 3)
-			return (printf("Error:\nUnwanted character: ['%c'] \
-				\nin line: [%lu]\n", **s, object->line_count), 1);
+			return (printf("Unwanted character: ['%c'] in line: [%lu]\n",
+				**s, object->line_count), 1);
 	}
 	clock_gettime(CLOCK_MONOTONIC, &end);
 	duration = (end.tv_sec - start.tv_sec)

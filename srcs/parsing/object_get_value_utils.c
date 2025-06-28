@@ -211,10 +211,8 @@ int	get_obj(t_object **head, char **const restrict s)
 {
 	int	i;
 	char name[256];
-	t_object	*new;
 
 	i = 0;
-	printf("IM IN OBJECT\n");
 	if (!skip_till_number(s, 2) && **s != '"')
 		return (3);
 	(*s)++;
@@ -228,12 +226,11 @@ int	get_obj(t_object **head, char **const restrict s)
 	if (!i)
 		return (printf("file path cannot be empty\n"), 3);
 	name[i] = 0;
-	new = create_obj_path(head, &name[0]);
-	if (!new)
-		return (1);
+	create_obj_path(head, &name[0]);
 	if (skip_till_number(s, 1))
 		return (3);
-	if (get_coord(&(new->coord), s))
+	if (get_coord(&((*head)->coord), s))
 		return (1);
+	printf("path: %s\ncoordinate: %f %f %f\n", (*head)->path, (*head)->coord.x, (*head)->coord.y, (*head)->coord.z);
 	return (skip_whitespace_hashtag(s, &(__get_head(NULL)->line_count)));
 }
