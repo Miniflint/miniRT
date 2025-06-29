@@ -54,7 +54,7 @@ typedef struct S_face
 typedef struct S_object
 {
 	char			name[128];
-	char			*path;
+	char			path[256];
 	t_vertice		*vertices;
 	t_vertice_t		*vt;
 	t_vertice_n		*vn;

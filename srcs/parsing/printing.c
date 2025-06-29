@@ -74,3 +74,63 @@ void	print_cy(t_cylinder *cylinder, int depth)
 	printf("     ---------------------------------------------------\n");
 	print_cy(cylinder->next, depth + 1);
 }
+
+void	print_vertice(t_object *object)
+{
+	unsigned long	i;
+
+	i = 0;
+	printf("===============   VERTICES   ================\n");
+	while (i < object->nb_vertices)
+	{
+		printf("\t%li: %p\n", i + 1, &(object->vertices[i]));
+		i++;
+	}
+	i = 0;
+	printf("===========   VERTICES TEXTURE   ============\n");
+	while (i < object->nb_vt)
+	{
+		printf("\t%li: %p\n", i + 1, &(object->vt[i]));
+		i++;
+	}
+	i = 0;
+	printf("===========   VERTICES NORMALE  ============\n");
+	while (i < object->nb_vn)
+	{
+		printf("\t%li: %p\n", i + 1, &(object->vn[i]));
+		i++;
+	}
+}
+
+
+
+void	print_ob(t_object *object, int depth)
+{
+	unsigned long	i;
+	int	j;
+
+	i = 0;
+	if (!object)
+		return ;
+	printf("Object: %s | %i\n", object->path, depth);
+	print_vertice(object);
+	printf("===============   FACES   ================\n");
+	while (i < object->nb_faces)
+	{
+		j = -1;
+		printf("%li - is wrong %d - smoothing: %d:\n\t", i + 1, object->faces[i].is_wrong, object->faces[i].smoothing);
+		while (++j < 4)
+			printf("%i:(%ld) %p ", j + 1, object->faces[i].v_indexes[j] + 1, (object->faces[i].vertices[j]));
+		j = -1;
+		printf("\n\t");
+		while (++j < 4)
+			printf("%i:(%ld) %p ", j + 1, object->faces[i].vt_indexes[j] + 1, (object->faces[i].v_texture[j]));
+		j = -1;
+		printf("\n\t");
+		while (++j < 4)
+			printf("%i:(%ld) %p ", j + 1, object->faces[i].vn_indexes[j] + 1, (object->faces[i].v_normale[j]));
+		printf("\n");
+		i++;
+	}
+	print_ob(object->next, depth + 1);
+}

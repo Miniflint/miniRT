@@ -26,19 +26,24 @@ int	get_vertices(t_vertice *vertice, char **const restrict s, int skip, unsigned
 
 int	get_smoothing(t_minuint *curr_smoothing, char **const restrict s)
 {
+	unsigned int tmp;
+
 	(void)skip_till_number(s, 1);
 	if ((**s != 'o' && **s != 'O') && !(**s >= '0' && **s <= '9'))
 		return (3);
-	*curr_smoothing = ft_atoi(s);
+	tmp = ft_atoi(s);
+	if (tmp > 255)
+		return (printf("Smoothing cannot exceed 255\n"), (*s)--, 3);
 	if (**s && !ft_iswhitespace(**s))
 	{
 		if (ft_strncmp(*s, "off", 3) && !ft_iswhitespace(**s))
 			return (printf("Error decoding smoothing @: [%d|%c]\nline [%lu]\n", **s, **s, __get_head(NULL)->line_count), 1);
 		*s += 3;
-		*curr_smoothing = 0;
+		tmp = 0;
 	}
 	if (!**s)
 		return (2);
+	*curr_smoothing = (tmp & 0xFF);
 	return (skip_whitespace_hashtag(s, &(__get_head(NULL)->line_count)));
 }
 
@@ -160,16 +165,11 @@ int get_name(char name[128], char **const restrict s)
 		(*s)++;
 	}
 	name[i] = 0;
-	printf("name: [%s]\n", name);
 	return (skip_whitespace_hashtag(s, &(__get_head(NULL)->line_count)));
 }
 
 int	get_letters(t_object *object, const char *restrict s)
 {
-	struct timespec	start, end;
-	double duration;
-
-	clock_gettime(CLOCK_MONOTONIC, &start);
 	while (*s)
 	{
 		if (*s == 'f' && *(s + 1) == ' ')
@@ -194,11 +194,6 @@ int	get_letters(t_object *object, const char *restrict s)
 				s++;
 		}
 	}
-	clock_gettime(CLOCK_MONOTONIC, &end);
-	duration = (end.tv_sec - start.tv_sec)
-		+ (end.tv_nsec - start.tv_nsec) / 1e9;
-
-	printf("get_letters() returned %.9f seconds\n", duration);
 	if (!object->nb_vertices)
 		return (printf("Error: Cannot have empty vertices\n"), 1);
 	if (object->nb_vertices < 2 && object->nb_faces >= 1)
@@ -226,11 +221,11 @@ int	get_obj(t_object **head, char **const restrict s)
 	if (!i)
 		return (printf("file path cannot be empty\n"), 3);
 	name[i] = 0;
-	create_obj_path(head, &name[0]);
+	if (!create_obj_path(head, &name[0]))
+		return (1);
 	if (skip_till_number(s, 1))
 		return (3);
 	if (get_coord(&((*head)->coord), s))
 		return (1);
-	printf("path: %s\ncoordinate: %f %f %f\n", (*head)->path, (*head)->coord.x, (*head)->coord.y, (*head)->coord.z);
 	return (skip_whitespace_hashtag(s, &(__get_head(NULL)->line_count)));
 }

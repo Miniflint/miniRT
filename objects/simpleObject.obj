@@ -19,10 +19,10 @@ vt 1 1 1
 
 # Face list (1-based indexing, counter-clockwise order)
 s 1
-f 1/1/4 4/2/3 4/1/3      # Base face
+f 1/1/1 4/2/3 4/1/3      # Base face
 f 1/1/2 5/2/1 5/1/2        # Side face
-s 3
-f 2/1/3 3/2/1 5/1/3        # Side face
+s 255
+f 2/1/1 3/2/1 5/1/3        # Side face
 f 1/1/3 3/2/4 5/1/4
 f 3//2 4//2 5//2         # Side face
 s off

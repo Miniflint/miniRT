@@ -33,7 +33,7 @@ OBJS := $(patsubst $(SRC_DIR)/%.c, $(OBJS_DIR)/%.o, $(SRC_FILES)) \
 NAME = miniRT
 CC = gcc
 
-CFLAGS = -Wall -Werror -Wextra -g3 -I$(SRC_DIR_INC) -I$(TRI_DIR_INC)
+CFLAGS = -Wall -Werror -Wextra -g3 -O3 -I$(SRC_DIR_INC) -I$(TRI_DIR_INC)
 
 UNAME := $(shell uname)
 

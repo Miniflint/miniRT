@@ -57,11 +57,7 @@ int	main(int argc, char **argv)
 		return (printf("Not enough arguments\n"), 1);
 	all = __get_all();
 	if (__init__(all, argv, argc))
-	{
-		free_all(all);
-		return (1);
-	}
-	printf("FREEING\n");
+		return (free_all(all), 1);
 	free_all(all);
 	// tri_lib()->init();
 	// tri_lib()->create_window("QQQQQQQQQQQ,", 800, 600);

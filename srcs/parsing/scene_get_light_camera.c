@@ -10,7 +10,6 @@ int	get_ambient_light(t_amb_light *a_light, char **const restrict s)
 	a_light->ratio = ft_atof(s);
 	if (a_light->ratio < 0.0 || a_light->ratio > 1.0)
 		return (printf("Error: ambient light ratio value < 0.0 || > 1.0\n"), 1);
-	printf("%c\n", **s);
 	if (skip_till_number(s, 0))
 		return (3);
 	if (get_rgb(&a_light->rgb, s))

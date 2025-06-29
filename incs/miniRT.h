@@ -71,6 +71,7 @@ void			print_l(t_light *light, int depth);
 void			print_sp(t_sphere *sphere, int depth);
 void			print_pl(t_plane *plane, int depth);
 void			print_cy(t_cylinder *cylinder, int depth);
+void			print_ob(t_object *object, int depth);
 
 /* INIT */
 int				__init__(t_all *all, char **argv, int argc);
