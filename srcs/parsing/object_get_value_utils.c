@@ -168,7 +168,6 @@ int get_name(char name[128], char **const restrict s)
 		(*s)++;
 	}
 	name[i] = 0;
-	printf("%i\n", i);
 	if (!i)
 		return ((*s)++, skip_whitespace_hashtag(s, &(__get_head(NULL)->line_count)), 0);
 	return (skip_whitespace_hashtag(s, &(__get_head(NULL)->line_count)));
@@ -233,5 +232,7 @@ int	get_obj(t_object **head, char **const restrict s)
 		return (3);
 	if (get_coord(&((*head)->coord), s))
 		return (1);
-	return (skip_whitespace_hashtag(s, &(__get_head(NULL)->line_count)));
+	if (!**s)
+		return (2);
+	return (skip_whitespace_hashtag(s, &(__get_all()->line_count)));
 }

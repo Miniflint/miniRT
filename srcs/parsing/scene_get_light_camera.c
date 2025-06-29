@@ -22,7 +22,7 @@ int	get_ambient_light(t_amb_light *a_light, char **const restrict s)
 int	get_camera(t_cam *camera, char **const restrict s)
 {
 	if (camera->nb > 0)
-		return (printf("Error: too much camera viewpoint\n"), 1);
+		return (printf("Error: too much camera viewpoint\n"), 3);
 	camera->nb = 1;
 	if (skip_till_number(s, 1))
 		return (3);
@@ -35,8 +35,8 @@ int	get_camera(t_cam *camera, char **const restrict s)
 	if (skip_till_number(s, 0))
 		return (3);
 	camera->fov = ft_atof(s);
-	if (camera->fov < 0.0 || camera->fov > 180.0)
-		return (printf("Error: camera fov < 0.0 || > 180.0\n"), 1);
+	if (camera->fov <= 0.0 || camera->fov > 180.0)
+		return (printf("Error: camera fov < 0.0 || > 180.0\n"), 3);
 	if (!**s)
 		return (2);
 	return (skip_whitespace_hashtag(s, &(__get_all()->line_count)));
