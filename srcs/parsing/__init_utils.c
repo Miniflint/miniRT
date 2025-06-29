@@ -33,8 +33,8 @@ int	parse_type_objs(t_object *object, char **s)
 		return (get_faces(&(object->faces[object->indexes[I_FACES]]), s, object->curr_smoothing, &(object->indexes[I_FACES])));
 	else if (**s == 's' && ft_iswhitespace(*((*s) + 1)))
 		return (get_smoothing(&object->curr_smoothing, s));
-	//else if (**s == 'g' && ft_iswhitespace(*((*s) + 1)))
-	//	return (get_sphere(&all->spheres, s));
+	else if (**s == 'g' && ft_iswhitespace(*((*s) + 1)))
+		return (get_name(object->curr_group, s));
 	//else if (**s == 'p' && ft_iswhitespace(*((*s) + 1)))
 	//	 return ((&all->planes, s));
 	return (3);

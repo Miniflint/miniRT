@@ -17,7 +17,6 @@ void	ft_zeroes(t_all *all)
 	all->camera.fov = 0;
 	all->line_count = 1;
 	all->cylinders = NULL;
-	all->head_obj = NULL;
 	all->objects = NULL;
 	all->spheres = NULL;
 	all->planes = NULL;
@@ -61,8 +60,14 @@ void zeroes_two(t_object *object, char *path)
 	object->coord.y = 0;
 	object->coord.z = 0;
 	i = -1;
-	while (++i < 256)
+	while (path[++i])
 		object->path[i] = path[i];
+	object->path[i] = 0;
+	while (++i < 256)
+		object->path[i] = 0;
+	i = -1;
+	while (++i < 256)
+		object->curr_group[i] = 0;
 }
 
 static int	__parse_file_objs(t_all *all)
@@ -123,6 +128,5 @@ int	__init__(t_all *all, char **argv, int argc)
 		return (printf("Error: you must have 1 camera\n"), 1);
 	if (__parse_file_objs(all))
 		return (1);
-	print_all_structs(all);
 	return (0);
 }

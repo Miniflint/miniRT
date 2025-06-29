@@ -42,6 +42,7 @@ typedef struct S_point
 typedef struct S_face
 {
 	char			is_wrong;
+	char			group[128];
 	unsigned long	v_indexes[4];
 	t_vertice		*vertices[4];
 	unsigned long	vt_indexes[4];
@@ -55,6 +56,7 @@ typedef struct S_object
 {
 	char			name[128];
 	char			path[256];
+	char			curr_group[128];
 	t_vertice		*vertices;
 	t_vertice_t		*vt;
 	t_vertice_n		*vn;

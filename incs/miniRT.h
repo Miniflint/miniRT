@@ -29,7 +29,6 @@ typedef struct S_all
 	t_plane			*planes;
 	t_cylinder		*cylinders;
 	t_object		*objects;
-	t_object		*head_obj;
 	char			**argv;
 	int				argc;
 	unsigned long	line_count;

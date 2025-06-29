@@ -123,7 +123,6 @@ int	get_faces(t_face *face, char **const restrict s, t_minuint curr_smoothing, u
 	int	i;
 
 	err = 0;
-	i = 0;
 	ft_memset(vert_ind, 0, sizeof(vert_ind));
 	ft_memset(face->vertices, 0, sizeof(face->vertices));
 	ft_memset(face->v_texture, 0, sizeof(face->v_texture));
@@ -131,6 +130,11 @@ int	get_faces(t_face *face, char **const restrict s, t_minuint curr_smoothing, u
 	ft_memset(face->v_indexes, 0, sizeof(face->v_indexes));
 	ft_memset(face->vt_indexes, 0, sizeof(face->vt_indexes));
 	ft_memset(face->vn_indexes, 0, sizeof(face->vn_indexes));
+	i = -1;
+	while (__get_head(NULL)->curr_group[++i])
+		face->group[i] = __get_head(NULL)->curr_group[i];
+	face->group[i] = 0;
+	i = 0;
 	if (skip_till_number(s, 1) && (**s >= '0' && **s <= '9'))
 		return (free(face), 3);
 	while (i < 3)
@@ -157,14 +161,16 @@ int get_name(char name[128], char **const restrict s)
 	int	i;
 
 	i = 0;
-	if (!skip_till_number(s, 2))
-		return (3);
+	(void)skip_till_number(s, 1);
 	while (**s && **s != '\n' && i < 128)
 	{
 		name[i++] = **s;
 		(*s)++;
 	}
 	name[i] = 0;
+	printf("%i\n", i);
+	if (!i)
+		return ((*s)++, skip_whitespace_hashtag(s, &(__get_head(NULL)->line_count)), 0);
 	return (skip_whitespace_hashtag(s, &(__get_head(NULL)->line_count)));
 }
 
@@ -218,9 +224,9 @@ int	get_obj(t_object **head, char **const restrict s)
 		name[i++] = **s;
 		(*s)++;
 	}
+	name[i] = 0;
 	if (!i)
 		return (printf("file path cannot be empty\n"), 3);
-	name[i] = 0;
 	if (!create_obj_path(head, &name[0]))
 		return (1);
 	if (skip_till_number(s, 1))

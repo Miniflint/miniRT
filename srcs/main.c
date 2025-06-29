@@ -58,6 +58,7 @@ int	main(int argc, char **argv)
 	all = __get_all();
 	if (__init__(all, argv, argc))
 		return (free_all(all), 1);
+	print_all_structs(all);
 	free_all(all);
 	// tri_lib()->init();
 	// tri_lib()->create_window("QQQQQQQQQQQ,", 800, 600);

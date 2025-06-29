@@ -118,7 +118,8 @@ void	print_ob(t_object *object, int depth)
 	while (i < object->nb_faces)
 	{
 		j = -1;
-		printf("%li - is wrong %d - smoothing: %d:\n\t", i + 1, object->faces[i].is_wrong, object->faces[i].smoothing);
+		printf("%li - is wrong %d - smoothing: %d - group: %s:\n\t", i + 1,
+			object->faces[i].is_wrong, object->faces[i].smoothing, object->faces[i].group);
 		while (++j < 4)
 			printf("%i:(%ld) %p ", j + 1, object->faces[i].v_indexes[j] + 1, (object->faces[i].vertices[j]));
 		j = -1;
