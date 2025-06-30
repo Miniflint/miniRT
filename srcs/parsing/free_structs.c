@@ -36,11 +36,24 @@ t_cylinder	*free_cy(t_cylinder *cylinder)
 	return (NULL);
 }
 
-void	free_all(t_all *all)
+// void	free_all(t_all *all)
+// {
+// 	all->lights = free_l(all->lights);
+// 	all->spheres = free_sp(all->spheres);
+// 	all->planes = free_pl(all->planes);
+// 	all->cylinders = free_cy(all->cylinders);
+// 	all->objects = free_objs(all->objects);
+// }
+
+int	free_all(void *content)
 {
+	t_all	*all;
+
+	all = content;
 	all->lights = free_l(all->lights);
 	all->spheres = free_sp(all->spheres);
 	all->planes = free_pl(all->planes);
 	all->cylinders = free_cy(all->cylinders);
 	all->objects = free_objs(all->objects);
+	return (0);
 }

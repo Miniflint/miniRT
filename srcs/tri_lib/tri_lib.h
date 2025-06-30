@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tri_lib.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: trgoel <trgoel@student.42.fr>              +#+  +:+       +#+        */
+/*   By: herolle <herolle@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 03:38:29 by hermesrolle       #+#    #+#             */
-/*   Updated: 2025/06/24 15:50:00 by trgoel           ###   ########.fr       */
+/*   Updated: 2025/06/24 21:55:02 by herolle          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,6 +165,9 @@ struct s_tri_lib
 	void			(*draw_window)(t_win *win);
 	void			(*draw_windows)(void);
 	void			(*change_background)(unsigned int	color);
+	void			(*get_end_function)(int (*f)(void *));
+	int				(*_user_end)(void *);
+	void			(*quit)(void);
 	t_win			*_windows;
 	t_img			*_imgs;
 	t_event			*event;
@@ -214,7 +217,6 @@ t_tri_lib			*_init_tri_lib(void);
 /*--------------------------TRI_LIB---------------------------*/
 
 t_img				*_open_img(char *path);
-void				_close_window_hook(t_tri_lib *lib);
 void				_refresh_window(t_win *win);
 t_tri_lib			*tri_lib(void);
 
@@ -247,6 +249,9 @@ void				_init_key_event(unsigned char key[KEY_CTRL]);
 void				_init_mouse_event(t_mouse_event *mouse);
 void				_init_win_event(t_win_event *win);
 void				_init_event(t_event *event, t_win *win);
+
+void				_get_end_func(int (*f)(void *));
+void				_quit(void);
 
 int	_get_key_press(int keycode, t_win *win);
 int	_get_key_release(int keycode, t_win *win);

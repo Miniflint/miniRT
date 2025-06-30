@@ -61,7 +61,8 @@ t_sphere		*free_sp(t_sphere *sphere);
 t_plane			*free_pl(t_plane *plane);
 t_cylinder		*free_cy(t_cylinder *cylinder);
 t_object		*free_objs(t_object *obj);
-void			free_all(t_all *all);
+// void			free_all(t_all *all);
+int				free_all(void *content);
 
 /* PRINTING */
 void			print_all_structs(t_all *all);
