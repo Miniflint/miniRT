@@ -38,7 +38,7 @@ void	event_key_press(t_tri_lib *lib, void *a)
 {
 	(void)a;
 	if (lib->event->key_id == 'q')
-		lib->destroy_window(lib->event->win_id);
+		lib->quit();
 }
 
 int looped(t_tri_lib *lib, void *a)
@@ -58,7 +58,7 @@ int	main(int argc, char **argv)
 	all = __get_all();
 	if (__init__(all, argv, argc))
 		return (free_all(all), 1);
-	print_all_structs(all);
+	//print_all_structs(all);
 	tri_lib()->init();
 	tri_lib()->get_end_function(free_all);
 	tri_lib()->create_window("QQQQQQQQQQQ,", 800, 600);

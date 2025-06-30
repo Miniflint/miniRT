@@ -66,7 +66,7 @@ void zeroes_two(t_object *object, char *path)
 	while (++i < 256)
 		object->path[i] = 0;
 	i = -1;
-	while (++i < 256)
+	while (++i < 128)
 		object->curr_group[i] = 0;
 }
 

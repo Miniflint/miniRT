@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tri_destroy.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hermesrolle <hermesrolle@student.42.fr>    +#+  +:+       +#+        */
+/*   By: trgoel <trgoel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 20:07:31 by herolle           #+#    #+#             */
-/*   Updated: 2025/06/15 20:55:30 by hermesrolle      ###   ########.fr       */
+/*   Updated: 2025/06/30 17:24:24 by trgoel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,25 +40,6 @@ void	_tri_destroy_imgs(t_tri_lib *lib)
 		free(tmp);
 	}
 	lib->_imgs = NULL;
-}
-
-void	_tri_destroy_windows(t_tri_lib *lib)
-{
-	t_win	*windows;
-	t_win	*tmp;
-
-	windows = lib->_windows;
-	while (windows)
-	{
-		tmp = windows;
-		windows = windows->_next;
-		mlx_destroy_window(lib->_mlx, tmp->_win);
-		if (tmp->_renders)
-			_free_renders(tmp->_renders);
-		free(tmp);
-		tmp = NULL;
-	}
-	lib->_windows = NULL;
 }
 
 #ifdef __linux__

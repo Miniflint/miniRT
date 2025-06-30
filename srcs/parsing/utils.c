@@ -10,10 +10,23 @@ unsigned int	ft_atoi(char **s)
 	return (n);
 }
 
+double	ft_atofi(char **s)
+{
+	unsigned int	n;
+	int				i;
+
+	n = 0;
+	i = 0;
+	while ((*s)[i] >= '0' && (*s)[i] <= '9')
+		n = n * 10 + (*s)[i++] - '0';
+	(*s) += i;
+	return ((double)n / pow(10, i));
+}
+
 double	ft_atof(char **s)
 {
 	int	n;
-	int	dec;
+	float	dec;
 	int	neg;
 
 	neg = 1;
@@ -27,8 +40,8 @@ double	ft_atof(char **s)
 	if (!(**s) || **s != '.')
 		return ((double)n * neg);
 	(*s)++;
-	dec = ft_atoi(s);
-	return ((n + ((double)dec / pow(10, ft_nblen(dec)))) * neg);
+	dec = ft_atofi(s);
+	return ((n + dec) * neg);
 }
 
 char	*ft_strjoin(char *s1, char *s2)

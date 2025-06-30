@@ -162,7 +162,7 @@ int get_name(char name[128], char **const restrict s)
 
 	i = 0;
 	(void)skip_till_number(s, 1);
-	while (**s && **s != '\n' && i < 128)
+	while (**s && **s != '\n' && i < 127)
 	{
 		name[i++] = **s;
 		(*s)++;
@@ -203,6 +203,8 @@ int	get_letters(t_object *object, const char *restrict s)
 		return (printf("Error: Cannot have empty vertices\n"), 1);
 	if (object->nb_vertices < 2 && object->nb_faces >= 1)
 		return (printf("Error: Cannot have a face without 3 vertexes\n"),1);
+	printf("v[%ld] vt[%ld] vn[%ld] f[%ld] p[%ld]\n",
+		object->nb_vertices, object->nb_vt, object->nb_vn, object->nb_faces, object->nb_points);
 	return (0);
 }
 
@@ -216,7 +218,7 @@ int	get_obj(t_object **head, char **const restrict s)
 	if (!skip_till_number(s, 2) && **s != '"')
 		return (3);
 	(*s)++;
-	while (**s && **s != '"' && i < 256)
+	while (**s && **s != '"' && i < 255)
 	{
 		if (**s == '\n')
 			return (3);
