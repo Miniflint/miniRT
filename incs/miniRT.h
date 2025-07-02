@@ -78,6 +78,9 @@ int				__init__(t_all *all, char **argv, int argc);
 int				__set_values_scene(t_all *all, char **s);
 int				__set_values_objs(t_object *object, char **s);
 
+/* MATHS */
+int ft_mult(int x, int y);
+
 /* PARSING */
 int				get_rgb(t_rgb *rgb, char **const restrict s);
 int				get_vec(t_vec *vec, char **const restrict s);
