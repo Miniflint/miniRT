@@ -46,8 +46,25 @@ int looped(t_tri_lib *lib, void *a)
 	(void)a;
 	if (lib->event && lib->event->type == KEY_PRESS)
 		event_key_press(lib, a);
+	if (lib->event && lib->event->type == MOUSE_MOVE)
+		printf("AAAAA\n");
 	return (0);
 }
+
+int	mouse_press(int button, int x, int y, void *param)
+{
+	(void)param;
+	printf("%d, P(%i,%i)\n", button, x, y);
+	return (0);
+}
+int on_configure(int x, int y, void *param)
+{
+	(void)param;
+	printf("(%i,%i)\n", x, y);
+    return 0;
+}
+
+// Dans main
 
 int	main(int argc, char **argv)
 {
@@ -59,10 +76,11 @@ int	main(int argc, char **argv)
 	if (__init__(all, argv, argc))
 		return (free_all(all), 1);
 	//print_all_structs(all);
-	printf("%d\n", ft_mult(4, 8));
 	tri_lib()->init();
 	tri_lib()->get_end_function(free_all);
-	tri_lib()->create_window("%QQQQQQQQQQQ%", 800, 600);
+	tri_lib()->_user_content = all;
+	void *win = tri_lib()->create_window("QQQQQQQQQQQ", 800, 600)->_win;
+	mlx_hook(win, 22, 1L << 17, on_configure, NULL);
 	tri_lib()->loop(looped, all);
 	return (0);
 }

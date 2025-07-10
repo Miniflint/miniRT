@@ -10,13 +10,7 @@
 # define I_VT 1
 # define I_VN 2
 
-typedef struct	S_vertice
-{
-	double	x;
-	double	y;
-	double	z;
-}				t_vertice;
-
+typedef t_coord t_vertice;
 typedef t_vertice t_vertice_t;
 typedef t_vertice t_vertice_n;
 
