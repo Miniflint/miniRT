@@ -5,8 +5,11 @@
 
 #  define MLX_KEY_PRESS_HOOK 2
 #  define MLX_KEY_RELEASE_HOOK 3
-#  define MLX_KEY_PRESS_HOOK 2
-#  define MLX_KEY_RELEASE_HOOK 3
+#  define MLX_MOUSE_PRESS_HOOK 4
+#  define MLX_MOUSE_RELEASE_HOOK 5
+#  define MLX_MOUSE_MOVE_HOOK 6
+#  define MLX_MOUSE_LEFT 1
+#  define MLX_MOUSE_RIGHT 2
 
 #  define MLX_KEY_A 'a'
 #  define MLX_KEY_B 'b'
@@ -69,6 +72,11 @@
 
 #  define MLX_KEY_PRESS_HOOK 2
 #  define MLX_KEY_RELEASE_HOOK 3
+#  define MLX_MOUSE_PRESS_HOOK 4
+#  define MLX_MOUSE_RELEASE_HOOK 5
+#  define MLX_MOUSE_MOVE_HOOK 6
+#  define MLX_MOUSE_LEFT 1
+#  define MLX_MOUSE_RIGHT 2
 #  define MLX_KEY_A 0
 #  define MLX_KEY_B 11
 #  define MLX_KEY_C 8

@@ -46,12 +46,12 @@ int looped(t_tri_lib *lib, void *a)
 	(void)a;
 	if (lib->event && lib->event->type == KEY_PRESS)
 		event_key_press(lib, a);
-	if (lib->event && lib->event->type == MOUSE_MOVE)
+	if (lib->event && lib->event->type == MOUSE_RIGHT_PRESS)
 		printf("AAAAA\n");
 	return (0);
 }
 
-int	mouse_press(int button, int x, int y, void *param)
+int	mouse(int button, int x, int y, void *param)
 {
 	(void)param;
 	printf("%d, P(%i,%i)\n", button, x, y);
@@ -79,8 +79,10 @@ int	main(int argc, char **argv)
 	tri_lib()->init();
 	tri_lib()->get_end_function(free_all);
 	tri_lib()->_user_content = all;
-	void *win = tri_lib()->create_window("QQQQQQQQQQQ", 800, 600)->_win;
-	mlx_hook(win, 22, 1L << 17, on_configure, NULL);
+	tri_lib()->create_window("QQQQQQQQQQQ", 800, 600);
+	// mlx_hook(win, 6, 1L << 6, mouse, NULL); //move
+    // mlx_hook(win, 4, 1L << 2, mouse, NULL); //press
+    // mlx_hook(win, 5, 1L << 3, mouse, NULL); //release
 	tri_lib()->loop(looped, all);
 	return (0);
 }

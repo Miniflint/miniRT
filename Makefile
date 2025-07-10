@@ -17,7 +17,7 @@ SRC_DIR_INC := ./incs
 TRI_DIR_INC := $(SRC_DIR)/tri_lib
 OBJS_DIR := ./objs
 
-SRCS_TRILIB =	tri_colors.c  tri_create_render.c  tri_create_window.c  tri_destroy.c  tri_destroy_render.c  tri_destroy_window.c  tri_error.c  tri_get_key_event.c  tri_init.c  tri_init_event.c  tri_lib.c  tri_lib_gb.c  tri_loop.c  tri_put_pixel_utils.c  tri_quit.c
+SRCS_TRILIB =	tri_colors.c  tri_create_render.c  tri_create_window.c  tri_destroy.c  tri_destroy_render.c  tri_destroy_window.c  tri_error.c  tri_get_key_event.c  tri_init.c  tri_init_event.c  tri_lib.c  tri_lib_gb.c  tri_loop.c  tri_put_pixel_utils.c  tri_quit.c  tri_mouse.c
 
 SRC := main.c
 SRCS_PARSING := __fake_globals.c  free_structs.c  __init__.c  __init_utils.c  nodes.c  object_get_shape.c  object_get_value_utils.c  printing.c  scene_get_value_utils.c  scene_get_light_camera.c  scene_get_shape.c  utils.c  utils_util.c  object_free.c

@@ -57,7 +57,7 @@ double get_angle(t_coord *a, t_coord *b, double mag_a, double mag_b)
 	return (acos(dot_product(a, b) / (mag_a * mag_b)));
 }
 
-double cross_product(t_coord *a, t_coord *b, t_coord *c)
+void cross_product(t_coord *a, t_coord *b, t_coord *c)
 {
 	c->x = (a->y * b->z) - (a->z * b->y);
 	c->y = (a->z * b->x) - (a->x * b->z);

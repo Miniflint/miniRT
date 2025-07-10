@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tri_loop.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: herolle <herolle@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hermesrolle <hermesrolle@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 22:28:01 by herolle           #+#    #+#             */
-/*   Updated: 2025/06/24 21:55:16 by herolle          ###   ########.fr       */
+/*   Updated: 2025/07/10 17:14:22 by hermesrolle      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,9 @@ int	_main_loop(int (*f)(t_tri_lib *, void *), void *content)
 		mlx_hook(cursor_win->_win, MLX_KEY_PRESS_HOOK, (1L << 0), _get_key_press, cursor_win);
 		mlx_hook(cursor_win->_win, MLX_KEY_RELEASE_HOOK, (1L << 1), _get_key_release, cursor_win);
 		mlx_hook(cursor_win->_win, 17, 0, _close_window, cursor_win);
+		mlx_hook(cursor_win->_win, MLX_MOUSE_PRESS_HOOK, 1L << 2, _get_mouse_press, cursor_win);
+		mlx_hook(cursor_win->_win, MLX_MOUSE_RELEASE_HOOK, 1L << 3, _get_mouse_release, cursor_win);
+			mlx_hook(cursor_win->_win, MLX_MOUSE_MOVE_HOOK, 1L << 6, _get_mouse_move, cursor_win);
 		cursor_win = cursor_win->_next;
 	}
 	mlx_loop_hook(lib->_mlx, _loop_event, lib);

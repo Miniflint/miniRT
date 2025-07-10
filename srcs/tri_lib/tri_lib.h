@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tri_lib.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: herolle <herolle@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hermesrolle <hermesrolle@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 03:38:29 by hermesrolle       #+#    #+#             */
-/*   Updated: 2025/06/24 21:55:02 by herolle          ###   ########.fr       */
+/*   Updated: 2025/07/10 17:11:45 by hermesrolle      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,10 @@ typedef struct s_img_render
 
 typedef enum e_event_type
 {
-	MOUSE_PRESS,
-	MOUSE_RELEASE,
+	MOUSE_LEFT_PRESS,
+	MOUSE_LEFT_RELEASE,
+	MOUSE_RIGHT_PRESS,
+	MOUSE_RIGHT_RELEASE,
 	MOUSE_MOVE,
 	KEY_PRESS,
 	KEY_RELEASE,
@@ -82,10 +84,8 @@ typedef struct s_mouse_event
 {
 	int		x;
 	int		y;
-	char	right_press;
-	char	left_press;
-	char	right_release;
-	char	left_release;
+	char	right;
+	char	left;
 }			t_mouse_event;
 
 typedef struct s_win_event
@@ -255,5 +255,9 @@ void				_quit(void);
 
 int	_get_key_press(int keycode, t_win *win);
 int	_get_key_release(int keycode, t_win *win);
+
+int	_get_mouse_press(int button, int x, int y, t_win *win);
+int	_get_mouse_release(int button, int x, int y, t_win *win);
+int	_get_mouse_move(int x, int y, t_win *win);
 
 #endif
