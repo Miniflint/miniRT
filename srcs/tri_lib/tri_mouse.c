@@ -8,6 +8,8 @@ int	_get_mouse_press(int button, int x, int y, t_win *win)
 	// printf("Mouse press event: [button = %d], [x = %d, y = %d]\n", button, x, y);
 	lib = tri_lib();
 	lib->event = &win->event;
+	lib->event->mouse.x = x;
+	lib->event->mouse.y = y;
 	if (button == MLX_MOUSE_RIGHT)
 	{
 		lib->event->mouse.right = 1;
@@ -29,6 +31,8 @@ int	_get_mouse_release(int button, int x, int y, t_win *win)
 	// printf("Mouse release event: [button = %d], [x = %d, y = %d]\n", button, x, y);
 	lib = tri_lib();
 	lib->event = &win->event;
+	lib->event->mouse.x = x;
+	lib->event->mouse.y = y;
 	if (button == MLX_MOUSE_RIGHT)
 	{
 		lib->event->mouse.right = 0;
