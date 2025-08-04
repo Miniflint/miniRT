@@ -30,7 +30,7 @@ int	get_camera(t_cam *camera, char **const restrict s)
 		return (printf("\tCamera problem\n"), 1);
 	if (skip_till_number(s, 0))
 		return (3);
-	if (get_vec(&camera->vec, s))
+	if (get_vec(&camera->dir, s))
 		return (printf("\tCamera problem\n"), 1);
 	if (skip_till_number(s, 0))
 		return (3);

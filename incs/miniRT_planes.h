@@ -14,7 +14,9 @@ typedef struct S_camera
 {
 	t_minuint	nb;
 	t_coord		viewpoint;
-	t_vec		vec;
+	t_vec		dir;
+	t_vec		dir_x;
+	t_vec		dir_y;
 	t_minuint	fov;
 }	t_cam;
 

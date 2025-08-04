@@ -11,9 +11,9 @@ void	ft_zeroes(t_all *all)
 	all->camera.viewpoint.y = 0;
 	all->camera.viewpoint.z = 0;
 	all->camera.nb = 0;
-	all->camera.vec.x = 0;
-	all->camera.vec.y = 0;
-	all->camera.vec.z = 0;
+	all->camera.dir.x = 0;
+	all->camera.dir.y = 0;
+	all->camera.dir.z = 0;
 	all->camera.fov = 0;
 	all->line_count = 1;
 	all->cylinders = NULL;
@@ -111,6 +111,11 @@ static int	check_ext(char **argv)
 		i++;
 	}
 	return (0);
+}
+
+int set_dir_x_y(t_cam *cam)
+{
+	printf("x:%f - y:%f z:%f\n");
 }
 
 int	__init__(t_all *all, char **argv, int argc)

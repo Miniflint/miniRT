@@ -9,7 +9,7 @@ void	print_ac(t_amb_light *ambient_light, t_cam *camera)
 	printf("CAMERA:\n");
 	printf("\tViewpoint: %f %f %f\n",
 		camera->viewpoint.x, camera->viewpoint.y, camera->viewpoint.z);
-	printf("\tVec: %f %f %f\n", camera->vec.x, camera->vec.y, camera->vec.z);
+	printf("\tVec: %f %f %f\n", camera->dir.x, camera->dir.y, camera->dir.z);
 	printf("\tFOV: %d\n", camera->fov);
 }
 
