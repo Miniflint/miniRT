@@ -38,4 +38,11 @@ typedef enum E_obj_type
 	CYLINDER
 }	t_obj_type;
 
+typedef struct S_Canvas
+{
+	double	size_x;
+	double	size_y;
+	t_vec	*vecs; // possiblement non-utiliser
+}	t_canvas;	
+
 #endif

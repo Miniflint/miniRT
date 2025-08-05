@@ -12,10 +12,16 @@
 #  include <fcntl.h>
 #  include <unistd.h>
 # endif
-
+# ifndef WIN_WIDTH_ALL
+#  define WIN_WIDTH_ALL 800
+# endif
+# ifndef WIN_HEIGHT_ALL
+#  define WIN_HEIGHT_ALL 800
+# endif
 # include "miniRT_struct.h"
 # include "miniRT_planes.h"
 # include "miniRT_objs.h"
+# define PI_DEFINED 3.14159265358979323846
 
 # define BUFF_SIZE 32768
 //# define BUFF_SIZE 1
@@ -29,8 +35,11 @@ typedef struct S_all
 	t_plane			*planes;
 	t_cylinder		*cylinders;
 	t_object		*objects;
+	t_canvas		canvas;
 	char			**argv;
 	int				argc;
+	int				win_height;
+	int				win_width;
 	unsigned long	line_count;
 }	t_all;
 
@@ -105,5 +114,19 @@ int				get_smoothing(t_minuint *curr_smoothing, char **const restrict s);
 t_object		*create_obj_path(t_object **head, char *path);
 void 			zeroes_two(t_object *object, char *path);
 int				get_obj(t_object **head, char **const restrict s);
+
+
+/* UTILS MATHS */
+void 	start_rays(t_all *all);
+double	vec_magnitude(t_vec *a);
+void	add_vectors(t_vec *a, t_vec *b, t_vec *c);
+void	sub_vectors(t_vec *a, t_vec *b, t_vec *c);
+void	mul_vectors(t_vec *a, t_vec *b, t_vec *c);
+void	div_vectors(t_vec *a, t_vec *b, t_vec *c);
+void	scalar_multiplication(t_vec *a, double b, t_vec *c);
+void	norm_vectors(t_vec *a, double magnitude, t_vec *c);
+double	dot_product(t_vec *a, t_vec *b);
+double	get_angle(t_vec *a, t_vec *b, double mag_a, double mag_b);
+void	cross_product(t_vec *a, t_vec *b, t_vec *c);
 
 #endif

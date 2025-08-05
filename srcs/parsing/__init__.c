@@ -21,6 +21,8 @@ void	ft_zeroes(t_all *all)
 	all->spheres = NULL;
 	all->planes = NULL;
 	all->lights = NULL;
+	all->win_width = WIN_WIDTH_ALL;
+	all->win_height = WIN_HEIGHT_ALL;
 }
 
 static int	__parse_file_scene(t_all *all)
@@ -113,11 +115,6 @@ static int	check_ext(char **argv)
 	return (0);
 }
 
-int set_dir_x_y(t_cam *cam)
-{
-	printf("x:%f - y:%f z:%f\n");
-}
-
 int	__init__(t_all *all, char **argv, int argc)
 {
 	ft_zeroes(all);
@@ -133,5 +130,9 @@ int	__init__(t_all *all, char **argv, int argc)
 		return (printf("Error: you must have 1 camera\n"), 1);
 	if (__parse_file_objs(all))
 		return (1);
+	print_all_structs(all);
+	norm_vectors(&all->camera.dir, vec_magnitude(&all->camera.dir), &all->camera.dir);
+	all->canvas.size_x = 2 * tan((all->camera.fov * (PI_DEFINED / 180)) / 2);
+	all->canvas.size_y = all->canvas.size_x * (all->win_width / all->win_height);
 	return (0);
 }

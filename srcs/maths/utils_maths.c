@@ -33,7 +33,7 @@ void	div_vectors(t_vec *a, t_vec *b, t_vec *c)
 	c->z = a->z / b->z;
 }
 
-void	scalar_product(t_vec *a, double b, t_vec *c)
+void	scalar_multiplication(t_vec *a, double b, t_vec *c)
 {
 	c->x = a->x * b;
 	c->y = a->y * b;
