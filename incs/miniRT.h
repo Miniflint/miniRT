@@ -13,10 +13,10 @@
 #  include <unistd.h>
 # endif
 # ifndef WIN_WIDTH_ALL
-#  define WIN_WIDTH_ALL 1600
+#  define WIN_WIDTH_ALL 1920
 # endif
 # ifndef WIN_HEIGHT_ALL
-#  define WIN_HEIGHT_ALL 1600
+#  define WIN_HEIGHT_ALL 1080
 # endif
 # include "miniRT_struct.h"
 # include "miniRT_planes.h"
@@ -119,14 +119,14 @@ int				get_obj(t_object **head, char **const restrict s);
 /* UTILS MATHS */
 void 	start_rays(t_all *all);
 double	vec_magnitude(t_vec *a);
-void	add_vectors(t_vec *a, t_vec *b, t_vec *c);
-void	sub_vectors(t_vec *a, t_vec *b, t_vec *c);
-void	mul_vectors(t_vec *a, t_vec *b, t_vec *c);
-void	div_vectors(t_vec *a, t_vec *b, t_vec *c);
-void	scalar_multiplication(t_vec *a, double b, t_vec *c);
-void	norm_vectors(t_vec *a, double magnitude, t_vec *c);
+t_vec	*add_vectors(t_vec *a, t_vec *b, t_vec *c);
+t_vec	*sub_vectors(t_vec *a, t_vec *b, t_vec *c);
+t_vec	*mul_vectors(t_vec *a, t_vec *b, t_vec *c);
+t_vec	*div_vectors(t_vec *a, t_vec *b, t_vec *c);
+t_vec	*scalar_multiplication(t_vec *a, double b, t_vec *c);
+t_vec	*norm_vectors(t_vec *a, double magnitude, t_vec *c);
 double	dot_product(t_vec *a, t_vec *b);
 double	get_angle(t_vec *a, t_vec *b, double mag_a, double mag_b);
-void	cross_product(t_vec *a, t_vec *b, t_vec *c);
+t_vec	*cross_product(t_vec *a, t_vec *b, t_vec *c);
 
 #endif

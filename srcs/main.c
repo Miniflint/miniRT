@@ -37,29 +37,48 @@ char	*readfile(int fd)
 void	event_key_press(t_tri_lib *lib, void *a)
 {
 	t_all	*all;
+	t_vec	tmp;
 	
 	all = (t_all *)a;
-	if (lib->event->key_id == 'w')
-		all->camera.viewpoint.x += 1;
-	if (lib->event->key_id == 'a')
-		all->camera.viewpoint.y -= 1;
-	if (lib->event->key_id == 's')
-		all->camera.viewpoint.x -= 1;
-	if (lib->event->key_id == 'd')
-		all->camera.viewpoint.y += 1;
-	if (lib->event->key_id == 'q')
-		lib->destroy_window(lib->event->win_id);
+	if (lib->_windows->event.key['w'])
+		add_vectors(&all->camera.viewpoint, scalar_multiplication(&all->camera.dir, 1, &tmp), &all->camera.viewpoint);
+	if (lib->_windows->event.key['a'])
+		add_vectors(&all->camera.viewpoint, scalar_multiplication(&all->camera.dir_x, -1, &tmp), &all->camera.viewpoint);
+	if (lib->_windows->event.key['s'])
+		add_vectors(&all->camera.viewpoint, scalar_multiplication(&all->camera.dir, -1, &tmp), &all->camera.viewpoint);
+	if (lib->_windows->event.key['d'])
+		add_vectors(&all->camera.viewpoint, scalar_multiplication(&all->camera.dir_x, 1, &tmp), &all->camera.viewpoint);
+	if (lib->_windows->event.key['q'])
+		add_vectors(&all->camera.viewpoint, scalar_multiplication(&all->camera.dir_y, 1, &tmp), &all->camera.viewpoint);
+	if (lib->_windows->event.key['e'])
+		add_vectors(&all->camera.viewpoint, scalar_multiplication(&all->camera.dir_y, -1, &tmp), &all->camera.viewpoint);
+	if (lib->_windows->event.key['n'])
+	{
+		all->camera.fov += (all->camera.fov < 179);
+		all->canvas.size_x = 2 * tan((all->camera.fov * (PI_DEFINED / 180)) / 2);
+		if (all->win_width > all->win_height)
+			all->canvas.size_y = all->canvas.size_x * (all->win_width / all->win_height);
+		else
+			all->canvas.size_y = all->canvas.size_x * (all->win_height / all->win_width);
+	}
+	if (lib->_windows->event.key['m'])
+	{
+		all->camera.fov -= (all->camera.fov > 1);
+		all->canvas.size_x = 2 * tan((all->camera.fov * (PI_DEFINED / 180)) / 2);
+		if (all->win_width > all->win_height)
+			all->canvas.size_y = all->canvas.size_x * (all->win_width / all->win_height);
+		else
+			all->canvas.size_y = all->canvas.size_x * (all->win_height / all->win_width);
+	}
+	start_rays((t_all *)a);
+	if (lib->event && lib->event->key_id == 'q' && lib->event->key[KEY_BACKSPACE])
+		lib->quit();
 }
 
 int looped(t_tri_lib *lib, void *a)
 {
 	(void)a;
-	if (lib->event && lib->event->type == KEY_PRESS)
-	{
-		event_key_press(lib, a);
-		start_rays((t_all *)a);
-		lib->draw_windows();
-	}
+	event_key_press(lib, a);
 	if (lib->event && lib->event->type == MOUSE_RIGHT_PRESS)
 		printf("AAAAA\n");
 	return (0);
@@ -75,7 +94,7 @@ int on_configure(int x, int y, void *param)
 {
 	(void)param;
 	printf("(%i,%i)\n", x, y);
-    return 0;
+    return (0);
 }
 
 // Dans main

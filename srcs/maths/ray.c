@@ -38,8 +38,8 @@ void	IntersectRaySphere(t_vec *D, t_vec *O, t_sphere *sphere, double *t1, double
 	double disciminant = b*b - 4*a*c;
 	if (disciminant < 0)
 	{
-		*t1 = NAN;
-		*t2 = NAN;
+		*t1 = INFINITY;
+		*t2 = INFINITY;
 		return ;
 	}
 	*t1 = (-b + sqrt(disciminant)) / (2 * a);
@@ -60,15 +60,13 @@ unsigned int	traceray(t_vec *ray, t_all *all)
 	sphere = all->spheres;
 	while (sphere)
 	{
-		if (!sphere)
-			return (0xFFFFFFFF);
 		IntersectRaySphere(ray, &all->camera.viewpoint, sphere, &t1, &t2);
-		if (!isnan(t1) && t1 < closest_t)
+		if (!isinf(t1) && t1 < closest_t && t1 > 0.1)
 		{
 			closest_t = t1;
 			closest = sphere;
 		}
-		if (!isnan(t2) && t2 < closest_t)
+		if (!isinf(t2) && t2 < closest_t && t2 > 0.1)
 		{
 			closest_t = t2;
 			closest = sphere;
@@ -76,7 +74,7 @@ unsigned int	traceray(t_vec *ray, t_all *all)
 		sphere = sphere->next;
 	}
 	argb = 0xFF000000;
-	if ((!isnan(t1) || !isnan(t2)))
+	if (!isinf(closest_t))
 	{
 		argb += closest->rgb.r << 16;
 		argb += closest->rgb.g << 8;
@@ -87,33 +85,47 @@ unsigned int	traceray(t_vec *ray, t_all *all)
 
 void start_rays(t_all *all)
 {
-	int i = 1;
+	int i;
 	int j;
+	const int tmp = 10;
+	int			a;
 	double pix_x;
 	double pix_y;
 	t_vec	ray;
 	t_vec	dir_x;
 	t_vec	dir_y;
 	t_tri_lib *lib;
+	double	unit;
 	unsigned int color;
 
 	lib = tri_lib();
+	unit = all->canvas.size_y / (double)all->win_width;
 	make_perpendicular(&(all->camera));
-	while (i < all->win_height)
+	a = 0;
+	while (a < tmp)
 	{
-		j = 1;
-		pix_y = all->canvas.size_y / 2 - (((double)i / (double)all->win_height) * all->canvas.size_y);
-		scalar_multiplication(&all->camera.dir_y, pix_y, &dir_y);
-		while (j < all->win_width)
+		i = -a;
+		pix_y = -((all->win_height / 2) * unit) + i * unit;
+		while (i < all->win_height)
 		{
-			pix_x = all->canvas.size_x / 2 - (((double)j / (double)all->win_width) * all->canvas.size_x);
-			scalar_multiplication(&all->camera.dir_x, pix_x, &dir_x);
-			add_vectors(&all->camera.dir, &dir_x, &ray);
-			add_vectors(&ray, &dir_y, &ray);
-			color = traceray(&ray, all);
-			lib->replace_pixel_on_window(lib->_windows, color, j,     i);
-			j += 5;
+			j = 0;
+			scalar_multiplication(&all->camera.dir_y, pix_y, &dir_y);
+			pix_x = -((all->win_width >> 1) * unit) + j * unit;
+			while (j < all->win_width)
+			{
+				scalar_multiplication(&all->camera.dir_x, pix_x, &dir_x);
+				add_vectors(&all->camera.dir, &dir_x, &ray);
+				add_vectors(&ray, &dir_y, &ray);
+				color = traceray(&ray, all);
+				lib->replace_pixel_on_window(lib->_windows, color, j, i);
+				j += tmp;
+				pix_x += unit * tmp;
+				//printf("%f %f\n", ray.y, ray.z);
+			}
+			lib->draw_windows();
+			pix_y += unit * tmp;
+			i += tmp;
 		}
-		i += 5;
+		a++;
 	}
 }
