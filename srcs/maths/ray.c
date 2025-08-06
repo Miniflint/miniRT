@@ -87,9 +87,12 @@ void start_rays(t_all *all)
 {
 	int i;
 	int j;
+	int i_start;
+	int j_start;
 	const int tmp = 10;
-	int			a;
 	double pix_x;
+	double pix_x_base;
+	double pix_y_base;
 	double pix_y;
 	t_vec	ray;
 	t_vec	dir_x;
@@ -101,31 +104,44 @@ void start_rays(t_all *all)
 	lib = tri_lib();
 	unit = all->canvas.size_y / (double)all->win_width;
 	make_perpendicular(&(all->camera));
-	a = 0;
-	while (a < tmp)
+	//line motif
+	j_start = 0;
+	while (j_start < tmp)
 	{
-		i = -a;
-		pix_y = -((all->win_height / 2) * unit) + i * unit;
-		while (i < all->win_height)
+	//column motif
+	i_start = 0;
+	while (i_start < tmp)
+	{
+	//motif square space
+	i = i_start;
+	pix_y_base = -((all->win_height / 2) * unit);
+	pix_x_base = -((all->win_width >> 1) * unit);
+	pix_y = pix_y_base + i * unit;
+	while (i < all->win_height)
+	{
+		j = j_start;
+		scalar_multiplication(&all->camera.dir_y, pix_y, &dir_y);
+		pix_x = pix_x_base + j * unit;
+		while (j < all->win_width)
 		{
-			j = 0;
-			scalar_multiplication(&all->camera.dir_y, pix_y, &dir_y);
-			pix_x = -((all->win_width >> 1) * unit) + j * unit;
-			while (j < all->win_width)
-			{
-				scalar_multiplication(&all->camera.dir_x, pix_x, &dir_x);
-				add_vectors(&all->camera.dir, &dir_x, &ray);
-				add_vectors(&ray, &dir_y, &ray);
-				color = traceray(&ray, all);
-				lib->replace_pixel_on_window(lib->_windows, color, j, i);
-				j += tmp;
-				pix_x += unit * tmp;
-				//printf("%f %f\n", ray.y, ray.z);
-			}
-			lib->draw_windows();
-			pix_y += unit * tmp;
-			i += tmp;
+			scalar_multiplication(&all->camera.dir_x, pix_x, &dir_x);
+			add_vectors(&all->camera.dir, &dir_x, &ray);
+			add_vectors(&ray, &dir_y, &ray);
+			color = traceray(&ray, all);
+			lib->replace_pixel_on_window(lib->_windows, color, j, i);
+			j += tmp;
+			pix_x += unit * tmp;
 		}
-		a++;
+		pix_y += unit * tmp;
+		i += tmp;
 	}
+	lib->draw_windows();
+	//end motif square space
+	i_start++;
+	}
+	//end column motif
+	j_start++;
+	}
+	//end line motif
+
 }
