@@ -29,10 +29,10 @@ void	IntersectRaySphere(t_vec *D, t_vec *O, t_sphere *sphere, double *t1, double
 	t_vec	CO;
 	double a, b, c;
 
-	r = sphere->diameter;
+	r = sphere->diameter / 2;
 	sub_vectors(O, &sphere->coord, &CO);
 	a = dot_product(D, D);
-	b = 2*dot_product(&CO, D);
+	b = 2 * dot_product(&CO, D);
 	c = dot_product(&CO, &CO) - (r*r);
 	
 	double disciminant = b*b - 4*a*c;
@@ -42,8 +42,8 @@ void	IntersectRaySphere(t_vec *D, t_vec *O, t_sphere *sphere, double *t1, double
 		*t2 = NAN;
 		return ;
 	}
-	*t1 = (-b + sqrt(disciminant)) / (2*a);
-	*t2 = (-b - sqrt(disciminant)) / (2*a);
+	*t1 = (-b + sqrt(disciminant)) / (2 * a);
+	*t2 = (-b - sqrt(disciminant)) / (2 * a);
 }
 
 
@@ -55,17 +55,20 @@ unsigned int	traceray(t_vec *ray, t_all *all)
 	double		closest_t;
 	unsigned int	argb;
 
-	closest_t = NAN;
+	closest_t = INFINITY;
+	closest = NULL;
 	sphere = all->spheres;
 	while (sphere)
 	{
+		if (!sphere)
+			return (0xFFFFFFFF);
 		IntersectRaySphere(ray, &all->camera.viewpoint, sphere, &t1, &t2);
-		if (!isnan(t1) && t1 < closest_t && t1 > 1)
+		if (!isnan(t1) && t1 < closest_t)
 		{
 			closest_t = t1;
 			closest = sphere;
 		}
-		if (!isnan(t2) && t2 < closest_t && t2 > 1)
+		if (!isnan(t2) && t2 < closest_t)
 		{
 			closest_t = t2;
 			closest = sphere;
@@ -73,17 +76,18 @@ unsigned int	traceray(t_vec *ray, t_all *all)
 		sphere = sphere->next;
 	}
 	argb = 0xFF000000;
-	argb += closest->rgb.r << 16;
-	argb += closest->rgb.g << 8;
-	argb += closest->rgb.b;
-	if (!isnan(t1) && !isnan(t2))
-		return (argb);
-	return (0xFFFFFFFF);
+	if ((!isnan(t1) || !isnan(t2)))
+	{
+		argb += closest->rgb.r << 16;
+		argb += closest->rgb.g << 8;
+		argb += closest->rgb.b;
+	}
+	return (argb);
 }
 
 void start_rays(t_all *all)
 {
-	int i = 0;
+	int i = 1;
 	int j;
 	double pix_x;
 	double pix_y;
@@ -91,12 +95,13 @@ void start_rays(t_all *all)
 	t_vec	dir_x;
 	t_vec	dir_y;
 	t_tri_lib *lib;
+	unsigned int color;
 
 	lib = tri_lib();
 	make_perpendicular(&(all->camera));
 	while (i < all->win_height)
 	{
-		j = 0;
+		j = 1;
 		pix_y = all->canvas.size_y / 2 - (((double)i / (double)all->win_height) * all->canvas.size_y);
 		scalar_multiplication(&all->camera.dir_y, pix_y, &dir_y);
 		while (j < all->win_width)
@@ -105,9 +110,10 @@ void start_rays(t_all *all)
 			scalar_multiplication(&all->camera.dir_x, pix_x, &dir_x);
 			add_vectors(&all->camera.dir, &dir_x, &ray);
 			add_vectors(&ray, &dir_y, &ray);
-			lib->replace_pixel_on_window(lib->_windows, traceray(&ray, all), j, i);
-			j += 1;
+			color = traceray(&ray, all);
+			lib->replace_pixel_on_window(lib->_windows, color, j,     i);
+			j += 5;
 		}
-		i += 1;
+		i += 5;
 	}
 }

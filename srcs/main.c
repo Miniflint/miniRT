@@ -36,7 +36,17 @@ char	*readfile(int fd)
 
 void	event_key_press(t_tri_lib *lib, void *a)
 {
-	(void)a;
+	t_all	*all;
+	
+	all = (t_all *)a;
+	if (lib->event->key_id == 'w')
+		all->camera.viewpoint.x += 1;
+	if (lib->event->key_id == 'a')
+		all->camera.viewpoint.y -= 1;
+	if (lib->event->key_id == 's')
+		all->camera.viewpoint.x -= 1;
+	if (lib->event->key_id == 'd')
+		all->camera.viewpoint.y += 1;
 	if (lib->event->key_id == 'q')
 		lib->destroy_window(lib->event->win_id);
 }
@@ -45,7 +55,11 @@ int looped(t_tri_lib *lib, void *a)
 {
 	(void)a;
 	if (lib->event && lib->event->type == KEY_PRESS)
+	{
 		event_key_press(lib, a);
+		start_rays((t_all *)a);
+		lib->draw_windows();
+	}
 	if (lib->event && lib->event->type == MOUSE_RIGHT_PRESS)
 		printf("AAAAA\n");
 	return (0);

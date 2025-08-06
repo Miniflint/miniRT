@@ -133,6 +133,6 @@ int	__init__(t_all *all, char **argv, int argc)
 	print_all_structs(all);
 	norm_vectors(&all->camera.dir, vec_magnitude(&all->camera.dir), &all->camera.dir);
 	all->canvas.size_x = 2 * tan((all->camera.fov * (PI_DEFINED / 180)) / 2);
-	all->canvas.size_y = all->canvas.size_x * (all->win_width / all->win_height);
+	all->canvas.size_y = all->canvas.size_x * (all->win_height / all->win_width);
 	return (0);
 }

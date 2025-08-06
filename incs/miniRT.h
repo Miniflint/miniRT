@@ -13,10 +13,10 @@
 #  include <unistd.h>
 # endif
 # ifndef WIN_WIDTH_ALL
-#  define WIN_WIDTH_ALL 800
+#  define WIN_WIDTH_ALL 1600
 # endif
 # ifndef WIN_HEIGHT_ALL
-#  define WIN_HEIGHT_ALL 800
+#  define WIN_HEIGHT_ALL 1600
 # endif
 # include "miniRT_struct.h"
 # include "miniRT_planes.h"
