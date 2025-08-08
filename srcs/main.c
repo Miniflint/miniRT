@@ -1,5 +1,6 @@
 #include "miniRT.h"
 #include "tri_lib.h"
+#include <time.h>
 
 char	*readfile(int fd)
 {
@@ -38,20 +39,41 @@ void	event_key_press(t_tri_lib *lib, void *a)
 {
 	t_all	*all;
 	t_vec	tmp;
+	int	start = 0;
+	static int refresh = 0;
 	
 	all = (t_all *)a;
+	refresh++;
 	if (lib->_windows->event.key['w'])
-		add_vectors(&all->camera.viewpoint, scalar_multiplication(&all->camera.dir, 1, &tmp), &all->camera.viewpoint);
+		{
+			start = 1;
+			add_vectors(&all->camera.viewpoint, scalar_multiplication(&all->camera.dir, 1, &tmp), &all->camera.viewpoint);
+		}
 	if (lib->_windows->event.key['a'])
-		add_vectors(&all->camera.viewpoint, scalar_multiplication(&all->camera.dir_x, -1, &tmp), &all->camera.viewpoint);
+		{
+			start = 1;
+			add_vectors(&all->camera.viewpoint, scalar_multiplication(&all->camera.dir_x, -1, &tmp), &all->camera.viewpoint);
+		}
 	if (lib->_windows->event.key['s'])
-		add_vectors(&all->camera.viewpoint, scalar_multiplication(&all->camera.dir, -1, &tmp), &all->camera.viewpoint);
+		{
+			start = 1;
+			add_vectors(&all->camera.viewpoint, scalar_multiplication(&all->camera.dir, -1, &tmp), &all->camera.viewpoint);
+		}
 	if (lib->_windows->event.key['d'])
-		add_vectors(&all->camera.viewpoint, scalar_multiplication(&all->camera.dir_x, 1, &tmp), &all->camera.viewpoint);
+		{
+			start = 1;
+			add_vectors(&all->camera.viewpoint, scalar_multiplication(&all->camera.dir_x, 1, &tmp), &all->camera.viewpoint);
+		}
 	if (lib->_windows->event.key['q'])
-		add_vectors(&all->camera.viewpoint, scalar_multiplication(&all->camera.dir_y, 1, &tmp), &all->camera.viewpoint);
+		{
+			start = 1;
+			add_vectors(&all->camera.viewpoint, scalar_multiplication(&all->camera.dir_y, 1, &tmp), &all->camera.viewpoint);
+		}
 	if (lib->_windows->event.key['e'])
-		add_vectors(&all->camera.viewpoint, scalar_multiplication(&all->camera.dir_y, -1, &tmp), &all->camera.viewpoint);
+		{
+			start = 1;
+			add_vectors(&all->camera.viewpoint, scalar_multiplication(&all->camera.dir_y, -1, &tmp), &all->camera.viewpoint);
+		}
 	if (lib->_windows->event.key['n'])
 	{
 		all->camera.fov += (all->camera.fov < 179);
@@ -70,7 +92,18 @@ void	event_key_press(t_tri_lib *lib, void *a)
 		else
 			all->canvas.size_y = all->canvas.size_x * (all->win_height / all->win_width);
 	}
-	start_rays((t_all *)a);
+	if (refresh > 5)
+	{
+		refresh = 0;
+		if (start)
+		{
+			clock_t start = clock();
+			start_rays((t_all *)a);
+			clock_t end = clock();
+			float seconds = (float)(end - start) / CLOCKS_PER_SEC;
+			printf("rays sent in %f\n", seconds);
+		}
+	}
 	if (lib->event && lib->event->key_id == 'q' && lib->event->key[KEY_BACKSPACE])
 		lib->quit();
 }
@@ -117,7 +150,6 @@ int	main(int argc, char **argv)
     // mlx_hook(win, 5, 1L << 3, mouse, NULL); //release
 
 	start_rays(all);
-	tri_lib()->draw_windows();
 	tri_lib()->loop(looped, all);
 	return (0);
 }

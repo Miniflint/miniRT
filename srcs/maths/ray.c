@@ -47,7 +47,7 @@ void	IntersectRaySphere(t_vec *D, t_vec *O, t_sphere *sphere, double *t1, double
 }
 
 
-unsigned int	traceray(t_vec *ray, t_all *all)
+unsigned int	traceray(t_vec *ray, t_all *all, double color_no_hit)
 {
 	double		t1, t2;
 	t_sphere	*sphere;
@@ -61,38 +61,35 @@ unsigned int	traceray(t_vec *ray, t_all *all)
 	while (sphere)
 	{
 		IntersectRaySphere(ray, &all->camera.viewpoint, sphere, &t1, &t2);
-		if (!isinf(t1) && t1 < closest_t && t1 > 0.1)
+		if (!isinf(t1) && t1 < closest_t && t1 > 1)
 		{
 			closest_t = t1;
 			closest = sphere;
 		}
-		if (!isinf(t2) && t2 < closest_t && t2 > 0.1)
+		if (!isinf(t2) && t2 < closest_t && t2 > 1)
 		{
 			closest_t = t2;
 			closest = sphere;
 		}
 		sphere = sphere->next;
 	}
-	argb = 0xFF000000;
 	if (!isinf(closest_t))
 	{
+		argb = 0xFF000000;
 		argb += closest->rgb.r << 16;
 		argb += closest->rgb.g << 8;
 		argb += closest->rgb.b;
+		return (argb);
 	}
-	return (argb);
+	return (color_no_hit);
 }
 
 void start_rays(t_all *all)
 {
 	int i;
 	int j;
-	int i_start;
-	int j_start;
-	const int tmp = 10;
+	const int tmp = 1;
 	double pix_x;
-	double pix_x_base;
-	double pix_y_base;
 	double pix_y;
 	t_vec	ray;
 	t_vec	dir_x;
@@ -100,35 +97,26 @@ void start_rays(t_all *all)
 	t_tri_lib *lib;
 	double	unit;
 	unsigned int color;
+	unsigned int color_mixed;
 
 	lib = tri_lib();
 	unit = all->canvas.size_y / (double)all->win_width;
 	make_perpendicular(&(all->camera));
-	//line motif
-	j_start = 0;
-	while (j_start < tmp)
-	{
-	//column motif
-	i_start = 0;
-	while (i_start < tmp)
-	{
-	//motif square space
-	i = i_start;
-	pix_y_base = -((all->win_height / 2) * unit);
-	pix_x_base = -((all->win_width >> 1) * unit);
-	pix_y = pix_y_base + i * unit;
+	i = 0;
+	pix_y = -((all->win_height >> 1) * unit);
 	while (i < all->win_height)
 	{
-		j = j_start;
+		j = 0;
+		color_mixed = mix_colors_normal_u_no_a((t_argb){1 - (i * ((double)1 / all->win_height)), 0x00, 0x00, 0x00}, unsigned_to_argb(0x007799FF));
 		scalar_multiplication(&all->camera.dir_y, pix_y, &dir_y);
-		pix_x = pix_x_base + j * unit;
+		pix_x = -((all->win_width >> 1) * unit);
 		while (j < all->win_width)
 		{
 			scalar_multiplication(&all->camera.dir_x, pix_x, &dir_x);
 			add_vectors(&all->camera.dir, &dir_x, &ray);
 			add_vectors(&ray, &dir_y, &ray);
-			color = traceray(&ray, all);
-			lib->replace_pixel_on_window(lib->_windows, color, j, i);
+			color = traceray(&ray, all, color_mixed);
+			_replace_pixel_on_render(&lib->_windows->_base_render._render, color, j, i);
 			j += tmp;
 			pix_x += unit * tmp;
 		}
@@ -136,12 +124,43 @@ void start_rays(t_all *all)
 		i += tmp;
 	}
 	lib->draw_windows();
-	//end motif square space
-	i_start++;
-	}
-	//end column motif
-	j_start++;
-	}
-	//end line motif
-
 }
+	//while (j_start < tmp)
+	//{
+	////column motif
+	//i_start = 0;
+	//while (i_start < tmp)
+	//{
+	////motif square space
+	//i = i_start;
+	//pix_y_base = -((all->win_height >> 1) * unit);
+	//pix_x_base = -((all->win_width >> 1) * unit);
+	//pix_y = pix_y_base + i * unit;
+	//while (i < all->win_height)
+	//{
+	//	j = j_start;
+	//	scalar_multiplication(&all->camera.dir_y, pix_y, &dir_y);
+	//	pix_x = pix_x_base + j * unit;
+	//	while (j < all->win_width)
+	//	{
+	//		scalar_multiplication(&all->camera.dir_x, pix_x, &dir_x);
+	//		add_vectors(&all->camera.dir, &dir_x, &ray);
+	//		add_vectors(&ray, &dir_y, &ray);
+	//		color = traceray(&ray, all);
+	//		lib->replace_pixel_on_window(lib->_windows, color, j, i);
+	//		j += tmp;
+	//		pix_x += unit * tmp;
+	//	}
+	//	pix_y += unit * tmp;
+	//	i += tmp;
+	//}
+	////end motif square space
+	//i_start++;
+	//}
+	////end column motif
+	//lib->draw_windows();
+	//j_start++;
+	//}
+	////end line motif
+//
+//}
