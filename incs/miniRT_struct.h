@@ -38,11 +38,22 @@ typedef enum E_obj_type
 	CYLINDER
 }	t_obj_type;
 
+typedef struct S_ray
+{
+	t_coord	start;
+	t_vec	dir;
+	t_argb	color;
+}	t_ray;
+
 typedef struct S_Canvas
 {
 	double	size_x;
 	double	size_y;
-	t_vec	*vecs; // possiblement non-utiliser
+	double	unit;
+	char	pixel_values;
+	double	pix_x[WIN_HEIGHT_ALL];
+	double	pix_y[WIN_WIDTH_ALL];
+	t_ray	rays[WIN_HEIGHT_ALL][WIN_WIDTH_ALL];
 }	t_canvas;	
 
 #endif

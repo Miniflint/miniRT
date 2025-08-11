@@ -18,6 +18,7 @@
 # ifndef WIN_HEIGHT_ALL
 #  define WIN_HEIGHT_ALL 800
 # endif
+# include "tri_lib.h"
 # include "miniRT_struct.h"
 # include "miniRT_planes.h"
 # include "miniRT_objs.h"
@@ -128,5 +129,13 @@ t_vec	*norm_vectors(t_vec *a, double magnitude, t_vec *c);
 double	dot_product(t_vec *a, t_vec *b);
 double	get_angle(t_vec *a, t_vec *b, double mag_a, double mag_b);
 t_vec	*cross_product(t_vec *a, t_vec *b, t_vec *c);
+
+t_argb		traceray(t_ray *ray, t_all *all, t_argb color_no_hit);
+void			IntersectRaySphere(t_vec *D, t_vec *O, t_sphere *sphere,
+					double *t1, double *t2);
+void			make_perpendicular(t_cam *cam);
+void			cal_fov(t_all *all);
+void			cal_rays(t_all *all);
+void			init_start_ray(t_all *all);
 
 #endif

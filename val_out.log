@@ -1,645 +1,151 @@
-==889610== Memcheck, a memory error detector
-==889610== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
-==889610== Using Valgrind-3.18.1-42b08ed5bd-20211015 and LibVEX; rerun with -h for copyright info
-==889610== Command: ./miniRT maps/map.rt
-==889610== Parent PID: 833572
-==889610== 
---889610-- 
---889610-- Valgrind options:
---889610--    --leak-check=full
---889610--    --show-leak-kinds=all
---889610--    --track-origins=yes
---889610--    --verbose
---889610--    --log-file=val_out.log
---889610-- Contents of /proc/version:
---889610--   Linux version 6.6.72-x64v3-t2-jammy-xanmod1 (root@fv-az1245-313) (gcc (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0, GNU ld (GNU Binutils for Ubuntu) 2.38) #xanmod1 SMP PREEMPT_DYNAMIC Sat Jan 18 01:41:53 UTC 2025
---889610-- 
---889610-- Arch and hwcaps: AMD64, LittleEndian, amd64-cx16-lzcnt-rdtscp-sse3-ssse3-avx-avx2-bmi-f16c-rdrand-rdseed
---889610-- Page sizes: currently 4096, max supported 4096
---889610-- Valgrind library directory: /usr/libexec/valgrind
---889610-- Reading syms from /home/trgoel/Documents/cursus/miniRT/miniRT
---889610-- Reading syms from /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2
---889610--   Considering /usr/lib/debug/.build-id/9c/b53985768bb99f138f48655f7b8bf7e420d13d.debug ..
---889610--   .. build-id is valid
---889610-- Reading syms from /usr/libexec/valgrind/memcheck-amd64-linux
---889610--    object doesn't have a symbol table
---889610--    object doesn't have a dynamic symbol table
---889610-- Scheduler: using generic scheduler lock implementation.
---889610-- Reading suppressions file: /usr/libexec/valgrind/default.supp
-==889610== embedded gdbserver: reading from /tmp/vgdb-pipe-from-vgdb-to-889610-by-trgoel-on-???
-==889610== embedded gdbserver: writing to   /tmp/vgdb-pipe-to-vgdb-from-889610-by-trgoel-on-???
-==889610== embedded gdbserver: shared mem   /tmp/vgdb-pipe-shared-mem-vgdb-889610-by-trgoel-on-???
-==889610== 
-==889610== TO CONTROL THIS PROCESS USING vgdb (which you probably
-==889610== don't want to do, unless you know exactly what you're doing,
-==889610== or are doing some strange experiment):
-==889610==   /usr/bin/vgdb --pid=889610 ...command...
-==889610== 
-==889610== TO DEBUG THIS PROCESS USING GDB: start GDB like this
-==889610==   /path/to/gdb ./miniRT
-==889610== and then give GDB the following command
-==889610==   target remote | /usr/bin/vgdb --pid=889610
-==889610== --pid is optional if only one valgrind process is running
-==889610== 
---889610-- REDIR: 0x402aa40 (ld-linux-x86-64.so.2:strlen) redirected to 0x580bcec2 (???)
---889610-- REDIR: 0x402a810 (ld-linux-x86-64.so.2:index) redirected to 0x580bcedc (???)
---889610-- Reading syms from /usr/libexec/valgrind/vgpreload_core-amd64-linux.so
---889610--    object doesn't have a symbol table
---889610-- Reading syms from /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so
---889610--    object doesn't have a symbol table
-==889610== WARNING: new redirection conflicts with existing -- ignoring it
---889610--     old: 0x0402aa40 (strlen              ) R-> (0000.0) 0x580bcec2 ???
---889610--     new: 0x0402aa40 (strlen              ) R-> (2007.0) 0x0484ee30 strlen
---889610-- REDIR: 0x4027220 (ld-linux-x86-64.so.2:strcmp) redirected to 0x484fcd0 (strcmp)
---889610-- REDIR: 0x402afa0 (ld-linux-x86-64.so.2:mempcpy) redirected to 0x4853840 (mempcpy)
---889610-- Reading syms from /usr/lib/x86_64-linux-gnu/libXext.so.6.4.0
---889610--    object doesn't have a symbol table
---889610-- Reading syms from /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0
---889610--    object doesn't have a symbol table
---889610-- Reading syms from /usr/lib/x86_64-linux-gnu/libm.so.6
---889610--   Considering /usr/lib/debug/.build-id/a3/ad9bb40b4907e509e4404cb972645c19675ca3.debug ..
---889610--   .. build-id is valid
---889610-- Reading syms from /usr/lib/x86_64-linux-gnu/libc.so.6
---889610--   Considering /usr/lib/debug/.build-id/d5/197096f709801829b118af1b7cf6631efa2dcd.debug ..
---889610--   .. build-id is valid
-==889610== WARNING: new redirection conflicts with existing -- ignoring it
---889610--     old: 0x04b55c60 (memalign            ) R-> (1011.0) 0x0484e080 memalign
---889610--     new: 0x04b55c60 (memalign            ) R-> (1017.0) 0x0484e050 aligned_alloc
-==889610== WARNING: new redirection conflicts with existing -- ignoring it
---889610--     old: 0x04b55c60 (memalign            ) R-> (1011.0) 0x0484e080 memalign
---889610--     new: 0x04b55c60 (memalign            ) R-> (1017.0) 0x0484e020 aligned_alloc
-==889610== WARNING: new redirection conflicts with existing -- ignoring it
---889610--     old: 0x04b55c60 (memalign            ) R-> (1011.0) 0x0484e080 memalign
---889610--     new: 0x04b55c60 (memalign            ) R-> (1017.0) 0x0484e050 aligned_alloc
-==889610== WARNING: new redirection conflicts with existing -- ignoring it
---889610--     old: 0x04b55c60 (memalign            ) R-> (1011.0) 0x0484e080 memalign
---889610--     new: 0x04b55c60 (memalign            ) R-> (1017.0) 0x0484e020 aligned_alloc
---889610-- Reading syms from /usr/lib/x86_64-linux-gnu/libxcb.so.1.1.0
---889610--    object doesn't have a symbol table
---889610-- Reading syms from /usr/lib/x86_64-linux-gnu/libXau.so.6.0.0
---889610--    object doesn't have a symbol table
---889610-- Reading syms from /usr/lib/x86_64-linux-gnu/libXdmcp.so.6.0.0
---889610--    object doesn't have a symbol table
---889610-- Reading syms from /usr/lib/x86_64-linux-gnu/libbsd.so.0.11.5
---889610--    object doesn't have a symbol table
---889610-- Reading syms from /usr/lib/x86_64-linux-gnu/libmd.so.0.0.5
---889610--    object doesn't have a symbol table
---889610-- REDIR: 0x4b58720 (libc.so.6:strnlen) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
---889610-- REDIR: 0x4b589e0 (libc.so.6:strpbrk) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
---889610-- REDIR: 0x4b582e0 (libc.so.6:strcmp) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
---889610-- REDIR: 0x4b76cd0 (libc.so.6:wcsnlen) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
---889610-- REDIR: 0x4b596d0 (libc.so.6:memset) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
---889610-- REDIR: 0x4b75540 (libc.so.6:wcslen) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
---889610-- REDIR: 0x4b59c10 (libc.so.6:memcpy@@GLIBC_2.14) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
---889610-- REDIR: 0x4b75370 (libc.so.6:wcschr) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
---889610-- REDIR: 0x4b58260 (libc.so.6:index) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
---889610-- REDIR: 0x4b58960 (libc.so.6:rindex) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
---889610-- REDIR: 0x4b595a0 (libc.so.6:memmove) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
-==889610== Preferring higher priority redirection:
---889610--     old: 0x04c507c0 (__memcpy_avx_unalign) R-> (2018.0) 0x04850f90 __memcpy_avx_unaligned_erms
---889610--     new: 0x04c507c0 (__memcpy_avx_unalign) R-> (2018.1) 0x04852880 memmove
---889610-- REDIR: 0x4b753f0 (libc.so.6:wcscmp) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
---889610-- REDIR: 0x4b599e0 (libc.so.6:stpncpy) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
---889610-- REDIR: 0x4b759b0 (libc.so.6:wmemchr) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
---889610-- REDIR: 0x4b58830 (libc.so.6:strncmp) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
---889610-- REDIR: 0x4b59a70 (libc.so.6:strcasecmp) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
---889610-- REDIR: 0x4b58420 (libc.so.6:strcspn) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
---889610-- REDIR: 0x4b75470 (libc.so.6:wcscpy) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
---889610-- REDIR: 0x4b581d0 (libc.so.6:strcat) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
---889610-- REDIR: 0x4b59b60 (libc.so.6:strncasecmp_l) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
---889610-- REDIR: 0x4b59480 (libc.so.6:bcmp) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
---889610-- REDIR: 0x4b61570 (libc.so.6:memrchr) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
---889610-- REDIR: 0x4b5b010 (libc.so.6:strchrnul) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
---889610-- REDIR: 0x4b58390 (libc.so.6:strcpy) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
---889610-- REDIR: 0x4b59b10 (libc.so.6:strcasecmp_l) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
---889610-- REDIR: 0x4b586a0 (libc.so.6:strlen) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
---889610-- REDIR: 0x4b588d0 (libc.so.6:strncpy) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
---889610-- REDIR: 0x4b59950 (libc.so.6:stpcpy) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
---889610-- REDIR: 0x4b593f0 (libc.so.6:memchr) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
---889610-- REDIR: 0x4b58b00 (libc.so.6:strspn) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
---889610-- REDIR: 0x4b597d0 (libc.so.6:mempcpy) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
---889610-- REDIR: 0x4b59ac0 (libc.so.6:strncasecmp) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
---889610-- REDIR: 0x4b5af80 (libc.so.6:rawmemchr) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
---889610-- REDIR: 0x4c4d610 (libc.so.6:__strrchr_avx2) redirected to 0x484e810 (rindex)
---889610-- REDIR: 0x4b550a0 (libc.so.6:malloc) redirected to 0x4848820 (malloc)
---889610-- REDIR: 0x4b553e0 (libc.so.6:free) redirected to 0x484b210 (free)
---889610-- REDIR: 0x4c4d7e0 (libc.so.6:__strlen_avx2) redirected to 0x484ed10 (strlen)
---889610-- REDIR: 0x4c4d400 (libc.so.6:__strchrnul_avx2) redirected to 0x4853330 (strchrnul)
---889610-- REDIR: 0x4c50780 (libc.so.6:__mempcpy_avx_unaligned_erms) redirected to 0x4853440 (mempcpy)
---889610-- REDIR: 0x4c507c0 (libc.so.6:__memcpy_avx_unaligned_erms) redirected to 0x4852880 (memmove)
---889610-- REDIR: 0x4c48d80 (libc.so.6:__strncmp_avx2) redirected to 0x484f3e0 (strncmp)
---889610-- REDIR: 0x4b56520 (libc.so.6:calloc) redirected to 0x484d9d0 (calloc)
---889610-- REDIR: 0x4be47e0 (libc.so.6:__strcpy_chk) redirected to 0x48533a0 (__strcpy_chk)
---889610-- REDIR: 0x4b58fc0 (libc.so.6:__GI_strstr) redirected to 0x4853ae0 (__strstr_sse2)
---889610-- REDIR: 0x4c49a80 (libc.so.6:__memcmp_avx2_movbe) redirected to 0x4852010 (bcmp)
---889610-- REDIR: 0x4c50f80 (libc.so.6:__memset_avx2_unaligned_erms) redirected to 0x4852770 (memset)
---889610-- REDIR: 0x4b55740 (libc.so.6:realloc) redirected to 0x484dc50 (realloc)
---889610-- REDIR: 0x4c4f040 (libc.so.6:__strncpy_avx2) redirected to 0x484efe0 (strncpy)
---889610-- REDIR: 0x4c48940 (libc.so.6:__strcmp_avx2) redirected to 0x484fbd0 (strcmp)
---889610-- REDIR: 0x4c4ecb0 (libc.so.6:__strcpy_avx2) redirected to 0x484ee60 (strcpy)
-==889610== 
-==889610== Process terminating with default action of signal 2 (SIGINT)
-==889610==    at 0x11279C: IntersectRaySphere (ray.c:34)
-==889610==    by 0x112967: traceray (ray.c:63)
-==889610==    by 0x112C5E: start_rays (ray.c:119)
-==889610==    by 0x10AED2: event_key_press (main.c:73)
-==889610==    by 0x10AF57: looped (main.c:81)
-==889610==    by 0x1121B8: _get_mouse_move (tri_mouse.c:60)
-==889610==    by 0x113365: mlx_loop (in /home/trgoel/Documents/cursus/miniRT/miniRT)
-==889610==    by 0x111692: _main_loop (tri_loop.c:63)
-==889610==    by 0x10B102: main (main.c:121)
-==889610== 
-==889610== HEAP SUMMARY:
-==889610==     in use at exit: 323,178 bytes in 1,188 blocks
-==889610==   total heap usage: 3,724 allocs, 2,536 frees, 492,276 bytes allocated
-==889610== 
-==889610== Searching for pointers to 1,188 not-freed blocks
-==889610== Checked 8,750,104 bytes
-==889610== 
-==889610== 3 bytes in 1 blocks are still reachable in loss record 1 of 52
-==889610==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==889610==    by 0x4B5858E: strdup (strdup.c:42)
-==889610==    by 0x48B8B45: XOpenDisplay (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==889610==    by 0x112F67: mlx_init (in /home/trgoel/Documents/cursus/miniRT/miniRT)
-==889610==    by 0x11109B: _init_tri_lib (tri_init.c:22)
-==889610==    by 0x10B07C: main (main.c:111)
-==889610== 
-==889610== 8 bytes in 1 blocks are still reachable in loss record 2 of 52
-==889610==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==889610==    by 0x4B5858E: strdup (strdup.c:42)
-==889610==    by 0x48B59AE: XInitExtension (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==889610==    by 0x487A820: XextAddDisplay (in /usr/lib/x86_64-linux-gnu/libXext.so.6.4.0)
-==889610==    by 0x487F9E2: XShmQueryVersion (in /usr/lib/x86_64-linux-gnu/libXext.so.6.4.0)
-==889610==    by 0x112D93: mlx_int_deal_shm (in /home/trgoel/Documents/cursus/miniRT/miniRT)
-==889610==    by 0x113021: mlx_init (in /home/trgoel/Documents/cursus/miniRT/miniRT)
-==889610==    by 0x11109B: _init_tri_lib (tri_init.c:22)
-==889610==    by 0x10B07C: main (main.c:111)
-==889610== 
-==889610== 8 bytes in 1 blocks are still reachable in loss record 3 of 52
-==889610==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==889610==    by 0x4878B34: ??? (in /usr/lib/x86_64-linux-gnu/libXext.so.6.4.0)
-==889610==    by 0x487A9DF: XextAddDisplay (in /usr/lib/x86_64-linux-gnu/libXext.so.6.4.0)
-==889610==    by 0x487F9E2: XShmQueryVersion (in /usr/lib/x86_64-linux-gnu/libXext.so.6.4.0)
-==889610==    by 0x112D93: mlx_int_deal_shm (in /home/trgoel/Documents/cursus/miniRT/miniRT)
-==889610==    by 0x113021: mlx_init (in /home/trgoel/Documents/cursus/miniRT/miniRT)
-==889610==    by 0x11109B: _init_tri_lib (tri_init.c:22)
-==889610==    by 0x10B07C: main (main.c:111)
-==889610== 
-==889610== 10 bytes in 1 blocks are still reachable in loss record 4 of 52
-==889610==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==889610==    by 0x4B5858E: strdup (strdup.c:42)
-==889610==    by 0x48B59AE: XInitExtension (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==889610==    by 0x491F213: XkbUseExtension (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==889610==    by 0x48B96A8: XOpenDisplay (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==889610==    by 0x112F67: mlx_init (in /home/trgoel/Documents/cursus/miniRT/miniRT)
-==889610==    by 0x11109B: _init_tri_lib (tri_init.c:22)
-==889610==    by 0x10B07C: main (main.c:111)
-==889610== 
-==889610== 16 bytes in 1 blocks are still reachable in loss record 5 of 52
-==889610==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==889610==    by 0x4CEA2EE: xcb_connect_to_fd (in /usr/lib/x86_64-linux-gnu/libxcb.so.1.1.0)
-==889610==    by 0x4CEAE6B: xcb_connect_to_display_with_auth_info (in /usr/lib/x86_64-linux-gnu/libxcb.so.1.1.0)
-==889610==    by 0x48C8EE9: _XConnectXCB (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==889610==    by 0x48B8B68: XOpenDisplay (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==889610==    by 0x112F67: mlx_init (in /home/trgoel/Documents/cursus/miniRT/miniRT)
-==889610==    by 0x11109B: _init_tri_lib (tri_init.c:22)
-==889610==    by 0x10B07C: main (main.c:111)
-==889610== 
-==889610== 21 bytes in 1 blocks are still reachable in loss record 6 of 52
-==889610==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==889610==    by 0x48B903E: XOpenDisplay (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==889610==    by 0x112F67: mlx_init (in /home/trgoel/Documents/cursus/miniRT/miniRT)
-==889610==    by 0x11109B: _init_tri_lib (tri_init.c:22)
-==889610==    by 0x10B07C: main (main.c:111)
-==889610== 
-==889610== 24 bytes in 1 blocks are still reachable in loss record 7 of 52
-==889610==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==889610==    by 0x487A041: XextCreateExtension (in /usr/lib/x86_64-linux-gnu/libXext.so.6.4.0)
-==889610==    by 0x487A4CC: ??? (in /usr/lib/x86_64-linux-gnu/libXext.so.6.4.0)
-==889610==    by 0x487A9C8: XextAddDisplay (in /usr/lib/x86_64-linux-gnu/libXext.so.6.4.0)
-==889610==    by 0x487F9E2: XShmQueryVersion (in /usr/lib/x86_64-linux-gnu/libXext.so.6.4.0)
-==889610==    by 0x112D93: mlx_int_deal_shm (in /home/trgoel/Documents/cursus/miniRT/miniRT)
-==889610==    by 0x113021: mlx_init (in /home/trgoel/Documents/cursus/miniRT/miniRT)
-==889610==    by 0x11109B: _init_tri_lib (tri_init.c:22)
-==889610==    by 0x10B07C: main (main.c:111)
-==889610== 
-==889610== 24 bytes in 1 blocks are still reachable in loss record 8 of 52
-==889610==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==889610==    by 0x4B5858E: strdup (strdup.c:42)
-==889610==    by 0x48B59AE: XInitExtension (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==889610==    by 0x487A820: XextAddDisplay (in /usr/lib/x86_64-linux-gnu/libXext.so.6.4.0)
-==889610==    by 0x487A50A: ??? (in /usr/lib/x86_64-linux-gnu/libXext.so.6.4.0)
-==889610==    by 0x487A9C8: XextAddDisplay (in /usr/lib/x86_64-linux-gnu/libXext.so.6.4.0)
-==889610==    by 0x487F9E2: XShmQueryVersion (in /usr/lib/x86_64-linux-gnu/libXext.so.6.4.0)
-==889610==    by 0x112D93: mlx_int_deal_shm (in /home/trgoel/Documents/cursus/miniRT/miniRT)
-==889610==    by 0x113021: mlx_init (in /home/trgoel/Documents/cursus/miniRT/miniRT)
-==889610==    by 0x11109B: _init_tri_lib (tri_init.c:22)
-==889610==    by 0x10B07C: main (main.c:111)
-==889610== 
-==889610== 24 bytes in 1 blocks are still reachable in loss record 9 of 52
-==889610==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==889610==    by 0x487A9F5: XextAddDisplay (in /usr/lib/x86_64-linux-gnu/libXext.so.6.4.0)
-==889610==    by 0x487F9E2: XShmQueryVersion (in /usr/lib/x86_64-linux-gnu/libXext.so.6.4.0)
-==889610==    by 0x112D93: mlx_int_deal_shm (in /home/trgoel/Documents/cursus/miniRT/miniRT)
-==889610==    by 0x113021: mlx_init (in /home/trgoel/Documents/cursus/miniRT/miniRT)
-==889610==    by 0x11109B: _init_tri_lib (tri_init.c:22)
-==889610==    by 0x10B07C: main (main.c:111)
-==889610== 
-==889610== 29 bytes in 1 blocks are still reachable in loss record 10 of 52
-==889610==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==889610==    by 0x48B20CD: _XUpdateAtomCache (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==889610==    by 0x48B4929: XInternAtom (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==889610==    by 0x113012: mlx_init (in /home/trgoel/Documents/cursus/miniRT/miniRT)
-==889610==    by 0x11109B: _init_tri_lib (tri_init.c:22)
-==889610==    by 0x10B07C: main (main.c:111)
-==889610== 
-==889610== 32 bytes in 1 blocks are still reachable in loss record 11 of 52
-==889610==    at 0x48487A9: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==889610==    by 0x4CEE15E: ??? (in /usr/lib/x86_64-linux-gnu/libxcb.so.1.1.0)
-==889610==    by 0x4CEE237: xcb_get_extension_data (in /usr/lib/x86_64-linux-gnu/libxcb.so.1.1.0)
-==889610==    by 0x4CEE2EE: xcb_prefetch_maximum_request_length (in /usr/lib/x86_64-linux-gnu/libxcb.so.1.1.0)
-==889610==    by 0x4CEE364: xcb_get_maximum_request_length (in /usr/lib/x86_64-linux-gnu/libxcb.so.1.1.0)
-==889610==    by 0x48B952B: XOpenDisplay (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==889610==    by 0x112F67: mlx_init (in /home/trgoel/Documents/cursus/miniRT/miniRT)
-==889610==    by 0x11109B: _init_tri_lib (tri_init.c:22)
-==889610==    by 0x10B07C: main (main.c:111)
-==889610== 
-==889610== 32 bytes in 1 blocks are still reachable in loss record 12 of 52
-==889610==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==889610==    by 0x4CE71B7: ??? (in /usr/lib/x86_64-linux-gnu/libxcb.so.1.1.0)
-==889610==    by 0x4CE7A08: ??? (in /usr/lib/x86_64-linux-gnu/libxcb.so.1.1.0)
-==889610==    by 0x4CE7EB0: ??? (in /usr/lib/x86_64-linux-gnu/libxcb.so.1.1.0)
-==889610==    by 0x4CE8E44: xcb_wait_for_reply (in /usr/lib/x86_64-linux-gnu/libxcb.so.1.1.0)
-==889610==    by 0x4CEE292: xcb_get_extension_data (in /usr/lib/x86_64-linux-gnu/libxcb.so.1.1.0)
-==889610==    by 0x4CEE2EE: xcb_prefetch_maximum_request_length (in /usr/lib/x86_64-linux-gnu/libxcb.so.1.1.0)
-==889610==    by 0x4CEE364: xcb_get_maximum_request_length (in /usr/lib/x86_64-linux-gnu/libxcb.so.1.1.0)
-==889610==    by 0x48B952B: XOpenDisplay (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==889610==    by 0x112F67: mlx_init (in /home/trgoel/Documents/cursus/miniRT/miniRT)
-==889610==    by 0x11109B: _init_tri_lib (tri_init.c:22)
-==889610==    by 0x10B07C: main (main.c:111)
-==889610== 
-==889610== 32 bytes in 1 blocks are still reachable in loss record 13 of 52
-==889610==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==889610==    by 0x487A7FF: XextAddDisplay (in /usr/lib/x86_64-linux-gnu/libXext.so.6.4.0)
-==889610==    by 0x487F9E2: XShmQueryVersion (in /usr/lib/x86_64-linux-gnu/libXext.so.6.4.0)
-==889610==    by 0x112D93: mlx_int_deal_shm (in /home/trgoel/Documents/cursus/miniRT/miniRT)
-==889610==    by 0x113021: mlx_init (in /home/trgoel/Documents/cursus/miniRT/miniRT)
-==889610==    by 0x11109B: _init_tri_lib (tri_init.c:22)
-==889610==    by 0x10B07C: main (main.c:111)
-==889610== 
-==889610== 32 bytes in 1 blocks are still reachable in loss record 14 of 52
-==889610==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==889610==    by 0x487A7FF: XextAddDisplay (in /usr/lib/x86_64-linux-gnu/libXext.so.6.4.0)
-==889610==    by 0x487A50A: ??? (in /usr/lib/x86_64-linux-gnu/libXext.so.6.4.0)
-==889610==    by 0x487A9C8: XextAddDisplay (in /usr/lib/x86_64-linux-gnu/libXext.so.6.4.0)
-==889610==    by 0x487F9E2: XShmQueryVersion (in /usr/lib/x86_64-linux-gnu/libXext.so.6.4.0)
-==889610==    by 0x112D93: mlx_int_deal_shm (in /home/trgoel/Documents/cursus/miniRT/miniRT)
-==889610==    by 0x113021: mlx_init (in /home/trgoel/Documents/cursus/miniRT/miniRT)
-==889610==    by 0x11109B: _init_tri_lib (tri_init.c:22)
-==889610==    by 0x10B07C: main (main.c:111)
-==889610== 
-==889610== 33 bytes in 1 blocks are still reachable in loss record 15 of 52
-==889610==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==889610==    by 0x48B20CD: _XUpdateAtomCache (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==889610==    by 0x48B4929: XInternAtom (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==889610==    by 0x112FFB: mlx_init (in /home/trgoel/Documents/cursus/miniRT/miniRT)
-==889610==    by 0x11109B: _init_tri_lib (tri_init.c:22)
-==889610==    by 0x10B07C: main (main.c:111)
-==889610== 
-==889610== 40 bytes in 1 blocks are still reachable in loss record 16 of 52
-==889610==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==889610==    by 0x48C91F1: _XPollfdCacheInit (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==889610==    by 0x48B8E71: XOpenDisplay (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==889610==    by 0x112F67: mlx_init (in /home/trgoel/Documents/cursus/miniRT/miniRT)
-==889610==    by 0x11109B: _init_tri_lib (tri_init.c:22)
-==889610==    by 0x10B07C: main (main.c:111)
-==889610== 
-==889610== 48 bytes in 1 blocks are still reachable in loss record 17 of 52
-==889610==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==889610==    by 0x10C633: create_empty_node (nodes.c:7)
-==889610==    by 0x10EC25: get_light (scene_get_light_camera.c:49)
-==889610==    by 0x10BBD6: parse_type_scene (__init_utils.c:10)
-==889610==    by 0x10C11C: __set_values_scene (__init_utils.c:61)
-==889610==    by 0x10B4C0: __parse_file_scene (__init__.c:41)
-==889610==    by 0x10B95C: __init__ (__init__.c:125)
-==889610==    by 0x10B058: main (main.c:109)
-==889610== 
-==889610== 48 bytes in 1 blocks are still reachable in loss record 18 of 52
-==889610==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==889610==    by 0x48C8E71: _XConnectXCB (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==889610==    by 0x48B8B68: XOpenDisplay (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==889610==    by 0x112F67: mlx_init (in /home/trgoel/Documents/cursus/miniRT/miniRT)
-==889610==    by 0x11109B: _init_tri_lib (tri_init.c:22)
-==889610==    by 0x10B07C: main (main.c:111)
-==889610== 
-==889610== 48 bytes in 1 blocks are still reachable in loss record 19 of 52
-==889610==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==889610==    by 0x48C8E87: _XConnectXCB (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==889610==    by 0x48B8B68: XOpenDisplay (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==889610==    by 0x112F67: mlx_init (in /home/trgoel/Documents/cursus/miniRT/miniRT)
-==889610==    by 0x11109B: _init_tri_lib (tri_init.c:22)
-==889610==    by 0x10B07C: main (main.c:111)
-==889610== 
-==889610== 72 bytes in 1 blocks are still reachable in loss record 20 of 52
-==889610==    at 0x484DA83: calloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==889610==    by 0x48B8F20: XOpenDisplay (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==889610==    by 0x112F67: mlx_init (in /home/trgoel/Documents/cursus/miniRT/miniRT)
-==889610==    by 0x11109B: _init_tri_lib (tri_init.c:22)
-==889610==    by 0x10B07C: main (main.c:111)
-==889610== 
-==889610== 80 bytes in 1 blocks are still reachable in loss record 21 of 52
-==889610==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==889610==    by 0x10C633: create_empty_node (nodes.c:7)
-==889610==    by 0x10F192: create_cylinder (scene_get_shape.c:62)
-==889610==    by 0x10F2D2: get_cylinder (scene_get_shape.c:89)
-==889610==    by 0x10BCE7: parse_type_scene (__init_utils.c:16)
-==889610==    by 0x10C11C: __set_values_scene (__init_utils.c:61)
-==889610==    by 0x10B4C0: __parse_file_scene (__init__.c:41)
-==889610==    by 0x10B95C: __init__ (__init__.c:125)
-==889610==    by 0x10B058: main (main.c:109)
-==889610== 
-==889610== 88 bytes in 1 blocks are still reachable in loss record 22 of 52
-==889610==    at 0x484DA83: calloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==889610==    by 0x11360B: mlx_int_new_xshm_image (in /home/trgoel/Documents/cursus/miniRT/miniRT)
-==889610==    by 0x113932: mlx_new_image (in /home/trgoel/Documents/cursus/miniRT/miniRT)
-==889610==    by 0x110605: _create_base_render (tri_create_render.c:69)
-==889610==    by 0x110856: _create_window (tri_create_window.c:34)
-==889610==    by 0x10B0CC: main (main.c:114)
-==889610== 
-==889610== 112 bytes in 1 blocks are still reachable in loss record 23 of 52
-==889610==    at 0x484DA83: calloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==889610==    by 0x48C8D72: _XConnectXCB (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==889610==    by 0x48B8B68: XOpenDisplay (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==889610==    by 0x112F67: mlx_init (in /home/trgoel/Documents/cursus/miniRT/miniRT)
-==889610==    by 0x11109B: _init_tri_lib (tri_init.c:22)
-==889610==    by 0x10B07C: main (main.c:111)
-==889610== 
-==889610== 112 bytes in 1 blocks are still reachable in loss record 24 of 52
-==889610==    at 0x484DA83: calloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==889610==    by 0x48B9200: XOpenDisplay (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==889610==    by 0x112F67: mlx_init (in /home/trgoel/Documents/cursus/miniRT/miniRT)
-==889610==    by 0x11109B: _init_tri_lib (tri_init.c:22)
-==889610==    by 0x10B07C: main (main.c:111)
-==889610== 
-==889610== 128 bytes in 1 blocks are still reachable in loss record 25 of 52
-==889610==    at 0x484DA83: calloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==889610==    by 0x48B912E: XOpenDisplay (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==889610==    by 0x112F67: mlx_init (in /home/trgoel/Documents/cursus/miniRT/miniRT)
-==889610==    by 0x11109B: _init_tri_lib (tri_init.c:22)
-==889610==    by 0x10B07C: main (main.c:111)
-==889610== 
-==889610== 128 bytes in 1 blocks are still reachable in loss record 26 of 52
-==889610==    at 0x484DA83: calloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==889610==    by 0x48B599E: XInitExtension (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==889610==    by 0x491F213: XkbUseExtension (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==889610==    by 0x48B96A8: XOpenDisplay (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==889610==    by 0x112F67: mlx_init (in /home/trgoel/Documents/cursus/miniRT/miniRT)
-==889610==    by 0x11109B: _init_tri_lib (tri_init.c:22)
-==889610==    by 0x10B07C: main (main.c:111)
-==889610== 
-==889610== 128 bytes in 1 blocks are still reachable in loss record 27 of 52
-==889610==    at 0x484DA83: calloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==889610==    by 0x48B599E: XInitExtension (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==889610==    by 0x487A820: XextAddDisplay (in /usr/lib/x86_64-linux-gnu/libXext.so.6.4.0)
-==889610==    by 0x487F9E2: XShmQueryVersion (in /usr/lib/x86_64-linux-gnu/libXext.so.6.4.0)
-==889610==    by 0x112D93: mlx_int_deal_shm (in /home/trgoel/Documents/cursus/miniRT/miniRT)
-==889610==    by 0x113021: mlx_init (in /home/trgoel/Documents/cursus/miniRT/miniRT)
-==889610==    by 0x11109B: _init_tri_lib (tri_init.c:22)
-==889610==    by 0x10B07C: main (main.c:111)
-==889610== 
-==889610== 128 bytes in 1 blocks are still reachable in loss record 28 of 52
-==889610==    at 0x484DA83: calloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==889610==    by 0x48B599E: XInitExtension (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==889610==    by 0x487A820: XextAddDisplay (in /usr/lib/x86_64-linux-gnu/libXext.so.6.4.0)
-==889610==    by 0x487A50A: ??? (in /usr/lib/x86_64-linux-gnu/libXext.so.6.4.0)
-==889610==    by 0x487A9C8: XextAddDisplay (in /usr/lib/x86_64-linux-gnu/libXext.so.6.4.0)
-==889610==    by 0x487F9E2: XShmQueryVersion (in /usr/lib/x86_64-linux-gnu/libXext.so.6.4.0)
-==889610==    by 0x112D93: mlx_int_deal_shm (in /home/trgoel/Documents/cursus/miniRT/miniRT)
-==889610==    by 0x113021: mlx_init (in /home/trgoel/Documents/cursus/miniRT/miniRT)
-==889610==    by 0x11109B: _init_tri_lib (tri_init.c:22)
-==889610==    by 0x10B07C: main (main.c:111)
-==889610== 
-==889610== 136 bytes in 1 blocks are still reachable in loss record 29 of 52
-==889610==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==889610==    by 0x112F4F: mlx_init (in /home/trgoel/Documents/cursus/miniRT/miniRT)
-==889610==    by 0x11109B: _init_tri_lib (tri_init.c:22)
-==889610==    by 0x10B07C: main (main.c:111)
-==889610== 
-==889610== 136 bytes in 1 blocks are still reachable in loss record 30 of 52
-==889610==    at 0x484DA83: calloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==889610==    by 0x48790C3: XShmCreateImage (in /usr/lib/x86_64-linux-gnu/libXext.so.6.4.0)
-==889610==    by 0x113636: mlx_int_new_xshm_image (in /home/trgoel/Documents/cursus/miniRT/miniRT)
-==889610==    by 0x113932: mlx_new_image (in /home/trgoel/Documents/cursus/miniRT/miniRT)
-==889610==    by 0x110605: _create_base_render (tri_create_render.c:69)
-==889610==    by 0x110856: _create_window (tri_create_window.c:34)
-==889610==    by 0x10B0CC: main (main.c:114)
-==889610== 
-==889610== 150 bytes in 1 blocks are still reachable in loss record 31 of 52
-==889610==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==889610==    by 0x48B9710: XOpenDisplay (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==889610==    by 0x112F67: mlx_init (in /home/trgoel/Documents/cursus/miniRT/miniRT)
-==889610==    by 0x11109B: _init_tri_lib (tri_init.c:22)
-==889610==    by 0x10B07C: main (main.c:111)
-==889610== 
-==889610== 152 bytes in 1 blocks are still reachable in loss record 32 of 52
-==889610==    at 0x484DA83: calloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==889610==    by 0x491F40E: XkbUseExtension (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==889610==    by 0x48B96A8: XOpenDisplay (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==889610==    by 0x112F67: mlx_init (in /home/trgoel/Documents/cursus/miniRT/miniRT)
-==889610==    by 0x11109B: _init_tri_lib (tri_init.c:22)
-==889610==    by 0x10B07C: main (main.c:111)
-==889610== 
-==889610== 160 bytes in 1 blocks are still reachable in loss record 33 of 52
-==889610==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==889610==    by 0x48A79EF: XCreateGC (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==889610==    by 0x48B95A4: XOpenDisplay (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==889610==    by 0x112F67: mlx_init (in /home/trgoel/Documents/cursus/miniRT/miniRT)
-==889610==    by 0x11109B: _init_tri_lib (tri_init.c:22)
-==889610==    by 0x10B07C: main (main.c:111)
-==889610== 
-==889610== 160 bytes in 1 blocks are still reachable in loss record 34 of 52
-==889610==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==889610==    by 0x48A79EF: XCreateGC (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==889610==    by 0x11319E: mlx_new_window (in /home/trgoel/Documents/cursus/miniRT/miniRT)
-==889610==    by 0x110815: _create_window (tri_create_window.c:31)
-==889610==    by 0x10B0CC: main (main.c:114)
-==889610== 
-==889610== 168 bytes in 1 blocks are still reachable in loss record 35 of 52
-==889610==    at 0x484DA83: calloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==889610==    by 0x48B90B2: XOpenDisplay (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==889610==    by 0x112F67: mlx_init (in /home/trgoel/Documents/cursus/miniRT/miniRT)
-==889610==    by 0x11109B: _init_tri_lib (tri_init.c:22)
-==889610==    by 0x10B07C: main (main.c:111)
-==889610== 
-==889610== 208 bytes in 1 blocks are still reachable in loss record 36 of 52
-==889610==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==889610==    by 0x4878AE9: ??? (in /usr/lib/x86_64-linux-gnu/libXext.so.6.4.0)
-==889610==    by 0x487A9DF: XextAddDisplay (in /usr/lib/x86_64-linux-gnu/libXext.so.6.4.0)
-==889610==    by 0x487F9E2: XShmQueryVersion (in /usr/lib/x86_64-linux-gnu/libXext.so.6.4.0)
-==889610==    by 0x112D93: mlx_int_deal_shm (in /home/trgoel/Documents/cursus/miniRT/miniRT)
-==889610==    by 0x113021: mlx_init (in /home/trgoel/Documents/cursus/miniRT/miniRT)
-==889610==    by 0x11109B: _init_tri_lib (tri_init.c:22)
-==889610==    by 0x10B07C: main (main.c:111)
-==889610== 
-==889610== 208 bytes in 1 blocks are still reachable in loss record 37 of 52
-==889610==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==889610==    by 0x48CAFAE: _XEnq (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==889610==    by 0x48CDBB6: ??? (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==889610==    by 0x48CEEC0: _XReadEvents (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==889610==    by 0x48CF205: XWindowEvent (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==889610==    by 0x1134A5: mlx_int_wait_first_expose (in /home/trgoel/Documents/cursus/miniRT/miniRT)
-==889610==    by 0x1131DE: mlx_new_window (in /home/trgoel/Documents/cursus/miniRT/miniRT)
-==889610==    by 0x110815: _create_window (tri_create_window.c:31)
-==889610==    by 0x10B0CC: main (main.c:114)
-==889610== 
-==889610== 208 bytes in 1 blocks are still reachable in loss record 38 of 52
-==889610==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==889610==    by 0x48CAFAE: _XEnq (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==889610==    by 0x48CDBB6: ??? (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==889610==    by 0x48CEEC0: _XReadEvents (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==889610==    by 0x48CF1D0: XWindowEvent (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==889610==    by 0x1134A5: mlx_int_wait_first_expose (in /home/trgoel/Documents/cursus/miniRT/miniRT)
-==889610==    by 0x1131DE: mlx_new_window (in /home/trgoel/Documents/cursus/miniRT/miniRT)
-==889610==    by 0x110815: _create_window (tri_create_window.c:31)
-==889610==    by 0x10B0CC: main (main.c:114)
-==889610== 
-==889610== 312 bytes in 1 blocks are still reachable in loss record 39 of 52
-==889610==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==889610==    by 0x110799: _create_window (tri_create_window.c:23)
-==889610==    by 0x10B0CC: main (main.c:114)
-==889610== 
-==889610== 512 bytes in 1 blocks are still reachable in loss record 40 of 52
-==889610==    at 0x484DA83: calloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==889610==    by 0x48B446A: ??? (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==889610==    by 0x48B484E: XInternAtom (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==889610==    by 0x112FFB: mlx_init (in /home/trgoel/Documents/cursus/miniRT/miniRT)
-==889610==    by 0x11109B: _init_tri_lib (tri_init.c:22)
-==889610==    by 0x10B07C: main (main.c:111)
-==889610== 
-==889610== 640 bytes in 16 blocks are still reachable in loss record 41 of 52
-==889610==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==889610==    by 0x10C633: create_empty_node (nodes.c:7)
-==889610==    by 0x10EE06: get_sphere (scene_get_shape.c:7)
-==889610==    by 0x10BC31: parse_type_scene (__init_utils.c:12)
-==889610==    by 0x10C11C: __set_values_scene (__init_utils.c:61)
-==889610==    by 0x10B4C0: __parse_file_scene (__init__.c:41)
-==889610==    by 0x10B95C: __init__ (__init__.c:125)
-==889610==    by 0x10B058: main (main.c:109)
-==889610== 
-==889610== 832 bytes in 4 blocks are still reachable in loss record 42 of 52
-==889610==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==889610==    by 0x48CAFAE: _XEnq (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==889610==    by 0x48CDBB6: ??? (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==889610==    by 0x48CF40C: _XReply (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==889610==    by 0x48CF77E: XSync (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==889610==    by 0x113700: mlx_int_new_xshm_image (in /home/trgoel/Documents/cursus/miniRT/miniRT)
-==889610==    by 0x113932: mlx_new_image (in /home/trgoel/Documents/cursus/miniRT/miniRT)
-==889610==    by 0x110605: _create_base_render (tri_create_render.c:69)
-==889610==    by 0x110856: _create_window (tri_create_window.c:34)
-==889610==    by 0x10B0CC: main (main.c:114)
-==889610== 
-==889610== 936 bytes in 1 blocks are still reachable in loss record 43 of 52
-==889610==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==889610==    by 0x113100: mlx_new_window (in /home/trgoel/Documents/cursus/miniRT/miniRT)
-==889610==    by 0x110815: _create_window (tri_create_window.c:31)
-==889610==    by 0x10B0CC: main (main.c:114)
-==889610== 
-==889610== 1,024 bytes in 1 blocks are still reachable in loss record 44 of 52
-==889610==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==889610==    by 0x4B2EBA3: _IO_file_doallocate (filedoalloc.c:101)
-==889610==    by 0x4B3DCDF: _IO_doallocbuf (genops.c:347)
-==889610==    by 0x4B3CF5F: _IO_file_overflow@@GLIBC_2.2.5 (fileops.c:744)
-==889610==    by 0x4B3B6D4: _IO_new_file_xsputn (fileops.c:1243)
-==889610==    by 0x4B3B6D4: _IO_file_xsputn@@GLIBC_2.2.5 (fileops.c:1196)
-==889610==    by 0x4B30F1B: puts (ioputs.c:40)
-==889610==    by 0x10D80D: print_ac (printing.c:5)
-==889610==    by 0x10C056: print_all_structs (__init_utils.c:45)
-==889610==    by 0x10B9D9: __init__ (__init__.c:133)
-==889610==    by 0x10B058: main (main.c:109)
-==889610== 
-==889610== 1,456 bytes in 7 blocks are still reachable in loss record 45 of 52
-==889610==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==889610==    by 0x48CAFAE: _XEnq (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==889610==    by 0x48CDBB6: ??? (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==889610==    by 0x48CEF01: _XReadEvents (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==889610==    by 0x48CF1D0: XWindowEvent (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==889610==    by 0x1134A5: mlx_int_wait_first_expose (in /home/trgoel/Documents/cursus/miniRT/miniRT)
-==889610==    by 0x1131DE: mlx_new_window (in /home/trgoel/Documents/cursus/miniRT/miniRT)
-==889610==    by 0x110815: _create_window (tri_create_window.c:31)
-==889610==    by 0x10B0CC: main (main.c:114)
-==889610== 
-==889610== 2,704 bytes in 13 blocks are still reachable in loss record 46 of 52
-==889610==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==889610==    by 0x48CAFAE: _XEnq (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==889610==    by 0x48CDBB6: ??? (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==889610==    by 0x48CEF01: _XReadEvents (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==889610==    by 0x48CF205: XWindowEvent (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==889610==    by 0x1134A5: mlx_int_wait_first_expose (in /home/trgoel/Documents/cursus/miniRT/miniRT)
-==889610==    by 0x1131DE: mlx_new_window (in /home/trgoel/Documents/cursus/miniRT/miniRT)
-==889610==    by 0x110815: _create_window (tri_create_window.c:31)
-==889610==    by 0x10B0CC: main (main.c:114)
-==889610== 
-==889610== 4,704 bytes in 1 blocks are still reachable in loss record 47 of 52
-==889610==    at 0x484DA83: calloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==889610==    by 0x48B8B31: XOpenDisplay (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==889610==    by 0x112F67: mlx_init (in /home/trgoel/Documents/cursus/miniRT/miniRT)
-==889610==    by 0x11109B: _init_tri_lib (tri_init.c:22)
-==889610==    by 0x10B07C: main (main.c:111)
-==889610== 
-==889610== 12,308 bytes in 1 blocks are still reachable in loss record 48 of 52
-==889610==    at 0x484DCD3: realloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==889610==    by 0x4CEA4FB: xcb_connect_to_fd (in /usr/lib/x86_64-linux-gnu/libxcb.so.1.1.0)
-==889610==    by 0x4CEAE6B: xcb_connect_to_display_with_auth_info (in /usr/lib/x86_64-linux-gnu/libxcb.so.1.1.0)
-==889610==    by 0x48C8EE9: _XConnectXCB (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==889610==    by 0x48B8B68: XOpenDisplay (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==889610==    by 0x112F67: mlx_init (in /home/trgoel/Documents/cursus/miniRT/miniRT)
-==889610==    by 0x11109B: _init_tri_lib (tri_init.c:22)
-==889610==    by 0x10B07C: main (main.c:111)
-==889610== 
-==889610== 16,384 bytes in 1 blocks are still reachable in loss record 49 of 52
-==889610==    at 0x484DA83: calloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==889610==    by 0x48B8EBE: XOpenDisplay (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==889610==    by 0x112F67: mlx_init (in /home/trgoel/Documents/cursus/miniRT/miniRT)
-==889610==    by 0x11109B: _init_tri_lib (tri_init.c:22)
-==889610==    by 0x10B07C: main (main.c:111)
-==889610== 
-==889610== 21,168 bytes in 1 blocks are still reachable in loss record 50 of 52
-==889610==    at 0x484DA83: calloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==889610==    by 0x4CEA204: xcb_connect_to_fd (in /usr/lib/x86_64-linux-gnu/libxcb.so.1.1.0)
-==889610==    by 0x4CEAE6B: xcb_connect_to_display_with_auth_info (in /usr/lib/x86_64-linux-gnu/libxcb.so.1.1.0)
-==889610==    by 0x48C8EE9: _XConnectXCB (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==889610==    by 0x48B8B68: XOpenDisplay (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==889610==    by 0x112F67: mlx_init (in /home/trgoel/Documents/cursus/miniRT/miniRT)
-==889610==    by 0x11109B: _init_tri_lib (tri_init.c:22)
-==889610==    by 0x10B07C: main (main.c:111)
-==889610== 
-==889610== 28,224 bytes in 2 blocks are still reachable in loss record 51 of 52
-==889610==    at 0x484DA83: calloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==889610==    by 0x48B9290: XOpenDisplay (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==889610==    by 0x112F67: mlx_init (in /home/trgoel/Documents/cursus/miniRT/miniRT)
-==889610==    by 0x11109B: _init_tri_lib (tri_init.c:22)
-==889610==    by 0x10B07C: main (main.c:111)
-==889610== 
-==889610== 228,800 bytes in 1,100 blocks are still reachable in loss record 52 of 52
-==889610==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==889610==    by 0x48CAFAE: _XEnq (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==889610==    by 0x48CDBB6: ??? (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==889610==    by 0x48CDC69: _XEventsQueued (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==889610==    by 0x48A887D: XFlush (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==889610==    by 0x111EA5: _draw_window (tri_put_pixel_utils.c:194)
-==889610==    by 0x111ED2: _draw_windows (tri_put_pixel_utils.c:205)
-==889610==    by 0x112CE3: start_rays (ray.c:125)
-==889610==    by 0x10B0D8: main (main.c:119)
-==889610== 
-==889610== LEAK SUMMARY:
-==889610==    definitely lost: 0 bytes in 0 blocks
-==889610==    indirectly lost: 0 bytes in 0 blocks
-==889610==      possibly lost: 0 bytes in 0 blocks
-==889610==    still reachable: 323,178 bytes in 1,188 blocks
-==889610==         suppressed: 0 bytes in 0 blocks
-==889610== 
-==889610== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 1 from 1)
---889610-- 
---889610-- used_suppression:      1 X on SUSE11 writev uninit padding /usr/libexec/valgrind/default.supp:377
-==889610== 
-==889610== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 1 from 1)
+==752732== Memcheck, a memory error detector
+==752732== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==752732== Using Valgrind-3.18.1-42b08ed5bd-20211015 and LibVEX; rerun with -h for copyright info
+==752732== Command: ./miniRT maps/aaa.rt
+==752732== Parent PID: 726254
+==752732== 
+--752732-- 
+--752732-- Valgrind options:
+--752732--    --leak-check=full
+--752732--    --show-leak-kinds=all
+--752732--    --track-origins=yes
+--752732--    --verbose
+--752732--    --log-file=val_out.log
+--752732-- Contents of /proc/version:
+--752732--   Linux version 6.6.72-x64v3-t2-jammy-xanmod1 (root@fv-az1245-313) (gcc (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0, GNU ld (GNU Binutils for Ubuntu) 2.38) #xanmod1 SMP PREEMPT_DYNAMIC Sat Jan 18 01:41:53 UTC 2025
+--752732-- 
+--752732-- Arch and hwcaps: AMD64, LittleEndian, amd64-cx16-lzcnt-rdtscp-sse3-ssse3-avx-avx2-bmi-f16c-rdrand-rdseed
+--752732-- Page sizes: currently 4096, max supported 4096
+--752732-- Valgrind library directory: /usr/libexec/valgrind
+--752732-- Reading syms from /home/trgoel/Documents/cursus/miniRT/miniRT
+--752732-- Reading syms from /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2
+--752732--   Considering /usr/lib/debug/.build-id/9c/b53985768bb99f138f48655f7b8bf7e420d13d.debug ..
+--752732--   .. build-id is valid
+--752732-- Reading syms from /usr/libexec/valgrind/memcheck-amd64-linux
+--752732--    object doesn't have a symbol table
+--752732--    object doesn't have a dynamic symbol table
+--752732-- Scheduler: using generic scheduler lock implementation.
+--752732-- Reading suppressions file: /usr/libexec/valgrind/default.supp
+==752732== embedded gdbserver: reading from /tmp/vgdb-pipe-from-vgdb-to-752732-by-trgoel-on-???
+==752732== embedded gdbserver: writing to   /tmp/vgdb-pipe-to-vgdb-from-752732-by-trgoel-on-???
+==752732== embedded gdbserver: shared mem   /tmp/vgdb-pipe-shared-mem-vgdb-752732-by-trgoel-on-???
+==752732== 
+==752732== TO CONTROL THIS PROCESS USING vgdb (which you probably
+==752732== don't want to do, unless you know exactly what you're doing,
+==752732== or are doing some strange experiment):
+==752732==   /usr/bin/vgdb --pid=752732 ...command...
+==752732== 
+==752732== TO DEBUG THIS PROCESS USING GDB: start GDB like this
+==752732==   /path/to/gdb ./miniRT
+==752732== and then give GDB the following command
+==752732==   target remote | /usr/bin/vgdb --pid=752732
+==752732== --pid is optional if only one valgrind process is running
+==752732== 
+--752732-- REDIR: 0x402aa40 (ld-linux-x86-64.so.2:strlen) redirected to 0x580bcec2 (???)
+--752732-- REDIR: 0x402a810 (ld-linux-x86-64.so.2:index) redirected to 0x580bcedc (???)
+--752732-- Reading syms from /usr/libexec/valgrind/vgpreload_core-amd64-linux.so
+--752732--    object doesn't have a symbol table
+--752732-- Reading syms from /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so
+--752732--    object doesn't have a symbol table
+==752732== WARNING: new redirection conflicts with existing -- ignoring it
+--752732--     old: 0x0402aa40 (strlen              ) R-> (0000.0) 0x580bcec2 ???
+--752732--     new: 0x0402aa40 (strlen              ) R-> (2007.0) 0x0484ee30 strlen
+--752732-- REDIR: 0x4027220 (ld-linux-x86-64.so.2:strcmp) redirected to 0x484fcd0 (strcmp)
+--752732-- REDIR: 0x402afa0 (ld-linux-x86-64.so.2:mempcpy) redirected to 0x4853840 (mempcpy)
+--752732-- Reading syms from /usr/lib/x86_64-linux-gnu/libXext.so.6.4.0
+--752732--    object doesn't have a symbol table
+--752732-- Reading syms from /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0
+--752732--    object doesn't have a symbol table
+--752732-- Reading syms from /usr/lib/x86_64-linux-gnu/libm.so.6
+--752732--   Considering /usr/lib/debug/.build-id/a3/ad9bb40b4907e509e4404cb972645c19675ca3.debug ..
+--752732--   .. build-id is valid
+--752732-- Reading syms from /usr/lib/x86_64-linux-gnu/libc.so.6
+--752732--   Considering /usr/lib/debug/.build-id/d5/197096f709801829b118af1b7cf6631efa2dcd.debug ..
+--752732--   .. build-id is valid
+==752732== WARNING: new redirection conflicts with existing -- ignoring it
+--752732--     old: 0x04b55c60 (memalign            ) R-> (1011.0) 0x0484e080 memalign
+--752732--     new: 0x04b55c60 (memalign            ) R-> (1017.0) 0x0484e050 aligned_alloc
+==752732== WARNING: new redirection conflicts with existing -- ignoring it
+--752732--     old: 0x04b55c60 (memalign            ) R-> (1011.0) 0x0484e080 memalign
+--752732--     new: 0x04b55c60 (memalign            ) R-> (1017.0) 0x0484e020 aligned_alloc
+==752732== WARNING: new redirection conflicts with existing -- ignoring it
+--752732--     old: 0x04b55c60 (memalign            ) R-> (1011.0) 0x0484e080 memalign
+--752732--     new: 0x04b55c60 (memalign            ) R-> (1017.0) 0x0484e050 aligned_alloc
+==752732== WARNING: new redirection conflicts with existing -- ignoring it
+--752732--     old: 0x04b55c60 (memalign            ) R-> (1011.0) 0x0484e080 memalign
+--752732--     new: 0x04b55c60 (memalign            ) R-> (1017.0) 0x0484e020 aligned_alloc
+--752732-- Reading syms from /usr/lib/x86_64-linux-gnu/libxcb.so.1.1.0
+--752732--    object doesn't have a symbol table
+--752732-- Reading syms from /usr/lib/x86_64-linux-gnu/libXau.so.6.0.0
+--752732--    object doesn't have a symbol table
+--752732-- Reading syms from /usr/lib/x86_64-linux-gnu/libXdmcp.so.6.0.0
+--752732--    object doesn't have a symbol table
+--752732-- Reading syms from /usr/lib/x86_64-linux-gnu/libbsd.so.0.11.5
+--752732--    object doesn't have a symbol table
+--752732-- Reading syms from /usr/lib/x86_64-linux-gnu/libmd.so.0.0.5
+--752732--    object doesn't have a symbol table
+--752732-- REDIR: 0x4b58720 (libc.so.6:strnlen) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--752732-- REDIR: 0x4b589e0 (libc.so.6:strpbrk) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--752732-- REDIR: 0x4b582e0 (libc.so.6:strcmp) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--752732-- REDIR: 0x4b76cd0 (libc.so.6:wcsnlen) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--752732-- REDIR: 0x4b596d0 (libc.so.6:memset) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--752732-- REDIR: 0x4b75540 (libc.so.6:wcslen) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--752732-- REDIR: 0x4b59c10 (libc.so.6:memcpy@@GLIBC_2.14) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--752732-- REDIR: 0x4b75370 (libc.so.6:wcschr) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--752732-- REDIR: 0x4b58260 (libc.so.6:index) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--752732-- REDIR: 0x4b58960 (libc.so.6:rindex) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--752732-- REDIR: 0x4b595a0 (libc.so.6:memmove) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+==752732== Preferring higher priority redirection:
+--752732--     old: 0x04c507c0 (__memcpy_avx_unalign) R-> (2018.0) 0x04850f90 __memcpy_avx_unaligned_erms
+--752732--     new: 0x04c507c0 (__memcpy_avx_unalign) R-> (2018.1) 0x04852880 memmove
+--752732-- REDIR: 0x4b753f0 (libc.so.6:wcscmp) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--752732-- REDIR: 0x4b599e0 (libc.so.6:stpncpy) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--752732-- REDIR: 0x4b759b0 (libc.so.6:wmemchr) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--752732-- REDIR: 0x4b58830 (libc.so.6:strncmp) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--752732-- REDIR: 0x4b59a70 (libc.so.6:strcasecmp) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--752732-- REDIR: 0x4b58420 (libc.so.6:strcspn) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--752732-- REDIR: 0x4b75470 (libc.so.6:wcscpy) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--752732-- REDIR: 0x4b581d0 (libc.so.6:strcat) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--752732-- REDIR: 0x4b59b60 (libc.so.6:strncasecmp_l) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--752732-- REDIR: 0x4b59480 (libc.so.6:bcmp) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--752732-- REDIR: 0x4b61570 (libc.so.6:memrchr) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--752732-- REDIR: 0x4b5b010 (libc.so.6:strchrnul) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--752732-- REDIR: 0x4b58390 (libc.so.6:strcpy) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--752732-- REDIR: 0x4b59b10 (libc.so.6:strcasecmp_l) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--752732-- REDIR: 0x4b586a0 (libc.so.6:strlen) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--752732-- REDIR: 0x4b588d0 (libc.so.6:strncpy) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--752732-- REDIR: 0x4b59950 (libc.so.6:stpcpy) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--752732-- REDIR: 0x4b593f0 (libc.so.6:memchr) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--752732-- REDIR: 0x4b58b00 (libc.so.6:strspn) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--752732-- REDIR: 0x4b597d0 (libc.so.6:mempcpy) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--752732-- REDIR: 0x4b59ac0 (libc.so.6:strncasecmp) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--752732-- REDIR: 0x4b5af80 (libc.so.6:rawmemchr) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--752732-- REDIR: 0x4c4d610 (libc.so.6:__strrchr_avx2) redirected to 0x484e810 (rindex)
+--752732-- REDIR: 0x4b550a0 (libc.so.6:malloc) redirected to 0x4848820 (malloc)
+--752732-- REDIR: 0x4b553e0 (libc.so.6:free) redirected to 0x484b210 (free)
+--752732-- REDIR: 0x4c4d7e0 (libc.so.6:__strlen_avx2) redirected to 0x484ed10 (strlen)
+--752732-- REDIR: 0x4c4d400 (libc.so.6:__strchrnul_avx2) redirected to 0x4853330 (strchrnul)
+--752732-- REDIR: 0x4c50780 (libc.so.6:__mempcpy_avx_unaligned_erms) redirected to 0x4853440 (mempcpy)
+--752732-- REDIR: 0x4c507c0 (libc.so.6:__memcpy_avx_unaligned_erms) redirected to 0x4852880 (memmove)
+--752732-- REDIR: 0x4c48d80 (libc.so.6:__strncmp_avx2) redirected to 0x484f3e0 (strncmp)
+--752732-- REDIR: 0x4b56520 (libc.so.6:calloc) redirected to 0x484d9d0 (calloc)
+--752732-- REDIR: 0x4be47e0 (libc.so.6:__strcpy_chk) redirected to 0x48533a0 (__strcpy_chk)
+--752732-- REDIR: 0x4b58fc0 (libc.so.6:__GI_strstr) redirected to 0x4853ae0 (__strstr_sse2)
+--752732-- REDIR: 0x4c49a80 (libc.so.6:__memcmp_avx2_movbe) redirected to 0x4852010 (bcmp)
+--752732-- REDIR: 0x4c50f80 (libc.so.6:__memset_avx2_unaligned_erms) redirected to 0x4852770 (memset)
+--752732-- REDIR: 0x4b55740 (libc.so.6:realloc) redirected to 0x484dc50 (realloc)
+--752732-- REDIR: 0x4c4f040 (libc.so.6:__strncpy_avx2) redirected to 0x484efe0 (strncpy)
+--752732-- REDIR: 0x4c48940 (libc.so.6:__strcmp_avx2) redirected to 0x484fbd0 (strcmp)
+--752732-- REDIR: 0x4c4ecb0 (libc.so.6:__strcpy_avx2) redirected to 0x484ee60 (strcpy)
+==752732== 
+==752732== HEAP SUMMARY:
+==752732==     in use at exit: 0 bytes in 0 blocks
+==752732==   total heap usage: 559,019 allocs, 559,019 frees, 13,632,185 bytes allocated
+==752732== 
+==752732== All heap blocks were freed -- no leaks are possible
+==752732== 
+==752732== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 1 from 1)
+--752732-- 
+--752732-- used_suppression:      1 X on SUSE11 writev uninit padding /usr/libexec/valgrind/default.supp:377
+==752732== 
+==752732== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 1 from 1)

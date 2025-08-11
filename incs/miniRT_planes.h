@@ -17,7 +17,7 @@ typedef struct S_camera
 	t_vec		dir;
 	t_vec		dir_x;
 	t_vec		dir_y;
-	t_minuint	fov;
+	double		fov;
 }	t_cam;
 
 typedef struct S_light

@@ -23,6 +23,7 @@ void	ft_zeroes(t_all *all)
 	all->lights = NULL;
 	all->win_width = WIN_WIDTH_ALL;
 	all->win_height = WIN_HEIGHT_ALL;
+	all->canvas.pixel_values = 2;
 }
 
 static int	__parse_file_scene(t_all *all)
@@ -132,10 +133,8 @@ int	__init__(t_all *all, char **argv, int argc)
 		return (1);
 	print_all_structs(all);
 	norm_vectors(&all->camera.dir, vec_magnitude(&all->camera.dir), &all->camera.dir);
-	all->canvas.size_x = 2 * tan((all->camera.fov * (PI_DEFINED / 180)) / 2);
-	if (all->win_width > all->win_height)
-		all->canvas.size_y = all->canvas.size_x * (all->win_width / all->win_height);
-	else
-		all->canvas.size_y = all->canvas.size_x * (all->win_height / all->win_width);
+	make_perpendicular(&all->camera);
+	cal_fov(all);
+	cal_rays(all);
 	return (0);
 }

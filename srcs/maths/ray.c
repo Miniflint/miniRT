@@ -47,7 +47,7 @@ void	IntersectRaySphere(t_vec *D, t_vec *O, t_sphere *sphere, double *t1, double
 }
 
 
-unsigned int	traceray(t_vec *ray, t_all *all, double color_no_hit)
+t_argb	traceray(t_ray *ray, t_all *all, t_argb color_no_hit)
 {
 	double		t1, t2;
 	t_sphere	*sphere;
@@ -60,7 +60,7 @@ unsigned int	traceray(t_vec *ray, t_all *all, double color_no_hit)
 	sphere = all->spheres;
 	while (sphere)
 	{
-		IntersectRaySphere(ray, &all->camera.viewpoint, sphere, &t1, &t2);
+		IntersectRaySphere(&ray->dir, &ray->start, sphere, &t1, &t2);
 		if (!isinf(t1) && t1 < closest_t && t1 > 1)
 		{
 			closest_t = t1;
@@ -79,7 +79,7 @@ unsigned int	traceray(t_vec *ray, t_all *all, double color_no_hit)
 		argb += closest->rgb.r << 16;
 		argb += closest->rgb.g << 8;
 		argb += closest->rgb.b;
-		return (argb);
+		return (unsigned_to_argb(argb));
 	}
 	return (color_no_hit);
 }
@@ -88,40 +88,20 @@ void start_rays(t_all *all)
 {
 	int i;
 	int j;
-	const int tmp = 1;
-	double pix_x;
-	double pix_y;
-	t_vec	ray;
-	t_vec	dir_x;
-	t_vec	dir_y;
 	t_tri_lib *lib;
-	double	unit;
-	unsigned int color;
-	unsigned int color_mixed;
 
 	lib = tri_lib();
-	unit = all->canvas.size_y / (double)all->win_width;
-	make_perpendicular(&(all->camera));
 	i = 0;
-	pix_y = -((all->win_height >> 1) * unit);
 	while (i < all->win_height)
 	{
 		j = 0;
-		color_mixed = mix_colors_normal_u_no_a((t_argb){1 - (i * ((double)1 / all->win_height)), 0x00, 0x00, 0x00}, unsigned_to_argb(0x007799FF));
-		scalar_multiplication(&all->camera.dir_y, pix_y, &dir_y);
-		pix_x = -((all->win_width >> 1) * unit);
 		while (j < all->win_width)
-		{
-			scalar_multiplication(&all->camera.dir_x, pix_x, &dir_x);
-			add_vectors(&all->camera.dir, &dir_x, &ray);
-			add_vectors(&ray, &dir_y, &ray);
-			color = traceray(&ray, all, color_mixed);
-			_replace_pixel_on_render(&lib->_windows->_base_render._render, color, j, i);
-			j += tmp;
-			pix_x += unit * tmp;
+		{ 
+			all->canvas.rays[i][j].color = traceray(&all->canvas.rays[i][j], all, all->canvas.rays[i][j].color);
+			_replace_pixel_on_render(&lib->_windows->_base_render._render, argb_to_unsigned(all->canvas.rays[i][j].color), j, i);
+			j += all->canvas.pixel_values;
 		}
-		pix_y += unit * tmp;
-		i += tmp;
+		i += all->canvas.pixel_values;
 	}
 	lib->draw_windows();
 }
