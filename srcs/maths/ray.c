@@ -90,20 +90,32 @@ void start_rays(t_all *all)
 {
 	int i;
 	int j;
+	int	real_i;
+	int	real_j;
+	int	mi_pix;
 	t_tri_lib *lib;
 
 	lib = tri_lib();
-	i = 0;
-	while (i < all->win_height)
+	mi_pix = all->canvas.pixel_values / 2;
+	i = mi_pix;
+	real_i = 0;
+	while (real_i < all->win_height)
 	{
-		j = 0;
-		while (j < all->win_width)
+		real_j = 0;
+		j = mi_pix;
+		if (i >= all->win_height)
+			i = all->win_height - 1;
+		while (real_j < all->win_width)
 		{
+			if (j >= all->win_width)
+				j = all->win_width - 1;
 			all->canvas.rays[i][j].color = traceray(&all->canvas.rays[i][j], all, all->canvas.rays[i][j].color);
-			_replace_sized_pixel_on_render(&lib->_windows->_base_render._render, argb_to_unsigned(all->canvas.rays[i][j].color), j, i, all->canvas.pixel_values);
-			j += all->canvas.pixel_values;
+			_replace_sized_pixel_on_render(&lib->_windows->_base_render._render, argb_to_unsigned(all->canvas.rays[i][j].color), real_j, real_i, all->canvas.pixel_values);
+			real_j += all->canvas.pixel_values;
+			j = real_j + mi_pix;
 		}
-		i += all->canvas.pixel_values;
+		real_i += all->canvas.pixel_values;
+		i = real_i + mi_pix;
 	}
 	lib->draw_windows();
 }

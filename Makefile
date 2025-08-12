@@ -68,6 +68,10 @@ ifeq ($(OPTI), yes)
 	CFLAGS += -O3
 endif
 
+ifeq ($(NOLOOP), yes)
+	CFLAGS += -pg -DNOLOOP="1"
+endif
+
 ifeq ($(strip $(SCREEN_X)),)
 else
 	CFLAGS += -DSCREEN_X=$(SCREEN_X)

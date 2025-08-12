@@ -13,7 +13,7 @@
 #  include <unistd.h>
 # endif
 # ifndef WIN_WIDTH_ALL
-#  define WIN_WIDTH_ALL 1000
+#  define WIN_WIDTH_ALL 2000
 # endif
 # ifndef WIN_HEIGHT_ALL
 #  define WIN_HEIGHT_ALL 2000

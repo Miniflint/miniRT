@@ -89,14 +89,22 @@ void	event_key_press(t_tri_lib *lib, void *a)
 	if (lib->_windows->event.key['p'])
 	{
 		start = 1;
-		all->canvas.pixel_values += (all->canvas.pixel_values < 255);
+		all->canvas.pixel_values += (all->canvas.pixel_values < 253) << 1;
 	}
 	if (lib->_windows->event.key['o'])
 	{
 		start = 1;
-		all->canvas.pixel_values -= (all->canvas.pixel_values > 1);
+		all->canvas.pixel_values -= (all->canvas.pixel_values > 1) << 1;
 	}
-	if (refresh > 8)
+	if (lib->event && lib->event->type == KEY_PRESS)
+	{
+		if (lib->event->key_id >= '1' && lib->event->key_id <= '9')
+		{
+			start = 2;
+			all->canvas.pixel_values = ((lib->event->key_id - '0') << 1) - 1;
+		}
+	}
+	if (refresh > 8 || start == 2)
 	{
 		refresh = 0;
 		if (start)
@@ -161,6 +169,10 @@ int	main(int argc, char **argv)
 	//start_rays(all);
 	start_rays(all);
 	tri_lib()->draw_windows();
-	tri_lib()->loop(looped, all);
+	#ifndef NOLOOP
+		tri_lib()->loop(looped, all);
+	#else
+		tri_lib()->quit();
+	#endif
 	return (0);
 }
