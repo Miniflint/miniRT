@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tri_lib.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hermesrolle <hermesrolle@student.42.fr>    +#+  +:+       +#+        */
+/*   By: trgoel <trgoel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 03:38:29 by hermesrolle       #+#    #+#             */
-/*   Updated: 2025/07/10 17:11:45 by hermesrolle      ###   ########.fr       */
+/*   Updated: 2025/08/12 17:17:08 by trgoel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -242,6 +242,8 @@ void				_draw_render_to_render(t_render *top, t_render *base);
 void				_draw_window(t_win *win);
 void				_draw_windows(void);
 void				_change_background(unsigned int	color);
+void				_replace_sized_pixel_on_render(t_render *render,
+						unsigned int color, int x, int y, int size);
 
 /*-----------------------TRI_EVENT_INIT-----------------------*/
 

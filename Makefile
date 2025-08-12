@@ -37,7 +37,7 @@ OBJS := $(patsubst $(SRC_DIR)/%.c, $(OBJS_DIR)/%.o, $(SRC_FILES)) \
 NAME = miniRT
 CC = gcc
 
-CFLAGS = -g -Wall -Werror -Wextra -I$(SRC_DIR_INC) -I$(TRI_DIR_INC)
+CFLAGS = -Wall -Werror -Wextra -I$(SRC_DIR_INC) -I$(TRI_DIR_INC)
 
 UNAME := $(shell uname)
 
@@ -60,8 +60,8 @@ else ifeq ($(UNAME), Linux)
 	LDFLAGS		:= -L$(MLX_DIR) -lmlx -lXext -lX11 -lm
 endif
 
-ifeq ($(DEBUG), debug)
-	CFLAGS += -fsanitize=address -g3
+ifeq ($(DEBUG), yes)
+	CFLAGS += -pg
 endif
 
 ifeq ($(OPTI), yes)

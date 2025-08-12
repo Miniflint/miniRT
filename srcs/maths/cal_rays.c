@@ -7,14 +7,11 @@ void cal_fov(t_all *all)
 	int		j;
 	double	start_pix_x;
 
-	all->canvas.size_x = 2 * tan((all->camera.fov * (PI_DEFINED / 180)) / 2);
-	if (all->win_width > all->win_height)
-		all->canvas.size_y = all->canvas.size_x * (all->win_width / all->win_height);
-	else
-		all->canvas.size_y = all->canvas.size_x * (all->win_height / all->win_width);
-	all->canvas.unit = all->canvas.size_y / (double)all->win_width;
-	all->canvas.pix_y[0] = -((all->win_height >> 1) * all->canvas.unit);
-	start_pix_x = -((all->win_width >> 1) * all->canvas.unit);
+	all->canvas.size_y = 2 * tan((all->camera.fov * (PI_DEFINED / 180)) / 2);
+	all->canvas.unit = all->canvas.size_y / (double)all->win_height;
+	all->canvas.size_x = all->win_width * all->canvas.unit;
+	all->canvas.pix_y[0] = -(all->canvas.size_y / 2);
+	start_pix_x = -(all->canvas.size_x / 2);
 	i = 1;
 	while (i < all->win_height)
 	{

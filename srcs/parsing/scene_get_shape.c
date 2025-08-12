@@ -17,6 +17,7 @@ int	get_sphere(t_sphere **head, char **const restrict s)
 	if (sphere->diameter < 0.00)
 		return (free(sphere),
 			printf("Error: Spheres diameter value < 0.0\n"), 1);
+	sphere->diameter /= 2;
 	if (skip_till_number(s, 0))
 		return (free(sphere), 3);
 	if (get_rgb(&sphere->rgb, s))

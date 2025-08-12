@@ -86,6 +86,16 @@ void	event_key_press(t_tri_lib *lib, void *a)
 		all->camera.fov -= ((all->camera.fov > 1) * 0.5);
 		cal_fov(all);
 	}
+	if (lib->_windows->event.key['p'])
+	{
+		start = 1;
+		all->canvas.pixel_values += (all->canvas.pixel_values < 255);
+	}
+	if (lib->_windows->event.key['o'])
+	{
+		start = 1;
+		all->canvas.pixel_values -= (all->canvas.pixel_values > 1);
+	}
 	if (refresh > 8)
 	{
 		refresh = 0;

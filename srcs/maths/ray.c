@@ -27,9 +27,11 @@ void	IntersectRaySphere(t_vec *D, t_vec *O, t_sphere *sphere, double *t1, double
 {
 	double	r;
 	t_vec	CO;
-	double a, b, c;
+	double	a;
+	double	b;
+	double	c;
 
-	r = sphere->diameter / 2;
+	r = sphere->diameter;
 	sub_vectors(O, &sphere->coord, &CO);
 	a = dot_product(D, D);
 	b = 2 * dot_product(&CO, D);
@@ -96,9 +98,9 @@ void start_rays(t_all *all)
 	{
 		j = 0;
 		while (j < all->win_width)
-		{ 
+		{
 			all->canvas.rays[i][j].color = traceray(&all->canvas.rays[i][j], all, all->canvas.rays[i][j].color);
-			_replace_pixel_on_render(&lib->_windows->_base_render._render, argb_to_unsigned(all->canvas.rays[i][j].color), j, i);
+			_replace_sized_pixel_on_render(&lib->_windows->_base_render._render, argb_to_unsigned(all->canvas.rays[i][j].color), j, i, all->canvas.pixel_values);
 			j += all->canvas.pixel_values;
 		}
 		i += all->canvas.pixel_values;

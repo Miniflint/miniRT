@@ -47,13 +47,13 @@ typedef struct S_ray
 
 typedef struct S_Canvas
 {
-	double	size_x;
-	double	size_y;
-	double	unit;
-	char	pixel_values;
-	double	pix_x[WIN_HEIGHT_ALL];
-	double	pix_y[WIN_WIDTH_ALL];
-	t_ray	rays[WIN_HEIGHT_ALL][WIN_WIDTH_ALL];
+	double			size_x;
+	double			size_y;
+	double			unit;
+	t_minuint		pixel_values;
+	double			pix_x[WIN_WIDTH_ALL];
+	double			pix_y[WIN_HEIGHT_ALL];
+	t_ray			rays[WIN_HEIGHT_ALL][WIN_WIDTH_ALL];
 }	t_canvas;	
 
 #endif

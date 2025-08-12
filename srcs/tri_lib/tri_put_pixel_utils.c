@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tri_put_pixel_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: herolle <herolle@student.42.fr>            +#+  +:+       +#+        */
+/*   By: trgoel <trgoel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 03:59:18 by hermesrolle       #+#    #+#             */
-/*   Updated: 2025/06/16 17:50:46 by herolle          ###   ########.fr       */
+/*   Updated: 2025/08/12 17:22:15 by trgoel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,24 @@ void	_replace_pixel_on_render(t_render *render,
 		|| y >= render->_height)
 		return ;
 	(render->_data)[(y * render->_width) + x] = color;
+}
+
+void	_replace_sized_pixel_on_render(t_render *render,
+	unsigned int color, int x, int y, int size)
+{
+	int	i;
+	int	j;
+
+	if (x < 0 || y < 0)
+		return ;
+	i = 0;
+	while (i + y < render->_height && i < size)
+	{
+		j = 0;
+		while (j + x < render->_width && j < size)
+			(render->_data)[((i + y) * render->_width) + (x + j++)] = color;
+		++i;
+	}
 }
 
 void	_put_pixel_to_window(t_win *win, t_argb color, int x, int y)
