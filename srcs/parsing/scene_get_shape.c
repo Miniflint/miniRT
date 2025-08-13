@@ -13,11 +13,12 @@ int	get_sphere(t_sphere **head, char **const restrict s)
 		return (free(sphere), printf("\tSpheres problem\n"), 1);
 	if (skip_till_number(s, 0))
 		return (free(sphere), 3);
-	sphere->diameter = ft_atof(s);
-	if (sphere->diameter < 0.00)
+	sphere->radius = ft_atof(s);
+	if (sphere->radius < 0.00)
 		return (free(sphere),
-			printf("Error: Spheres diameter value < 0.0\n"), 1);
-	sphere->diameter /= 2;
+			printf("Error: Spheres radius value < 0.0\n"), 1);
+	sphere->radius /= 2;
+	sphere->radius_squared = sphere->radius * sphere->radius;
 	if (skip_till_number(s, 0))
 		return (free(sphere), 3);
 	if (get_rgb(&sphere->rgb, s))

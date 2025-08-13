@@ -31,7 +31,8 @@ typedef struct S_light
 typedef struct S_sphere
 {
 	t_coord			coord;
-	float			diameter;
+	double			radius;
+	double			radius_squared;
 	t_rgb			rgb;
 	struct S_sphere	*next;
 }	t_sphere;

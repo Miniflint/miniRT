@@ -131,7 +131,7 @@ double	get_angle(t_vec *a, t_vec *b, double mag_a, double mag_b);
 t_vec	*cross_product(t_vec *a, t_vec *b, t_vec *c);
 
 unsigned int	traceray(t_ray *ray, t_all *all);
-void			IntersectRaySphere(t_vec *D, t_vec *O, t_sphere *sphere,
+void			IntersectRaySphere(double a, t_vec *D, t_vec *O, t_sphere *sphere,
 					double *t1, double *t2);
 void			make_perpendicular(t_cam *cam);
 void			cal_fov(t_all *all);

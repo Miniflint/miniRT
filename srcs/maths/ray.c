@@ -23,19 +23,15 @@ void make_perpendicular(t_cam *cam)
 	// printf("dot dir  diry: %f\n", dot_product(&(all->camera.dir), &(all->camera.dir_y)));
 	// printf("dot dirx diry: %f\n", dot_product(&(all->camera.dir_x), &(all->camera.dir_y)));
 
-void	IntersectRaySphere(t_vec *D, t_vec *O, t_sphere *sphere, double *t1, double *t2)
+void	IntersectRaySphere(double a, t_vec *D, t_vec *O, t_sphere *sphere, double *t1, double *t2)
 {
-	double	r;
 	t_vec	CO;
-	double	a;
 	double	b;
 	double	c;
 
-	r = sphere->diameter;
 	sub_vectors(O, &sphere->coord, &CO);
-	a = dot_product(D, D);
 	b = 2 * dot_product(&CO, D);
-	c = dot_product(&CO, &CO) - (r*r);
+	c = dot_product(&CO, &CO) - sphere->radius_squared;
 	
 	double disciminant = b*b - 4*a*c;
 	if (disciminant < 0)
@@ -55,13 +51,14 @@ unsigned int	traceray(t_ray *ray, t_all *all)
 	t_sphere	*sphere;
 	t_sphere	*closest;
 	double		closest_t;
+	const double a = dot_product(&ray->dir, &ray->dir);
 
 	closest_t = INFINITY;
 	closest = NULL;
 	sphere = all->spheres;
 	while (sphere)
 	{
-		IntersectRaySphere(&ray->dir, &ray->start, sphere, &t1, &t2);
+		IntersectRaySphere(a, &ray->dir, &ray->start, sphere, &t1, &t2);
 		if (!isinf(t1) && t1 < closest_t && t1 > 1)
 		{
 			closest_t = t1;

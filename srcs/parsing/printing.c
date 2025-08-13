@@ -36,7 +36,7 @@ void	print_sp(t_sphere *sphere, int depth)
 		printf("SPHERES:\n");
 	printf("\tCoord: %f %f %f\n",
 		sphere->coord.x, sphere->coord.y, sphere->coord.z);
-	printf("\tDiameter: %f\n", sphere->diameter);
+	printf("\tRadius: %f\n", sphere->radius * 2);
 	printf("\tRGB: %d %d %d\n",
 		sphere->rgb.r, sphere->rgb.g, sphere->rgb.b);
 	printf("     ---------------------------------------------------\n");
