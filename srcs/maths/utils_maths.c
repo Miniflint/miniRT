@@ -53,10 +53,36 @@ t_vec	*norm_vectors(t_vec *a, double magnitude, t_vec *c)
 	return (c);
 }
 
-double dot_product(t_vec *a, t_vec *b)
+#ifdef __linux__
+
+double	dot_product(t_vec *a, t_vec *b)
+{
+	double	result;
+
+	__asm__ (
+		"movsd (%%rdi), %%xmm0;"
+		"movsd 8(%%rdi), %%xmm1;"
+		"mulsd (%%rsi), %%xmm0;"
+		"mulsd 8(%%rsi), %%xmm1;"
+		"addsd %%xmm1, %%xmm0;"
+		"movsd 16(%%rdi), %%xmm1;"
+		"mulsd 16(%%rsi), %%xmm1;"
+		"addsd %%xmm1, %%xmm0;"
+		"movsd %%xmm0, %0;"
+			: "=m" (result)
+			: "r" (a), "r" (b)
+			: "%xmm0", "%xmm1");
+	return (result);
+}
+
+# else
+
+double	dot_product(t_vec *a, t_vec *b)
 {
 	return ((a->x * b->x) + (a->y * b->y) + (a->z * b->z));
 }
+
+#endif
 
 double get_angle(t_vec *a, t_vec *b, double mag_a, double mag_b)
 {

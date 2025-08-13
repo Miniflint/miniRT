@@ -105,7 +105,7 @@ void	event_key_press(t_tri_lib *lib, void *a)
 			// lib->erase_render(&lib->event->win_id->_base_render._render);
 		}
 	}
-	if (refresh > 4 || start == 2)
+	if (refresh > 5 || start == 2)
 	{
 		refresh = 0;
 		if (start)

@@ -33,15 +33,17 @@ void	IntersectRaySphere(double a, t_vec *D, t_vec *O, t_sphere *sphere, double *
 	b = 2 * dot_product(&CO, D);
 	c = dot_product(&CO, &CO) - sphere->radius_squared;
 	
-	double disciminant = b*b - 4*a*c;
+	double disciminant = b * b - 4 * a * c;
 	if (disciminant < 0)
 	{
 		*t1 = INFINITY;
 		*t2 = INFINITY;
 		return ;
 	}
-	*t1 = (-b + sqrt(disciminant)) / (2 * a);
-	*t2 = (-b - sqrt(disciminant)) / (2 * a);
+	a *= 2;
+	disciminant = sqrt(disciminant); 
+	*t1 = (-b + disciminant) / a;
+	*t2 = (-b - disciminant) / a;
 }
 
 
