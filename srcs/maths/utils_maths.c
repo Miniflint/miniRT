@@ -55,7 +55,7 @@ t_vec	*norm_vectors(t_vec *a, double magnitude, t_vec *c)
 
 #ifdef __linux__
 
-double	dot_product(t_vec *a, t_vec *b)
+inline double	dot_product(register t_vec *a, register t_vec *b)
 {
 	double	result;
 
@@ -69,15 +69,15 @@ double	dot_product(t_vec *a, t_vec *b)
 		"mulsd 16(%%rsi), %%xmm1;"
 		"addsd %%xmm1, %%xmm0;"
 		"movsd %%xmm0, %0;"
-			: "=m" (result)
-			: "r" (a), "r" (b)
-			: "%xmm0", "%xmm1");
+		: "=m" (result)
+		: "r" (a), "r" (b)
+		: "%xmm0", "%xmm1");
 	return (result);
 }
 
-# else
+#else
 
-double	dot_product(t_vec *a, t_vec *b)
+inline double	dot_product(register t_vec *a, register t_vec *b);
 {
 	return ((a->x * b->x) + (a->y * b->y) + (a->z * b->z));
 }

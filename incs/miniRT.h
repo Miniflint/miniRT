@@ -126,7 +126,7 @@ t_vec	*mul_vectors(t_vec *a, t_vec *b, t_vec *c);
 t_vec	*div_vectors(t_vec *a, t_vec *b, t_vec *c);
 t_vec	*scalar_multiplication(t_vec *a, double b, t_vec *c);
 t_vec	*norm_vectors(t_vec *a, double magnitude, t_vec *c);
-double	dot_product(t_vec *a, t_vec *b);
+double	dot_product(register t_vec *a, register t_vec *b);
 double	get_angle(t_vec *a, t_vec *b, double mag_a, double mag_b);
 t_vec	*cross_product(t_vec *a, t_vec *b, t_vec *c);
 
