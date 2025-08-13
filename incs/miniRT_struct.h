@@ -19,6 +19,13 @@ typedef struct S_coord
 	double	z;
 }	t_coord;
 
+typedef struct S_rgb_norm
+{
+	double	r;
+	double	g;
+	double	b;
+}	t_rgb_norm;
+
 typedef unsigned char	t_minuint;
 typedef t_coord			t_vec;
 typedef t_argb			t_rgb;
@@ -56,6 +63,7 @@ typedef struct S_Canvas
 	double			pix_x[WIN_WIDTH_ALL];
 	double			pix_y[WIN_HEIGHT_ALL];
 	t_ray			rays[WIN_HEIGHT_ALL][WIN_WIDTH_ALL];
+	t_ray			rays_save[WIN_HEIGHT_ALL][WIN_WIDTH_ALL];
 }	t_canvas;	
 
 #endif

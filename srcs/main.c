@@ -76,25 +76,25 @@ void	event_key_press(t_tri_lib *lib, void *a)
 	}
 	if (lib->_windows->event.key['n'])
 	{
-		start = 1;
+		start = 3;
 		all->camera.fov += ((all->camera.fov < 179) * 0.5);
-		cal_fov(all);
 	}
 	if (lib->_windows->event.key['m'])
 	{
-		start = 1;
+		start = 3;
 		all->camera.fov -= ((all->camera.fov > 1) * 0.5);
-		cal_fov(all);
 	}
 	if (lib->_windows->event.key['p'])
 	{
 		start = 1;
 		all->canvas.pixel_values += (all->canvas.pixel_values < 253) << 1;
+		// lib->erase_render(&lib->event->win_id->_base_render._render);
 	}
 	if (lib->_windows->event.key['o'])
 	{
 		start = 1;
 		all->canvas.pixel_values -= (all->canvas.pixel_values > 1) << 1;
+		// lib->erase_render(&lib->event->win_id->_base_render._render);
 	}
 	if (lib->event && lib->event->type == KEY_PRESS)
 	{
@@ -102,15 +102,19 @@ void	event_key_press(t_tri_lib *lib, void *a)
 		{
 			start = 2;
 			all->canvas.pixel_values = ((lib->event->key_id - '0') << 1) - 1;
+			// lib->erase_render(&lib->event->win_id->_base_render._render);
 		}
 	}
-	if (refresh > 8 || start == 2)
+	if (refresh > 4 || start == 2)
 	{
 		refresh = 0;
 		if (start)
 		{
 			clock_t start = clock();
-			cal_rays(all);
+			if (start > 1)
+				cal_fov(all);
+			else
+				reset_rays(all);
 			clock_t end = clock();
 			float seconds = (float)(end - start) / CLOCKS_PER_SEC;
 			printf("rays calculated in %f\n", seconds);

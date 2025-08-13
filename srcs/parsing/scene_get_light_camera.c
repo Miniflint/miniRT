@@ -16,6 +16,11 @@ int	get_ambient_light(t_amb_light *a_light, char **const restrict s)
 		return (printf("\nAmbient light problem\n"), 1);
 	if (!**s)
 		return (2);
+	a_light->rgb_norm = (t_rgb_norm){
+		.r=(a_light->rgb.r / 255) * a_light->ratio,
+		.g=(a_light->rgb.g / 255) * a_light->ratio,
+		.b=(a_light->rgb.b / 255) * a_light->ratio
+	};
 	return (skip_whitespace_hashtag(s, &(__get_all()->line_count)));
 }
 

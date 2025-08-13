@@ -13,10 +13,10 @@
 #  include <unistd.h>
 # endif
 # ifndef WIN_WIDTH_ALL
-#  define WIN_WIDTH_ALL 1080
+#  define WIN_WIDTH_ALL 1920
 # endif
 # ifndef WIN_HEIGHT_ALL
-#  define WIN_HEIGHT_ALL 720
+#  define WIN_HEIGHT_ALL 1080
 # endif
 # include "tri_lib.h"
 # include "miniRT_struct.h"
@@ -137,5 +137,7 @@ void			make_perpendicular(t_cam *cam);
 void			cal_fov(t_all *all);
 void			cal_rays(t_all *all);
 void			init_start_ray(t_all *all);
+void			reset_rays(t_all *all);
+void			update_rays_start(t_all *all);
 
 #endif

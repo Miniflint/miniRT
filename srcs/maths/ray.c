@@ -100,6 +100,7 @@ void start_rays(t_all *all)
 			if (j >= all->win_width)
 				j = all->win_width - 1;
 			_replace_sized_pixel_on_render(&lib->_windows->_base_render._render, traceray(&all->canvas.rays[i][j], all), real_j, real_i, all->canvas.pixel_values);
+			// _replace_pixel_on_render(&lib->_windows->_base_render._render, traceray(&all->canvas.rays[i][j], all), real_j, real_i);
 			real_j += all->canvas.pixel_values;
 			j = real_j + mi_pix;
 		}

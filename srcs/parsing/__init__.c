@@ -23,7 +23,7 @@ void	ft_zeroes(t_all *all)
 	all->lights = NULL;
 	all->win_width = WIN_WIDTH_ALL;
 	all->win_height = WIN_HEIGHT_ALL;
-	all->canvas.pixel_values = 4;
+	all->canvas.pixel_values = 1;
 }
 
 static int	__parse_file_scene(t_all *all)
@@ -116,6 +116,40 @@ static int	check_ext(char **argv)
 	return (0);
 }
 
+
+void	apply_argb_save_to_rgb(t_rgb *rgb_save, t_rgb_norm ambient_rgb, t_rgb *into)
+{
+	into->r = (double)rgb_save->r * ambient_rgb.r;
+	into->g = (double)rgb_save->g * ambient_rgb.g;
+	into->b = (double)rgb_save->b * ambient_rgb.b;
+}
+
+void	apply_rgb_all_shape(t_all *all)
+{
+	const t_sphere		*tmp_sp = all->spheres;
+	const t_plane		*tmp_pl = all->planes;
+	const t_cylinder	*tmp_cy = all->cylinders;
+
+	while (all->spheres)
+	{
+		apply_argb_save_to_rgb(&all->spheres->rgb_save, all->ambient_light.rgb_norm, &all->spheres->rgb);
+		all->spheres = all->spheres->next;
+	}
+	all->spheres = (t_sphere *)tmp_sp;
+	while (all->planes)
+	{
+		apply_argb_save_to_rgb(&all->planes->rgb_save, all->ambient_light.rgb_norm, &all->planes->rgb);
+		all->planes = all->planes->next;
+	}
+	all->planes = (t_plane *)tmp_pl;
+	while (all->cylinders)
+	{
+		apply_argb_save_to_rgb(&all->cylinders->rgb_save, all->ambient_light.rgb_norm, &all->cylinders->rgb);
+		all->cylinders = all->cylinders->next;
+	}
+	all->cylinders = (t_cylinder *)tmp_cy;
+}
+
 int	__init__(t_all *all, char **argv, int argc)
 {
 	ft_zeroes(all);
@@ -129,12 +163,12 @@ int	__init__(t_all *all, char **argv, int argc)
 		return (printf("Error: you must have 1 ambient light\n"), 1);
 	if (all->camera.nb <= 0)
 		return (printf("Error: you must have 1 camera\n"), 1);
+	apply_rgb_all_shape(all);
 	if (__parse_file_objs(all))
 		return (1);
 	print_all_structs(all);
 	norm_vectors(&all->camera.dir, vec_magnitude(&all->camera.dir), &all->camera.dir);
 	make_perpendicular(&all->camera);
 	cal_fov(all);
-	cal_rays(all);
 	return (0);
 }
