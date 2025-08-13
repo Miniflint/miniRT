@@ -13,10 +13,10 @@
 #  include <unistd.h>
 # endif
 # ifndef WIN_WIDTH_ALL
-#  define WIN_WIDTH_ALL 2000
+#  define WIN_WIDTH_ALL 1080
 # endif
 # ifndef WIN_HEIGHT_ALL
-#  define WIN_HEIGHT_ALL 2000
+#  define WIN_HEIGHT_ALL 720
 # endif
 # include "tri_lib.h"
 # include "miniRT_struct.h"
@@ -130,7 +130,7 @@ double	dot_product(t_vec *a, t_vec *b);
 double	get_angle(t_vec *a, t_vec *b, double mag_a, double mag_b);
 t_vec	*cross_product(t_vec *a, t_vec *b, t_vec *c);
 
-t_argb		traceray(t_ray *ray, t_all *all, t_argb color_no_hit);
+unsigned int	traceray(t_ray *ray, t_all *all);
 void			IntersectRaySphere(t_vec *D, t_vec *O, t_sphere *sphere,
 					double *t1, double *t2);
 void			make_perpendicular(t_cam *cam);

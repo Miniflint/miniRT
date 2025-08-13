@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tri_lib.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: trgoel <trgoel@student.42.fr>              +#+  +:+       +#+        */
+/*   By: hermesrolle <hermesrolle@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 03:38:29 by hermesrolle       #+#    #+#             */
-/*   Updated: 2025/08/12 17:17:08 by trgoel           ###   ########.fr       */
+/*   Updated: 2025/08/13 05:16:46 by hermesrolle      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,17 @@
 # include "mlx.h"
 # include "tri_lib_gb.h"
 # include "tri_colors.h"
+# ifdef __linux__
+#  define TRI_OPAQUE_UNSIGNED 0xFF000000
+#  define TRI_TRANSPARENT_UNSIGNED 0x00000000
+#  define TRI_OPAQUE 1
+#  define TRI_TRANSPARENT 0
+# else
+#  define TRI_OPAQUE_UNSIGNED 0x00000000
+#  define TRI_TRANSPARENT_UNSIGNED 0xFF000000
+#  define TRI_OPAQUE 0
+#  define TRI_TRANSPARENT 1
+# endif
 # define BACKGROUND_COLOR 0x00000000
 
 typedef struct s_tri_lib	t_tri_lib;

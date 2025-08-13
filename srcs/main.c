@@ -162,11 +162,6 @@ int	main(int argc, char **argv)
 	tri_lib()->get_end_function(free_all);
 	tri_lib()->_user_content = all;
 	tri_lib()->create_window("QQQQQQQQQQQ", all->win_width, all->win_height);
-	// mlx_hook(win, 6, 1L << 6, mouse, NULL); //move
-    // mlx_hook(win, 4, 1L << 2, mouse, NULL); //press
-    // mlx_hook(win, 5, 1L << 3, mouse, NULL); //release
-
-	//start_rays(all);
 	start_rays(all);
 	tri_lib()->draw_windows();
 	#ifndef NOLOOP

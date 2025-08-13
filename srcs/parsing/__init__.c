@@ -23,7 +23,7 @@ void	ft_zeroes(t_all *all)
 	all->lights = NULL;
 	all->win_width = WIN_WIDTH_ALL;
 	all->win_height = WIN_HEIGHT_ALL;
-	all->canvas.pixel_values = 1;
+	all->canvas.pixel_values = 4;
 }
 
 static int	__parse_file_scene(t_all *all)

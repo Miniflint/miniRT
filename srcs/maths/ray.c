@@ -49,13 +49,12 @@ void	IntersectRaySphere(t_vec *D, t_vec *O, t_sphere *sphere, double *t1, double
 }
 
 
-t_argb	traceray(t_ray *ray, t_all *all, t_argb color_no_hit)
+unsigned int	traceray(t_ray *ray, t_all *all)
 {
 	double		t1, t2;
 	t_sphere	*sphere;
 	t_sphere	*closest;
 	double		closest_t;
-	unsigned int	argb;
 
 	closest_t = INFINITY;
 	closest = NULL;
@@ -76,14 +75,8 @@ t_argb	traceray(t_ray *ray, t_all *all, t_argb color_no_hit)
 		sphere = sphere->next;
 	}
 	if (!isinf(closest_t))
-	{
-		argb = 0xFF000000;
-		argb += closest->rgb.r << 16;
-		argb += closest->rgb.g << 8;
-		argb += closest->rgb.b;
-		return (unsigned_to_argb(argb));
-	}
-	return (color_no_hit);
+		ray->color = closest->rgb;
+	return (TRI_OPAQUE_UNSIGNED | ray->color.r << 16 | ray->color.g << 8 | ray->color.b);
 }
 
 void start_rays(t_all *all)
@@ -109,8 +102,7 @@ void start_rays(t_all *all)
 		{
 			if (j >= all->win_width)
 				j = all->win_width - 1;
-			all->canvas.rays[i][j].color = traceray(&all->canvas.rays[i][j], all, all->canvas.rays[i][j].color);
-			_replace_sized_pixel_on_render(&lib->_windows->_base_render._render, argb_to_unsigned(all->canvas.rays[i][j].color), real_j, real_i, all->canvas.pixel_values);
+			_replace_sized_pixel_on_render(&lib->_windows->_base_render._render, traceray(&all->canvas.rays[i][j], all), real_j, real_i, all->canvas.pixel_values);
 			real_j += all->canvas.pixel_values;
 			j = real_j + mi_pix;
 		}
