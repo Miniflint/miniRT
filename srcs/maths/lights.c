@@ -30,7 +30,7 @@ void	send_light_sphere(t_light *light, t_rgb *raycolor, t_coord p, t_coord c)
 	sub_vectors(&p, &c, &N);
 	norm_vectors(&L, vec_magnitude(&L), &L);
 	norm_vectors(&N, vec_magnitude(&N), &N);
-	a_cos = 1- dot_product(&L, &N);
+	a_cos = 1- dot_product(&N, &L);
 	if (a_cos <= 0)
 		return ;
 	surface_spread = (light->ratio / 2.0) / a_cos;
