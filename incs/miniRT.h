@@ -125,6 +125,7 @@ t_vec	*sub_vectors(t_vec *a, t_vec *b, t_vec *c);
 t_vec	*mul_vectors(t_vec *a, t_vec *b, t_vec *c);
 t_vec	*div_vectors(t_vec *a, t_vec *b, t_vec *c);
 t_vec	*scalar_multiplication(t_vec *a, double b, t_vec *c);
+t_vec	scalar_multiplication_no_v(t_vec *a, double b);
 t_vec	*norm_vectors(t_vec *a, double magnitude, t_vec *c);
 double	dot_product(register t_vec *a, register t_vec *b);
 double	get_angle(t_vec *a, t_vec *b, double mag_a, double mag_b);
@@ -139,5 +140,6 @@ void			cal_rays(t_all *all);
 void			init_start_ray(t_all *all);
 void			reset_rays(t_all *all);
 void			update_rays_start(t_all *all);
+void			send_light_sphere(t_light *light, t_rgb *raycolor, t_coord p, t_coord c);
 
 #endif

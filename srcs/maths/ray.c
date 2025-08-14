@@ -51,6 +51,7 @@ unsigned int	traceray(t_ray *ray, t_all *all)
 {
 	double		t1, t2;
 	t_sphere	*sphere;
+	t_light		*light;
 	t_sphere	*closest;
 	double		closest_t;
 	const double a = dot_product(&ray->dir, &ray->dir);
@@ -74,7 +75,16 @@ unsigned int	traceray(t_ray *ray, t_all *all)
 		sphere = sphere->next;
 	}
 	if (!isinf(closest_t))
+	{
 		ray->color = closest->rgb;
+		light = all->lights;
+		while (light)
+		{
+			//printf("aaaa\n");
+			send_light_sphere(light, &ray->color, scalar_multiplication_no_v(&ray->dir, closest_t), closest->coord);
+			light = light->next;
+		}
+	}
 	return (TRI_OPAQUE_UNSIGNED | ray->color.r << 16 | ray->color.g << 8 | ray->color.b);
 }
 

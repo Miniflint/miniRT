@@ -45,6 +45,16 @@ t_vec	*scalar_multiplication(t_vec *a, double b, t_vec *c)
 	return (c);
 }
 
+t_vec	scalar_multiplication_no_v(t_vec *a, double b)
+{
+	t_vec	c;
+
+	c.x = a->x * b;
+	c.y = a->y * b;
+	c.z = a->z * b;
+	return (c);
+}
+
 t_vec	*norm_vectors(t_vec *a, double magnitude, t_vec *c)
 {
 	c->x = a->x / magnitude;
