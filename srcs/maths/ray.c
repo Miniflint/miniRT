@@ -51,8 +51,8 @@ unsigned int	traceray(t_ray *ray, t_all *all)
 {
 	double		t1, t2;
 	t_sphere	*sphere;
-	t_light		*light;
 	t_sphere	*closest;
+	t_coord		hit_point;
 	double		closest_t;
 	const double a = dot_product(&ray->dir, &ray->dir);
 
@@ -77,13 +77,9 @@ unsigned int	traceray(t_ray *ray, t_all *all)
 	if (!isinf(closest_t))
 	{
 		ray->color = closest->rgb;
-		light = all->lights;
-		while (light)
-		{
-			//printf("aaaa\n");
-			send_light_sphere(light, &ray->color, scalar_multiplication_no_v(&ray->dir, closest_t), closest->coord);
-			light = light->next;
-		}
+		hit_point = scalar_multiplication_no_v(&ray->dir, closest_t);
+		add_vectors(&hit_point, &all->camera.viewpoint, &hit_point);
+		send_light_sphere(all->lights, &ray->color, hit_point, closest);
 	}
 	return (TRI_OPAQUE_UNSIGNED | ray->color.r << 16 | ray->color.g << 8 | ray->color.b);
 }

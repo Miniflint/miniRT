@@ -87,7 +87,7 @@ inline double	dot_product(register t_vec *a, register t_vec *b)
 
 #else
 
-inline double	dot_product(register t_vec *a, register t_vec *b);
+inline double	dot_product(register t_vec *a, register t_vec *b)
 {
 	return ((a->x * b->x) + (a->y * b->y) + (a->z * b->z));
 }

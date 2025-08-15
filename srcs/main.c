@@ -104,25 +104,30 @@ void	event_key_press(t_tri_lib *lib, void *a)
 			all->canvas.pixel_values = ((lib->event->key_id - '0') << 1) - 1;
 			// lib->erase_render(&lib->event->win_id->_base_render._render);
 		}
+		if (lib->event->key_id == 'k')
+		{
+			start = 2;
+			all->shadow_on = !all->shadow_on;
+		}
 	}
 	if (refresh > 5 || start == 2)
 	{
 		refresh = 0;
 		if (start)
 		{
-			clock_t start = clock();
+			// clock_t start = clock();
 			if (start > 1)
 				cal_fov(all);
 			else
 				reset_rays(all);
-			clock_t end = clock();
-			float seconds = (float)(end - start) / CLOCKS_PER_SEC;
-			printf("rays calculated in %f\n", seconds);
-			start = clock();
+			// clock_t end = clock();
+			// float seconds = (float)(end - start) / CLOCKS_PER_SEC;
+			// printf("rays calculated in %f\n", seconds);
+			// start = clock();
 			start_rays(all);
-			end = clock();
-			seconds = (float)(end - start) / CLOCKS_PER_SEC;
-			printf("rays sent in %f\n", seconds);
+			// end = clock();
+			// seconds = (float)(end - start) / CLOCKS_PER_SEC;
+			// printf("rays sent in %f\n", seconds);
 		}
 	}
 	if (lib->event && lib->event->key_id == 'q' && lib->event->key[KEY_BACKSPACE])

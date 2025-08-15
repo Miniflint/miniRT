@@ -23,6 +23,7 @@ void	ft_zeroes(t_all *all)
 	all->lights = NULL;
 	all->win_width = WIN_WIDTH_ALL;
 	all->win_height = WIN_HEIGHT_ALL;
+	all->shadow_on = 0;
 	all->canvas.pixel_values = 1;
 }
 

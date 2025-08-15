@@ -13,10 +13,10 @@
 #  include <unistd.h>
 # endif
 # ifndef WIN_WIDTH_ALL
-#  define WIN_WIDTH_ALL 1920
+#  define WIN_WIDTH_ALL 1080
 # endif
 # ifndef WIN_HEIGHT_ALL
-#  define WIN_HEIGHT_ALL 1080
+#  define WIN_HEIGHT_ALL 720
 # endif
 # include "tri_lib.h"
 # include "miniRT_struct.h"
@@ -41,6 +41,7 @@ typedef struct S_all
 	int				argc;
 	int				win_height;
 	int				win_width;
+	char			shadow_on;
 	unsigned long	line_count;
 }	t_all;
 
@@ -140,6 +141,6 @@ void			cal_rays(t_all *all);
 void			init_start_ray(t_all *all);
 void			reset_rays(t_all *all);
 void			update_rays_start(t_all *all);
-void			send_light_sphere(t_light *light, t_rgb *raycolor, t_coord p, t_coord c);
+void			send_light_sphere(t_light *light, t_rgb *raycolor, t_coord p, t_sphere *sphere);
 
 #endif
