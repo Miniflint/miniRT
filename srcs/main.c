@@ -40,10 +40,14 @@ void	event_key_press(t_tri_lib *lib, void *a)
 	t_all	*all;
 	t_vec	tmp;
 	int	start;
-	unsigned long elapsed_time;
+	///unsigned long elapsed_time;
+	static int		refresh = 0;
 
 	start = 0;
 	all = (t_all *)a;
+	++refresh;
+	// get_fps_tick(FPS_MAX, &elapsed_time, 1);
+	// !get_fps_tick(FPS_MAX, &elapsed_time, 0)
 	if (lib->event && lib->event->type == KEY_PRESS)
 	{
 		if (lib->event->key_id >= '1' && lib->event->key_id <= '9')
@@ -64,10 +68,7 @@ void	event_key_press(t_tri_lib *lib, void *a)
 		}
 		if (lib->event->key_id == KEY_ESC)
 			lib->quit();
-		get_fps_tick(FPS_MAX, &elapsed_time, 1);
 	}
-	else if (!get_fps_tick(FPS_MAX, &elapsed_time, 0))
-		return ;
 	if (lib->_windows->event.key['w'])
 	{
 		start = 1;
@@ -154,24 +155,16 @@ void	event_key_press(t_tri_lib *lib, void *a)
 		start = 2;
 		all->distance_light -= DISTANCE_LIGHT_MIDDLE;
 	}
-	if (start)
+	if (refresh > 5 && start)
 	{
-			// clock_t start = clock();
-			if (start == 2)
-				cal_fov(all);
-			else if (start == 3)
-				cal_rays(all);
-			else
-				reset_rays(all);
-			// clock_t end = clock();
-			// float seconds = (float)(end - start) / CLOCKS_PER_SEC;
-			// printf("rays calculated in %f\n", seconds);
-			// start = clock();
-			start_rays(all);
-			// end = clock();
-			// seconds = (float)(end - start) / CLOCKS_PER_SEC;
-			// printf("rays sent in %f\n", seconds);
-	}
+		refresh = 0;
+		if (start == 2)
+			cal_fov(all);
+		else if (start == 3)
+			cal_rays(all);
+		else
+			reset_rays(all);
+		start_rays(all);
 }
 
 int looped(t_tri_lib *lib, void *a)
