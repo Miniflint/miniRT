@@ -62,7 +62,7 @@ else
 endif
 
 $(NAME) : $(OBJ)
-	@make -C $(MLX_DIR)
+	@make -C $(MLX_DIR) --no-print-directory
 	$(ECHO) "$(YELLOW)Compilation de $(NAME)...$(RESETTXT)"
 	@$(AR) $(NAME) $(OBJ) -I$(MLX_DIR)
 	$(ECHO) "$(GREEN)$(BOLD)Compilation Terminée !!!$(RESETTXT)"

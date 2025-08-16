@@ -105,7 +105,7 @@ $(OBJS_DIR)/%.o: $(TRI_DIR)/%.c | $(OBJS_DIR)
 	@$(CC) $(CFLAGS) -c $< -o $@
 
 $(NAME): $(OBJS)
-	@make -C $(MLX_DIR)
+	@make -C $(MLX_DIR) --no-print-directory
 	$(ECHO) "$(YELLOW)Compilation de $(NAME)...$(RESETTXT)"
 	@$(CC) -o $(NAME) $(OBJS) $(MLX_NAME) $(LDFLAGS)
 	$(ECHO) "$(GREEN)$(BOLD)Compilation Terminée !!!$(RESETTXT)"
