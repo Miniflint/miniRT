@@ -35,6 +35,7 @@ typedef struct S_sphere
 	t_coord			coord;
 	double			radius;
 	double			radius_squared;
+	double			diameter;
 	t_rgb			rgb;
 	t_rgb			rgb_save;
 	struct S_sphere	*next;

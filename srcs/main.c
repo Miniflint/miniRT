@@ -76,12 +76,12 @@ void	event_key_press(t_tri_lib *lib, void *a)
 	}
 	if (lib->_windows->event.key['n'])
 	{
-		start = 3;
+		start = 2;
 		all->camera.fov += ((all->camera.fov < 179) * 0.5);
 	}
 	if (lib->_windows->event.key['m'])
 	{
-		start = 3;
+		start = 2;
 		all->camera.fov -= ((all->camera.fov > 1) * 0.5);
 	}
 	if (lib->_windows->event.key['p'])
@@ -90,11 +90,45 @@ void	event_key_press(t_tri_lib *lib, void *a)
 		all->canvas.pixel_values += (all->canvas.pixel_values < 253) << 1;
 		// lib->erase_render(&lib->event->win_id->_base_render._render);
 	}
-	if (lib->_windows->event.key['o'])
+	if (lib->_windows->event.key[KEY_UP])
 	{
-		start = 1;
-		all->canvas.pixel_values -= (all->canvas.pixel_values > 1) << 1;
-		// lib->erase_render(&lib->event->win_id->_base_render._render);
+		start = 3;
+		rotate_camera_x(&all->camera.dir, MOVE_CAM_SPEED);
+		make_perpendicular(&all->camera);
+	}
+	if (lib->_windows->event.key[KEY_DOWN])
+	{
+		start = 3;
+		rotate_camera_x(&all->camera.dir, -(MOVE_CAM_SPEED));
+		make_perpendicular(&all->camera);
+	}
+	if (lib->_windows->event.key[KEY_LEFT])
+	{
+		start = 3;
+		if (!lib->_windows->event.key[KEY_SHIFT_LEFT])
+			rotate_camera_z(&all->camera.dir, -(MOVE_CAM_SPEED));
+		else
+			rotate_camera_y(&all->camera.dir, -(MOVE_CAM_SPEED));
+		make_perpendicular(&all->camera);
+	}
+	if (lib->_windows->event.key[KEY_RIGHT])
+	{
+		start = 3;
+		if (!lib->_windows->event.key[KEY_SHIFT_LEFT])
+			rotate_camera_z(&all->camera.dir, MOVE_CAM_SPEED);
+		else
+			rotate_camera_y(&all->camera.dir, MOVE_CAM_SPEED);
+		make_perpendicular(&all->camera);
+	}
+	if (lib->_windows->event.key['y'])
+	{
+		start = 2;
+		all->distance_light += DISTANCE_LIGHT_MIDDLE;
+	}
+	if (lib->_windows->event.key['u'])
+	{
+		start = 2;
+		all->distance_light -= DISTANCE_LIGHT_MIDDLE;
 	}
 	if (lib->event && lib->event->type == KEY_PRESS)
 	{
@@ -102,22 +136,29 @@ void	event_key_press(t_tri_lib *lib, void *a)
 		{
 			start = 2;
 			all->canvas.pixel_values = ((lib->event->key_id - '0') << 1) - 1;
-			// lib->erase_render(&lib->event->win_id->_base_render._render);
+			lib->erase_render(&lib->event->win_id->_base_render._render);
 		}
 		if (lib->event->key_id == 'k')
 		{
 			start = 2;
 			all->shadow_on = !all->shadow_on;
 		}
+		if (lib->event->key_id == 'v')
+		{
+			start = 2;
+			all->light_ratio -= 0.01;
+		}
 	}
-	if (refresh > 5 || start == 2)
+	if (refresh > 5 && start)
 	{
 		refresh = 0;
 		if (start)
 		{
 			// clock_t start = clock();
-			if (start > 1)
+			if (start == 2)
 				cal_fov(all);
+			else if (start == 3)
+				cal_rays(all);
 			else
 				reset_rays(all);
 			// clock_t end = clock();
@@ -130,7 +171,7 @@ void	event_key_press(t_tri_lib *lib, void *a)
 			// printf("rays sent in %f\n", seconds);
 		}
 	}
-	if (lib->event && lib->event->key_id == 'q' && lib->event->key[KEY_BACKSPACE])
+	if (lib->event && lib->event->key[KEY_ESC])
 		lib->quit();
 }
 

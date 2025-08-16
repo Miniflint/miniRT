@@ -1,27 +1,18 @@
 #include "miniRT.h"
 #include "tri_lib.h"
 
+// cam->dir_x = x  cam->dir_y = z cam->dir = y
 void make_perpendicular(t_cam *cam)
 {
 	t_vec	ideal_up;
 	
-	ideal_up = (t_vec){.x = 0, .y = 1, .z = 0};
+	ideal_up = (t_vec){.x = 0, .y = 0, .z = 1};
 
 	if (fabs(dot_product(&cam->dir, &ideal_up)) > 0.9999f)
-		ideal_up = (t_vec){.x = 1, .y = 0, .z = 0};
-	cross_product(&cam->dir, &ideal_up, &cam->dir_y);
-	cross_product(&cam->dir, &cam->dir_y, &cam->dir_x);
+		ideal_up = (t_vec){.x = 0, .y = 1, .z = 0};
+	cross_product(&cam->dir, &ideal_up, &cam->dir_x);
+	cross_product(&cam->dir, &cam->dir_x, &cam->dir_y);
 }
-
-	// printf("\tdir Vec: (%f,%f,%f)\n",
-	// 	all->camera.dir.x, all->camera.dir.y, all->camera.dir.z);
-	// printf("\tdir_x Vec: (%f,%f,%f)\n",
-	// 	all->camera.dir_x.x, all->camera.dir_x.y, all->camera.dir_x.z);
-	// printf("\tdir_y Vec: (%f,%f,%f)\n",
-	// 	all->camera.dir_y.x, all->camera.dir_y.y, all->camera.dir_y.z);
-	// printf("dot dir  dirx: %f\n", dot_product(&(all->camera.dir), &(all->camera.dir_x)));
-	// printf("dot dir  diry: %f\n", dot_product(&(all->camera.dir), &(all->camera.dir_y)));
-	// printf("dot dirx diry: %f\n", dot_product(&(all->camera.dir_x), &(all->camera.dir_y)));
 
 void	IntersectRaySphere(double a, t_vec *D, t_vec *O, t_sphere *sphere, double *t1, double *t2)
 {

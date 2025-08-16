@@ -44,7 +44,8 @@ typedef enum E_obj_type
 	LIGHT,
 	SPHERE,
 	PLANE,
-	CYLINDER
+	CYLINDER,
+	END_SHAPE
 }	t_obj_type;
 
 typedef struct S_ray

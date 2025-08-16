@@ -13,11 +13,15 @@
 #  include <unistd.h>
 # endif
 # ifndef WIN_WIDTH_ALL
-#  define WIN_WIDTH_ALL 1080
+#  define WIN_WIDTH_ALL 1920
 # endif
 # ifndef WIN_HEIGHT_ALL
-#  define WIN_HEIGHT_ALL 720
+#  define WIN_HEIGHT_ALL 1080
 # endif
+# ifndef DISTANCE_LIGHT_MIDDLE
+#  define DISTANCE_LIGHT_MIDDLE 200
+# endif
+# define MOVE_CAM_SPEED 0.01
 # include "tri_lib.h"
 # include "miniRT_struct.h"
 # include "miniRT_planes.h"
@@ -43,6 +47,8 @@ typedef struct S_all
 	int				win_width;
 	char			shadow_on;
 	unsigned long	line_count;
+	double			light_ratio;
+	double			distance_light;
 }	t_all;
 
 /* UTILS */
@@ -142,5 +148,9 @@ void			init_start_ray(t_all *all);
 void			reset_rays(t_all *all);
 void			update_rays_start(t_all *all);
 void			send_light_sphere(t_light *light, t_rgb *raycolor, t_coord p, t_sphere *sphere);
+
+void rotate_camera_x(t_vec *dir_rotate, double nb);
+void rotate_camera_y(t_vec *dir_rotate, double nb);
+void rotate_camera_z(t_vec *dir_rotate, double nb);
 
 #endif

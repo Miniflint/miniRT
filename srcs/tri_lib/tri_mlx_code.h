@@ -53,18 +53,18 @@
 #  define MLX_KEY_ENTER '\n'
 #  define MLX_KEY_BACKSPACE 127
  
-#  define MLX_KEY_ESC 27
-#  define MLX_KEY_SHIFT_LEFT 257
-#  define MLX_KEY_SHIFT_RIGHT 258
+#  define MLX_KEY_ESC 65307
+#  define MLX_KEY_SHIFT_LEFT 65505
+#  define MLX_KEY_SHIFT_RIGHT 65293
 #  define MLX_KEY_ALT_LEFT 261
 #  define MLX_KEY_ALT_RIGHT 262
 #  define MLX_KEY_CMD_LEFT 259
 #  define MLX_KEY_CMD_RIGHT 260
-#  define MLX_KEY_CTRL 256
-#  define MLX_KEY_LEFT 123
-#  define MLX_KEY_RIGHT 124
-#  define MLX_KEY_UP 126
-#  define MLX_KEY_DOWN 125
+#  define MLX_KEY_CTRL 65507
+#  define MLX_KEY_LEFT 65361
+#  define MLX_KEY_RIGHT 65363
+#  define MLX_KEY_UP 65362
+#  define MLX_KEY_DOWN 65364
 #  define MLX_MAX_CODE 263
 #  define MLX_KEY_DEL 200 // indéfini
 

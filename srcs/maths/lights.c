@@ -17,7 +17,8 @@
 // 		color = 255;
 // 	raycolor->b = color;
 // }
-int	sphere_on_the_path(t_sphere *sphere, t_coord point, t_vec ray_dir, t_sphere *actual_sphere, double ray_length)
+
+double	sphere_on_the_path(t_sphere *sphere, t_coord point, t_vec ray_dir, t_sphere *actual_sphere, double ray_length)
 {
 	double		t1, t2;
 	const double a = dot_product(&ray_dir, &ray_dir);
@@ -30,27 +31,11 @@ int	sphere_on_the_path(t_sphere *sphere, t_coord point, t_vec ray_dir, t_sphere 
 			continue ;
 		}
 		IntersectRaySphere(a, &ray_dir, &point, sphere, &t1, &t2);
-		if ((!isinf(t1) && t1 <= ray_length) || (!isinf(t2) && t2 <= ray_length))
-		    return (1);
+		if ((!isinf(t1) || !isinf(t2)) && (t2 <= ray_length && t1 <= ray_length))
+		    return ((t1 - t2) / sphere->diameter);
 		sphere = sphere->next;
 	}
 	return (0);
-}
-
-t_rgb	add_color_ray(t_rgb_norm ambientlight, t_rgb_norm lightcolor, t_rgb spherecolor, double intensity)
-{
-	t_rgb_norm	ch_i;
-
-	ch_i.r = lightcolor.r * intensity + ambientlight.r;
-	if (ch_i.r > 1)
-		ch_i.r = 1;
-	ch_i.g = lightcolor.g * intensity + ambientlight.g;
-	if (ch_i.g > 1)
-		ch_i.g = 1;
-	ch_i.b = lightcolor.b * intensity + ambientlight.b;
-	if (ch_i.b > 1)
-		ch_i.b = 1;
-	return ((t_rgb){0, (t_color)((double)spherecolor.r * ch_i.r), (t_color)((double)spherecolor.g * ch_i.g), (t_color)((double)spherecolor.b * ch_i.b)});
 }
 
 void	get_rgb_norm_light_intensity(t_rgb_norm	*color, t_light *light, t_vec normal, t_coord p, t_sphere *sphere)
@@ -58,18 +43,31 @@ void	get_rgb_norm_light_intensity(t_rgb_norm	*color, t_light *light, t_vec norma
 	t_vec		L;
 	t_all		*all;
 	double		light_length;
+	double		light_length_square;
 	double		intensity;
+	double		diff;
 
 	sub_vectors(&light->coord, &p, &L);
-	light_length = vec_magnitude(&L);
-	norm_vectors(&L, vec_magnitude(&L), &L);
+	light_length_square = L.x * L.x + L.y * L.y + L.z * L.z;
+	light_length = sqrt(light_length_square);
+	norm_vectors(&L, light_length, &L);
 	intensity = dot_product(&normal, &L);
 	if (intensity > 0)
 	{
 		all = __get_all();
-		if (all->shadow_on && sphere_on_the_path(all->spheres, p, L, sphere, light_length))
-			return ;
-		intensity *= light->ratio;
+		if (all->shadow_on)
+		{
+			diff = sphere_on_the_path(all->spheres, p, L, sphere, light_length);
+			if (diff)
+			{
+				diff = (1.0 - diff);
+				diff = (diff * diff);
+				if (diff > 1)
+					diff = 1;
+				intensity *= diff;
+			}
+		}
+		intensity *= (light->ratio * (all->distance_light / (light_length_square + all->distance_light)));
 		color->r += light->rgb_norm.r * intensity;
 		color->g += light->rgb_norm.g * intensity;
 		color->b += light->rgb_norm.b * intensity;
@@ -93,7 +91,7 @@ void	send_light_sphere(t_light *light, t_rgb *raycolor, t_coord p, t_sphere *sph
 		light = light->next;
 	}
 	if (!color.r && !color.g && !color.b)
-	return ;
+		return ;
 	ambiant_light = __get_all()->ambient_light.rgb_norm;
 	color.r += ambiant_light.r;
 	if (color.r > 1)
@@ -108,23 +106,3 @@ void	send_light_sphere(t_light *light, t_rgb *raycolor, t_coord p, t_sphere *sph
 	raycolor->g = (double)(sphere->rgb_save.g) * color.g + 0.5;
 	raycolor->b = (double)(sphere->rgb_save.b) * color.b + 0.5;
 }
-
-// void	send_light_sphere(t_light *light, t_rgb *raycolor, t_coord p, t_coord c)
-// {
-// 	t_vec	L;
-// 	t_vec	N;
-// 	double	a_cos;
-// 	double	intensity;
-// 	double	surface_spread;
-
-// 	sub_vectors(&light->coord, &p, &L);
-// 	sub_vectors(&p, &c, &N);
-// 	norm_vectors(&L, vec_magnitude(&L), &L);
-// 	norm_vectors(&N, vec_magnitude(&N), &N);
-// 	a_cos = 1- dot_product(&N, &L);
-// 	if (a_cos <= 0)
-// 		return ;
-// 	surface_spread = (light->ratio / 2.0) / a_cos;
-// 	intensity = surface_spread / light->ratio;
-// 	add_color_ray(raycolor, &light->rgb, intensity);
-// }

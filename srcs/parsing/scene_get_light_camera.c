@@ -72,7 +72,7 @@ int	get_light(t_light **head, char **const restrict s)
 	*head = light;
 	if (!**s)
 		return (2);
-		light->rgb_norm = (t_rgb_norm){
+	light->rgb_norm = (t_rgb_norm){
 		.r=((double)light->rgb.r / 255.0),
 		.g=((double)light->rgb.g / 255.0),
 		.b=((double)light->rgb.b / 255.0)

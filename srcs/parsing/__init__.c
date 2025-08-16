@@ -25,6 +25,8 @@ void	ft_zeroes(t_all *all)
 	all->win_height = WIN_HEIGHT_ALL;
 	all->shadow_on = 0;
 	all->canvas.pixel_values = 1;
+	all->light_ratio = 1;
+	all->distance_light = DISTANCE_LIGHT_MIDDLE * DISTANCE_LIGHT_MIDDLE;
 }
 
 static int	__parse_file_scene(t_all *all)

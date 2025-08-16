@@ -21,7 +21,7 @@ SRCS_TRILIB =	tri_colors.c  tri_create_render.c  tri_create_window.c  tri_destro
 
 SRC := main.c
 SRCS_PARSING := __fake_globals.c  free_structs.c  __init__.c  __init_utils.c  nodes.c  object_get_shape.c  object_get_value_utils.c  printing.c  scene_get_value_utils.c  scene_get_light_camera.c  scene_get_shape.c  utils.c  utils_util.c  object_free.c
-SRCS_MATHS := utils_maths.c ray.c cal_rays.c lights.c
+SRCS_MATHS := utils_maths.c ray.c cal_rays.c lights.c matrice_rotation.c
 
 
 SRC_FILES := $(addprefix $(SRC_DIR)/, $(SRC))
