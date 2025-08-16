@@ -1,5 +1,22 @@
 #include "miniRT.h"
 
+char	get_fps_tick(unsigned int fps, unsigned long *ret, int reset)
+{
+	struct timeval			tv;
+	static unsigned long	last_fps = 0;
+	unsigned long			actual_time;
+
+	gettimeofday(&tv, NULL);
+	actual_time = (unsigned long)((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
+	*ret = (actual_time - last_fps);
+	if (reset || *ret >= 1000 / fps)
+	{
+		last_fps = actual_time;
+		return (1);
+	}
+	return (0);
+}
+
 double vec_magnitude(t_vec *a)
 {
 	return (sqrt((a->x * a->x) + (a->y * a->y) + (a->z * a->z)));

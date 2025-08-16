@@ -6,6 +6,7 @@
 # include <stdio.h>
 # include <math.h>
 # include <time.h>
+# include <sys/time.h>
 # if defined(_WIN32) || defined(WIN32)
 #  include <windows.h>
 # else
@@ -20,6 +21,9 @@
 # endif
 # ifndef DISTANCE_LIGHT_MIDDLE
 #  define DISTANCE_LIGHT_MIDDLE 200
+# endif
+# ifndef FPS_MAX
+#  define FPS_MAX 24
 # endif
 # define MOVE_CAM_SPEED 0.01
 # include "tri_lib.h"
@@ -137,6 +141,7 @@ t_vec	*norm_vectors(t_vec *a, double magnitude, t_vec *c);
 double	dot_product(register t_vec *a, register t_vec *b);
 double	get_angle(t_vec *a, t_vec *b, double mag_a, double mag_b);
 t_vec	*cross_product(t_vec *a, t_vec *b, t_vec *c);
+char	get_fps_tick(unsigned int fps, unsigned long *ret, int reset);
 
 unsigned int	traceray(t_ray *ray, t_all *all);
 void			IntersectRaySphere(double a, t_vec *D, t_vec *O, t_sphere *sphere,

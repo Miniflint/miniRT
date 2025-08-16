@@ -39,11 +39,35 @@ void	event_key_press(t_tri_lib *lib, void *a)
 {
 	t_all	*all;
 	t_vec	tmp;
-	int	start = 0;
-	static int refresh = 0;
-	
+	int	start;
+	unsigned long elapsed_time;
+
+	start = 0;
 	all = (t_all *)a;
-	refresh++;
+	if (lib->event && lib->event->type == KEY_PRESS)
+	{
+		if (lib->event->key_id >= '1' && lib->event->key_id <= '9')
+		{
+			start = 2;
+			all->canvas.pixel_values = ((lib->event->key_id - '0') << 1) - 1;
+			lib->erase_render(&lib->event->win_id->_base_render._render);
+		}
+		if (lib->event->key_id == 'k')
+		{
+			start = 2;
+			all->shadow_on = !all->shadow_on;
+		}
+		if (lib->event->key_id == 'v')
+		{
+			start = 2;
+			all->light_ratio -= 0.01;
+		}
+		if (lib->event->key_id == KEY_ESC)
+			lib->quit();
+		get_fps_tick(FPS_MAX, &elapsed_time, 1);
+	}
+	else if (!get_fps_tick(FPS_MAX, &elapsed_time, 0))
+		return ;
 	if (lib->_windows->event.key['w'])
 	{
 		start = 1;
@@ -130,30 +154,8 @@ void	event_key_press(t_tri_lib *lib, void *a)
 		start = 2;
 		all->distance_light -= DISTANCE_LIGHT_MIDDLE;
 	}
-	if (lib->event && lib->event->type == KEY_PRESS)
+	if (start)
 	{
-		if (lib->event->key_id >= '1' && lib->event->key_id <= '9')
-		{
-			start = 2;
-			all->canvas.pixel_values = ((lib->event->key_id - '0') << 1) - 1;
-			lib->erase_render(&lib->event->win_id->_base_render._render);
-		}
-		if (lib->event->key_id == 'k')
-		{
-			start = 2;
-			all->shadow_on = !all->shadow_on;
-		}
-		if (lib->event->key_id == 'v')
-		{
-			start = 2;
-			all->light_ratio -= 0.01;
-		}
-	}
-	if (refresh > 5 && start)
-	{
-		refresh = 0;
-		if (start)
-		{
 			// clock_t start = clock();
 			if (start == 2)
 				cal_fov(all);
@@ -169,10 +171,7 @@ void	event_key_press(t_tri_lib *lib, void *a)
 			// end = clock();
 			// seconds = (float)(end - start) / CLOCKS_PER_SEC;
 			// printf("rays sent in %f\n", seconds);
-		}
 	}
-	if (lib->event && lib->event->key[KEY_ESC])
-		lib->quit();
 }
 
 int looped(t_tri_lib *lib, void *a)

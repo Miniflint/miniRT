@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tri_lib.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hermesrolle <hermesrolle@student.42.fr>    +#+  +:+       +#+        */
+/*   By: herolle <herolle@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 03:38:29 by hermesrolle       #+#    #+#             */
-/*   Updated: 2025/08/13 05:16:46 by hermesrolle      ###   ########.fr       */
+/*   Updated: 2025/08/16 06:22:59 by herolle          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,8 @@ enum
 	KEY_CMD_RIGHT,
 	KEY_SHIFT_LEFT,
 	KEY_SHIFT_RIGHT,
-	KEY_CTRL
+	KEY_CTRL,
+	KEY_MAX
 };
 
 typedef struct s_event
@@ -129,7 +130,7 @@ typedef struct s_event
 	t_win			*win_id;
 	t_mouse_event	mouse;
 	unsigned char	key_id;
-	unsigned char	key[KEY_CTRL];
+	unsigned char	key[KEY_MAX];
 	t_win_event		window;
 }					t_event;
 

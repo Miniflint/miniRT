@@ -12,6 +12,10 @@
 #define ERROR_G_DECODE "Error decoding R(G)B color @: [%d|%c]\nline [%lu]\n"
 #define ERROR_B_DECODE "Error decoding RG(B) color @: [%d|%c]\nline [%lu]\n"
 
+// struct timeval	{
+// 	time_t		tv_sec;
+// 	susecond_t	tv_usec;
+// };
 typedef struct S_coord
 {
 	double	x;
