@@ -35,10 +35,17 @@ char	*readfile(int fd)
 	return (final);
 }
 
+int	move_point(t_tri_lib *lib, t_coord *point, t_vec *dir, double amount)
+{
+	t_vec	tmp;
+
+	add_vectors(point, scalar_multiplication(dir, get_fps_delta_f(lib, amount), &tmp), point);
+	return (1);
+}
+
 void	event_key_press(t_tri_lib *lib, void *a)
 {
 	t_all	*all;
-	t_vec	tmp;
 	int	start;
 	///unsigned long elapsed_time;
 	// static int		refresh = 0;
@@ -70,35 +77,17 @@ void	event_key_press(t_tri_lib *lib, void *a)
 			lib->quit();
 	}
 	if (lib->_windows->event.key['w'])
-	{
-		start = 1;
-		add_vectors(&all->camera.viewpoint, scalar_multiplication(&all->camera.dir, get_fps_delta_f(lib, 3), &tmp), &all->camera.viewpoint);
-	}
+		start = move_point(lib, &all->camera.viewpoint, &all->camera.dir, 3);
 	if (lib->_windows->event.key['a'])
-	{
-		start = 1;
-		add_vectors(&all->camera.viewpoint, scalar_multiplication(&all->camera.dir_x, get_fps_delta_f(lib, -3), &tmp), &all->camera.viewpoint);
-	}
+		start = move_point(lib, &all->camera.viewpoint, &all->camera.dir_x, -3);
 	if (lib->_windows->event.key['s'])
-	{
-		start = 1;
-		add_vectors(&all->camera.viewpoint, scalar_multiplication(&all->camera.dir, get_fps_delta_f(lib, -3), &tmp), &all->camera.viewpoint);
-	}
+		start = move_point(lib, &all->camera.viewpoint, &all->camera.dir, -3);
 	if (lib->_windows->event.key['d'])
-	{
-		start = 1;
-		add_vectors(&all->camera.viewpoint, scalar_multiplication(&all->camera.dir_x, get_fps_delta_f(lib, 3), &tmp), &all->camera.viewpoint);
-	}
+		start = move_point(lib, &all->camera.viewpoint, &all->camera.dir_x, 3);
 	if (lib->_windows->event.key['q'])
-	{
-		start = 1;
-		add_vectors(&all->camera.viewpoint, scalar_multiplication(&all->camera.dir_y, get_fps_delta_f(lib, 3), &tmp), &all->camera.viewpoint);
-	}
+		start = move_point(lib, &all->camera.viewpoint, &all->camera.dir_y, 3);
 	if (lib->_windows->event.key['e'])
-	{
-		start = 1;
-		add_vectors(&all->camera.viewpoint, scalar_multiplication(&all->camera.dir_y, get_fps_delta_f(lib, -3), &tmp), &all->camera.viewpoint);
-	}
+		start = move_point(lib, &all->camera.viewpoint, &all->camera.dir_y, -3);
 	if (lib->_windows->event.key['n'])
 	{
 		start = 2;
@@ -115,45 +104,51 @@ void	event_key_press(t_tri_lib *lib, void *a)
 		all->canvas.pixel_values += (all->canvas.pixel_values < 253) << 1;
 		// lib->erase_render(&lib->event->win_id->_base_render._render);
 	}
+	if (lib->_windows->event.key['o'])
+	{
+		start = 1;
+		all->canvas.pixel_values -= (all->canvas.pixel_values > 1) << 1;
+		// lib->erase_render(&lib->event->win_id->_base_render._render);
+	}
 	if (lib->_windows->event.key[KEY_UP])
 	{
 		start = 3;
-		rotate_camera_x(&all->camera.dir, MOVE_CAM_SPEED);
+		rotate_camera_x(&all->camera.dir, get_fps_delta_f(lib, MOVE_CAM_SPEED));
 		make_perpendicular(&all->camera);
 	}
 	if (lib->_windows->event.key[KEY_DOWN])
 	{
 		start = 3;
-		rotate_camera_x(&all->camera.dir, -(MOVE_CAM_SPEED));
+		rotate_camera_x(&all->camera.dir, get_fps_delta_f(lib, -MOVE_CAM_SPEED));
 		make_perpendicular(&all->camera);
 	}
 	if (lib->_windows->event.key[KEY_LEFT])
 	{
 		start = 3;
 		if (!lib->_windows->event.key[KEY_SHIFT_LEFT])
-			rotate_camera_z(&all->camera.dir, -(MOVE_CAM_SPEED));
+			rotate_camera_z(&all->camera.dir, get_fps_delta_f(lib, -MOVE_CAM_SPEED));
 		else
-			rotate_camera_y(&all->camera.dir, -(MOVE_CAM_SPEED));
+			rotate_camera_y(&all->camera.dir, get_fps_delta_f(lib, -MOVE_CAM_SPEED));
 		make_perpendicular(&all->camera);
 	}
 	if (lib->_windows->event.key[KEY_RIGHT])
 	{
 		start = 3;
 		if (!lib->_windows->event.key[KEY_SHIFT_LEFT])
-			rotate_camera_z(&all->camera.dir, MOVE_CAM_SPEED);
+			rotate_camera_z(&all->camera.dir, get_fps_delta_f(lib, MOVE_CAM_SPEED));
 		else
-			rotate_camera_y(&all->camera.dir, MOVE_CAM_SPEED);
+			rotate_camera_y(&all->camera.dir, get_fps_delta_f(lib, MOVE_CAM_SPEED));
 		make_perpendicular(&all->camera);
 	}
 	if (lib->_windows->event.key['y'])
 	{
 		start = 2;
-		all->distance_light += DISTANCE_LIGHT_MIDDLE;
+		all->distance_light -= get_fps_delta_f(lib, DISTANCE_LIGHT_MIDDLE * 2);
 	}
 	if (lib->_windows->event.key['u'])
 	{
 		start = 2;
-		all->distance_light -= DISTANCE_LIGHT_MIDDLE;
+		all->distance_light += get_fps_delta_f(lib, DISTANCE_LIGHT_MIDDLE * 2);
 	}
 	// if (refresh > 5 && start)
 	if (start)
@@ -206,7 +201,7 @@ int	main(int argc, char **argv)
 	// tri_lib()->auto_draw = 1;
 	tri_lib()->get_end_function(free_all);
 	tri_lib()->_user_content = all;
-	tri_lib()->create_window("QQQQQQQQQQQ", all->win_width, all->win_height)->auto_draw = 0;
+	tri_lib()->create_window("QQQQQQQQQQQ", all->win_width, all->win_height)->auto_draw = 1;
 	start_rays(all);
 	tri_lib()->draw_windows();
 	#ifndef NOLOOP
