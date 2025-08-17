@@ -31,7 +31,7 @@ double	sphere_on_the_path(t_sphere *sphere, t_coord point, t_vec ray_dir, t_sphe
 			continue ;
 		}
 		IntersectRaySphere(a, &ray_dir, &point, sphere, &t1, &t2);
-		if ((!isinf(t1) || !isinf(t2)) && (t2 <= ray_length && t1 <= ray_length))
+		if ((!isinf(t1) || !isinf(t2)) && (t2 <= ray_length && t1 <= ray_length) && (t2 > 0 && t1 > 0))
 		    return ((t1 - t2) / sphere->diameter);
 		sphere = sphere->next;
 	}
