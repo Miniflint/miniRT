@@ -111,22 +111,22 @@ void	event_key_press(t_tri_lib *lib, void *a)
 		// lib->erase_render(&lib->event->win_id->_base_render._render);
 	}
 	if (lib->_windows->event.key[KEY_UP])
-		start = rotate_camera(&all->camera.dir, &all->camera.dir_x, &all->camera.dir_y, get_fps_delta_f(lib, -MOVE_CAM_SPEED));
+		start = rotate_camera(&all->camera.dir, &all->camera.dir_x, &all->camera.dir_y, get_fps_delta_f(lib, -ROT_CAM_SPEED));
 	if (lib->_windows->event.key[KEY_DOWN])
-		start = rotate_camera(&all->camera.dir, &all->camera.dir_x, &all->camera.dir_y, get_fps_delta_f(lib, MOVE_CAM_SPEED));
+		start = rotate_camera(&all->camera.dir, &all->camera.dir_x, &all->camera.dir_y, get_fps_delta_f(lib, ROT_CAM_SPEED));
 	if (lib->_windows->event.key[KEY_LEFT])
 	{
 		if (!lib->_windows->event.key[KEY_SHIFT_LEFT])
-			start = rotate_camera(&all->camera.dir, &all->camera.dir_y, &all->camera.dir_x, get_fps_delta_f(lib, -MOVE_CAM_SPEED));
+			start = rotate_camera(&all->camera.dir, &all->camera.dir_y, &all->camera.dir_x, get_fps_delta_f(lib, -ROT_CAM_SPEED));
 		else
-			start = rotate_camera(&all->camera.dir_x, &all->camera.dir, &all->camera.dir_y, get_fps_delta_f(lib, -MOVE_CAM_SPEED));
+			start = rotate_camera(&all->camera.dir_x, &all->camera.dir, &all->camera.dir_y, get_fps_delta_f(lib, -ROT_CAM_SPEED));
 	}
 	if (lib->_windows->event.key[KEY_RIGHT])
 	{
 		if (!lib->_windows->event.key[KEY_SHIFT_LEFT])
-			start = rotate_camera(&all->camera.dir, &all->camera.dir_y, &all->camera.dir_x, get_fps_delta_f(lib, MOVE_CAM_SPEED));
+			start = rotate_camera(&all->camera.dir, &all->camera.dir_y, &all->camera.dir_x, get_fps_delta_f(lib, ROT_CAM_SPEED));
 		else
-			start = rotate_camera(&all->camera.dir_x, &all->camera.dir, &all->camera.dir_y, get_fps_delta_f(lib, MOVE_CAM_SPEED));
+			start = rotate_camera(&all->camera.dir_x, &all->camera.dir, &all->camera.dir_y, get_fps_delta_f(lib, ROT_CAM_SPEED));
 	}
 	if (lib->_windows->event.key['y'])
 	{
