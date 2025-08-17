@@ -61,7 +61,12 @@ int	rotate_camera(t_vec *original, t_vec *axis, t_vec *for_perpendicular, double
 	//add_vectors(scalar_multiplication(original, cos(angle), &rotated),
 	//	scalar_multiplication(cross_product(axis, original, for_perpendicular), sin(angle), &tmp), original);
 
-	//cross_product(original, axis, for_perpendicular);
+	cross_product(original, axis, &tmp);
+	mag = dot_product(&tmp, for_perpendicular);
+	if (mag < 0)
+		scalar_multiplication(&tmp, -1, for_perpendicular);
+	else
+		*for_perpendicular = tmp;
 	mag = vec_magnitude(original);
 	norm_vectors(original, mag, original);
 	mag = vec_magnitude(axis);
