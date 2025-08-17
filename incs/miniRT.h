@@ -23,7 +23,7 @@
 #  define DISTANCE_LIGHT_MIDDLE 200
 # endif
 # define MOVE_CAM_SPEED 3
-# define ROT_CAM_SPEED 0.025
+# define ROT_CAM_SPEED 0.035
 # include "tri_lib.h"
 # include "miniRT_struct.h"
 # include "miniRT_planes.h"
