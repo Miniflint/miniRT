@@ -6,7 +6,7 @@
 /*   By: hermesrolle <hermesrolle@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 22:28:01 by herolle           #+#    #+#             */
-/*   Updated: 2025/08/17 01:37:00 by hermesrolle      ###   ########.fr       */
+/*   Updated: 2025/08/17 22:10:39 by hermesrolle      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,7 +131,7 @@ void	_call_user_main(t_tri_lib *lib)
 	}
 	else
 		lib->fps = _get_fps(&lib->last_loop);
-		if (lib->fps <= 0)
+	if (lib->fps <= 0)
 		fps = 0.01;
 	else
 		fps = lib->fps;

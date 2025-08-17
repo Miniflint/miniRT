@@ -111,34 +111,22 @@ void	event_key_press(t_tri_lib *lib, void *a)
 		// lib->erase_render(&lib->event->win_id->_base_render._render);
 	}
 	if (lib->_windows->event.key[KEY_UP])
-	{
-		start = 3;
-		rotate_camera_x(&all->camera.dir, get_fps_delta_f(lib, MOVE_CAM_SPEED));
-		make_perpendicular(&all->camera);
-	}
+		start = rotate_camera(&all->camera.dir, &all->camera.dir_x, &all->camera.dir_y, get_fps_delta_f(lib, MOVE_CAM_SPEED));
 	if (lib->_windows->event.key[KEY_DOWN])
-	{
-		start = 3;
-		rotate_camera_x(&all->camera.dir, get_fps_delta_f(lib, -MOVE_CAM_SPEED));
-		make_perpendicular(&all->camera);
-	}
+		start = rotate_camera(&all->camera.dir, &all->camera.dir_x, &all->camera.dir_y, get_fps_delta_f(lib, -MOVE_CAM_SPEED));
 	if (lib->_windows->event.key[KEY_LEFT])
 	{
-		start = 3;
 		if (!lib->_windows->event.key[KEY_SHIFT_LEFT])
-			rotate_camera_z(&all->camera.dir, get_fps_delta_f(lib, -MOVE_CAM_SPEED));
+			start = rotate_camera(&all->camera.dir, &all->camera.dir_y, &all->camera.dir_x, get_fps_delta_f(lib, MOVE_CAM_SPEED));
 		else
-			rotate_camera_y(&all->camera.dir, get_fps_delta_f(lib, -MOVE_CAM_SPEED));
-		make_perpendicular(&all->camera);
+			start = rotate_camera(&all->camera.dir_x, &all->camera.dir, &all->camera.dir_y, get_fps_delta_f(lib, MOVE_CAM_SPEED));
 	}
 	if (lib->_windows->event.key[KEY_RIGHT])
 	{
-		start = 3;
 		if (!lib->_windows->event.key[KEY_SHIFT_LEFT])
-			rotate_camera_z(&all->camera.dir, get_fps_delta_f(lib, MOVE_CAM_SPEED));
+			start = rotate_camera(&all->camera.dir, &all->camera.dir_y, &all->camera.dir_x, get_fps_delta_f(lib, -MOVE_CAM_SPEED));
 		else
-			rotate_camera_y(&all->camera.dir, get_fps_delta_f(lib, MOVE_CAM_SPEED));
-		make_perpendicular(&all->camera);
+			start = rotate_camera(&all->camera.dir_x, &all->camera.dir, &all->camera.dir_y, get_fps_delta_f(lib, -MOVE_CAM_SPEED));
 	}
 	if (lib->_windows->event.key['y'])
 	{
@@ -198,7 +186,7 @@ int	main(int argc, char **argv)
 	if (__init__(all, argv, argc))
 		return (free_all(all), 1);
 	tri_lib()->init();
-	// tri_lib()->auto_draw = 1;
+	tri_lib()->auto_draw = 1;
 	tri_lib()->get_end_function(free_all);
 	tri_lib()->_user_content = all;
 	tri_lib()->create_window("QQQQQQQQQQQ", all->win_width, all->win_height)->auto_draw = 1;

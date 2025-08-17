@@ -6,7 +6,7 @@
 /*   By: hermesrolle <hermesrolle@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 03:38:29 by hermesrolle       #+#    #+#             */
-/*   Updated: 2025/08/17 01:38:06 by hermesrolle      ###   ########.fr       */
+/*   Updated: 2025/08/17 22:01:51 by hermesrolle      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@
 #  define TRI_TRANSPARENT 1
 # endif
 # define BACKGROUND_COLOR 0x00000000
-# define FPS_MAX 70
+# define FPS_MAX 1001
 # define FPS_TARGET 24.0
 # define TRI_INF_FPS 1000.0
 

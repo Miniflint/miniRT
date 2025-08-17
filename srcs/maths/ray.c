@@ -111,7 +111,7 @@ void start_rays(t_all *all)
 		real_i += all->canvas.pixel_values;
 		i = real_i + mi_pix;
 	}
-	lib->draw_windows();
+	// lib->draw_windows();
 }
 	//while (j_start < tmp)
 	//{

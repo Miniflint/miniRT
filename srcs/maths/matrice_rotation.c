@@ -38,3 +38,35 @@ void rotate_camera_z(t_vec *dir_rotate, double nb)
 	};
 	*dir_rotate = dir;
 }
+
+//v' = v * cosθ + (k × v) * sinθ + k * (k · v) * (1 - cosθ)
+//v' = v * cosθ + (k × v) * sinθ
+
+int	rotate_camera(t_vec *original, t_vec *axis, t_vec *for_perpendicular, double angle)
+{
+	t_vec	rotated;
+	t_vec	tmp;
+	double	mag;
+
+	// add_vectors(scalar_multiplication_no_v(original, cos(angle)), mul_vectors(cross_product(axis, original, &perp), axis, &tmp), original)
+	// v' = v * cosθ + (k x v) * sinθ
+	// v' = rotated + (k x v) * sinθ
+	// v' = rotated + perpendiculat * sinθ
+	// v' = rotated + tmp
+	// v' = original_rotated
+	// for_perp = cross(k x v)
+	// original = original * cos(angle) + (cross_product(around, original, &rotated)) * sin(angle);
+
+	add_vectors(scalar_multiplication(original, cos(angle), &rotated), scalar_multiplication(for_perpendicular, sin(angle), &tmp), original);
+	//add_vectors(scalar_multiplication(original, cos(angle), &rotated),
+	//	scalar_multiplication(cross_product(axis, original, for_perpendicular), sin(angle), &tmp), original);
+
+	//cross_product(original, axis, for_perpendicular);
+	mag = vec_magnitude(original);
+	norm_vectors(original, mag, original);
+	mag = vec_magnitude(axis);
+	norm_vectors(axis, mag, axis);
+	mag = vec_magnitude(for_perpendicular);
+	norm_vectors(for_perpendicular, mag, for_perpendicular);
+	return (3);
+}

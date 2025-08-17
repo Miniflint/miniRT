@@ -155,4 +155,6 @@ void rotate_camera_x(t_vec *dir_rotate, double nb);
 void rotate_camera_y(t_vec *dir_rotate, double nb);
 void rotate_camera_z(t_vec *dir_rotate, double nb);
 
+int	rotate_camera(t_vec *original, t_vec *axis, t_vec *for_perpendicular, double angle);
+
 #endif
