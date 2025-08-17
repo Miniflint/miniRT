@@ -6,7 +6,7 @@
 /*   By: hermesrolle <hermesrolle@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 20:02:41 by herolle           #+#    #+#             */
-/*   Updated: 2025/06/14 01:48:32 by hermesrolle      ###   ########.fr       */
+/*   Updated: 2025/08/16 23:19:36 by hermesrolle      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ t_tri_lib	*_init_tri_lib(void)
 			lib->_ernum = TRI_INIT_FAILURE;
 			return (NULL);
 		}
+		gettimeofday(&lib->last_loop, NULL);
 	}
 	return (lib);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tri_lib.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: herolle <herolle@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hermesrolle <hermesrolle@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 03:38:29 by hermesrolle       #+#    #+#             */
-/*   Updated: 2025/08/16 06:22:59 by herolle          ###   ########.fr       */
+/*   Updated: 2025/08/17 01:38:06 by hermesrolle      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 # include <stdlib.h>
 # include <stdio.h>
 # include <unistd.h>
+# include <time.h>
+# include <sys/time.h>
 # include "mlx.h"
 # include "tri_lib_gb.h"
 # include "tri_colors.h"
@@ -30,6 +32,9 @@
 #  define TRI_TRANSPARENT 1
 # endif
 # define BACKGROUND_COLOR 0x00000000
+# define FPS_MAX 70
+# define FPS_TARGET 24.0
+# define TRI_INF_FPS 1000.0
 
 typedef struct s_tri_lib	t_tri_lib;
 
@@ -140,6 +145,9 @@ struct s_win
 	int				_width;
 	int				_height;
 	char			*_name;
+	struct timeval	last_draw;
+	double			fps;
+	char			auto_draw;
 	t_event			event;
 	t_img_render	_base_render;
 	t_render		*_renders;
@@ -187,6 +195,12 @@ struct s_tri_lib
 	int				_ernum;
 	void			*_mlx;
 	unsigned int	_bg_color;
+	double			fps_max;
+	double			fps_target;
+	double			fps_delta;
+	double			fps;
+	struct timeval	last_loop;
+	char			auto_draw;
 	t_list			*_gb;
 };
 
@@ -235,7 +249,6 @@ t_tri_lib			*tri_lib(void);
 /*--------------------------TRI_LOOP--------------------------*/
 
 int					_main_loop(int (*f)(t_tri_lib *, void *), void *content);
-void				_delay(int fps);
 
 /*-----------------------TRI_PUT_PIXEL------------------------*/
 
@@ -256,6 +269,7 @@ void				_draw_windows(void);
 void				_change_background(unsigned int	color);
 void				_replace_sized_pixel_on_render(t_render *render,
 						unsigned int color, int x, int y, int size);
+void				_auto_draw(t_tri_lib *lib);
 
 /*-----------------------TRI_EVENT_INIT-----------------------*/
 
@@ -273,5 +287,13 @@ int	_get_key_release(int keycode, t_win *win);
 int	_get_mouse_press(int button, int x, int y, t_win *win);
 int	_get_mouse_release(int button, int x, int y, t_win *win);
 int	_get_mouse_move(int x, int y, t_win *win);
+
+void				_call_user_main(t_tri_lib *lib);
+
+double 				_get_fps(struct timeval *last);
+int 				_get_tick_fps(t_tri_lib *lib, struct timeval *last, double *ret_fps);
+double				get_fps_delta_f(t_tri_lib *lib, double value);
+long int			get_fps_delta_i(t_tri_lib *lib, long int value);
+long unsigned int	get_fps_delta_u(t_tri_lib *lib, long unsigned int value);
 
 #endif

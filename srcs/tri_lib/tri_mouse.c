@@ -20,7 +20,7 @@ int	_get_mouse_press(int button, int x, int y, t_win *win)
 		lib->event->mouse.left = 1;
 		lib->event->type = MOUSE_LEFT_PRESS;
 	}
-	lib->_user_main(lib, lib->_user_content);
+	_call_user_main(lib);
 	return (0);
 }
 
@@ -43,7 +43,7 @@ int	_get_mouse_release(int button, int x, int y, t_win *win)
 		lib->event->mouse.left = 0;
 		lib->event->type = MOUSE_LEFT_RELEASE;
 	}
-	lib->_user_main(lib, lib->_user_content);
+	_call_user_main(lib);
 	return (0);
 }
 
@@ -57,6 +57,6 @@ int	_get_mouse_move(int x, int y, t_win *win)
 	lib->event->mouse.x = x;
 	lib->event->mouse.y = y;
 	lib->event->type = MOUSE_MOVE;
-	lib->_user_main(lib, lib->_user_content);
+	_call_user_main(lib);
 	return (0);
 }

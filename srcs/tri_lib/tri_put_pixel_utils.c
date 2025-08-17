@@ -3,15 +3,30 @@
 /*                                                        :::      ::::::::   */
 /*   tri_put_pixel_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: trgoel <trgoel@student.42.fr>              +#+  +:+       +#+        */
+/*   By: hermesrolle <hermesrolle@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 03:59:18 by hermesrolle       #+#    #+#             */
-/*   Updated: 2025/08/12 17:22:15 by trgoel           ###   ########.fr       */
+/*   Updated: 2025/08/17 01:29:24 by hermesrolle      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "tri_lib.h"
 #include "tri_colors.h"
+
+void	_auto_draw(t_tri_lib *lib)
+{
+	t_win	*wins;
+
+	if (!lib->auto_draw)
+		return ;
+	wins = lib->_windows;
+	while (wins)
+	{
+		if (wins->auto_draw)
+			_draw_window(wins);
+		wins = wins->_next;
+	}
+}
 
 unsigned int	_get_pixel(t_render *render, int x, int y)
 {
@@ -209,9 +224,12 @@ void	_draw_window(t_win *win)
 		_draw_render_to_render(cursor, &win->_base_render._render);
 		cursor = cursor->_next;
 	}
+	win->fps = _get_fps(&win->last_draw);
+	printf("\rfps: %.2lf                   ", win->fps);
+	fflush(stdout); //not permited
 	mlx_put_image_to_window(lib->_mlx, win->_win, win->_base_render._img._img, 0, 0);
-	//_erase_fill_render(win->_renders, lib->_bg_color);
 }
+//_erase_fill_render(win->_renders, lib->_bg_color);
 
 void	_draw_windows(void)
 {

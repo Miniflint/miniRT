@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tri_get_key_event.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: trgoel <trgoel@student.42.fr>              +#+  +:+       +#+        */
+/*   By: hermesrolle <hermesrolle@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/21 03:34:21 by hermesrolle       #+#    #+#             */
-/*   Updated: 2025/08/16 01:54:06 by trgoel           ###   ########.fr       */
+/*   Updated: 2025/08/16 23:44:45 by hermesrolle      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ int	_get_key_press(int keycode, t_win *win)
 		return (0);
 	lib = tri_lib();
 	lib->event = &win->event;
-	lib->_user_main(lib, lib->_user_content);
+	_call_user_main(lib);
 	return (0);
 }
 
@@ -129,6 +129,6 @@ int	_get_key_release(int keycode, t_win *win)
 		return (0);
 	lib = tri_lib();
 	lib->event = &win->event;
-	lib->_user_main(lib, lib->_user_content);
+	_call_user_main(lib);
 	return (0);
 }

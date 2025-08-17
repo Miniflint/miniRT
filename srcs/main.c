@@ -41,11 +41,11 @@ void	event_key_press(t_tri_lib *lib, void *a)
 	t_vec	tmp;
 	int	start;
 	///unsigned long elapsed_time;
-	static int		refresh = 0;
+	// static int		refresh = 0;
 
 	start = 0;
 	all = (t_all *)a;
-	++refresh;
+	// ++refresh;
 	// get_fps_tick(FPS_MAX, &elapsed_time, 1);
 	// !get_fps_tick(FPS_MAX, &elapsed_time, 0)
 	if (lib->event && lib->event->type == KEY_PRESS)
@@ -72,42 +72,42 @@ void	event_key_press(t_tri_lib *lib, void *a)
 	if (lib->_windows->event.key['w'])
 	{
 		start = 1;
-		add_vectors(&all->camera.viewpoint, scalar_multiplication(&all->camera.dir, 1, &tmp), &all->camera.viewpoint);
+		add_vectors(&all->camera.viewpoint, scalar_multiplication(&all->camera.dir, get_fps_delta_f(lib, 3), &tmp), &all->camera.viewpoint);
 	}
 	if (lib->_windows->event.key['a'])
 	{
 		start = 1;
-		add_vectors(&all->camera.viewpoint, scalar_multiplication(&all->camera.dir_x, -1, &tmp), &all->camera.viewpoint);
+		add_vectors(&all->camera.viewpoint, scalar_multiplication(&all->camera.dir_x, get_fps_delta_f(lib, -3), &tmp), &all->camera.viewpoint);
 	}
 	if (lib->_windows->event.key['s'])
 	{
 		start = 1;
-		add_vectors(&all->camera.viewpoint, scalar_multiplication(&all->camera.dir, -1, &tmp), &all->camera.viewpoint);
+		add_vectors(&all->camera.viewpoint, scalar_multiplication(&all->camera.dir, get_fps_delta_f(lib, -3), &tmp), &all->camera.viewpoint);
 	}
 	if (lib->_windows->event.key['d'])
 	{
 		start = 1;
-		add_vectors(&all->camera.viewpoint, scalar_multiplication(&all->camera.dir_x, 1, &tmp), &all->camera.viewpoint);
+		add_vectors(&all->camera.viewpoint, scalar_multiplication(&all->camera.dir_x, get_fps_delta_f(lib, 3), &tmp), &all->camera.viewpoint);
 	}
 	if (lib->_windows->event.key['q'])
 	{
 		start = 1;
-		add_vectors(&all->camera.viewpoint, scalar_multiplication(&all->camera.dir_y, 1, &tmp), &all->camera.viewpoint);
+		add_vectors(&all->camera.viewpoint, scalar_multiplication(&all->camera.dir_y, get_fps_delta_f(lib, 3), &tmp), &all->camera.viewpoint);
 	}
 	if (lib->_windows->event.key['e'])
 	{
 		start = 1;
-		add_vectors(&all->camera.viewpoint, scalar_multiplication(&all->camera.dir_y, -1, &tmp), &all->camera.viewpoint);
+		add_vectors(&all->camera.viewpoint, scalar_multiplication(&all->camera.dir_y, get_fps_delta_f(lib, -3), &tmp), &all->camera.viewpoint);
 	}
 	if (lib->_windows->event.key['n'])
 	{
 		start = 2;
-		all->camera.fov += ((all->camera.fov < 179) * 0.5);
+		all->camera.fov += get_fps_delta_f(lib, (all->camera.fov < 179) * 0.5);
 	}
 	if (lib->_windows->event.key['m'])
 	{
 		start = 2;
-		all->camera.fov -= ((all->camera.fov > 1) * 0.5);
+		all->camera.fov -= get_fps_delta_f(lib, (all->camera.fov > 1) * 0.5);
 	}
 	if (lib->_windows->event.key['p'])
 	{
@@ -155,9 +155,10 @@ void	event_key_press(t_tri_lib *lib, void *a)
 		start = 2;
 		all->distance_light -= DISTANCE_LIGHT_MIDDLE;
 	}
-	if (refresh > 5 && start)
+	// if (refresh > 5 && start)
+	if (start)
 	{
-		refresh = 0;
+		// refresh = 0;
 		if (start == 2)
 			cal_fov(all);
 		else if (start == 3)
@@ -165,6 +166,7 @@ void	event_key_press(t_tri_lib *lib, void *a)
 		else
 			reset_rays(all);
 		start_rays(all);
+	}
 }
 
 int looped(t_tri_lib *lib, void *a)
@@ -201,9 +203,10 @@ int	main(int argc, char **argv)
 	if (__init__(all, argv, argc))
 		return (free_all(all), 1);
 	tri_lib()->init();
+	// tri_lib()->auto_draw = 1;
 	tri_lib()->get_end_function(free_all);
 	tri_lib()->_user_content = all;
-	tri_lib()->create_window("QQQQQQQQQQQ", all->win_width, all->win_height);
+	tri_lib()->create_window("QQQQQQQQQQQ", all->win_width, all->win_height)->auto_draw = 0;
 	start_rays(all);
 	tri_lib()->draw_windows();
 	#ifndef NOLOOP

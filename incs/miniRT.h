@@ -14,16 +14,13 @@
 #  include <unistd.h>
 # endif
 # ifndef WIN_WIDTH_ALL
-#  define WIN_WIDTH_ALL 1920
+#  define WIN_WIDTH_ALL 1080
 # endif
 # ifndef WIN_HEIGHT_ALL
-#  define WIN_HEIGHT_ALL 1080
+#  define WIN_HEIGHT_ALL 720
 # endif
 # ifndef DISTANCE_LIGHT_MIDDLE
 #  define DISTANCE_LIGHT_MIDDLE 200
-# endif
-# ifndef FPS_MAX
-#  define FPS_MAX 24
 # endif
 # define MOVE_CAM_SPEED 0.01
 # include "tri_lib.h"
