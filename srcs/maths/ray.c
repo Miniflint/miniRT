@@ -67,15 +67,15 @@ unsigned int	spheres(t_ray *ray, t_all *all, t_shape_closest *shape)
 		}
 		sphere = sphere->next;
 	}
-	if (sphere && !isinf(closest_t))
+	if (all->spheres && !isinf(closest_t))
 	{
-		shape->colors = shape->sp_closest->rgb;
+		ray->color = shape->sp_closest->rgb;
 		shape->shape = (void *)shape->sp_closest;
 		hit_point = scalar_multiplication_no_v(&ray->dir, closest_t);
 		add_vectors(&hit_point, &all->camera.viewpoint, &hit_point);
-		send_light_sphere(all->lights, &shape->colors, ray->start, shape->sp_closest);
+		send_light_sphere(all->lights, &ray->color, ray->start, shape->sp_closest);
 	}
-	return (TRI_OPAQUE_UNSIGNED | shape->colors.r << 16 | shape->colors.g << 8 | shape->colors.b);
+	return (TRI_OPAQUE_UNSIGNED | ray->color.r << 16 | ray->color.g << 8 | ray->color.b);
 
 }
 
@@ -86,6 +86,7 @@ unsigned int	planes(t_ray *ray, t_all *all, t_shape_closest *shape)
 	t_vec	hit_point;
 
 	plane = all->planes;
+	closest_t = INFINITY;
 	while (plane)
 	{
 		intersect_plane(plane, ray, &shape->pl_t1);
@@ -96,7 +97,7 @@ unsigned int	planes(t_ray *ray, t_all *all, t_shape_closest *shape)
 		}
 		plane = plane->next;
 	}
-	if (plane && !isinf(closest_t))
+	if (all->planes && !isinf(closest_t))
 	{
 		ray->color = shape->pl_closest->rgb;
 		hit_point = scalar_multiplication_no_v(&ray->dir, closest_t);
@@ -109,7 +110,6 @@ void	t_shape_zero(t_shape_closest *s)
 {
 	s->t = INFINITY;
 	s->normal = (t_vec){0, 0, 0};
-	s->shape = NULL;
 	s->cy_closest = NULL;
 	s->ob_closest = NULL;
 	s->sp_closest = NULL;
@@ -134,7 +134,7 @@ unsigned int	traceray(t_ray *ray, t_all *all)
 	t_shape_zero(&closest);
 	sp_color[0] = spheres(ray, all, &closest);
 	sp_color[1] = planes(ray, all, &closest);
-	return (sp_color[0]);
+	return (sp_color[1]);
 }
 
 void start_rays(t_all *all)
