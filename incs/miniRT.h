@@ -53,6 +53,24 @@ typedef struct S_all
 	double			distance_light;
 }	t_all;
 
+typedef struct S_shape_closest
+{
+	double	t;
+	t_vec	normal;
+	t_rgb	color;
+	void	*shape;
+	int		type;
+
+	t_sphere	*sp_closest;
+	t_plane		*pl_closest;
+	t_cylinder	*cy_closest;
+	t_object	*ob_closest;
+	t_rgb		colors;
+	double		sp_t1;
+	double		sp_t2;
+	double		pl_t1;
+}	t_shape_closest;
+
 /* UTILS */
 int				ft_strlen(char *str);
 char			*ft_strjoin(char *s1, char *s2);
@@ -144,6 +162,7 @@ char	get_fps_tick(unsigned int fps, unsigned long *ret, int reset);
 unsigned int	traceray(t_ray *ray, t_all *all);
 void			IntersectRaySphere(double a, t_vec *D, t_vec *O, t_sphere *sphere,
 					double *t1, double *t2);
+void			intersect_plane(t_plane *plane, t_ray *ray, double *t);
 void			make_perpendicular(t_cam *cam);
 void			cal_fov(t_all *all);
 void			cal_rays(t_all *all);

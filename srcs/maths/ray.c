@@ -43,41 +43,98 @@ void	IntersectRaySphere(double a, t_vec *D, t_vec *O, t_sphere *sphere, double *
 }
 
 
-unsigned int	traceray(t_ray *ray, t_all *all)
+unsigned int	spheres(t_ray *ray, t_all *all, t_shape_closest *shape)
 {
-	double		t1, t2;
 	t_sphere	*sphere;
-	t_sphere	*closest;
 	t_coord		hit_point;
 	double		closest_t;
 	const double a = dot_product(&ray->dir, &ray->dir);
 
 	closest_t = INFINITY;
-	closest = NULL;
 	sphere = all->spheres;
 	while (sphere)
 	{
-		IntersectRaySphere(a, &ray->dir, &ray->start, sphere, &t1, &t2);
-		if (!isinf(t1) && t1 < closest_t && t1 > 1)
+		IntersectRaySphere(a, &ray->dir, &ray->start, sphere, &shape->sp_t1, &shape->sp_t2);
+		if (!isinf(shape->sp_t1) && shape->sp_t1 < closest_t && shape->sp_t1 > 1)
 		{
-			closest_t = t1;
-			closest = sphere;
+			closest_t = shape->sp_t1;
+			shape->sp_closest = sphere;
 		}
-		if (!isinf(t2) && t2 < closest_t && t2 > 1)
+		if (!isinf(shape->sp_t2) && shape->sp_t2 < closest_t && shape->sp_t2 > 1)
 		{
-			closest_t = t2;
-			closest = sphere;
+			closest_t = shape->sp_t2;
+			shape->sp_closest = sphere;
 		}
 		sphere = sphere->next;
 	}
-	if (!isinf(closest_t))
+	if (sphere && !isinf(closest_t))
 	{
-		ray->color = closest->rgb;
+		shape->colors = shape->sp_closest->rgb;
+		shape->shape = (void *)shape->sp_closest;
 		hit_point = scalar_multiplication_no_v(&ray->dir, closest_t);
 		add_vectors(&hit_point, &all->camera.viewpoint, &hit_point);
-		send_light_sphere(all->lights, &ray->color, hit_point, closest);
+		send_light_sphere(all->lights, &shape->colors, ray->start, shape->sp_closest);
+	}
+	return (TRI_OPAQUE_UNSIGNED | shape->colors.r << 16 | shape->colors.g << 8 | shape->colors.b);
+
+}
+
+unsigned int	planes(t_ray *ray, t_all *all, t_shape_closest *shape)
+{
+	t_plane	*plane;
+	double	closest_t;
+	t_vec	hit_point;
+
+	plane = all->planes;
+	while (plane)
+	{
+		intersect_plane(plane, ray, &shape->pl_t1);
+		if (!isinf(shape->pl_t1) && shape->pl_t1 < closest_t && shape->pl_t1 > 1)
+		{
+			closest_t = shape->pl_t1;
+			shape->pl_closest = plane;
+		}
+		plane = plane->next;
+	}
+	if (plane && !isinf(closest_t))
+	{
+		ray->color = shape->pl_closest->rgb;
+		hit_point = scalar_multiplication_no_v(&ray->dir, closest_t);
+		add_vectors(&hit_point, &all->camera.viewpoint, &hit_point);
 	}
 	return (TRI_OPAQUE_UNSIGNED | ray->color.r << 16 | ray->color.g << 8 | ray->color.b);
+}
+
+void	t_shape_zero(t_shape_closest *s)
+{
+	s->t = INFINITY;
+	s->normal = (t_vec){0, 0, 0};
+	s->shape = NULL;
+	s->cy_closest = NULL;
+	s->ob_closest = NULL;
+	s->sp_closest = NULL;
+	s->pl_closest = NULL;
+	s->pl_t1 = INFINITY;
+	s->sp_t1 = INFINITY;
+	s->sp_t2 = INFINITY;
+}
+
+int	get_closest(t_shape_closest closest)
+{
+	if (closest.sp_t1 < closest.pl_t1)
+		return (1);
+	return (2);
+}
+
+unsigned int	traceray(t_ray *ray, t_all *all)
+{
+	t_shape_closest	closest;
+	unsigned	int	sp_color[4];
+
+	t_shape_zero(&closest);
+	sp_color[0] = spheres(ray, all, &closest);
+	sp_color[1] = planes(ray, all, &closest);
+	return (sp_color[0]);
 }
 
 void start_rays(t_all *all)
