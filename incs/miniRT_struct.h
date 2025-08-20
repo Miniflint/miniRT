@@ -23,12 +23,12 @@ typedef struct S_coord
 	double	z;
 }	t_coord;
 
-typedef struct S_rgb_norm
-{
-	double	r;
-	double	g;
-	double	b;
-}	t_rgb_norm;
+// typedef struct S_rgb_norm
+// {
+// 	double	r;
+// 	double	g;
+// 	double	b;
+// }	t_rgb_norm;
 
 typedef unsigned char	t_minuint;
 typedef t_coord			t_vec;
@@ -52,11 +52,27 @@ typedef enum E_obj_type
 	END_SHAPE
 }	t_obj_type;
 
+typedef struct	s_shape
+{
+	t_obj_type	type;
+	double		t1;
+	double		t2;
+	t_vec		normal;
+	t_coord		origin;
+	void		*shape;
+}				t_shape;
+
+
 typedef struct S_ray
 {
 	t_coord	start;
+	t_coord	hit;
 	t_vec	dir;
 	t_argb	color;
+	t_rgb_f	color_ray;
+	t_rgb_f	color_shape;
+	t_rgb_f	color_diffuse;
+	t_shape	shape;
 }	t_ray;
 
 typedef struct S_Canvas

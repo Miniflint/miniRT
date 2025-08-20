@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tri_colors.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: herolle <herolle@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hermesrolle <hermesrolle@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 03:09:22 by hermesrolle       #+#    #+#             */
-/*   Updated: 2025/06/16 17:49:18 by herolle          ###   ########.fr       */
+/*   Updated: 2025/08/20 08:54:54 by hermesrolle      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,4 +79,62 @@ unsigned int	mix_colors_normal_u(t_argb top, t_argb base)
 	base.b = top.b * top.a + base.b * (1.0 - top.a);
 	base.a = top.a + base.a * (1.0 - top.a);
 	return (argb_to_unsigned(base));
+}
+
+t_rgb_f	argb_to_rgbf(t_argb color)
+{
+	return ((t_rgb_f){
+		((double)color.r / 255.0),
+		((double)color.g / 255.0),
+		((double)color.b / 255.0)});
+}
+
+t_argb	rgb_f_to_argb(t_rgb_f color)
+{
+	t_argb	ret;
+
+	ret.a = 1;
+	if (color.r >= 1.0)
+		ret.r = 255;
+	else
+		ret.r = 255.0 * color.r + 0.5;
+	if (color.g >= 1.0)
+		ret.g = 255;
+	else
+		ret.g = 255.0 * color.g + 0.5;
+	if (color.b >= 1.0)
+		ret.b = 255;
+	else
+		ret.b = 255.0 * color.b + 0.5;
+	return (ret);
+}
+
+unsigned int	rgb_f_to_unsigned(t_rgb_f color)
+{
+	t_argb	ret;
+
+	if (color.r >= 1.0)
+		ret.r = 255;
+	else
+		ret.r = 255.0 * color.r + 0.5;
+	if (color.g >= 1.0)
+		ret.g = 255;
+	else
+		ret.g = 255.0 * color.g + 0.5;
+	if (color.b >= 1.0)
+		ret.b = 255;
+	else
+		ret.b = 255.0 * color.b + 0.5;
+	return (TRI_OPAQUE_UNSIGNED | (ret.r << 16) | (ret.g << 8) | ret.b);
+}
+
+t_rgb_f	clamp_rgb_f(t_rgb_f color)
+{
+	if (color.r > 1.0)
+		color.r = 1.0;
+	if (color.g > 1.0)
+		color.g = 1.0;
+	if (color.b > 1.0)
+		color.b = 1.0;
+	return (color);
 }

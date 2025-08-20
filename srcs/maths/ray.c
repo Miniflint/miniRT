@@ -19,122 +19,124 @@ void make_perpendicular(t_cam *cam)
 	norm_vectors(&cam->dir_y, mag, &cam->dir_y);
 }
 
-void	IntersectRaySphere(double a, t_vec *D, t_vec *O, t_sphere *sphere, double *t1, double *t2)
+// void	IntersectRaySphere(double a, t_vec *D, t_vec *O, t_sphere *sphere, double *t1, double *t2)
+// {
+// 	t_vec	CO;
+// 	double	b;
+// 	double	c;
+
+// 	sub_vectors(O, &sphere->coord, &CO);
+// 	b = 2 * dot_product(&CO, D);
+// 	c = dot_product(&CO, &CO) - sphere->radius_squared;
+	
+// 	double disciminant = b * b - 4 * a * c;
+// 	if (disciminant < 0)
+// 	{
+// 		*t1 = INFINITY;
+// 		*t2 = INFINITY;
+// 		return ;
+// 	}
+// 	a *= 2;
+// 	disciminant = sqrt(disciminant); 
+// 	*t1 = (-b + disciminant) / a;
+// 	*t2 = (-b - disciminant) / a;
+// }
+
+void	init_ray(t_ray *ray)
+{
+	ray->color_ray = (t_rgb_f){0, 0, 0};
+	ray->color_shape = (t_rgb_f){0, 0, 0};
+	ray->color_diffuse = (t_rgb_f){0, 0, 0};
+	ray->shape.type = CAMERA;
+	ray->shape.shape = NULL;
+	ray->shape.t1 = INFINITY;
+	ray->shape.t2 = INFINITY;
+}
+
+void	IntersectRaySphere(t_ray *ray, t_sphere *sphere)
 {
 	t_vec	CO;
 	double	b;
 	double	c;
+	double	t1;
+	double	t2;
 
-	sub_vectors(O, &sphere->coord, &CO);
-	b = 2 * dot_product(&CO, D);
+	sub_vectors(&ray->start, &sphere->coord, &CO);
+	b = 2 * dot_product(&CO, &ray->dir);
 	c = dot_product(&CO, &CO) - sphere->radius_squared;
 	
-	double disciminant = b * b - 4 * a * c;
+	double disciminant = b * b - 4.0 * c; // le a dans "b * b - 4 * a * c" supprimé car a = dot d'un vecteur unitaire avec lui même ce qui donne toujours 1
 	if (disciminant < 0)
-	{
-		*t1 = INFINITY;
-		*t2 = INFINITY;
 		return ;
-	}
-	a *= 2;
 	disciminant = sqrt(disciminant); 
-	*t1 = (-b + disciminant) / a;
-	*t2 = (-b - disciminant) / a;
+	t1 = (-b - disciminant) / 2.0;
+	t2 = (-b + disciminant) / 2.0; //2 à la place de a * 2 car a = 1
+	if (t1 >= 1e-6 && (isinf(ray->shape.t1) || t1 < ray->shape.t1))
+	{
+		ray->shape.t1 = t1;
+		if (t2 >= 1e-6)
+			ray->shape.t2 = t2;
+		else
+			ray->shape.t2 = INFINITY;
+	}
+	else if (t2 >= 1e-6 && (isinf(ray->shape.t1) || t2 < ray->shape.t1))
+	{
+		ray->shape.t1 = t2;
+		ray->shape.t2 = INFINITY;
+	}
+	else
+		return ;
+	ray->shape.shape = sphere;
+	ray->shape.type = SPHERE;
 }
 
-
-unsigned int	spheres(t_ray *ray, t_all *all, t_shape_closest *shape)
+void	closest_sphere(t_ray *ray, t_sphere *sphere)
 {
-	t_sphere	*sphere;
-	t_coord		hit_point;
-	double		closest_t;
-	const double a = dot_product(&ray->dir, &ray->dir);
-
-	closest_t = INFINITY;
-	sphere = all->spheres;
 	while (sphere)
 	{
-		IntersectRaySphere(a, &ray->dir, &ray->start, sphere, &shape->sp_t1, &shape->sp_t2);
-		if (!isinf(shape->sp_t1) && shape->sp_t1 < closest_t && shape->sp_t1 > 1)
-		{
-			closest_t = shape->sp_t1;
-			shape->sp_closest = sphere;
-		}
-		if (!isinf(shape->sp_t2) && shape->sp_t2 < closest_t && shape->sp_t2 > 1)
-		{
-			closest_t = shape->sp_t2;
-			shape->sp_closest = sphere;
-		}
+		IntersectRaySphere(ray, sphere);
 		sphere = sphere->next;
 	}
-	if (all->spheres && !isinf(closest_t))
-	{
-		ray->color = shape->sp_closest->rgb;
-		shape->shape = (void *)shape->sp_closest;
-		hit_point = scalar_multiplication_no_v(&ray->dir, closest_t);
-		add_vectors(&hit_point, &all->camera.viewpoint, &hit_point);
-		send_light_sphere(all->lights, &ray->color, ray->start, shape->sp_closest);
-	}
-	return (TRI_OPAQUE_UNSIGNED | ray->color.r << 16 | ray->color.g << 8 | ray->color.b);
-
 }
 
-unsigned int	planes(t_ray *ray, t_all *all, t_shape_closest *shape)
+void	closest_plane(t_ray *ray, t_plane *plane)
 {
-	t_plane	*plane;
-	double	closest_t;
-	t_vec	hit_point;
-
-	plane = all->planes;
-	closest_t = INFINITY;
 	while (plane)
 	{
-		intersect_plane(plane, ray, &shape->pl_t1);
-		if (!isinf(shape->pl_t1) && shape->pl_t1 < closest_t && shape->pl_t1 > 1)
-		{
-			closest_t = shape->pl_t1;
-			shape->pl_closest = plane;
-		}
+		intersect_plane(ray, plane);
 		plane = plane->next;
 	}
-	if (all->planes && !isinf(closest_t))
-	{
-		ray->color = shape->pl_closest->rgb;
-		hit_point = scalar_multiplication_no_v(&ray->dir, closest_t);
-		add_vectors(&hit_point, &all->camera.viewpoint, &hit_point);
-	}
-	return (TRI_OPAQUE_UNSIGNED | ray->color.r << 16 | ray->color.g << 8 | ray->color.b);
-}
-
-void	t_shape_zero(t_shape_closest *s)
-{
-	s->t = INFINITY;
-	s->normal = (t_vec){0, 0, 0};
-	s->cy_closest = NULL;
-	s->ob_closest = NULL;
-	s->sp_closest = NULL;
-	s->pl_closest = NULL;
-	s->pl_t1 = INFINITY;
-	s->sp_t1 = INFINITY;
-	s->sp_t2 = INFINITY;
-}
-
-int	get_closest(t_shape_closest closest)
-{
-	if (closest.sp_t1 < closest.pl_t1)
-		return (1);
-	return (2);
 }
 
 unsigned int	traceray(t_ray *ray, t_all *all)
 {
-	t_shape_closest	closest;
-	unsigned	int	sp_color[4];
-
-	t_shape_zero(&closest);
-	sp_color[0] = spheres(ray, all, &closest);
-	sp_color[1] = planes(ray, all, &closest);
-	return (sp_color[1]);
+	init_ray(ray);
+	closest_plane(ray, all->planes);
+	//closest_cylinder(ray, all->cylinders);
+	closest_sphere(ray, all->spheres);
+	if (isinf(ray->shape.t1))
+		return (TRI_OPAQUE_UNSIGNED | ray->color.r << 16 | ray->color.g << 8 | ray->color.b);
+	ray->hit = scalar_multiplication_no_v(&ray->dir, ray->shape.t1);
+	add_vectors(&ray->hit, &ray->start, &ray->hit);
+	if (ray->shape.type == SPHERE)
+	{
+		ray->shape.origin = ((t_sphere *)(ray->shape.shape))->coord;
+		sub_vectors(&ray->hit, &ray->shape.origin, &ray->shape.normal);
+		norm_vectors(&ray->shape.normal, vec_magnitude(&ray->shape.normal), &ray->shape.normal);
+		ray->color_shape = ((t_sphere *)(ray->shape.shape))->color;
+	}
+	else if (ray->shape.type == PLANE)
+	{
+		ray->shape.origin = ((t_plane *)(ray->shape.shape))->coord;
+		ray->shape.normal = ((t_plane *)(ray->shape.shape))->vec;
+		ray->color_shape = ((t_plane *)(ray->shape.shape))->color;
+	}
+	diffuse_light(ray, all, all->lights);
+	//ray->color_diffuse = clamp_rgb_f(ray->color_diffuse);
+	ray->color_ray.r = ray->color_shape.r * ray->color_diffuse.r;
+	ray->color_ray.g = ray->color_shape.g * ray->color_diffuse.g;
+	ray->color_ray.b = ray->color_shape.b * ray->color_diffuse.b;
+	return (rgb_f_to_unsigned(ray->color_ray));
 }
 
 void start_rays(t_all *all)
@@ -170,42 +172,3 @@ void start_rays(t_all *all)
 	}
 	// lib->draw_windows();
 }
-	//while (j_start < tmp)
-	//{
-	////column motif
-	//i_start = 0;
-	//while (i_start < tmp)
-	//{
-	////motif square space
-	//i = i_start;
-	//pix_y_base = -((all->win_height >> 1) * unit);
-	//pix_x_base = -((all->win_width >> 1) * unit);
-	//pix_y = pix_y_base + i * unit;
-	//while (i < all->win_height)
-	//{
-	//	j = j_start;
-	//	scalar_multiplication(&all->camera.dir_y, pix_y, &dir_y);
-	//	pix_x = pix_x_base + j * unit;
-	//	while (j < all->win_width)
-	//	{
-	//		scalar_multiplication(&all->camera.dir_x, pix_x, &dir_x);
-	//		add_vectors(&all->camera.dir, &dir_x, &ray);
-	//		add_vectors(&ray, &dir_y, &ray);
-	//		color = traceray(&ray, all);
-	//		lib->replace_pixel_on_window(lib->_windows, color, j, i);
-	//		j += tmp;
-	//		pix_x += unit * tmp;
-	//	}
-	//	pix_y += unit * tmp;
-	//	i += tmp;
-	//}
-	////end motif square space
-	//i_start++;
-	//}
-	////end column motif
-	//lib->draw_windows();
-	//j_start++;
-	//}
-	////end line motif
-//
-//}

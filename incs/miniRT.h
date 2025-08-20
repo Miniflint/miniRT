@@ -157,24 +157,27 @@ t_vec	*norm_vectors(t_vec *a, double magnitude, t_vec *c);
 double	dot_product(register t_vec *a, register t_vec *b);
 double	get_angle(t_vec *a, t_vec *b, double mag_a, double mag_b);
 t_vec	*cross_product(t_vec *a, t_vec *b, t_vec *c);
-char	get_fps_tick(unsigned int fps, unsigned long *ret, int reset);
+// char	get_fps_tick(unsigned int fps, unsigned long *ret, int reset);
 
 unsigned int	traceray(t_ray *ray, t_all *all);
-void			IntersectRaySphere(double a, t_vec *D, t_vec *O, t_sphere *sphere,
+void			oldIntersectRaySphere(double a, t_vec *D, t_vec *O, t_sphere *sphere,
 					double *t1, double *t2);
-void			intersect_plane(t_plane *plane, t_ray *ray, double *t);
+void			IntersectRaySphere(t_ray *ray, t_sphere *sphere);
+void			intersect_plane(t_ray *ray, t_plane *plane);
 void			make_perpendicular(t_cam *cam);
 void			cal_fov(t_all *all);
 void			cal_rays(t_all *all);
 void			init_start_ray(t_all *all);
 void			reset_rays(t_all *all);
 void			update_rays_start(t_all *all);
-void			send_light_sphere(t_light *light, t_rgb *raycolor, t_coord p, t_sphere *sphere);
+// void			send_light_sphere(t_light *light, t_rgb *raycolor, t_coord p, t_sphere *sphere);
 
 void rotate_camera_x(t_vec *dir_rotate, double nb);
 void rotate_camera_y(t_vec *dir_rotate, double nb);
 void rotate_camera_z(t_vec *dir_rotate, double nb);
 
 int	rotate_camera(t_vec *original, t_vec *axis, t_vec *for_perpendicular, double angle);
+
+void	diffuse_light(t_ray *ray, t_all *all, t_light *light);
 
 #endif

@@ -68,10 +68,22 @@ void	event_key_press(t_tri_lib *lib, void *a)
 			start = 2;
 			all->shadow_on = !all->shadow_on;
 		}
-		if (lib->event->key_id == 'v')
+		// if (lib->event->key_id == 'v')
+		// {
+		// 	start = 2;
+		// 	all->light_ratio -= 0.01;
+		// }
+		if (lib->event->key_id == 'p')
 		{
-			start = 2;
-			all->light_ratio -= 0.01;
+			start = 1;
+			all->canvas.pixel_values += (all->canvas.pixel_values < 253) << 1;
+			// lib->erase_render(&lib->event->win_id->_base_render._render);
+		}
+		if (lib->event->key_id == 'o')
+		{
+			start = 1;
+			all->canvas.pixel_values -= (all->canvas.pixel_values > 1) << 1;
+			// lib->erase_render(&lib->event->win_id->_base_render._render);
 		}
 		if (lib->event->key_id == KEY_ESC)
 			lib->quit();
@@ -97,18 +109,6 @@ void	event_key_press(t_tri_lib *lib, void *a)
 	{
 		start = 2;
 		all->camera.fov -= get_fps_delta_f(lib, (all->camera.fov > 1) * 0.5);
-	}
-	if (lib->_windows->event.key['p'])
-	{
-		start = 1;
-		all->canvas.pixel_values += (all->canvas.pixel_values < 253) << 1;
-		// lib->erase_render(&lib->event->win_id->_base_render._render);
-	}
-	if (lib->_windows->event.key['o'])
-	{
-		start = 1;
-		all->canvas.pixel_values -= (all->canvas.pixel_values > 1) << 1;
-		// lib->erase_render(&lib->event->win_id->_base_render._render);
 	}
 	if (lib->_windows->event.key[KEY_UP])
 		start = rotate_camera(&all->camera.dir, &all->camera.dir_x, &all->camera.dir_y, get_fps_delta_f(lib, -ROT_CAM_SPEED));

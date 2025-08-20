@@ -64,6 +64,7 @@ void cal_rays(t_all *all)
 			scalar_multiplication(&all->camera.dir_x, all->canvas.pix_x[j], &dir_x);
 			add_vectors(&all->camera.dir, &dir_x, &all->canvas.rays_save[i][j].dir);
 			add_vectors(&all->canvas.rays_save[i][j].dir, &dir_y, &all->canvas.rays_save[i][j].dir);
+			norm_vectors(&all->canvas.rays_save[i][j].dir, vec_magnitude(&all->canvas.rays_save[i][j].dir), &all->canvas.rays_save[i][j].dir);
 			all->canvas.rays_save[i][j].start = all->camera.viewpoint;
 			all->canvas.rays[i][j] = all->canvas.rays_save[i][j];
 			++j;

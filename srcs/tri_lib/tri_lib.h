@@ -6,7 +6,7 @@
 /*   By: hermesrolle <hermesrolle@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 03:38:29 by hermesrolle       #+#    #+#             */
-/*   Updated: 2025/08/17 23:48:54 by hermesrolle      ###   ########.fr       */
+/*   Updated: 2025/08/20 05:27:46 by hermesrolle      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,17 +20,6 @@
 # include "mlx.h"
 # include "tri_lib_gb.h"
 # include "tri_colors.h"
-# ifdef __linux__
-#  define TRI_OPAQUE_UNSIGNED 0xFF000000
-#  define TRI_TRANSPARENT_UNSIGNED 0x00000000
-#  define TRI_OPAQUE 1
-#  define TRI_TRANSPARENT 0
-# else
-#  define TRI_OPAQUE_UNSIGNED 0x00000000
-#  define TRI_TRANSPARENT_UNSIGNED 0xFF000000
-#  define TRI_OPAQUE 0
-#  define TRI_TRANSPARENT 1
-# endif
 # define BACKGROUND_COLOR 0x00000000
 # define FPS_MAX 30
 # define FPS_TARGET 24.0

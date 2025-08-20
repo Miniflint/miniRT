@@ -120,7 +120,7 @@ static int	check_ext(char **argv)
 }
 
 
-void	apply_argb_save_to_rgb(t_rgb *rgb_save, t_rgb_norm ambient_rgb, t_rgb *into)
+void	apply_argb_save_to_rgb(t_rgb *rgb_save, t_rgb_f ambient_rgb, t_rgb *into)
 {
 	into->r = (double)rgb_save->r * ambient_rgb.r;
 	into->g = (double)rgb_save->g * ambient_rgb.g;
