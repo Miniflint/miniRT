@@ -149,7 +149,7 @@ void 	start_rays(t_all *all);
 double	vec_magnitude(t_vec *a);
 t_vec	*add_vectors(t_vec *a, t_vec *b, t_vec *c);
 t_vec	*sub_vectors(t_vec *a, t_vec *b, t_vec *c);
-t_vec	*mul_vectors(t_vec *a, t_vec *b, t_vec *c);
+t_vec	sub_vectors_no_v(t_vec *a, t_vec *b);
 t_vec	*div_vectors(t_vec *a, t_vec *b, t_vec *c);
 t_vec	*scalar_multiplication(t_vec *a, double b, t_vec *c);
 t_vec	scalar_multiplication_no_v(t_vec *a, double b);

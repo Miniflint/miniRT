@@ -55,39 +55,39 @@ void	init_ray(t_ray *ray)
 
 void	IntersectRaySphere(t_ray *ray, t_sphere *sphere)
 {
-	t_vec	CO;
-	double	b;
-	double	c;
-	double	t1;
-	double	t2;
-
-	sub_vectors(&ray->start, &sphere->coord, &CO);
-	b = 2 * dot_product(&CO, &ray->dir);
-	c = dot_product(&CO, &CO) - sphere->radius_squared;
+	double			disciminant;
+	double			t1;
+	double			t2;
+	const t_vec		CO = sub_vectors_no_v(&ray->start, &sphere->coord);
+	const double	b = 2 * dot_product((t_vec *)&CO, &ray->dir);
+	const double	c = dot_product((t_vec *)&CO, (t_vec *)&CO) - sphere->radius_squared;
 	
-	double disciminant = b * b - 4.0 * c; // le a dans "b * b - 4 * a * c" supprimé car a = dot d'un vecteur unitaire avec lui même ce qui donne toujours 1
+	disciminant = b * b - 4.0 * c;
 	if (disciminant < 0)
 		return ;
 	disciminant = sqrt(disciminant); 
 	t1 = (-b - disciminant) / 2.0;
-	t2 = (-b + disciminant) / 2.0; //2 à la place de a * 2 car a = 1
 	if (t1 >= 1e-6 && (isinf(ray->shape.t1) || t1 < ray->shape.t1))
 	{
 		ray->shape.t1 = t1;
-		if (t2 >= 1e-6)
-			ray->shape.t2 = t2;
-		else
-			ray->shape.t2 = INFINITY;
+		// if (t2 >= 1e-6)
+		// 	ray->shape.t2 = t2;
+		// else
+		// 	ray->shape.t2 = INFINITY;
+		ray->shape.shape = sphere;
+		ray->shape.type = SPHERE;
+		return ;
 	}
-	else if (t2 >= 1e-6 && (isinf(ray->shape.t1) || t2 < ray->shape.t1))
+	t2 = (-b + disciminant) / 2.0;
+	if (t2 >= 1e-6 && (isinf(ray->shape.t1) || t2 < ray->shape.t1))
 	{
 		ray->shape.t1 = t2;
-		ray->shape.t2 = INFINITY;
+		// ray->shape.t2 = INFINITY;
+		ray->shape.shape = sphere;
+		ray->shape.type = SPHERE;
 	}
-	else
-		return ;
-	ray->shape.shape = sphere;
-	ray->shape.type = SPHERE;
+	// else
+	// 	return ;
 }
 
 void	closest_sphere(t_ray *ray, t_sphere *sphere)

@@ -3,17 +3,11 @@
 void	ft_zeroes(t_all *all)
 {
 	all->ambient_light.ratio = 0;
-	all->ambient_light.rgb.r = 0;
-	all->ambient_light.rgb.g = 0;
-	all->ambient_light.rgb.b = 0;
+	all->ambient_light.rgb = (t_rgb){0, 0, 0, 0};
 	all->ambient_light.nb = 0;
-	all->camera.viewpoint.x = 0;
-	all->camera.viewpoint.y = 0;
-	all->camera.viewpoint.z = 0;
+	all->camera.viewpoint = (t_coord){0, 0, 0};
 	all->camera.nb = 0;
-	all->camera.dir.x = 0;
-	all->camera.dir.y = 0;
-	all->camera.dir.z = 0;
+	all->camera.dir = (t_vec){0, 0, 0};
 	all->camera.fov = 0;
 	all->line_count = 1;
 	all->cylinders = NULL;
@@ -23,7 +17,7 @@ void	ft_zeroes(t_all *all)
 	all->lights = NULL;
 	all->win_width = WIN_WIDTH_ALL;
 	all->win_height = WIN_HEIGHT_ALL;
-	all->shadow_on = 0;
+	all->shadow_on = 1;
 	all->canvas.pixel_values = 1;
 	all->light_ratio = 1;
 	all->distance_light = DISTANCE_LIGHT_MIDDLE * DISTANCE_LIGHT_MIDDLE;
@@ -62,9 +56,7 @@ void zeroes_two(t_object *object, char *path)
 	object->nb_points = 0;
 	object->nb_faces = 0;
 	object->name[0] = 0;
-	object->coord.x = 0;
-	object->coord.y = 0;
-	object->coord.z = 0;
+	object->coord = (t_coord){0, 0, 0};
 	i = -1;
 	while (path[++i])
 		object->path[i] = path[i];

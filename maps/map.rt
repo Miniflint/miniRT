@@ -6,8 +6,9 @@ L 0,0,30 1 255,255,255
 # ob "objects/FinalBaseMesh.obj" 0,0,0
 # ob "objects/FinalBaseMesh.obj" 0,0,0
 # ob "objects/FinalBaseMesh.obj" 0,0,0
-pl 0,0,-100 0,0,1 255,255,255
-# spheres
+pl 0,0,-100 0,0,1 0,0,255
+pl 0,0,-110 0,0.5,1 255,0,0
+# spheress
 	sp 10,0.8,0		4		167,232,228
 	sp 20,0,40.2	20		209,90,114
 	sp 10,20,0		17.2	167,232,228

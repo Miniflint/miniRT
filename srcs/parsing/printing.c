@@ -38,7 +38,7 @@ void	print_sp(t_sphere *sphere, int depth)
 		sphere->coord.x, sphere->coord.y, sphere->coord.z);
 	printf("\tRadius: %f\n", sphere->radius * 2);
 	printf("\tRGB: %d %d %d\n",
-		sphere->rgb.r, sphere->rgb.g, sphere->rgb.b);
+		sphere->rgb_save.r, sphere->rgb_save.g, sphere->rgb_save.b);
 	printf("     ---------------------------------------------------\n");
 	print_sp(sphere->next, depth + 1);
 }
@@ -54,7 +54,7 @@ void	print_pl(t_plane *plane, int depth)
 	printf("\tVec: %f %f %f\n",
 		plane->vec.x, plane->vec.y, plane->vec.z);
 	printf("\tRGB: %d %d %d\n",
-		plane->rgb.r, plane->rgb.g, plane->rgb.b);
+		plane->rgb_save.r, plane->rgb_save.g, plane->rgb_save.b);
 	printf("     ---------------------------------------------------\n");
 	print_pl(plane->next, depth + 1);
 }
@@ -70,7 +70,7 @@ void	print_cy(t_cylinder *cylinder, int depth)
 	printf("\tDiameter: %f\n", cylinder->diameter);
 	printf("\tHeight: %f\n", cylinder->height);
 	printf("\tRGB: %d %d %d\n",
-		cylinder->rgb.r, cylinder->rgb.g, cylinder->rgb.b);
+		cylinder->rgb_save.r, cylinder->rgb_save.g, cylinder->rgb_save.b);
 	printf("     ---------------------------------------------------\n");
 	print_cy(cylinder->next, depth + 1);
 }

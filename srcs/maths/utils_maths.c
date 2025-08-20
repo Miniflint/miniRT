@@ -21,12 +21,15 @@ t_vec	*sub_vectors(t_vec *a, t_vec *b, t_vec *c)
 	return (c);
 }
 
-t_vec	*mul_vectors(t_vec *a, t_vec *b, t_vec *c)
+t_vec	sub_vectors_no_v(t_vec *a, t_vec *b)
 {
-	c->x = a->x * b->x;
-	c->y = a->y * b->y;
-	c->z = a->z * b->z;
-	return (c);
+	return (
+		(t_vec){
+			.x = a->x - b->x,
+			.y = a->y - b->y,
+			.z = a->z - b->z
+		}
+	);
 }
 
 t_vec	*div_vectors(t_vec *a, t_vec *b, t_vec *c)
