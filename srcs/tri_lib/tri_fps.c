@@ -46,12 +46,12 @@ double	get_fps_delta_f(t_tri_lib *lib, double value)
 
 long int	get_fps_delta_i(t_tri_lib *lib, long int value)
 {
-	return ((double)((double)(value) * (double)lib->fps_delta + 0.5));
+	return ((double)((double)(value) *(double)lib->fps_delta + 0.5));
 }
 
 long unsigned int	get_fps_delta_u(t_tri_lib *lib, long unsigned int value)
 {
-	return ((double)((double)(value) * (double)lib->fps_delta + 0.5));
+	return ((double)((double)(value) *(double)lib->fps_delta + 0.5));
 }
 
 // char	_get_fps_tick(unsigned int fps, unsigned long *ret, int reset)

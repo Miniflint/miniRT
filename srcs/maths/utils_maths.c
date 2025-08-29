@@ -1,6 +1,6 @@
 #include "miniRT.h"
 
-double vec_magnitude(t_vec *a)
+double	vec_magnitude(t_vec *a)
 {
 	return (sqrt((a->x * a->x) + (a->y * a->y) + (a->z * a->z)));
 }

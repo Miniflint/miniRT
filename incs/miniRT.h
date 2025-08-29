@@ -169,7 +169,7 @@ void			cal_fov(t_all *all);
 void			cal_rays(t_all *all);
 void			init_start_ray(t_all *all);
 void			reset_rays(t_all *all);
-void			update_rays_start(t_all *all);
+// void			update_rays_start(t_all *all);
 // void			send_light_sphere(t_light *light, t_rgb *raycolor, t_coord p, t_sphere *sphere);
 
 void rotate_camera_x(t_vec *dir_rotate, double nb);

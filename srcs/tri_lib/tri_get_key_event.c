@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tri_get_key_event.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hermesrolle <hermesrolle@student.42.fr>    +#+  +:+       +#+        */
+/*   By: herolle <herolle@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/21 03:34:21 by hermesrolle       #+#    #+#             */
-/*   Updated: 2025/08/29 11:10:51 by hermesrolle      ###   ########.fr       */
+/*   Updated: 2025/08/29 12:39:32 by herolle          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 #ifdef __linux__
 
-static void	_special_key_set(int keycode, char *key)
+static void	_special_key_set(int keycode, unsigned char *key)
 {
 	if (keycode == MLX_KEY_UP)
 		*key = KEY_UP;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tri_loop.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hermesrolle <hermesrolle@student.42.fr>    +#+  +:+       +#+        */
+/*   By: herolle <herolle@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 22:28:01 by herolle           #+#    #+#             */
-/*   Updated: 2025/08/29 11:26:37 by hermesrolle      ###   ########.fr       */
+/*   Updated: 2025/08/29 12:44:42 by herolle          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	_call_user_main(t_tri_lib *lib)
 	if (lib->fps_delta < 0.05)
 		lib->fps_delta = 0.05;
 	else if (lib->fps_delta > 4.0)
-	lib->fps_delta = 4;
+		lib->fps_delta = 4;
 	lib->_user_main(lib, lib->_user_content);
 	_auto_draw(lib);
 }
