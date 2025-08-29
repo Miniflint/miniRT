@@ -6,7 +6,7 @@
 /*   By: hermesrolle <hermesrolle@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 21:29:12 by herolle           #+#    #+#             */
-/*   Updated: 2025/06/15 22:27:53 by hermesrolle      ###   ########.fr       */
+/*   Updated: 2025/08/29 10:59:59 by hermesrolle      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static t_render	*_new_render(t_tri_lib *lib, t_win *win)
 
 	render = malloc(sizeof(t_render));
 	if (!render)
-	return (_set_ernum(lib, TRI_MALLOC_FAILURE));
+		return (_set_ernum(lib, TRI_MALLOC_FAILURE));
 	render->_size = win->_width * win->_height;
 	render->_data = malloc(sizeof(unsigned int *) * render->_size);
 	if (!render->_data)
@@ -56,6 +56,19 @@ t_render	*_create_render(t_win *win)
 	return (tmp);
 }
 
+static void	init_render(t_win *win)
+{
+	win->_base_render._render._width = win->_base_render._img._size_line / 4;
+	win->_base_render._render._height = win->_height;
+	win->_base_render._render._size = win->_width * win->_height;
+	win->_base_render._img._width = win->_base_render._render._width;
+	win->_base_render._render._parent_win = win;
+	win->_base_render._render._next = NULL;
+	win->_base_render._render._data
+		= (unsigned int *)win->_base_render._img._data;
+	win->_base_render._render._mix_colors = mix_colors_normal_u_no_a;
+}
+
 int	_create_base_render(t_win *win)
 {
 	t_tri_lib	*lib;
@@ -66,23 +79,19 @@ int	_create_base_render(t_win *win)
 		_set_ernum(lib, TRI_INVALID_VALUE);
 		return (TRI_INVALID_VALUE);
 	}
-	win->_base_render._img._img = mlx_new_image(lib->_mlx, win->_width, win->_height);
+	win->_base_render._img._img
+		= mlx_new_image(lib->_mlx, win->_width, win->_height);
 	if (!win->_base_render._img._img)
 	{
 		_set_ernum(lib, TRI_CREATE_RENDER_FAILURE);
 		return (TRI_CREATE_RENDER_FAILURE);
 	}
-	win->_base_render._img._data =
-			mlx_get_data_addr(win->_base_render._img._img, &win->_base_render._img._bpp,
-			&win->_base_render._img._size_line, &win->_base_render._img._endian);
-	win->_base_render._render._width = win->_base_render._img._size_line / 4;
-	win->_base_render._render._height = win->_height;
-	win->_base_render._render._size = win->_width * win->_height;
-	win->_base_render._img._width = win->_base_render._render._width;
-	win->_base_render._render._parent_win = win;
-	win->_base_render._render._next = NULL;
-	win->_base_render._render._data = (unsigned int *)win->_base_render._img._data;
-	win->_base_render._render._mix_colors = mix_colors_normal_u_no_a;
+	win->_base_render._img._data
+		= mlx_get_data_addr(
+			win->_base_render._img._img, &win->_base_render._img._bpp,
+			&win->_base_render._img._size_line,
+			&win->_base_render._img._endian);
+	init_render(win);
 	_erase_fill_render(&win->_base_render._render, lib->_bg_color);
 	return (TRI_SUCCESS);
 }

@@ -6,7 +6,7 @@
 /*   By: hermesrolle <hermesrolle@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 03:59:18 by hermesrolle       #+#    #+#             */
-/*   Updated: 2025/08/17 01:29:24 by hermesrolle      ###   ########.fr       */
+/*   Updated: 2025/08/29 11:40:20 by hermesrolle      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	_put_pixel_to_render(t_render *render, t_argb color, int x, int y)
 	i = (y * render->_width) + x;
 	(render->_data)[i]
 		= render->_mix_colors(color,
-				unsigned_to_argb((render->_data)[i]));
+			unsigned_to_argb((render->_data)[i]));
 }
 
 void	_replace_pixel_on_render(t_render *render,
@@ -60,19 +60,19 @@ void	_replace_pixel_on_render(t_render *render,
 }
 
 void	_replace_sized_pixel_on_render(t_render *render,
-	unsigned int color, int x, int y, int size)
+	unsigned int color, t_point2d p, int size)
 {
 	int	i;
 	int	j;
 
-	if (x < 0 || y < 0)
+	if (p.x < 0 || p.y < 0)
 		return ;
 	i = 0;
-	while (i + y < render->_height && i < size)
+	while (i + p.y < render->_height && i < size)
 	{
 		j = 0;
-		while (j + x < render->_width && j < size)
-			(render->_data)[((i + y) * render->_width) + (x + j++)] = color;
+		while (j + p.x < render->_width && j < size)
+			(render->_data)[((i + p.y) * render->_width) + (p.x + j++)] = color;
 		++i;
 	}
 }
@@ -91,7 +91,7 @@ void	_put_pixel_to_window(t_win *win, t_argb color, int x, int y)
 	i = (y * render->_width) + x;
 	(render->_data)[i]
 		= render->_mix_colors(color,
-				unsigned_to_argb((render->_data)[i]));
+			unsigned_to_argb((render->_data)[i]));
 }
 
 void	_replace_pixel_on_window(t_win *win, unsigned int color, int x, int y)
@@ -108,7 +108,9 @@ void	_replace_pixel_on_window(t_win *win, unsigned int color, int x, int y)
 	else
 	{
 		render = &win->_base_render._render;
-		(render->_data)[(y * render->_width) + x] = render->_mix_colors(unsigned_to_argb(color), unsigned_to_argb(tri_lib()->_bg_color));
+		(render->_data)[(y * render->_width) + x]
+			= render->_mix_colors(unsigned_to_argb(color),
+				unsigned_to_argb(tri_lib()->_bg_color));
 	}
 }
 
@@ -186,8 +188,8 @@ void	_draw_render_to_render(t_render *top, t_render *base)
 	while (i < render_size)
 	{
 		(base->_data)[i] = _mix_colors_render_to_render(
-					unsigned_to_argb((top->_data)[i]),
-					unsigned_to_argb((base->_data)[i]));
+				unsigned_to_argb((top->_data)[i]),
+				unsigned_to_argb((base->_data)[i]));
 		++i;
 	}
 }
@@ -204,7 +206,8 @@ void	_draw_render_to_render(t_render *top, t_render *base)
 // 	mlx_put_image_to_window(lib->_mlx, win->_win, win->_renders->_img, 0, 0);
 // 	while (cursor->_next)
 // 	{
-// 		mlx_put_image_to_window(lib->_mlx, win->_win, cursor->_next->_img, 0, 0);
+// 		mlx_put_image_to_window(lib->_mlx,
+			// win->_win, cursor->_next->_img, 0, 0);
 // 		// _draw_render_to_render(cursor->_next, win->_renders);
 // 		cursor = cursor->_next;
 // 	}
@@ -227,7 +230,8 @@ void	_draw_window(t_win *win)
 	win->fps = _get_fps(&win->last_draw);
 	printf("\rfps: %.2lf                   ", win->fps);
 	fflush(stdout); //not permited
-	mlx_put_image_to_window(lib->_mlx, win->_win, win->_base_render._img._img, 0, 0);
+	mlx_put_image_to_window(lib->_mlx, win->_win,
+		win->_base_render._img._img, 0, 0);
 }
 //_erase_fill_render(win->_renders, lib->_bg_color);
 
@@ -243,7 +247,7 @@ void	_draw_windows(void)
 	}
 }
 
-void	_change_background(unsigned int	color)
+void	_change_background(unsigned int color)
 {
 	tri_lib()->_bg_color = color & 0xFFFFFF;
 }

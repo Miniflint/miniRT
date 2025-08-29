@@ -6,7 +6,7 @@
 /*   By: hermesrolle <hermesrolle@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 03:38:27 by hermesrolle       #+#    #+#             */
-/*   Updated: 2025/08/17 01:25:18 by hermesrolle      ###   ########.fr       */
+/*   Updated: 2025/08/29 11:16:45 by hermesrolle      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	_refresh_window(t_win *win)
 		return ;
 	}
 }
-	char			auto_loop;
+
 t_tri_lib	*tri_lib(void)
 {
 	static t_tri_lib	tri_lib = {

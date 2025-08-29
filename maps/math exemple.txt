@@ -1,0 +1,6 @@
+<Cd x (P - Co)> = Cr2
+<Cd x ((O + tD) - Co)> = Cr2
+(x - o)^2 * (y - o)^2 = r^2
+V = Cd x ((O + tD) - Co)
+<V, V> = Cr2
+tD 

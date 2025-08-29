@@ -37,7 +37,7 @@
 #  define MLX_KEY_X 'x'
 #  define MLX_KEY_Y 'y'
 #  define MLX_KEY_Z 'z'
- 
+
 #  define MLX_KEY_0 '0'
 #  define MLX_KEY_1 '1'
 #  define MLX_KEY_2 '2'
@@ -48,11 +48,11 @@
 #  define MLX_KEY_7 '7'
 #  define MLX_KEY_8 '8'
 #  define MLX_KEY_9 '9'
- 
+
 #  define MLX_KEY_SPACE ' '
 #  define MLX_KEY_ENTER '\n'
 #  define MLX_KEY_BACKSPACE 127
- 
+
 #  define MLX_KEY_ESC 65307
 #  define MLX_KEY_SHIFT_LEFT 65505
 #  define MLX_KEY_SHIFT_RIGHT 65293

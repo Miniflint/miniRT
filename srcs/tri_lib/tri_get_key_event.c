@@ -6,46 +6,47 @@
 /*   By: hermesrolle <hermesrolle@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/21 03:34:21 by hermesrolle       #+#    #+#             */
-/*   Updated: 2025/08/16 23:44:45 by hermesrolle      ###   ########.fr       */
+/*   Updated: 2025/08/29 11:10:51 by hermesrolle      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "tri_lib.h"
 #include "tri_mlx_code.h"
 
-# ifdef __linux__
+#ifdef __linux__
+
+static void	_special_key_set(int keycode, char *key)
+{
+	if (keycode == MLX_KEY_UP)
+		*key = KEY_UP;
+	else if (keycode == MLX_KEY_DOWN)
+		*key = KEY_DOWN;
+	else if (keycode == MLX_KEY_LEFT)
+		*key = KEY_LEFT;
+	else if (keycode == MLX_KEY_RIGHT)
+		*key = KEY_RIGHT;
+	else if (keycode == MLX_KEY_CTRL)
+		*key = KEY_CTRL;
+	else if (keycode == MLX_KEY_SHIFT_LEFT)
+		*key = KEY_SHIFT_LEFT;
+	else if (keycode == MLX_KEY_SHIFT_RIGHT)
+		*key = KEY_SHIFT_RIGHT;
+	else if (keycode == MLX_KEY_ESC)
+		*key = KEY_ESC;
+	else
+		*key = 0;
+}
 
 static unsigned char	_set_key(int keycode, t_win *win,
-	t_event_type type, const unsigned char	codes[MLX_MAX_CODE])
+	t_event_type type, const unsigned char codes[MLX_MAX_CODE])
 {
 	unsigned char	key;
 
 	win->event.type = type;
 	if (keycode >= MLX_MAX_CODE)
-	{
-		if (keycode == MLX_KEY_UP)
-			key = KEY_UP;
-		else if (keycode == MLX_KEY_DOWN)
-			key = KEY_DOWN;
-		else if (keycode == MLX_KEY_LEFT)
-			key = KEY_LEFT;
-		else if (keycode == MLX_KEY_RIGHT)
-			key = KEY_RIGHT;
-		else if (keycode == MLX_KEY_CTRL)
-			key = KEY_CTRL;
-		else if (keycode == MLX_KEY_SHIFT_LEFT)
-			key = KEY_SHIFT_LEFT;
-		else if (keycode == MLX_KEY_SHIFT_RIGHT)
-			key = KEY_SHIFT_RIGHT;
-		else if (keycode == MLX_KEY_ESC)
-			key = KEY_ESC;
-		else
-			key = 0;
-	}
+		_special_key_set(keycode, &key);
 	else
-	{
 		key = codes[keycode];
-	}
 	win->event.key_id = key;
 	if (type == KEY_PRESS)
 		win->event.key[key] = 1;
@@ -75,7 +76,7 @@ static unsigned char	_get_key_event(int keycode, t_win *win,
 	return (_set_key(keycode, win, type, codes));
 }
 
-# else
+#else
 
 static unsigned char	_get_key_event(int keycode, t_win *win,
 	t_event_type type)
@@ -107,7 +108,7 @@ static unsigned char	_get_key_event(int keycode, t_win *win,
 	return (codes[keycode]);
 }
 
-# endif
+#endif
 
 int	_get_key_press(int keycode, t_win *win)
 {

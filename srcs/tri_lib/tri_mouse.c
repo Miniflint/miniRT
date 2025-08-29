@@ -5,7 +5,6 @@ int	_get_mouse_press(int button, int x, int y, t_win *win)
 {
 	t_tri_lib	*lib;
 
-	// printf("Mouse press event: [button = %d], [x = %d, y = %d]\n", button, x, y);
 	lib = tri_lib();
 	lib->event = &win->event;
 	lib->event->mouse.x = x;
@@ -28,7 +27,6 @@ int	_get_mouse_release(int button, int x, int y, t_win *win)
 {
 	t_tri_lib	*lib;
 
-	// printf("Mouse release event: [button = %d], [x = %d, y = %d]\n", button, x, y);
 	lib = tri_lib();
 	lib->event = &win->event;
 	lib->event->mouse.x = x;
@@ -51,7 +49,6 @@ int	_get_mouse_move(int x, int y, t_win *win)
 {
 	t_tri_lib	*lib;
 
-	// printf("Mouse move event: [x = %d, y = %d]\n", x, y);
 	lib = tri_lib();
 	lib->event = &win->event;
 	lib->event->mouse.x = x;

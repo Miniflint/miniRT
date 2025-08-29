@@ -22,13 +22,12 @@ typedef struct s_argb
 	t_color	b;
 }			t_argb;
 
-typedef struct	s_rgb_f
+typedef struct s_rgb_f
 {
 	double	r;
 	double	g;
 	double	b;
 }			t_rgb_f;
-
 
 t_argb			unsigned_to_argb(unsigned int color);
 unsigned int	argb_to_unsigned(t_argb color);

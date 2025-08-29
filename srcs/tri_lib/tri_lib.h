@@ -6,7 +6,7 @@
 /*   By: hermesrolle <hermesrolle@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 03:38:29 by hermesrolle       #+#    #+#             */
-/*   Updated: 2025/08/20 05:27:46 by hermesrolle      ###   ########.fr       */
+/*   Updated: 2025/08/29 11:47:26 by hermesrolle      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,12 @@ typedef struct s_img
 	int				_endian;
 	struct s_img	*_next;
 }					t_img;
+
+typedef struct s_point2d
+{
+	int	x;
+	int	y;
+}		t_point2d;
 
 typedef struct s_img_render
 {
@@ -161,11 +167,14 @@ struct s_tri_lib
 	void			(*destroy_render)(t_render *render);
 	int				(*print_error)(int code);
 	unsigned int	(*get_pixel)(t_render *render, int x, int y);
-	void			(*put_pixel_to_render)(t_render *render, t_argb color, int x, int y);
+	void			(*put_pixel_to_render)(t_render *render,
+			t_argb color, int x, int y);
 	void			(*replace_pixel_on_render)(t_render *render,
-						unsigned int color, int x, int y);
-	void			(*put_pixel_to_window)(t_win *win, t_argb color, int x, int y);
-	void			(*replace_pixel_on_window)(t_win *win, unsigned int color, int x, int y);
+			unsigned int color, int x, int y);
+	void			(*put_pixel_to_window)(t_win *win,
+			t_argb color, int x, int y);
+	void			(*replace_pixel_on_window)(t_win *win,
+			unsigned int color, int x, int y);
 	void			(*erase_fill_render)(t_render *render, unsigned int color);
 	void			(*fill_render)(t_render *render, t_argb color);
 	void			(*erase_render)(t_render *render);
@@ -242,11 +251,14 @@ int					_main_loop(int (*f)(t_tri_lib *, void *), void *content);
 /*-----------------------TRI_PUT_PIXEL------------------------*/
 
 unsigned int		_get_pixel(t_render *render, int x, int y);
-void				_put_pixel_to_render(t_render *render, t_argb color, int x, int y);
+void				_put_pixel_to_render(t_render *render,
+						t_argb color, int x, int y);
 void				_replace_pixel_on_render(t_render *render,
 						unsigned int color, int x, int y);
-void				_put_pixel_to_window(t_win *win, t_argb color, int x, int y);
-void				_replace_pixel_on_window(t_win *win, unsigned int color, int x, int y);
+void				_put_pixel_to_window(t_win *win,
+						t_argb color, int x, int y);
+void				_replace_pixel_on_window(t_win *win,
+						unsigned int color, int x, int y);
 void				_erase_fill_render(t_render *render, unsigned int color);
 void				_fill_render(t_render *render, t_argb color);
 void				_erase_render(t_render *render);
@@ -255,9 +267,9 @@ void				_erase_windows(void);
 void				_draw_render_to_render(t_render *top, t_render *base);
 void				_draw_window(t_win *win);
 void				_draw_windows(void);
-void				_change_background(unsigned int	color);
+void				_change_background(unsigned int color);
 void				_replace_sized_pixel_on_render(t_render *render,
-						unsigned int color, int x, int y, int size);
+						unsigned int color, t_point2d p, int size);
 void				_auto_draw(t_tri_lib *lib);
 
 /*-----------------------TRI_EVENT_INIT-----------------------*/
@@ -270,17 +282,18 @@ void				_init_event(t_event *event, t_win *win);
 void				_get_end_func(int (*f)(void *));
 void				_quit(void);
 
-int	_get_key_press(int keycode, t_win *win);
-int	_get_key_release(int keycode, t_win *win);
+int					_get_key_press(int keycode, t_win *win);
+int					_get_key_release(int keycode, t_win *win);
 
-int	_get_mouse_press(int button, int x, int y, t_win *win);
-int	_get_mouse_release(int button, int x, int y, t_win *win);
-int	_get_mouse_move(int x, int y, t_win *win);
+int					_get_mouse_press(int button, int x, int y, t_win *win);
+int					_get_mouse_release(int button, int x, int y, t_win *win);
+int					_get_mouse_move(int x, int y, t_win *win);
 
 void				_call_user_main(t_tri_lib *lib);
 
-double 				_get_fps(struct timeval *last);
-int 				_get_tick_fps(t_tri_lib *lib, struct timeval *last, double *ret_fps);
+double				_get_fps(struct timeval *last);
+int					_get_tick_fps(t_tri_lib *lib,
+						struct timeval *last, double *ret_fps);
 double				get_fps_delta_f(t_tri_lib *lib, double value);
 long int			get_fps_delta_i(t_tri_lib *lib, long int value);
 long unsigned int	get_fps_delta_u(t_tri_lib *lib, long unsigned int value);
