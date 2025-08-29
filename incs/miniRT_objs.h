@@ -10,17 +10,17 @@
 # define I_VT 1
 # define I_VN 2
 
-typedef t_coord t_vertice;
-typedef t_vertice t_vertice_t;
-typedef t_vertice t_vertice_n;
+typedef t_coord		t_vertice;
+typedef t_vertice	t_vertice_t;
+typedef t_vertice	t_vertice_n;
 
 typedef struct S_point
 {
 	char				is_wrong;
 	unsigned long		v_indexes;
 	t_vertice			*vertices;
-	struct S_point	*next;
-}	t_point;
+	struct S_point		*next;
+}						t_point;
 
 /* 
  * p_x = POINT_NUMBER_X (1,2,3)
@@ -31,8 +31,7 @@ typedef struct S_point
  * texture: index associated with the vt (vt). it has 
  */
 
-
- // TODO. POINTER ON VERTEXES, VERTEXES TEXTURES, VERTEX NORMALES
+// TODO. POINTER ON VERTEXES, VERTEXES TEXTURES, VERTEX NORMALES
 typedef struct S_face
 {
 	char			is_wrong;

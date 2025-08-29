@@ -1,7 +1,6 @@
 #include "miniRT.h"
 
-
-void free_pts(t_point *point)
+void	free_pts(t_point *point)
 {
 	if (!point)
 		return ;

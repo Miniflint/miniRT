@@ -51,16 +51,15 @@ typedef struct S_all
 	unsigned long	line_count;
 	double			light_ratio;
 	double			distance_light;
-}	t_all;
+}					t_all;
 
 typedef struct S_shape_closest
 {
-	double	t;
-	t_vec	normal;
-	t_rgb	color;
-	void	*shape;
-	int		type;
-
+	double		t;
+	t_vec		normal;
+	t_rgb		color;
+	void		*shape;
+	int			type;
 	t_sphere	*sp_closest;
 	t_plane		*pl_closest;
 	t_cylinder	*cy_closest;
@@ -115,15 +114,13 @@ int				__init__(t_all *all, char **argv, int argc);
 int				__set_values_scene(t_all *all, char **s);
 int				__set_values_objs(t_object *object, char **s);
 
-/* MATHS */
-int ft_mult(int x, int y);
-
 /* PARSING */
 int				get_rgb(t_rgb *rgb, char **const restrict s);
 int				get_vec(t_vec *vec, char **const restrict s);
 int				get_coord(t_coord *coord, char **const restrict s);
 
-int				get_ambient_light(t_amb_light *a_light, char **const restrict s);
+int				get_ambient_light(t_amb_light *a_light,
+					char **const restrict s);
 int				get_camera(t_cam *camera, char **const restrict s);
 int				get_light(t_light **head, char **const restrict s);
 int				get_sphere(t_sphere **head, char **const restrict s);
@@ -131,53 +128,47 @@ int				get_plane(t_plane **head, char **const restrict s);
 int				get_cylinder(t_cylinder **head, char **const restrict s);
 int				parse_type_scene(t_all *all, char **s);
 int				parse_type_objs(t_object *object, char **s);
-int 			get_name(char name[128], char **const restrict s);
+int				get_name(char name[128], char **const restrict s);
 int				get_letters(t_object *object, const char *restrict s);
 int				__mallocate_objs_values(t_object *object, char *str);
 
-int				get_vertices(t_vertice *vertice, char **const restrict s, int skip, unsigned long *index);
+int				get_vertices(t_vertice *vertice, char **const restrict s,
+					int skip, unsigned long *index);
 int				get_faces(t_face *face, char **const restrict s,
 					t_minuint curr_smoothing, unsigned long *index);
-int				get_smoothing(t_minuint *curr_smoothing, char **const restrict s);
+int				get_smoothing(t_minuint *curr_smoothing,
+					char **const restrict s);
 t_object		*create_obj_path(t_object **head, char *path);
-void 			zeroes_two(t_object *object, char *path);
+void			zeroes_two(t_object *object, char *path);
 int				get_obj(t_object **head, char **const restrict s);
 
-
 /* UTILS MATHS */
-void 	start_rays(t_all *all);
-double	vec_magnitude(t_vec *a);
-t_vec	*add_vectors(t_vec *a, t_vec *b, t_vec *c);
-t_vec	*sub_vectors(t_vec *a, t_vec *b, t_vec *c);
-t_vec	sub_vectors_no_v(t_vec *a, t_vec *b);
-t_vec	*div_vectors(t_vec *a, t_vec *b, t_vec *c);
-t_vec	*scalar_multiplication(t_vec *a, double b, t_vec *c);
-t_vec	scalar_multiplication_no_v(t_vec *a, double b);
-t_vec	*norm_vectors(t_vec *a, double magnitude, t_vec *c);
-double	dot_product(register t_vec *a, register t_vec *b);
-double	get_angle(t_vec *a, t_vec *b, double mag_a, double mag_b);
-t_vec	*cross_product(t_vec *a, t_vec *b, t_vec *c);
-// char	get_fps_tick(unsigned int fps, unsigned long *ret, int reset);
+
+void			start_rays(t_all *all);
+double			vec_magnitude(t_vec *a);
+t_vec			*add_vectors(t_vec *a, t_vec *b, t_vec *c);
+t_vec			*sub_vectors(t_vec *a, t_vec *b, t_vec *c);
+t_vec			sub_vectors_no_v(t_vec *a, t_vec *b);
+t_vec			*div_vectors(t_vec *a, t_vec *b, t_vec *c);
+t_vec			*scalar_multiplication(t_vec *a, double b, t_vec *c);
+t_vec			scalar_multiplication_no_v(t_vec *a, double b);
+t_vec			*norm_vectors(t_vec *a, double magnitude, t_vec *c);
+double			dot_product(register t_vec *a, register t_vec *b);
+double			get_angle(t_vec *a, t_vec *b, double mag_a, double mag_b);
+t_vec			*cross_product(t_vec *a, t_vec *b, t_vec *c);
 
 unsigned int	traceray(t_ray *ray, t_all *all);
-void			oldIntersectRaySphere(double a, t_vec *D, t_vec *O, t_sphere *sphere,
-					double *t1, double *t2);
-void			IntersectRaySphere(t_ray *ray, t_sphere *sphere);
+void			intersect_ray_sphere(t_ray *ray, t_sphere *sphere);
 void			intersect_plane(t_ray *ray, t_plane *plane);
 void			make_perpendicular(t_cam *cam);
 void			cal_fov(t_all *all);
 void			cal_rays(t_all *all);
 void			init_start_ray(t_all *all);
 void			reset_rays(t_all *all);
-// void			update_rays_start(t_all *all);
-// void			send_light_sphere(t_light *light, t_rgb *raycolor, t_coord p, t_sphere *sphere);
 
-// void rotate_camera_x(t_vec *dir_rotate, double nb);
-// void rotate_camera_y(t_vec *dir_rotate, double nb);
-// void rotate_camera_z(t_vec *dir_rotate, double nb);
+int				rotate_camera(t_vec *original, t_vec *axis,
+					t_vec *for_perpendicular, double angle);
 
-int	rotate_camera(t_vec *original, t_vec *axis, t_vec *for_perpendicular, double angle);
-
-void	diffuse_light(t_ray *ray, t_all *all, t_light *light);
+void			diffuse_light(t_ray *ray, t_all *all, t_light *light);
 
 #endif

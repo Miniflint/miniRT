@@ -102,12 +102,10 @@ void	print_vertice(t_object *object)
 	}
 }
 
-
-
 void	print_ob(t_object *object, int depth)
 {
 	unsigned long	i;
-	int	j;
+	int				j;
 
 	i = 0;
 	if (!object)

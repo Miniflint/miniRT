@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tri_put_pixel_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hermesrolle <hermesrolle@student.42.fr>    +#+  +:+       +#+        */
+/*   By: herolle <herolle@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 03:59:18 by hermesrolle       #+#    #+#             */
-/*   Updated: 2025/08/29 11:40:20 by hermesrolle      ###   ########.fr       */
+/*   Updated: 2025/08/29 16:47:18 by herolle          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void	_replace_pixel_on_render(t_render *render,
 	(render->_data)[(y * render->_width) + x] = color;
 }
 
-void	_replace_sized_pixel_on_render(t_render *render,
+void	_replace_s_px_on_render(t_render *render,
 	unsigned int color, t_point2d p, int size)
 {
 	int	i;

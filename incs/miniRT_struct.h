@@ -4,13 +4,13 @@
 # include "miniRT.h"
 # include "tri_colors.h"
 
-#define ERROR_X_DECODE "Error decoding (X)YZ coordinates @: [%d|%c]\nline [%lu]\n"
-#define ERROR_Y_DECODE "Error decoding X(Y)Z coordinates @: [%d|%c]\nline [%lu]\n"
-#define ERROR_Z_DECODE "Error decoding XY(Z) coordinates @: [%d|%c]\nline [%lu]\n"
+# define ERROR_X_DECODE "Error (X)YZ coordinates @: [%d|%c]\nline [%lu]\n"
+# define ERROR_Y_DECODE "Error X(Y)Z coordinates @: [%d|%c]\nline [%lu]\n"
+# define ERROR_Z_DECODE "Error XY(Z) coordinates @: [%d|%c]\nline [%lu]\n"
 
-#define ERROR_R_DECODE "Error decoding (R)GB color @: [%d|%c]\nline [%lu]\n"
-#define ERROR_G_DECODE "Error decoding R(G)B color @: [%d|%c]\nline [%lu]\n"
-#define ERROR_B_DECODE "Error decoding RG(B) color @: [%d|%c]\nline [%lu]\n"
+# define ERROR_R_DECODE "Error (R)GB color @: [%d|%c]\nline [%lu]\n"
+# define ERROR_G_DECODE "Error R(G)B color @: [%d|%c]\nline [%lu]\n"
+# define ERROR_B_DECODE "Error RG(B) color @: [%d|%c]\nline [%lu]\n"
 
 // struct timeval	{
 // 	time_t		tv_sec;
@@ -52,7 +52,7 @@ typedef enum E_obj_type
 	END_SHAPE
 }	t_obj_type;
 
-typedef struct	s_shape
+typedef struct s_shape
 {
 	t_obj_type	type;
 	double		t1;
@@ -61,7 +61,6 @@ typedef struct	s_shape
 	t_coord		origin;
 	void		*shape;
 }				t_shape;
-
 
 typedef struct S_ray
 {

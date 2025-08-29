@@ -2,13 +2,12 @@
 #include "tri_lib.h"
 
 // cam->dir_x = x  cam->dir_y = z cam->dir = y
-void make_perpendicular(t_cam *cam)
+void	make_perpendicular(t_cam *cam)
 {
 	t_vec	ideal_up;
 	double	mag;
-	
-	ideal_up = (t_vec){.x = 0, .y = 0, .z = 1};
 
+	ideal_up = (t_vec){.x = 0, .y = 0, .z = 1};
 	if (fabs(dot_product(&cam->dir, &ideal_up)) > 0.9999f)
 		ideal_up = (t_vec){.x = 0, .y = 1, .z = 0};
 	cross_product(&cam->dir, &ideal_up, &cam->dir_x);
@@ -18,29 +17,6 @@ void make_perpendicular(t_cam *cam)
 	mag = dot_product(&cam->dir_y, &cam->dir_y);
 	norm_vectors(&cam->dir_y, mag, &cam->dir_y);
 }
-
-// void	IntersectRaySphere(double a, t_vec *D, t_vec *O, t_sphere *sphere, double *t1, double *t2)
-// {
-// 	t_vec	CO;
-// 	double	b;
-// 	double	c;
-
-// 	sub_vectors(O, &sphere->coord, &CO);
-// 	b = 2 * dot_product(&CO, D);
-// 	c = dot_product(&CO, &CO) - sphere->radius_squared;
-	
-// 	double disciminant = b * b - 4 * a * c;
-// 	if (disciminant < 0)
-// 	{
-// 		*t1 = INFINITY;
-// 		*t2 = INFINITY;
-// 		return ;
-// 	}
-// 	a *= 2;
-// 	disciminant = sqrt(disciminant); 
-// 	*t1 = (-b + disciminant) / a;
-// 	*t2 = (-b - disciminant) / a;
-// }
 
 void	init_ray(t_ray *ray)
 {
@@ -53,48 +29,41 @@ void	init_ray(t_ray *ray)
 	ray->shape.t2 = INFINITY;
 }
 
-void	IntersectRaySphere(t_ray *ray, t_sphere *sphere)
+void	set_ts(double t, t_ray *ray, t_sphere *sphere)
+{
+	if (t >= 1e-6 && (isinf(ray->shape.t1) || t < ray->shape.t1))
+	{
+		ray->shape.t1 = t;
+		ray->shape.shape = sphere;
+		ray->shape.type = SPHERE;
+		return ;
+	}
+}
+
+void	intersect_ray_sphere(t_ray *ray, t_sphere *sphere)
 {
 	double			disciminant;
-	double			t1;
-	double			t2;
-	const t_vec		CO = sub_vectors_no_v(&ray->start, &sphere->coord);
-	const double	b = 2 * dot_product((t_vec *)&CO, &ray->dir);
-	const double	c = dot_product((t_vec *)&CO, (t_vec *)&CO) - sphere->radius_squared;
-	
+	double			t;
+	const t_vec		co = sub_vectors_no_v(&ray->start, &sphere->coord);
+	const double	b = 2 * dot_product((t_vec *)&co, &ray->dir);
+	const double	c
+		= dot_product((t_vec *)&co, (t_vec *)&co) - sphere->radius_squared;
+
 	disciminant = b * b - 4.0 * c;
 	if (disciminant < 0)
 		return ;
-	disciminant = sqrt(disciminant); 
-	t1 = (-b - disciminant) / 2.0;
-	if (t1 >= 1e-6 && (isinf(ray->shape.t1) || t1 < ray->shape.t1))
-	{
-		ray->shape.t1 = t1;
-		// if (t2 >= 1e-6)
-		// 	ray->shape.t2 = t2;
-		// else
-		// 	ray->shape.t2 = INFINITY;
-		ray->shape.shape = sphere;
-		ray->shape.type = SPHERE;
-		return ;
-	}
-	t2 = (-b + disciminant) / 2.0;
-	if (t2 >= 1e-6 && (isinf(ray->shape.t1) || t2 < ray->shape.t1))
-	{
-		ray->shape.t1 = t2;
-		// ray->shape.t2 = INFINITY;
-		ray->shape.shape = sphere;
-		ray->shape.type = SPHERE;
-	}
-	// else
-	// 	return ;
+	disciminant = sqrt(disciminant);
+	t = (-b - disciminant) / 2;
+	set_ts(t, ray, sphere);
+	t = (-b + disciminant) / 2;
+	set_ts(t, ray, sphere);
 }
 
 void	closest_sphere(t_ray *ray, t_sphere *sphere)
 {
 	while (sphere)
 	{
-		IntersectRaySphere(ray, sphere);
+		intersect_ray_sphere(ray, sphere);
 		sphere = sphere->next;
 	}
 }
@@ -108,21 +77,14 @@ void	closest_plane(t_ray *ray, t_plane *plane)
 	}
 }
 
-unsigned int	traceray(t_ray *ray, t_all *all)
+void	set_shapes(t_ray *ray)
 {
-	init_ray(ray);
-	closest_plane(ray, all->planes);
-	//closest_cylinder(ray, all->cylinders);
-	closest_sphere(ray, all->spheres);
-	if (isinf(ray->shape.t1))
-		return (TRI_OPAQUE_UNSIGNED | ray->color.r << 16 | ray->color.g << 8 | ray->color.b);
-	ray->hit = scalar_multiplication_no_v(&ray->dir, ray->shape.t1);
-	add_vectors(&ray->hit, &ray->start, &ray->hit);
 	if (ray->shape.type == SPHERE)
 	{
 		ray->shape.origin = ((t_sphere *)(ray->shape.shape))->coord;
 		sub_vectors(&ray->hit, &ray->shape.origin, &ray->shape.normal);
-		norm_vectors(&ray->shape.normal, vec_magnitude(&ray->shape.normal), &ray->shape.normal);
+		norm_vectors(&ray->shape.normal,
+			vec_magnitude(&ray->shape.normal), &ray->shape.normal);
 		ray->color_shape = ((t_sphere *)(ray->shape.shape))->color;
 	}
 	else if (ray->shape.type == PLANE)
@@ -131,44 +93,52 @@ unsigned int	traceray(t_ray *ray, t_all *all)
 		ray->shape.normal = ((t_plane *)(ray->shape.shape))->vec;
 		ray->color_shape = ((t_plane *)(ray->shape.shape))->color;
 	}
+}
+
+//closest_cylinder(ray, all->cylinders);
+unsigned int	traceray(t_ray *ray, t_all *all)
+{
+	init_ray(ray);
+	closest_plane(ray, all->planes);
+	closest_sphere(ray, all->spheres);
+	if (isinf(ray->shape.t1))
+		return (TRI_OPAQUE_UNSIGNED | ray->color.r << 16
+			| ray->color.g << 8 | ray->color.b);
+	ray->hit = scalar_multiplication_no_v(&ray->dir, ray->shape.t1);
+	add_vectors(&ray->hit, &ray->start, &ray->hit);
+	set_shapes(ray);
 	diffuse_light(ray, all, all->lights);
-	//ray->color_diffuse = clamp_rgb_f(ray->color_diffuse);
 	ray->color_ray.r = ray->color_shape.r * ray->color_diffuse.r;
 	ray->color_ray.g = ray->color_shape.g * ray->color_diffuse.g;
 	ray->color_ray.b = ray->color_shape.b * ray->color_diffuse.b;
 	return (rgb_f_to_unsigned(ray->color_ray));
 }
 
-void start_rays(t_all *all)
+void	start_rays(t_all *all)
 {
-	int i;
-	int j;
-	int	real_i;
-	int	real_j;
-	int	mi_pix;
-	t_tri_lib *lib;
+	int			index[2];
+	int			real[2];
+	const int	mi_pix = all->canvas.pixel_values >> 1;
 
-	lib = tri_lib();
-	mi_pix = all->canvas.pixel_values / 2;
-	i = mi_pix;
-	real_i = 0;
-	while (real_i < all->win_height)
+	index[0] = mi_pix;
+	real[0] = 0;
+	while (real[0] < all->win_height)
 	{
-		real_j = 0;
-		j = mi_pix;
-		if (i >= all->win_height)
-			i = all->win_height - 1;
-		while (real_j < all->win_width)
+		real[1] = 0;
+		index[1] = mi_pix;
+		if (index[0] >= all->win_height)
+			index[0] = all->win_height - 1;
+		while (real[1] < all->win_width)
 		{
-			if (j >= all->win_width)
-				j = all->win_width - 1;
-			_replace_sized_pixel_on_render(&lib->_windows->_base_render._render, traceray(&all->canvas.rays[i][j], all), (t_point2d){real_j, real_i}, all->canvas.pixel_values);
-			// _replace_pixel_on_render(&lib->_windows->_base_render._render, traceray(&all->canvas.rays[i][j], all), real_j, real_i);
-			real_j += all->canvas.pixel_values;
-			j = real_j + mi_pix;
+			if (index[1] >= all->win_width)
+				index[1] = all->win_width - 1;
+			_replace_s_px_on_render(&tri_lib()->_windows->_base_render._render,
+				traceray(&all->canvas.rays[index[0]][index[1]], all),
+				(t_point2d){real[1], real[0]}, all->canvas.pixel_values);
+			real[1] += all->canvas.pixel_values;
+			index[1] = real[1] + mi_pix;
 		}
-		real_i += all->canvas.pixel_values;
-		i = real_i + mi_pix;
+		real[0] += all->canvas.pixel_values;
+		index[0] = real[0] + mi_pix;
 	}
-	// lib->draw_windows();
 }

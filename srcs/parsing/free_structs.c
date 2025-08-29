@@ -1,6 +1,6 @@
 #include "miniRT.h"
 
-t_light 	*free_l(t_light *light)
+t_light	*free_l(t_light *light)
 {
 	if (!light)
 		return (NULL);

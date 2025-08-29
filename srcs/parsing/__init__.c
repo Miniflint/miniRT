@@ -34,7 +34,8 @@ static int	__parse_file_scene(t_all *all)
 	str = readfile(fd);
 	close(fd);
 	if (!str)
-		return (printf("File is empty/error occured while trying to read\n"), 1);
+		return (
+			printf("File is empty/error occured while trying to read\n"), 1);
 	tmp = str;
 	if (__set_values_scene(all, &str) == 1)
 		return (free(tmp), 1);
@@ -42,7 +43,7 @@ static int	__parse_file_scene(t_all *all)
 	return (0);
 }
 
-void zeroes_two(t_object *object, char *path)
+void	zeroes_two(t_object *object, char *path)
 {
 	int	i;
 
@@ -111,8 +112,7 @@ static int	check_ext(char **argv)
 	return (0);
 }
 
-
-void	apply_argb_save_to_rgb(t_rgb *rgb_save, t_rgb_f ambient_rgb, t_rgb *into)
+void	apply_argb_save_rgb(t_rgb *rgb_save, t_rgb_f ambient_rgb, t_rgb *into)
 {
 	into->r = (double)rgb_save->r * ambient_rgb.r;
 	into->g = (double)rgb_save->g * ambient_rgb.g;
@@ -124,22 +124,23 @@ void	apply_rgb_all_shape(t_all *all)
 	const t_sphere		*tmp_sp = all->spheres;
 	const t_plane		*tmp_pl = all->planes;
 	const t_cylinder	*tmp_cy = all->cylinders;
+	const t_rgb_f		r = all->ambient_light.rgb_norm;
 
 	while (all->spheres)
 	{
-		apply_argb_save_to_rgb(&all->spheres->rgb_save, all->ambient_light.rgb_norm, &all->spheres->rgb);
+		apply_argb_save_rgb(&all->spheres->rgb_save, r, &all->spheres->rgb);
 		all->spheres = all->spheres->next;
 	}
 	all->spheres = (t_sphere *)tmp_sp;
 	while (all->planes)
 	{
-		apply_argb_save_to_rgb(&all->planes->rgb_save, all->ambient_light.rgb_norm, &all->planes->rgb);
+		apply_argb_save_rgb(&all->planes->rgb_save, r, &all->planes->rgb);
 		all->planes = all->planes->next;
 	}
 	all->planes = (t_plane *)tmp_pl;
 	while (all->cylinders)
 	{
-		apply_argb_save_to_rgb(&all->cylinders->rgb_save, all->ambient_light.rgb_norm, &all->cylinders->rgb);
+		apply_argb_save_rgb(&all->cylinders->rgb_save, r, &all->cylinders->rgb);
 		all->cylinders = all->cylinders->next;
 	}
 	all->cylinders = (t_cylinder *)tmp_cy;
@@ -162,7 +163,8 @@ int	__init__(t_all *all, char **argv, int argc)
 	if (__parse_file_objs(all))
 		return (1);
 	print_all_structs(all);
-	norm_vectors(&all->camera.dir, vec_magnitude(&all->camera.dir), &all->camera.dir);
+	norm_vectors(&all->camera.dir,
+		vec_magnitude(&all->camera.dir), &all->camera.dir);
 	make_perpendicular(&all->camera);
 	cal_fov(all);
 	return (0);

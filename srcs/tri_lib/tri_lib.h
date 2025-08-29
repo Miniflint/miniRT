@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tri_lib.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hermesrolle <hermesrolle@student.42.fr>    +#+  +:+       +#+        */
+/*   By: herolle <herolle@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 03:38:29 by hermesrolle       #+#    #+#             */
-/*   Updated: 2025/08/29 11:47:26 by hermesrolle      ###   ########.fr       */
+/*   Updated: 2025/08/29 16:47:44 by herolle          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -268,7 +268,7 @@ void				_draw_render_to_render(t_render *top, t_render *base);
 void				_draw_window(t_win *win);
 void				_draw_windows(void);
 void				_change_background(unsigned int color);
-void				_replace_sized_pixel_on_render(t_render *render,
+void				_replace_s_px_on_render(t_render *render,
 						unsigned int color, t_point2d p, int size);
 void				_auto_draw(t_tri_lib *lib);
 
