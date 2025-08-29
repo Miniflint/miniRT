@@ -1,7 +1,7 @@
 #include "miniRT.h"
 #include "tri_lib.h"
 
-static void	init_canvas(t_all *all)
+static void	_init_canvas(t_all *all)
 {
 	all->canvas.size_y = 2 * tan((all->camera.fov * (PI_DEFINED / 180)) / 2);
 	all->canvas.unit = all->canvas.size_y / (double)all->win_height;
@@ -53,6 +53,13 @@ void	init_start_ray(t_all *all)
 	}
 }
 
+void	_cal_rays_ext(t_all *all, int i, int *j)
+{
+	all->canvas.rays_save[i][*j].start = all->camera.viewpoint;
+	all->canvas.rays[i][*j] = all->canvas.rays_save[i][*j];
+	++(*j);
+}
+
 void	cal_rays(t_all *all)
 {
 	int		i;
@@ -76,9 +83,7 @@ void	cal_rays(t_all *all)
 			norm_vectors(&all->canvas.rays_save[i][j].dir,
 				vec_magnitude(&all->canvas.rays_save[i][j].dir),
 				&all->canvas.rays_save[i][j].dir);
-			all->canvas.rays_save[i][j].start = all->camera.viewpoint;
-			all->canvas.rays[i][j] = all->canvas.rays_save[i][j];
-			++j;
+			_cal_rays_ext(all, i, &j);
 		}
 		++i;
 	}

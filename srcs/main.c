@@ -4,7 +4,7 @@
 
 char	*readfile(int fd)
 {
-	ssize_t		rd;
+	ssize_t	rd;
 	char	*buf;
 	char	*final;
 	int		i;
@@ -47,14 +47,9 @@ void	event_key_press(t_tri_lib *lib, void *a)
 {
 	t_all	*all;
 	int	start;
-	///unsigned long elapsed_time;
-	// static int		refresh = 0;
 
 	start = 0;
 	all = (t_all *)a;
-	// ++refresh;
-	// get_fps_tick(FPS_MAX, &elapsed_time, 1);
-	// !get_fps_tick(FPS_MAX, &elapsed_time, 0)
 	if (lib->event && lib->event->type == KEY_PRESS)
 	{
 		if (lib->event->key_id >= '1' && lib->event->key_id <= '9')
@@ -68,22 +63,15 @@ void	event_key_press(t_tri_lib *lib, void *a)
 			start = 2;
 			all->shadow_on = !all->shadow_on;
 		}
-		// if (lib->event->key_id == 'v')
-		// {
-		// 	start = 2;
-		// 	all->light_ratio -= 0.01;
-		// }
 		if (lib->event->key_id == 'p')
 		{
 			start = 1;
 			all->canvas.pixel_values += (all->canvas.pixel_values < 253) << 1;
-			// lib->erase_render(&lib->event->win_id->_base_render._render);
 		}
 		if (lib->event->key_id == 'o')
 		{
 			start = 1;
 			all->canvas.pixel_values -= (all->canvas.pixel_values > 1) << 1;
-			// lib->erase_render(&lib->event->win_id->_base_render._render);
 		}
 		if (lib->event->key_id == KEY_ESC)
 			lib->quit();
@@ -138,10 +126,8 @@ void	event_key_press(t_tri_lib *lib, void *a)
 		start = 2;
 		all->distance_light += get_fps_delta_f(lib, DISTANCE_LIGHT_MIDDLE * 2);
 	}
-	// if (refresh > 5 && start)
 	if (start)
 	{
-		// refresh = 0;
 		if (start == 2)
 			cal_fov(all);
 		else if (start == 3)
@@ -167,6 +153,7 @@ int	mouse(int button, int x, int y, void *param)
 	printf("%d, P(%i,%i)\n", button, x, y);
 	return (0);
 }
+
 int on_configure(int x, int y, void *param)
 {
 	(void)param;

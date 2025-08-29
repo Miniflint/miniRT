@@ -25,10 +25,10 @@ t_vec	sub_vectors_no_v(t_vec *a, t_vec *b)
 {
 	return (
 		(t_vec){
-			.x = a->x - b->x,
-			.y = a->y - b->y,
-			.z = a->z - b->z
-		}
+		.x = a->x - b->x,
+		.y = a->y - b->y,
+		.z = a->z - b->z
+	}
 	);
 }
 
@@ -97,7 +97,7 @@ inline double	dot_product(register t_vec *a, register t_vec *b)
 
 #endif
 
-double get_angle(t_vec *a, t_vec *b, double mag_a, double mag_b)
+double	get_angle(t_vec *a, t_vec *b, double mag_a, double mag_b)
 {
 	return (acos(dot_product(a, b) / (mag_a * mag_b)));
 }
