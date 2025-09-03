@@ -1,10 +1,26 @@
 #include "miniRT.h"
 
+void	set_spherical_object(void *object, int type)
+{
+	t_sphere *const		sphere = (t_sphere *)object;
+	t_cylinder *const	cyl = (t_cylinder *)object;
+
+	if (type == SPHERE)
+	{
+		sphere->radius = sphere->diameter / 2;
+		sphere->radius_squared = sphere->radius * sphere->radius;
+	}
+	else if (type == CYLINDER)
+	{
+		cyl->radius = cyl->diameter / 2;
+		cyl->radius_squared = cyl->radius * cyl->radius;
+	}
+}
+
 int	get_sphere(t_sphere **head, char **const restrict s)
 {
-	t_sphere	*sphere;
+	t_sphere *const	sphere = create_empty_node(sizeof(t_sphere) * 1);
 
-	sphere = (t_sphere *)create_empty_node(sizeof(t_sphere) * 1);
 	if (!sphere)
 		return (1);
 	if (skip_till_number(s, 2))
@@ -17,8 +33,7 @@ int	get_sphere(t_sphere **head, char **const restrict s)
 	if (sphere->diameter < 0.00)
 		return (free(sphere),
 			printf("Error: Spheres radius value < 0.0\n"), 1);
-	sphere->radius = sphere->diameter / 2;
-	sphere->radius_squared = sphere->radius * sphere->radius;
+	set_spherical_object(sphere, SPHERE);
 	if (skip_till_number(s, 0))
 		return (free(sphere), 3);
 	if (get_rgb(&sphere->rgb_save, s))
@@ -60,10 +75,8 @@ int	get_plane(t_plane **head, char **const restrict s)
 
 t_cylinder	*create_cylinder(char **const restrict s, int *code)
 {
-	t_cylinder	*cylinder;
+	t_cylinder *const	cylinder = create_empty_node(sizeof(t_cylinder) * 1);
 
-	*code = 0;
-	cylinder = (t_cylinder *)create_empty_node(sizeof(t_cylinder) * 1);
 	if (!cylinder)
 		return (*code = 1, NULL);
 	if (skip_till_number(s, 2))
@@ -76,6 +89,10 @@ t_cylinder	*create_cylinder(char **const restrict s, int *code)
 		*code = 1;
 	else if (skip_till_number(s, 0))
 		*code = 3;
+	cylinder->diameter = ft_atof(s);
+	if (cylinder->diameter < 0.00)
+		return (free(cylinder),
+			printf("Error: Cylinders diameter value < 0.0\n"), *code = 1, NULL);
 	if (*code)
 	{
 		if (*code == 1)
@@ -87,16 +104,12 @@ t_cylinder	*create_cylinder(char **const restrict s, int *code)
 
 int	get_cylinder(t_cylinder **head, char **const restrict s)
 {
-	t_cylinder	*cylinder;
-	int			code;
+	const int			code = 0;
+	t_cylinder *const	cylinder = create_cylinder(s, &(*(int *)&code));
 
-	cylinder = create_cylinder(s, &code);
 	if (!cylinder)
 		return (code);
-	cylinder->diameter = ft_atof(s);
-	if (cylinder->diameter < 0.00)
-		return (free(cylinder),
-			printf("Error: Cylinders diameter value < 0.0\n"), 1);
+	set_spherical_object(cylinder, SPHERE);
 	if (skip_till_number(s, 0))
 		return (free(cylinder), 3);
 	cylinder->height = ft_atof(s);

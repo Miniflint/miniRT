@@ -108,22 +108,24 @@ void	print_faces(t_face *face)
 
 	j = -1;
 	while (++j < 4)
-		printf("%i:(%ld) %p ", j + 1, face->v_indexes[j] + 1, (face->vertices[j]));
+		printf("%i:(%ld) %p ", j + 1, face->v_indexes[j] + 1,
+			(face->vertices[j]));
 	printf("\n\t");
 	j = -1;
 	while (++j < 4)
-		printf("%i:(%ld) %p ", j + 1, face->vt_indexes[j] + 1, (face->v_texture[j]));
+		printf("%i:(%ld) %p ", j + 1, face->vt_indexes[j] + 1,
+			(face->v_texture[j]));
 	printf("\n\t");
 	j = -1;
 	while (++j < 4)
-		printf("%i:(%ld) %p ", j + 1, face->vn_indexes[j] + 1, (face->v_normale[j]));
+		printf("%i:(%ld) %p ", j + 1, face->vn_indexes[j] + 1,
+			(face->v_normale[j]));
 	printf("\n\t");
 }
 
 void	print_ob(t_object *object, int depth)
 {
 	unsigned long	i;
-	int				j;
 
 	i = 0;
 	if (!object)

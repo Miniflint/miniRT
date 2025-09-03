@@ -25,9 +25,9 @@ double	ft_atofi(char **s)
 
 double	ft_atof(char **s)
 {
-	int	n;
+	int		n;
 	float	dec;
-	int	neg;
+	int		neg;
 
 	neg = 1;
 	if (**s == '-' || **s == '+')
