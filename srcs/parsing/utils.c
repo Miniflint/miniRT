@@ -12,22 +12,24 @@ unsigned int	ft_atoi(char **s)
 
 double	ft_atofi(char **s)
 {
-	unsigned int	n;
-	int				i;
+	unsigned long long	n;
+	short int			i;
 
 	n = 0;
 	i = 0;
-	while ((*s)[i] >= '0' && (*s)[i] <= '9')
+	while ((*s)[i] >= '0' && (*s)[i] <= '9' && i <= 0b00001100)
 		n = n * 10 + (*s)[i++] - '0';
+	while ((*s)[i] >= '0' && (*s)[i] <= '9')
+		++i;
 	(*s) += i;
 	return ((double)n / pow(10, i));
 }
 
 double	ft_atof(char **s)
 {
-	int		n;
-	float	dec;
-	int		neg;
+	long long		n;
+	double			dec;
+	int				neg;
 
 	neg = 1;
 	if (**s == '-' || **s == '+')

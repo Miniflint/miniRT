@@ -163,8 +163,6 @@ int	__init__(t_all *all, char **argv, int argc)
 	if (__parse_file_objs(all))
 		return (1);
 	print_all_structs(all);
-	norm_vectors(&all->camera.dir,
-		vec_magnitude(&all->camera.dir), &all->camera.dir);
 	make_perpendicular(&all->camera);
 	cal_fov(all);
 	return (0);

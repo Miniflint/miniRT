@@ -223,6 +223,7 @@ int	main(int argc, char **argv)
 	start_rays(all);
 	tri_lib()->draw_windows();
 	_main_loop(looped, (void *)all);
+	free_all(all);
 	return (0);
 }
 
