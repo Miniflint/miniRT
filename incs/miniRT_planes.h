@@ -60,6 +60,8 @@ typedef struct S_cylinder
 	double				radius_squared;
 	double				diameter;
 	double				height;
+	t_vec				normal;
+	double				normal_mag;
 	t_rgb				rgb;
 	t_rgb_f				color;
 	t_rgb				rgb_save;

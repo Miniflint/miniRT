@@ -29,7 +29,7 @@ void	init_ray(t_ray *ray)
 	ray->shape.t2 = INFINITY;
 }
 
-void	set_ts(double t, t_ray *ray, t_sphere *sphere)
+static void	set_ts(double t, t_ray *ray, t_sphere *sphere)
 {
 	if (t >= 1e-6 && (isinf(ray->shape.t1) || t < ray->shape.t1))
 	{
@@ -93,6 +93,14 @@ void	set_shapes(t_ray *ray)
 		ray->shape.normal = ((t_plane *)(ray->shape.shape))->vec;
 		ray->color_shape = ((t_plane *)(ray->shape.shape))->color;
 	}
+	else if (ray->shape.type == CYLINDER)
+	{
+		ray->shape.origin = ((t_cylinder *)(ray->shape.shape))->coord;
+		ray->shape.normal = ((t_cylinder *)(ray->shape.shape))->normal;
+		norm_vectors(&ray->shape.normal,
+			((t_cylinder *)(ray->shape.shape))->normal_mag, &ray->shape.normal);
+		ray->color_shape = ((t_cylinder *)(ray->shape.shape))->color;
+	}
 }
 
 //closest_cylinder(ray, all->cylinders);
@@ -101,6 +109,7 @@ unsigned int	traceray(t_ray *ray, t_all *all)
 	init_ray(ray);
 	closest_plane(ray, all->planes);
 	closest_sphere(ray, all->spheres);
+	closest_cylinder(ray, all->cylinders);
 	if (isinf(ray->shape.t1))
 		return (TRI_OPAQUE_UNSIGNED | ray->color.r << 16
 			| ray->color.g << 8 | ray->color.b);

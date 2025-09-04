@@ -67,6 +67,8 @@ void	print_cy(t_cylinder *cylinder, int depth)
 		printf("CYLINDERS:\n");
 	printf("\tCoord: %f %f %f\n",
 		cylinder->coord.x, cylinder->coord.y, cylinder->coord.z);
+	printf("\tVec: %f %f %f\n",
+		cylinder->vec.x, cylinder->vec.y, cylinder->vec.z);
 	printf("\tDiameter: %f\n", cylinder->diameter);
 	printf("\tHeight: %f\n", cylinder->height);
 	printf("\tRGB: %d %d %d\n",

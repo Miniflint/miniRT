@@ -171,4 +171,6 @@ int				rotate_camera(t_vec *original, t_vec *axis,
 
 void			diffuse_light(t_ray *ray, t_all *all, t_light *light);
 
+void			closest_cylinder(t_ray *ray, t_cylinder *cylinder);
+
 #endif
