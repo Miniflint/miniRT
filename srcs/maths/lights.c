@@ -101,6 +101,9 @@ int	shadow_intersect_sphere(t_ray *ray, t_sphere *sphere,
 	t = (-b - disciminant) / 2.0;
 	if ((t >= 1e-6 && t < light_lenght))
 		return (1);
+	t = (-b + disciminant) / 2.0;
+	if ((t >= 1e-6 && t < light_lenght))
+		return (1);
 	return (0);
 }
 
