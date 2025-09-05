@@ -14,7 +14,6 @@
 static int	set_ts(double t, t_ray *ray, t_cylinder *cylinder)
 {
 	t_vec	p;
-	t_vec	v;
 	double	mag;
 
 	if (t >= 1e-6 && (isinf(ray->shape.t1) || t < ray->shape.t1))
@@ -24,9 +23,8 @@ static int	set_ts(double t, t_ray *ray, t_cylinder *cylinder)
 		mag = dot_product(&p, &cylinder->vec);
 		if (mag < 0 || mag > cylinder->height || isnan(mag) || isinf(mag))
 			return (0);
-		v = scalar_multiplication_no_v(&cylinder->vec, mag);
-		cylinder->normal = sub_vectors_no_v(&p, &v);
-		cylinder->normal_mag = vec_magnitude(&cylinder->normal);
+		cylinder->p = p;
+		cylinder->mag = mag;
 		ray->shape.t1 = t;
 		ray->shape.shape = cylinder;
 		ray->shape.type = CYLINDER;

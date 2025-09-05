@@ -65,6 +65,9 @@ typedef struct S_cylinder
 	t_rgb				rgb;
 	t_rgb_f				color;
 	t_rgb				rgb_save;
+	t_vec				p;
+	t_vec				v;
+	double				mag;
 	struct S_cylinder	*next;
 }	t_cylinder;
 

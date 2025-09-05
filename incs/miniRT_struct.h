@@ -50,6 +50,12 @@ typedef t_argb			t_rgb;
 // 	t_minuint	b;
 // }	t_rgb;
 
+typedef struct s_light_vec
+{
+	t_vec	light_dir;
+	double	light_lenght;
+}			t_light_vec;
+
 typedef enum E_obj_type
 {
 	AMBIENT_LIGHT,

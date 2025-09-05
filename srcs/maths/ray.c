@@ -77,6 +77,18 @@ void	closest_plane(t_ray *ray, t_plane *plane)
 	}
 }
 
+void	set_cylinder(t_ray *ray, t_cylinder *cylinder)
+{
+		cylinder->v = scalar_multiplication_no_v(&cylinder->vec, cylinder->mag);
+		cylinder->normal = sub_vectors_no_v(&cylinder->p, &cylinder->v);
+		cylinder->normal_mag = vec_magnitude(&cylinder->normal);
+		ray->shape.origin = cylinder->coord;
+		ray->shape.normal = cylinder->normal;
+		norm_vectors(&ray->shape.normal,
+			cylinder->normal_mag, &ray->shape.normal);
+		ray->color_shape = cylinder->color;
+}
+
 void	set_shapes(t_ray *ray)
 {
 	if (ray->shape.type == SPHERE)
@@ -95,11 +107,7 @@ void	set_shapes(t_ray *ray)
 	}
 	else if (ray->shape.type == CYLINDER)
 	{
-		ray->shape.origin = ((t_cylinder *)(ray->shape.shape))->coord;
-		ray->shape.normal = ((t_cylinder *)(ray->shape.shape))->normal;
-		norm_vectors(&ray->shape.normal,
-			((t_cylinder *)(ray->shape.shape))->normal_mag, &ray->shape.normal);
-		ray->color_shape = ((t_cylinder *)(ray->shape.shape))->color;
+		set_cylinder(ray, (t_cylinder *)ray->shape.shape);
 	}
 }
 
