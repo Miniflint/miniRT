@@ -106,9 +106,7 @@ void	set_shapes(t_ray *ray)
 		ray->color_shape = ((t_plane *)(ray->shape.shape))->color;
 	}
 	else if (ray->shape.type == CYLINDER)
-	{
 		set_cylinder(ray, (t_cylinder *)ray->shape.shape);
-	}
 }
 
 //closest_cylinder(ray, all->cylinders);
@@ -124,6 +122,8 @@ unsigned int	traceray(t_ray *ray, t_all *all)
 	ray->hit = scalar_multiplication_no_v(&ray->dir, ray->shape.t1);
 	add_vectors(&ray->hit, &ray->start, &ray->hit);
 	set_shapes(ray);
+	if (dot_product(&ray->shape.normal, &ray->dir) > 0)
+		scalar_multiplication(&ray->shape.normal, -1, &ray->shape.normal);
 	diffuse_light(ray, all, all->lights);
 	ray->color_ray.r = ray->color_shape.r * ray->color_diffuse.r;
 	ray->color_ray.g = ray->color_shape.g * ray->color_diffuse.g;

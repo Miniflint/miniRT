@@ -126,11 +126,11 @@ int	sphere_on_the_path(t_ray *ray, t_sphere *sphere,
 {
 	while (sphere)
 	{
-		if ((void *)sphere == ray->shape.shape)
-		{
-			sphere = sphere->next;
-			continue ;
-		}
+		// if ((void *)sphere == ray->shape.shape)
+		// {
+		// 	sphere = sphere->next;
+		// 	continue ;
+		// }
 		if (shadow_intersect_sphere(ray, sphere, light_dir, light_length))
 			return (1);
 		sphere = sphere->next;
@@ -143,11 +143,11 @@ int	plane_on_the_path(t_ray *ray, t_plane *plane,
 {
 	while (plane)
 	{
-		if ((void *)plane == ray->shape.shape)
-		{
-			plane = plane->next;
-			continue ;
-		}
+		// if ((void *)plane == ray->shape.shape)
+		// {
+		// 	plane = plane->next;
+		// 	continue ;
+		// }
 		if (shadow_intersect_plane(ray, plane, light_dir, light_length))
 			return (1);
 		plane = plane->next;
