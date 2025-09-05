@@ -155,7 +155,6 @@ int				get_each_part_face(t_face *face, char **const restrict s,
 					unsigned char ind[3]);
 int				count_duplicates(void *arr[4]);
 
-
 /* UTILS MATHS */
 
 void			start_rays(t_all *all);
@@ -193,6 +192,7 @@ void			get_cam_move(t_tri_lib *lib, t_all *all, int *start);
 void			get_cam_rotation(t_tri_lib *lib, t_all *all, int *start);
 void			get_distlight_and_fov(t_tri_lib *lib, t_all *all, int *start);
 void			event_key_press(t_tri_lib *lib, void *a);
-int				move_point(t_tri_lib *lib, t_coord *point, t_vec *dir, double amount);
+int				move_point(t_tri_lib *lib, t_coord *point,
+					t_vec *dir, double amount);
 
 #endif
