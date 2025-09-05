@@ -113,12 +113,17 @@ void			print_ob(t_object *object, int depth);
 int				__init__(t_all *all, char **argv, int argc);
 int				__set_values_scene(t_all *all, char **s);
 int				__set_values_objs(t_object *object, char **s);
+void			__init_faces(t_face *face, unsigned char vert_ind[3],
+					int *err, int *i);
+int				check_ext(char **argv);
+void			apply_argb_save_rgb(t_rgb *rgb_save,
+					t_rgb_f ambient_rgb, t_rgb *into);
+void			apply_rgb_all_shape(t_all *all);
 
 /* PARSING */
 int				get_rgb(t_rgb *rgb, char **const restrict s);
 int				get_vec(t_vec *vec, char **const restrict s);
 int				get_coord(t_coord *coord, char **const restrict s);
-
 int				get_ambient_light(t_amb_light *a_light,
 					char **const restrict s);
 int				get_camera(t_cam *camera, char **const restrict s);
@@ -128,6 +133,7 @@ int				get_plane(t_plane **head, char **const restrict s);
 int				get_cylinder(t_cylinder **head, char **const restrict s);
 int				parse_type_scene(t_all *all, char **s);
 int				parse_type_objs(t_object *object, char **s);
+int				__parse_file_objs(t_all *all);
 int				get_name(char name[128], char **const restrict s);
 int				get_letters(t_object *object, const char *restrict s);
 int				__mallocate_objs_values(t_object *object, char *str);
@@ -141,6 +147,14 @@ int				get_smoothing(t_minuint *curr_smoothing,
 t_object		*create_obj_path(t_object **head, char *path);
 void			zeroes_two(t_object *object, char *path);
 int				get_obj(t_object **head, char **const restrict s);
+int				set_tmp(unsigned long *tmp, unsigned char slashes,
+					char **const restrict s);
+int				set_face_parts(t_face *face, char **const restrict s,
+					unsigned char vert_ind[3]);
+int				get_each_part_face(t_face *face, char **const restrict s,
+					unsigned char ind[3]);
+int				count_duplicates(void *arr[4]);
+
 
 /* UTILS MATHS */
 
@@ -172,5 +186,13 @@ int				rotate_camera(t_vec *original, t_vec *axis,
 void			diffuse_light(t_ray *ray, t_all *all, t_light *light);
 
 void			closest_cylinder(t_ray *ray, t_cylinder *cylinder);
+
+/* MOVEMENTS */
+int				get_key_press(t_tri_lib *lib, t_all *all);
+void			get_cam_move(t_tri_lib *lib, t_all *all, int *start);
+void			get_cam_rotation(t_tri_lib *lib, t_all *all, int *start);
+void			get_distlight_and_fov(t_tri_lib *lib, t_all *all, int *start);
+void			event_key_press(t_tri_lib *lib, void *a);
+int				move_point(t_tri_lib *lib, t_coord *point, t_vec *dir, double amount);
 
 #endif

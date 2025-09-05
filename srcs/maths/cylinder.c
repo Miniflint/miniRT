@@ -11,7 +11,7 @@
 // b = 2(CO * d)
 // c = CO * CO - r^2
 
-static void	set_ts(double t, t_ray *ray, t_cylinder *cylinder)
+static int	set_ts(double t, t_ray *ray, t_cylinder *cylinder)
 {
 	t_vec	p;
 	t_vec	v;

@@ -23,7 +23,7 @@ void	ft_zeroes(t_all *all)
 	all->distance_light = DISTANCE_LIGHT_MIDDLE * DISTANCE_LIGHT_MIDDLE;
 }
 
-static int	__parse_file_scene(t_all *all)
+int	__parse_file_scene(t_all *all)
 {
 	char		*str;
 	char		*tmp;
@@ -67,83 +67,6 @@ void	zeroes_two(t_object *object, char *path)
 	i = -1;
 	while (++i < 128)
 		object->curr_group[i] = 0;
-}
-
-static int	__parse_file_objs(t_all *all)
-{
-	int		i;
-
-	i = 2;
-	while (i < all->argc)
-	{
-		all->objects = create_obj_path(&all->objects, all->argv[i]);
-		if (!all->objects)
-			return (1);
-		i++;
-	}
-	return (0);
-}
-
-static int	check_ext(char **argv)
-{
-	int			i;
-	const char	exts[2][5] = {".rt", ".obj"};
-	int			max_len_str;
-	int			max_len_ext;
-
-	i = 1;
-	while (argv[i])
-	{
-		max_len_str = ft_strlen(argv[i]);
-		max_len_ext = ft_strlen((char *)exts[i > 1]);
-		if (max_len_ext > max_len_str)
-			return (printf("Error: extension doesn't match: %s\n",
-					exts[i > 1]), 1);
-		while (max_len_ext > 0 && max_len_str > 0
-			&& argv[i][max_len_str] == exts[i > 1][max_len_ext])
-		{
-			max_len_str--;
-			max_len_ext--;
-		}
-		if (argv[i][max_len_str] != exts[i > 1][max_len_ext])
-			return (printf("Extension doesn't match %s\n", exts[i > 1]), 1);
-		i++;
-	}
-	return (0);
-}
-
-void	apply_argb_save_rgb(t_rgb *rgb_save, t_rgb_f ambient_rgb, t_rgb *into)
-{
-	into->r = (double)rgb_save->r * ambient_rgb.r;
-	into->g = (double)rgb_save->g * ambient_rgb.g;
-	into->b = (double)rgb_save->b * ambient_rgb.b;
-}
-
-void	apply_rgb_all_shape(t_all *all)
-{
-	const t_sphere		*tmp_sp = all->spheres;
-	const t_plane		*tmp_pl = all->planes;
-	const t_cylinder	*tmp_cy = all->cylinders;
-	const t_rgb_f		r = all->ambient_light.rgb_norm;
-
-	while (all->spheres)
-	{
-		apply_argb_save_rgb(&all->spheres->rgb_save, r, &all->spheres->rgb);
-		all->spheres = all->spheres->next;
-	}
-	all->spheres = (t_sphere *)tmp_sp;
-	while (all->planes)
-	{
-		apply_argb_save_rgb(&all->planes->rgb_save, r, &all->planes->rgb);
-		all->planes = all->planes->next;
-	}
-	all->planes = (t_plane *)tmp_pl;
-	while (all->cylinders)
-	{
-		apply_argb_save_rgb(&all->cylinders->rgb_save, r, &all->cylinders->rgb);
-		all->cylinders = all->cylinders->next;
-	}
-	all->cylinders = (t_cylinder *)tmp_cy;
 }
 
 int	__init__(t_all *all, char **argv, int argc)

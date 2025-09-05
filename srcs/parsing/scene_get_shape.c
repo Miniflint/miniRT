@@ -98,9 +98,7 @@ t_cylinder	*create_cylinder(char **const restrict s, int *code)
 		if (*code == 1)
 			printf("\tCylinders problems\n");
 		return (free(cylinder), NULL);
-	}	printf("\tVec: %f %f %f\n",
-		cylinder->vec.x, cylinder->vec.y, cylinder->vec.z);
-
+	}
 	return (cylinder);
 }
 
@@ -111,7 +109,7 @@ int	get_cylinder(t_cylinder **head, char **const restrict s)
 
 	if (!cylinder)
 		return (code);
-	set_spherical_object(cylinder, CYLINDER);	
+	set_spherical_object(cylinder, CYLINDER);
 	if (skip_till_number(s, 0))
 		return (free(cylinder), 3);
 	cylinder->radius = cylinder->diameter / 2;
