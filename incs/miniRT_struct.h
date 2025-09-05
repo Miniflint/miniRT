@@ -23,6 +23,15 @@ typedef struct S_coord
 	double	z;
 }	t_coord;
 
+typedef struct s_quad
+{
+	double	a;
+	double	b;
+	double	c;
+	double	discriminant;
+	double	t;
+}			t_quad;
+
 // typedef struct S_rgb_norm
 // {
 // 	double	r;

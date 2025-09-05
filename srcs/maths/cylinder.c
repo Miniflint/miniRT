@@ -10,6 +10,7 @@
 // a = d * d
 // b = 2(CO * d)
 // c = CO * CO - r^2
+
 static void	set_ts(double t, t_ray *ray, t_cylinder *cylinder)
 {
 	t_vec	p;
@@ -22,15 +23,16 @@ static void	set_ts(double t, t_ray *ray, t_cylinder *cylinder)
 		p = sub_vectors_no_v(&p, &cylinder->coord);
 		mag = dot_product(&p, &cylinder->vec);
 		if (mag < 0 || mag > cylinder->height || isnan(mag) || isinf(mag))
-			return ;
+			return (0);
 		v = scalar_multiplication_no_v(&cylinder->vec, mag);
 		cylinder->normal = sub_vectors_no_v(&p, &v);
 		cylinder->normal_mag = vec_magnitude(&cylinder->normal);
 		ray->shape.t1 = t;
 		ray->shape.shape = cylinder;
 		ray->shape.type = CYLINDER;
-		return ;
+		return (1);
 	}
+	return (0);
 }
 
 void	intersect_cylinder(t_ray *ray, t_cylinder *cylinder)
@@ -38,30 +40,28 @@ void	intersect_cylinder(t_ray *ray, t_cylinder *cylinder)
 	t_vec	co;
 	t_vec	tmp;
 	t_vec	d;
-	double	A;
-	double	B;
-	double	C;
-	double	discriminant;
-	double	t;
+	t_quad	q;
 
 	co = sub_vectors_no_v(&ray->start, &cylinder->coord);
-	tmp = scalar_multiplication_no_v(&cylinder->vec, dot_product(&co, &cylinder->vec));
+	tmp = scalar_multiplication_no_v(&cylinder->vec,
+			dot_product(&co, &cylinder->vec));
 	co = sub_vectors_no_v(&co, &tmp);
-	tmp = scalar_multiplication_no_v(&cylinder->vec, dot_product(&ray->dir, &cylinder->vec));
+	tmp = scalar_multiplication_no_v(&cylinder->vec,
+			dot_product(&ray->dir, &cylinder->vec));
 	d = sub_vectors_no_v(&ray->dir, &tmp);
-	A = dot_product(&d, &d);
-	B = 2 * dot_product(&d, &co);
-	C = dot_product(&co, &co) - cylinder->radius_squared;
-	discriminant = B * B - (4 * A * C);
-	if (discriminant < 0)
+	q.a = dot_product(&d, &d);
+	q.b = 2 * dot_product(&d, &co);
+	q.c = dot_product(&co, &co) - cylinder->radius_squared;
+	q.discriminant = q.b * q.b - (4 * q.a * q.c);
+	if (q.discriminant < 0)
 		return ;
-	B = -B;
-	A = 2 * A;
-	discriminant = sqrt(discriminant);
-	t = (B - discriminant) / A;
-	set_ts(t, ray, cylinder);
-	t = (B + discriminant) / A;
-	set_ts(t, ray, cylinder);
+	q.b = -q.b;
+	q.a = 2 * q.a;
+	q.discriminant = sqrt(q.discriminant);
+	q.t = (q.b - q.discriminant) / q.a;
+	set_ts(q.t, ray, cylinder);
+	q.t = (q.b + q.discriminant) / q.a;
+	set_ts(q.t, ray, cylinder);
 }
 
 void	closest_cylinder(t_ray *ray, t_cylinder *cylinder)
