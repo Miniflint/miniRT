@@ -110,7 +110,8 @@ $(NAME): $(OBJS)
 	@$(CC) -o $(NAME) $(OBJS) $(MLX_NAME) $(LDFLAGS)
 	$(ECHO) "$(GREEN)$(BOLD)Compilation Terminée !!!$(RESETTXT)"
 
-bonus: $(NAME)
+bonus:
+	make -C bonus
 
 clean:
 	$(ECHO) "$(RED)Suppression des objets...$(RESETTXT)"
