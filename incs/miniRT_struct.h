@@ -8,6 +8,10 @@
 # define ERROR_Y_DECODE "Error X(Y)Z coordinates @: [%d|%c]\nline [%lu]\n"
 # define ERROR_Z_DECODE "Error XY(Z) coordinates @: [%d|%c]\nline [%lu]\n"
 
+# define VEC_ERROR_X_DECODE "Error: (X)YZ value < -1.0 || > 1.0\nline [%lu]\n"
+# define VEC_ERROR_Y_DECODE "Error: X(Y)Z value < -1.0 || > 1.0\nline [%lu]\n"
+# define VEC_ERROR_Z_DECODE "Error: XY(Z) value < -1.0 || > 1.0\nline [%lu]\n"
+
 # define ERROR_R_DECODE "Error (R)GB color @: [%d|%c]\nline [%lu]\n"
 # define ERROR_G_DECODE "Error R(G)B color @: [%d|%c]\nline [%lu]\n"
 # define ERROR_B_DECODE "Error RG(B) color @: [%d|%c]\nline [%lu]\n"
