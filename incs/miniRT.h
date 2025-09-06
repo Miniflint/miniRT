@@ -119,6 +119,7 @@ int				check_ext(char **argv);
 void			apply_argb_save_rgb(t_rgb *rgb_save,
 					t_rgb_f ambient_rgb, t_rgb *into);
 void			apply_rgb_all_shape(t_all *all);
+void			_init_canvas(t_all *all);
 
 /* PARSING */
 int				get_rgb(t_rgb *rgb, char **const restrict s);
@@ -162,12 +163,10 @@ double			vec_magnitude(t_vec *a);
 t_vec			*add_vectors(t_vec *a, t_vec *b, t_vec *c);
 t_vec			*sub_vectors(t_vec *a, t_vec *b, t_vec *c);
 t_vec			sub_vectors_no_v(t_vec *a, t_vec *b);
-t_vec			*div_vectors(t_vec *a, t_vec *b, t_vec *c);
 t_vec			*scalar_multiplication(t_vec *a, double b, t_vec *c);
 t_vec			scalar_multiplication_no_v(t_vec *a, double b);
 t_vec			*norm_vectors(t_vec *a, double magnitude, t_vec *c);
 double			dot_product(register t_vec *a, register t_vec *b);
-double			get_angle(t_vec *a, t_vec *b, double mag_a, double mag_b);
 t_vec			*cross_product(t_vec *a, t_vec *b, t_vec *c);
 
 unsigned int	traceray(t_ray *ray, t_all *all);
@@ -178,13 +177,27 @@ void			cal_fov(t_all *all);
 void			cal_rays(t_all *all);
 void			init_start_ray(t_all *all);
 void			reset_rays(t_all *all);
-
 int				rotate_camera(t_vec *original, t_vec *axis,
 					t_vec *for_perpendicular, double angle);
-
 void			diffuse_light(t_ray *ray, t_all *all, t_light *light);
-
 void			closest_cylinder(t_ray *ray, t_cylinder *cylinder);
+
+int				sphere_on_the_path(t_ray *ray, t_sphere *sphere,
+					t_vec light_dir, double light_length);
+int				plane_on_the_path(t_ray *ray, t_plane *plane,
+					t_vec light_dir, double light_length);
+int				cylinder_on_the_path(t_ray *ray, t_cylinder *cylinder,
+					t_vec light_dir, double light_length);
+int				shadow_intersect_cylinder(t_ray *ray,
+					t_cylinder *cylinder, t_vec light_dir, double light_lenght);
+int				shadow_intersect_sphere(t_ray *ray, t_sphere *sphere,
+					t_vec light_dir, double light_lenght);
+int				shadow_intersect_plane(t_ray *ray, t_plane *plane,
+					t_vec light_dir, double light_lenght);
+void			set_cylinder(t_ray *ray, t_cylinder *cylinder);
+void			set_shapes(t_ray *ray);
+int				check_t(t_quad q, t_ray *ray, t_cylinder *cylinder,
+					t_light_vec l);
 
 /* MOVEMENTS */
 int				get_key_press(t_tri_lib *lib, t_all *all);

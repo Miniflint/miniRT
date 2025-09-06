@@ -26,18 +26,18 @@
 // 	return (0);
 // }
 
-static int	check_t(t_quad q, t_ray *ray, t_cylinder *cylinder, t_light_vec l)
+int	check_t(t_quad q, t_ray *ray, t_cylinder *cylinder, t_light_vec l)
 {
-	t_vec	p;
-	double	mag;
+	t_vec		p;
+	double		mag;
+	const t_vec	*cyl_co = &cylinder->coord;
 
 	q.t = (q.b - q.discriminant) / q.a;
 	if (q.t >= 1e-6 && q.t < l.light_lenght)
 	{
 		add_vectors(&ray->hit,
 			scalar_multiplication(&l.light_dir, q.t, &p), &p);
-		p = sub_vectors_no_v(&p, &cylinder->coord);
-		mag = dot_product(&p, &cylinder->vec);
+		mag = dot_product(sub_vectors(&p, (t_vec *)cyl_co, &p), &cylinder->vec);
 		if (mag >= 0
 			&& mag <= cylinder->height && !isnan(mag) && !isinf(mag))
 			return (1);
@@ -47,125 +47,10 @@ static int	check_t(t_quad q, t_ray *ray, t_cylinder *cylinder, t_light_vec l)
 	{
 		add_vectors(&ray->hit,
 			scalar_multiplication(&l.light_dir, q.t, &p), &p);
-		p = sub_vectors_no_v(&p, &cylinder->coord);
-		mag = dot_product(&p, &cylinder->vec);
+		mag = dot_product(sub_vectors(&p, (t_vec *)cyl_co, &p), &cylinder->vec);
 		if (mag >= 0
 			&& mag <= cylinder->height && !isnan(mag) && !isinf(mag))
 			return (1);
-	}
-	return (0);
-}
-
-int	shadow_intersect_cylinder(t_ray *ray,
-		t_cylinder *cylinder, t_vec light_dir, double light_lenght)
-{
-	t_vec	co;
-	t_vec	tmp;
-	t_vec	d;
-	t_quad	q;
-
-	co = sub_vectors_no_v(&ray->hit, &cylinder->coord);
-	tmp = scalar_multiplication_no_v(&cylinder->vec,
-			dot_product(&co, &cylinder->vec));
-	co = sub_vectors_no_v(&co, &tmp);
-	tmp = scalar_multiplication_no_v(&cylinder->vec,
-			dot_product(&light_dir, &cylinder->vec));
-	d = sub_vectors_no_v(&light_dir, &tmp);
-	q.a = dot_product(&d, &d);
-	q.b = 2 * dot_product(&d, &co);
-	q.c = dot_product(&co, &co) - cylinder->radius_squared;
-	q.discriminant = q.b * q.b - (4 * q.a * q.c);
-	if (q.discriminant < 0)
-		return (0);
-	q.b = -q.b;
-	q.a = 2 * q.a;
-	q.discriminant = sqrt(q.discriminant);
-	q.t = (q.b - q.discriminant) / q.a;
-	return (check_t(q, ray, cylinder, (t_light_vec){light_dir, light_lenght}));
-}
-
-int	shadow_intersect_sphere(t_ray *ray, t_sphere *sphere,
-		t_vec light_dir, double light_lenght)
-{
-	double			disciminant;
-	const t_vec		co = sub_vectors_no_v(&ray->hit, &sphere->coord);
-	const double	b = 2 * dot_product((t_vec *)&co, &light_dir);
-	const double	c = dot_product((t_vec *)&co, (t_vec *)&co)
-		- sphere->radius_squared;
-	double			t;
-
-	disciminant = b * b - 4.0 * c;
-	if (disciminant < 0)
-		return (0);
-	disciminant = sqrt(disciminant);
-	t = (-b - disciminant) / 2.0;
-	if ((t >= 1e-6 && t < light_lenght))
-		return (1);
-	t = (-b + disciminant) / 2.0;
-	if ((t >= 1e-6 && t < light_lenght))
-		return (1);
-	return (0);
-}
-
-int	shadow_intersect_plane(t_ray *ray, t_plane *plane,
-		t_vec light_dir, double light_lenght)
-{
-	double	dot;
-	double	t;
-	t_vec	new_vec;
-
-	dot = dot_product(&plane->vec, &light_dir);
-	if (dot == 0)
-		return (0);
-	sub_vectors(&ray->hit, &plane->coord, &new_vec);
-	t = -dot_product(&plane->vec, &new_vec) / dot;
-	if (t >= 1e-6 && t < light_lenght)
-		return (1);
-	return (0);
-}
-
-int	sphere_on_the_path(t_ray *ray, t_sphere *sphere,
-		t_vec light_dir, double light_length)
-{
-	while (sphere)
-	{
-		// if ((void *)sphere == ray->shape.shape)
-		// {
-		// 	sphere = sphere->next;
-		// 	continue ;
-		// }
-		if (shadow_intersect_sphere(ray, sphere, light_dir, light_length))
-			return (1);
-		sphere = sphere->next;
-	}
-	return (0);
-}
-
-int	plane_on_the_path(t_ray *ray, t_plane *plane,
-		t_vec light_dir, double light_length)
-{
-	while (plane)
-	{
-		// if ((void *)plane == ray->shape.shape)
-		// {
-		// 	plane = plane->next;
-		// 	continue ;
-		// }
-		if (shadow_intersect_plane(ray, plane, light_dir, light_length))
-			return (1);
-		plane = plane->next;
-	}
-	return (0);
-}
-
-int	cylinder_on_the_path(t_ray *ray, t_cylinder *cylinder,
-		t_vec light_dir, double light_length)
-{
-	while (cylinder)
-	{
-		if (shadow_intersect_cylinder(ray, cylinder, light_dir, light_length))
-			return (1);
-		cylinder = cylinder->next;
 	}
 	return (0);
 }
@@ -187,10 +72,9 @@ void	get_rgb_norm_light_intensity(t_ray *ray, t_all *all, t_light *light)
 	{
 		if (all->shadow_on
 			&& (plane_on_the_path(ray, all->planes, light_dir, light_length)
-				|| sphere_on_the_path(
-					ray, all->spheres, light_dir, light_length)
-				|| cylinder_on_the_path(
-					ray, all->cylinders, light_dir, light_length)))
+				|| sphere_on_the_path(ray, all->spheres, light_dir,
+					light_length) || cylinder_on_the_path(ray, all->cylinders,
+					light_dir, light_length)))
 			return ;
 		intensity *= (light->ratio * (all->distance_light
 					/ (light_length_square + all->distance_light)));
