@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   tri_draw.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hermesrolle <hermesrolle@student.42.fr>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/09/07 02:44:45 by hermesrolle       #+#    #+#             */
+/*   Updated: 2025/09/07 02:47:54 by hermesrolle      ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "tri_lib.h"
 #include "tri_colors.h"
 
@@ -52,7 +64,6 @@ void	_draw_window(t_win *win)
 	}
 	win->fps = _get_fps(&win->last_draw);
 	printf("\rfps: %.2lf                   ", win->fps);
-	fflush(stdout); //not permited
 	mlx_put_image_to_window(lib->_mlx, win->_win,
 		win->_base_render._img._img, 0, 0);
 }

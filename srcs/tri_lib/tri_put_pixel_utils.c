@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tri_put_pixel_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: trgoel <trgoel@student.42.fr>              +#+  +:+       +#+        */
+/*   By: hermesrolle <hermesrolle@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 03:59:18 by hermesrolle       #+#    #+#             */
-/*   Updated: 2025/09/06 17:18:55 by trgoel           ###   ########.fr       */
+/*   Updated: 2025/09/07 02:46:01 by hermesrolle      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
