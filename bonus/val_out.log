@@ -1,0 +1,100 @@
+==2931405== Memcheck, a memory error detector
+==2931405== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==2931405== Using Valgrind-3.18.1-42b08ed5bd-20211015 and LibVEX; rerun with -h for copyright info
+==2931405== Command: ./miniRT maps/aaa.rt
+==2931405== Parent PID: 2917178
+==2931405== 
+--2931405-- 
+--2931405-- Valgrind options:
+--2931405--    --leak-check=full
+--2931405--    --show-leak-kinds=all
+--2931405--    --track-origins=yes
+--2931405--    --verbose
+--2931405--    --log-file=val_out.log
+--2931405-- Contents of /proc/version:
+--2931405--   Linux version 6.6.72-x64v3-t2-jammy-xanmod1 (root@fv-az1245-313) (gcc (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0, GNU ld (GNU Binutils for Ubuntu) 2.38) #xanmod1 SMP PREEMPT_DYNAMIC Sat Jan 18 01:41:53 UTC 2025
+--2931405-- 
+--2931405-- Arch and hwcaps: AMD64, LittleEndian, amd64-cx16-lzcnt-rdtscp-sse3-ssse3-avx-avx2-bmi-f16c-rdrand-rdseed
+--2931405-- Page sizes: currently 4096, max supported 4096
+--2931405-- Valgrind library directory: /usr/libexec/valgrind
+--2931405-- Reading syms from /home/trgoel/Documents/cursus/miniRT/bonus/miniRT
+--2931405-- Reading syms from /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2
+--2931405--   Considering /usr/lib/debug/.build-id/9c/b53985768bb99f138f48655f7b8bf7e420d13d.debug ..
+--2931405--   .. build-id is valid
+--2931405-- Reading syms from /usr/libexec/valgrind/memcheck-amd64-linux
+--2931405--    object doesn't have a symbol table
+--2931405--    object doesn't have a dynamic symbol table
+--2931405-- Scheduler: using generic scheduler lock implementation.
+==2931405== Warning: set address range perms: large range [0x11f000, 0x16517000) (defined)
+--2931405-- Reading suppressions file: /usr/libexec/valgrind/default.supp
+==2931405== embedded gdbserver: reading from /tmp/vgdb-pipe-from-vgdb-to-2931405-by-trgoel-on-???
+==2931405== embedded gdbserver: writing to   /tmp/vgdb-pipe-to-vgdb-from-2931405-by-trgoel-on-???
+==2931405== embedded gdbserver: shared mem   /tmp/vgdb-pipe-shared-mem-vgdb-2931405-by-trgoel-on-???
+==2931405== 
+==2931405== TO CONTROL THIS PROCESS USING vgdb (which you probably
+==2931405== don't want to do, unless you know exactly what you're doing,
+==2931405== or are doing some strange experiment):
+==2931405==   /usr/bin/vgdb --pid=2931405 ...command...
+==2931405== 
+==2931405== TO DEBUG THIS PROCESS USING GDB: start GDB like this
+==2931405==   /path/to/gdb ./miniRT
+==2931405== and then give GDB the following command
+==2931405==   target remote | /usr/bin/vgdb --pid=2931405
+==2931405== --pid is optional if only one valgrind process is running
+==2931405== 
+--2931405-- REDIR: 0x16541a40 (ld-linux-x86-64.so.2:strlen) redirected to 0x580bcec2 (???)
+--2931405-- REDIR: 0x16541810 (ld-linux-x86-64.so.2:index) redirected to 0x580bcedc (???)
+--2931405-- Reading syms from /usr/libexec/valgrind/vgpreload_core-amd64-linux.so
+--2931405--    object doesn't have a symbol table
+--2931405-- Reading syms from /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so
+--2931405--    object doesn't have a symbol table
+==2931405== WARNING: new redirection conflicts with existing -- ignoring it
+--2931405--     old: 0x16541a40 (strlen              ) R-> (0000.0) 0x580bcec2 ???
+--2931405--     new: 0x16541a40 (strlen              ) R-> (2007.0) 0x16d65e30 strlen
+--2931405-- REDIR: 0x1653e220 (ld-linux-x86-64.so.2:strcmp) redirected to 0x16d66cd0 (strcmp)
+--2931405-- REDIR: 0x16541fa0 (ld-linux-x86-64.so.2:mempcpy) redirected to 0x16d6a840 (mempcpy)
+--2931405-- Reading syms from /usr/lib/x86_64-linux-gnu/libXext.so.6.4.0
+--2931405--    object doesn't have a symbol table
+--2931405-- Reading syms from /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0
+--2931405--    object doesn't have a symbol table
+--2931405-- Reading syms from /usr/lib/x86_64-linux-gnu/libm.so.6
+--2931405--   Considering /usr/lib/debug/.build-id/a3/ad9bb40b4907e509e4404cb972645c19675ca3.debug ..
+--2931405--   .. build-id is valid
+--2931405-- Reading syms from /usr/lib/x86_64-linux-gnu/libc.so.6
+--2931405--   Considering /usr/lib/debug/.build-id/d5/197096f709801829b118af1b7cf6631efa2dcd.debug ..
+--2931405--   .. build-id is valid
+==2931405== WARNING: new redirection conflicts with existing -- ignoring it
+--2931405--     old: 0x1706cc60 (memalign            ) R-> (1011.0) 0x16d65080 memalign
+--2931405--     new: 0x1706cc60 (memalign            ) R-> (1017.0) 0x16d65050 aligned_alloc
+==2931405== WARNING: new redirection conflicts with existing -- ignoring it
+--2931405--     old: 0x1706cc60 (memalign            ) R-> (1011.0) 0x16d65080 memalign
+--2931405--     new: 0x1706cc60 (memalign            ) R-> (1017.0) 0x16d65020 aligned_alloc
+==2931405== WARNING: new redirection conflicts with existing -- ignoring it
+--2931405--     old: 0x1706cc60 (memalign            ) R-> (1011.0) 0x16d65080 memalign
+--2931405--     new: 0x1706cc60 (memalign            ) R-> (1017.0) 0x16d65050 aligned_alloc
+==2931405== WARNING: new redirection conflicts with existing -- ignoring it
+--2931405--     old: 0x1706cc60 (memalign            ) R-> (1011.0) 0x16d65080 memalign
+--2931405--     new: 0x1706cc60 (memalign            ) R-> (1017.0) 0x16d65020 aligned_alloc
+==2931405== 
+==2931405== Process terminating with default action of signal 2 (SIGINT)
+==2931405==    at 0x1653DB16: __open_nocancel (open64_nocancel.c:39)
+==2931405==    by 0x1651D978: open_verify.constprop.0 (dl-load.c:1626)
+==2931405==    by 0x1651E107: open_path (dl-load.c:1922)
+==2931405==    by 0x165216B0: _dl_map_object (dl-load.c:2158)
+==2931405==    by 0x1651A494: openaux (dl-deps.c:64)
+==2931405==    by 0x16534349: _dl_catch_exception (dl-error-skeleton.c:208)
+==2931405==    by 0x1651AC7B: _dl_map_object_deps (dl-deps.c:248)
+==2931405==    by 0x1653A39F: dl_main (rtld.c:1970)
+==2931405==    by 0x1653683B: _dl_sysdep_start (dl-sysdep.c:256)
+==2931405==    by 0x16538597: _dl_start_final (rtld.c:507)
+==2931405==    by 0x16538597: _dl_start (rtld.c:596)
+==2931405==    by 0x16537297: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+==2931405==    by 0x1: ???
+==2931405== 
+==2931405== HEAP SUMMARY:
+==2931405==     in use at exit: 0 bytes in 0 blocks
+==2931405==   total heap usage: 0 allocs, 0 frees, 0 bytes allocated
+==2931405== 
+==2931405== All heap blocks were freed -- no leaks are possible
+==2931405== 
+==2931405== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

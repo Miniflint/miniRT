@@ -28,6 +28,7 @@
 # include "miniRT_struct.h"
 # include "miniRT_planes.h"
 # include "miniRT_objs.h"
+# include "pthread.h"
 # define PI_DEFINED 3.14159265358979323846
 
 # define BUFF_SIZE 32768
@@ -43,6 +44,7 @@ typedef struct S_all
 	t_cylinder		*cylinders;
 	t_object		*objects;
 	t_canvas		canvas;
+	t_bvh			bvh;
 	char			**argv;
 	int				argc;
 	int				win_height;
@@ -51,6 +53,11 @@ typedef struct S_all
 	unsigned long	line_count;
 	double			light_ratio;
 	double			distance_light;
+	t_threads		*threads;
+	long			n_thread;
+	pthread_mutex_t	mutex;
+	t_thread_mode	thread_mode;
+	unsigned int	thread_states[3];
 }					t_all;
 
 typedef struct S_shape_closest
@@ -198,6 +205,7 @@ void			set_cylinder(t_ray *ray, t_cylinder *cylinder);
 void			set_shapes(t_ray *ray);
 int				check_t(t_quad q, t_ray *ray, t_cylinder *cylinder,
 					t_light_vec l);
+int				launch_threads(t_all *all);
 
 /* MOVEMENTS */
 int				get_key_press(t_tri_lib *lib, t_all *all);
@@ -207,5 +215,9 @@ void			get_distlight_and_fov(t_tri_lib *lib, t_all *all, int *start);
 void			event_key_press(t_tri_lib *lib, void *a);
 int				move_point(t_tri_lib *lib, t_coord *point,
 					t_vec *dir, double amount);
+
+unsigned char	intersect_box(t_ray *ray, t_bvh *bvh);
+t_bvh			create_box(t_vec a, t_vec b);
+void			print_box(t_bvh *bvh);
 
 #endif

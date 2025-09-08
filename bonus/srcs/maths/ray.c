@@ -38,6 +38,13 @@ unsigned int	traceray(t_ray *ray, t_all *all)
 	closest_plane(ray, all->planes);
 	closest_sphere(ray, all->spheres);
 	closest_cylinder(ray, all->cylinders);
+	if (intersect_box(ray, &all->bvh))
+	{
+		ray->color_ray.r = 1;
+		ray->color_ray.g = 0;
+		ray->color_ray.b = 0;
+		return(rgb_f_to_unsigned(ray->color_ray));
+	}
 	if (isinf(ray->shape.t1))
 		return (TRI_OPAQUE_UNSIGNED | ray->color.r << 16
 			| ray->color.g << 8 | ray->color.b);

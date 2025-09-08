@@ -21,7 +21,7 @@ SRCS_TRILIB =	tri_auto_draw.c  tri_colors_convert.c  tri_create_window.c  tri_de
 
 SRC := main.c
 SRCS_PARSING := __fake_globals.c  free_structs.c  __init__.c  __init_utils.c  nodes.c  object_get_shape.c  object_get_value_utils.c  printing.c  scene_get_value_utils.c  scene_get_light_camera.c  scene_get_shape.c  utils.c  utils_util.c  object_free.c read_file.c check_errors.c rgb_shapes.c __init_objs.c printing_obj.c set_values_objs.c get_values_objs.c
-SRCS_MATHS := utils_maths.c ray.c cal_rays.c lights.c matrice_rotation.c plane.c cylinder.c movements.c fov.c intersect.c on_path.c set_closest.c shadows.c vectors_utils.c vectors_magic.c
+SRCS_MATHS := utils_maths.c ray.c cal_rays.c lights.c matrice_rotation.c plane.c cylinder.c movements.c fov.c intersect.c on_path.c set_closest.c shadows.c vectors_utils.c vectors_magic.c threads.c boxes.c
 
 
 SRC_FILES := $(addprefix $(SRC_DIR)/, $(SRC))
@@ -56,7 +56,7 @@ ifeq ($(UNAME), Darwin)
 else ifeq ($(UNAME), Linux)
 	MLX_DIR		:= ./libs/mlx
 	MLX_NAME	:= $(MLX_DIR)/libmlx.a
-	CFLAGS		+= -I$(MLX_DIR) -D LINUX
+	CFLAGS		+= -I$(MLX_DIR) -D LINUX -pthread
 	LDFLAGS		:= -L$(MLX_DIR) -lmlx -lXext -lX11 -lm
 endif
 

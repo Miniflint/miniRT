@@ -60,6 +60,24 @@ typedef struct s_light_vec
 	double	light_lenght;
 }			t_light_vec;
 
+typedef enum e_thread_mode
+{
+	CONTINUE,
+	PAUSE,
+	STOP,
+	NONE
+}	t_thread_mode;
+
+typedef struct s_threads
+{
+	t_thread_mode	mode;
+	pthread_t		thread;
+	int				start;
+	int				end;
+	unsigned long	start_time;
+	unsigned long	average_time;
+}					t_threads;
+
 typedef enum E_obj_type
 {
 	AMBIENT_LIGHT,
@@ -104,5 +122,13 @@ typedef struct S_Canvas
 	t_ray			rays[WIN_HEIGHT_ALL][WIN_WIDTH_ALL];
 	t_ray			rays_save[WIN_HEIGHT_ALL][WIN_WIDTH_ALL];
 }	t_canvas;	
+
+typedef struct S_bvh
+{
+	t_vec	top[4];
+	t_vec	bottom[4];
+	t_vec	*a;
+	t_vec	*b;
+}	t_bvh;
 
 #endif
