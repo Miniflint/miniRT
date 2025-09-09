@@ -21,6 +21,7 @@ void	ft_zeroes(t_all *all)
 	all->canvas.pixel_values = 3;
 	all->light_ratio = 1;
 	all->distance_light = DISTANCE_LIGHT_MIDDLE * DISTANCE_LIGHT_MIDDLE;
+	all->threads = NULL;
 }
 
 int	__parse_file_scene(t_all *all)

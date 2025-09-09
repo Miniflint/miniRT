@@ -21,10 +21,12 @@ int	launch_threads(t_all *all)
 	while (i < all->n_thread)
 	{
 		all->threads[i].start = i * n_lines;
-		if (i + 1 < all->n_thread)
+		if (i + 1 == all->n_thread)
 			all->threads[i].end = WIN_HEIGHT_ALL - 1;
 		else
 			all->threads[i].end = all->threads->start + n_lines - 1;
+		all->threads[i].mode = NONE;
+		all->threads[i].average_time = 0;
 		++i;
 	}
 	return (0);
