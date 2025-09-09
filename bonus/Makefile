@@ -34,7 +34,7 @@ OBJS := $(patsubst $(SRC_DIR)/%.c, $(OBJS_DIR)/%.o, $(SRC_FILES)) \
 		$(patsubst $(TRI_DIR)/%.c, $(OBJS_DIR)/%.o, $(TRI_FILES)) \
 		$(patsubst $(MATH_DIR)/%.c, $(OBJS_DIR)/%.o, $(MATH_FILES))
 
-NAME = miniRT
+NAME = miniRT_bonus
 CC = gcc
 
 CFLAGS = -Wall -Werror -Wextra -I$(SRC_DIR_INC) -I$(TRI_DIR_INC)

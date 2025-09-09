@@ -114,6 +114,7 @@ bonus:
 	make -C bonus
 
 clean:
+	make clean -C bonus
 	$(ECHO) "$(RED)Suppression des objets...$(RESETTXT)"
 	@$(RM) $(OBJS_DIR)
 	$(ECHO) "$(GREEN)$(BOLD)Terminé !$(RESETTXT)"
@@ -121,6 +122,9 @@ clean:
 fclean: clean
 	$(ECHO) "$(RED)Suppression de $(NAME)...$(RESETTXT)"
 	@$(RM) $(NAME)
+	$(ECHO) "$(GREEN)$(BOLD)Terminé !$(RESETTXT)"
+	$(ECHO) "$(RED)Suppression de $(NAME)_bonus...$(RESETTXT)"
+	@$(RM) $(NAME)"_bonus"
 	$(ECHO) "$(GREEN)$(BOLD)Terminé !$(RESETTXT)"
 
 fclean_all: fclean

@@ -28,7 +28,7 @@
 # include "miniRT_struct.h"
 # include "miniRT_planes.h"
 # include "miniRT_objs.h"
-# include "pthread.h"
+# include <pthread.h>
 # define PI_DEFINED 3.14159265358979323846
 
 # define BUFF_SIZE 32768

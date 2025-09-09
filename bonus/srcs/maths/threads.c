@@ -20,8 +20,8 @@ int	launch_threads(t_all *all)
 	// actual_line = 0;
 	while (i < all->n_thread)
 	{
-		all.threads[i]->start = i * n_lines;
-		all.threads[i]end = all->threads->start + n_lines - 1;
+		all->threads[i].start = i * n_lines;
+		all->threads[i].end = all->threads->start + n_lines - 1;
 		
 		++i;
 	}

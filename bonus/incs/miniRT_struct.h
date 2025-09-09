@@ -3,6 +3,7 @@
 
 # include "miniRT.h"
 # include "tri_colors.h"
+# include <pthread.h>
 
 # define ERROR_X_DECODE "Error (X)YZ coordinates @: [%d|%c]\nline [%lu]\n"
 # define ERROR_Y_DECODE "Error X(Y)Z coordinates @: [%d|%c]\nline [%lu]\n"
