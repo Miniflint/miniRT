@@ -45,6 +45,7 @@ typedef struct s_quad
 // }	t_rgb_norm;
 
 typedef unsigned char	t_minuint;
+typedef struct S_all	t_all;
 typedef t_coord			t_vec;
 typedef t_argb			t_rgb;
 
@@ -66,6 +67,7 @@ typedef enum e_thread_mode
 	CONTINUE,
 	PAUSE,
 	STOP,
+	RESET,
 	NONE
 }	t_thread_mode;
 
@@ -75,8 +77,9 @@ typedef struct s_threads
 	pthread_t		thread;
 	int				start;
 	int				end;
-	unsigned long	start_time;
+	struct timeval	start_time;
 	unsigned long	average_time;
+	t_all			*all;
 }					t_threads;
 
 typedef enum E_obj_type
@@ -87,6 +90,7 @@ typedef enum E_obj_type
 	SPHERE,
 	PLANE,
 	CYLINDER,
+	BOX,
 	END_SHAPE
 }	t_obj_type;
 
@@ -131,5 +135,14 @@ typedef struct S_bvh
 	t_vec	*a;
 	t_vec	*b;
 }	t_bvh;
+
+typedef struct S_box
+{
+	t_bvh			box;
+	t_rgb			rgb;
+	t_rgb			rgb_save;
+	t_rgb_f			color;
+	struct S_box	*next;
+}	t_box;
 
 #endif

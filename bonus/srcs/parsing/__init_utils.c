@@ -14,6 +14,8 @@ int	parse_type_scene(t_all *all, char **s)
 		return (get_plane(&all->planes, s));
 	else if (**s == 'c' && *((*s) + 1) == 'y' && ft_iswhitespace(*((*s) + 2)))
 		return (get_cylinder(&all->cylinders, s));
+	else if (**s == 'b' && *((*s) + 1) == 'x' && ft_iswhitespace(*((*s) + 2)))
+		return (get_box(&all->boxes, s));
 	else if (**s == 'o' && *((*s) + 1) == 'b' && ft_iswhitespace(*((*s) + 2)))
 		return (get_obj(&all->objects, s));
 	return (3);
@@ -26,6 +28,7 @@ void	print_all_structs(t_all *all)
 	print_sp(all->spheres, 0);
 	print_pl(all->planes, 0);
 	print_cy(all->cylinders, 0);
+	print_bx(all->boxes, 0);
 	print_ob(all->objects, 0);
 }
 

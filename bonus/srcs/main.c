@@ -46,10 +46,6 @@ int	main(int argc, char **argv)
 	all = __get_all();
 	if (__init__(all, argv, argc))
 		return (free_all(all), 1);
-	all->bvh = create_box((t_vec){-10,-10,-10}, (t_vec){10,10,10});
-	all->bvh.a = all->bvh.bottom;
-	all->bvh.b = all->bvh.top + 3;
-	print_box(&all->bvh);
 	tri_lib()->init();
 	tri_lib()->auto_draw = 1;
 	tri_lib()->get_end_function(free_all);
@@ -58,36 +54,10 @@ int	main(int argc, char **argv)
 			all->win_width, all->win_height);
 	win->auto_draw = 1;
 	launch_threads(all);
+	//change_threads_mode(all, CONTINUE);
 	start_rays(all);
 	tri_lib()->draw_windows();
 	_main_loop(looped, (void *)all);
 	free_all(all);
 	return (0);
 }
-
-// int	main(int argc, char **argv)
-// {
-// 	t_all	*all;
-// 	t_win	*win;
-
-// 	if (argc < 2)
-// 		return (printf("Not enough arguments\n"), 1);
-// 	all = __get_all();
-// 	if (__init__(all, argv, argc))
-// 		return (free_all(all), 1);
-// 	tri_lib()->init();
-// 	tri_lib()->auto_draw = 1;
-// 	tri_lib()->get_end_function(free_all);
-// 	tri_lib()->_user_content = all;
-// 	win = tri_lib()->create_window("QQQQQQQQQQQ",
-// 			all->win_width, all->win_height);
-// 	win->auto_draw = 1;
-// 	start_rays(all);
-// 	tri_lib()->draw_windows();
-// 	#ifndef NOLOOP
-// 		tri_lib()->loop(looped, (void *)all);
-// 	#else
-// 		tri_lib()->quit();
-// 	#endif
-// 	return (0);
-// }

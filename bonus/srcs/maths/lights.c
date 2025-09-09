@@ -74,7 +74,8 @@ void	get_rgb_norm_light_intensity(t_ray *ray, t_all *all, t_light *light)
 			&& (plane_on_the_path(ray, all->planes, light_dir, light_length)
 				|| sphere_on_the_path(ray, all->spheres, light_dir,
 					light_length) || cylinder_on_the_path(ray, all->cylinders,
-					light_dir, light_length)))
+					light_dir, light_length) || box_on_path(ray, all->boxes,
+						light_dir, light_length)))
 			return ;
 		intensity *= (light->ratio * (all->distance_light
 					/ (light_length_square + all->distance_light)));

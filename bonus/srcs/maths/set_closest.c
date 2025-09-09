@@ -24,10 +24,12 @@ void	set_shapes(t_ray *ray)
 	}
 	else if (ray->shape.type == PLANE)
 	{
-		ray->shape.origin = ((t_plane *)(ray->shape.shape))->coord;
+		//ray->shape.origin = ((t_plane *)(ray->shape.shape))->coord;
 		ray->shape.normal = ((t_plane *)(ray->shape.shape))->vec;
 		ray->color_shape = ((t_plane *)(ray->shape.shape))->color;
 	}
 	else if (ray->shape.type == CYLINDER)
 		set_cylinder(ray, (t_cylinder *)ray->shape.shape);
+	else if (ray->shape.type == BOX)
+		ray->color_shape = ((t_box *)(ray->shape.shape))->color;
 }

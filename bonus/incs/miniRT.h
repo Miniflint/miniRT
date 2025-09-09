@@ -42,6 +42,7 @@ typedef struct S_all
 	t_sphere		*spheres;
 	t_plane			*planes;
 	t_cylinder		*cylinders;
+	t_box			*boxes;
 	t_object		*objects;
 	t_canvas		canvas;
 	t_bvh			bvh;
@@ -57,25 +58,8 @@ typedef struct S_all
 	long			n_thread;
 	pthread_mutex_t	mutex;
 	t_thread_mode	thread_mode;
-	unsigned int	thread_states[3];
+	unsigned int	thread_states[4];
 }					t_all;
-
-typedef struct S_shape_closest
-{
-	double		t;
-	t_vec		normal;
-	t_rgb		color;
-	void		*shape;
-	int			type;
-	t_sphere	*sp_closest;
-	t_plane		*pl_closest;
-	t_cylinder	*cy_closest;
-	t_object	*ob_closest;
-	t_rgb		colors;
-	double		sp_t1;
-	double		sp_t2;
-	double		pl_t1;
-}	t_shape_closest;
 
 /* UTILS */
 int				ft_strlen(char *str);
@@ -114,6 +98,7 @@ void			print_l(t_light *light, int depth);
 void			print_sp(t_sphere *sphere, int depth);
 void			print_pl(t_plane *plane, int depth);
 void			print_cy(t_cylinder *cylinder, int depth);
+void			print_bx(t_box *box, int depth);			
 void			print_ob(t_object *object, int depth);
 
 /* INIT */
@@ -139,6 +124,7 @@ int				get_light(t_light **head, char **const restrict s);
 int				get_sphere(t_sphere **head, char **const restrict s);
 int				get_plane(t_plane **head, char **const restrict s);
 int				get_cylinder(t_cylinder **head, char **const restrict s);
+int				get_box(t_box **head, char **const restrict s);
 int				parse_type_scene(t_all *all, char **s);
 int				parse_type_objs(t_object *object, char **s);
 int				__parse_file_objs(t_all *all);
@@ -188,6 +174,7 @@ int				rotate_camera(t_vec *original, t_vec *axis,
 					t_vec *for_perpendicular, double angle);
 void			diffuse_light(t_ray *ray, t_all *all, t_light *light);
 void			closest_cylinder(t_ray *ray, t_cylinder *cylinder);
+void			closest_box(t_ray *ray, t_box *boxes);
 
 int				sphere_on_the_path(t_ray *ray, t_sphere *sphere,
 					t_vec light_dir, double light_length);
@@ -205,7 +192,14 @@ void			set_cylinder(t_ray *ray, t_cylinder *cylinder);
 void			set_shapes(t_ray *ray);
 int				check_t(t_quad q, t_ray *ray, t_cylinder *cylinder,
 					t_light_vec l);
+/* THREADS */
 int				launch_threads(t_all *all);
+unsigned long	get_time_diff(struct timeval *last);
+t_thread_mode	get_thread_mode(t_all *all, t_threads *thread);
+t_thread_mode	get_thread_mode_pause(t_all *all, t_threads *thread);
+void			*thread_routine(void *content);
+void			change_threads_mode(t_all *all, t_thread_mode mode);
+int				end_thread(t_all *all, unsigned int n_thread);
 
 /* MOVEMENTS */
 int				get_key_press(t_tri_lib *lib, t_all *all);
@@ -216,8 +210,12 @@ void			event_key_press(t_tri_lib *lib, void *a);
 int				move_point(t_tri_lib *lib, t_coord *point,
 					t_vec *dir, double amount);
 
-unsigned char	intersect_box(t_ray *ray, t_bvh *bvh);
+int				bvh_on_path(t_ray *ray, t_bvh *bvh);
 t_bvh			create_box(t_vec a, t_vec b);
 void			print_box(t_bvh *bvh);
+int				shadow_intersect_box(t_ray *ray, t_bvh *bvh,
+					t_vec light_dir, double light_length);
+int				box_on_path(t_ray *ray, t_box *boxes,
+					t_vec light_dir, double light_length);
 
 #endif

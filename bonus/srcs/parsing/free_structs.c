@@ -36,14 +36,14 @@ t_cylinder	*free_cy(t_cylinder *cylinder)
 	return (NULL);
 }
 
-// void	free_all(t_all *all)
-// {
-// 	all->lights = free_l(all->lights);
-// 	all->spheres = free_sp(all->spheres);
-// 	all->planes = free_pl(all->planes);
-// 	all->cylinders = free_cy(all->cylinders);
-// 	all->objects = free_objs(all->objects);
-// }
+t_box	*free_bx(t_box *box)
+{
+	if (!box)
+		return (NULL);
+	free_bx(box->next);
+	free(box);
+	return (NULL);
+}
 
 int	free_all(void *content)
 {
@@ -54,6 +54,8 @@ int	free_all(void *content)
 	all->spheres = free_sp(all->spheres);
 	all->planes = free_pl(all->planes);
 	all->cylinders = free_cy(all->cylinders);
+	all->boxes = free_bx(all->boxes);
 	all->objects = free_objs(all->objects);
+	end_thread(all, all->n_thread);
 	return (0);
 }
