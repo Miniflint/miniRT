@@ -50,12 +50,12 @@ int	free_all(void *content)
 	t_all	*all;
 
 	all = content;
+	end_thread(all, all->n_thread);
 	all->lights = free_l(all->lights);
 	all->spheres = free_sp(all->spheres);
 	all->planes = free_pl(all->planes);
 	all->cylinders = free_cy(all->cylinders);
 	all->boxes = free_bx(all->boxes);
 	all->objects = free_objs(all->objects);
-	end_thread(all, all->n_thread);
 	return (0);
 }

@@ -55,6 +55,35 @@ int	check_t(t_quad q, t_ray *ray, t_cylinder *cylinder, t_light_vec l)
 	return (0);
 }
 
+int	shadow_traverse_bvh(t_ray *ray,
+	t_hitbox *bvh,
+	t_render *render,
+	t_vec light_dir,
+	double light_lenght
+)
+{
+	if (!bvh)
+		return (0);
+	if (shadow_intersect_hitbox(ray, &bvh->box, light_dir, light_lenght))
+	{
+		if (bvh->node_type == LEAF)
+		{
+			if ((bvh->type == SPHERE && sphere_on_the_path(ray, (t_sphere *)bvh->shape,
+				light_dir, light_lenght))
+				|| (bvh->type == BOX && box_on_path(ray, (t_box *)bvh->shape,
+					light_dir, light_lenght))
+				|| (bvh->type == CYLINDER && cylinder_on_the_path(ray, (t_cylinder *)bvh->shape,
+					light_dir, light_lenght)))
+				return (1);
+			return (0);
+		}
+		if ((bvh->left && shadow_traverse_bvh(ray, bvh->left, render, light_dir, light_lenght))
+			|| (bvh->right && shadow_traverse_bvh(ray, bvh->right, render, light_dir, light_lenght)))
+			return (1);
+	}
+	return (0);
+}
+
 void	get_rgb_norm_light_intensity(t_ray *ray, t_all *all, t_light *light)
 {
 	t_vec		light_dir;
@@ -71,11 +100,7 @@ void	get_rgb_norm_light_intensity(t_ray *ray, t_all *all, t_light *light)
 	if (intensity > 0)
 	{
 		if (all->shadow_on
-			&& (plane_on_the_path(ray, all->planes, light_dir, light_length)
-				|| sphere_on_the_path(ray, all->spheres, light_dir,
-					light_length) || cylinder_on_the_path(ray, all->cylinders,
-					light_dir, light_length) || box_on_path(ray, all->boxes,
-						light_dir, light_length)))
+			&& shadow_traverse_bvh(ray, all->bvh, all->render_hb, light_dir, light_length))
 			return ;
 		intensity *= (light->ratio * (all->distance_light
 					/ (light_length_square + all->distance_light)));

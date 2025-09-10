@@ -23,6 +23,7 @@ void	ft_zeroes(t_all *all)
 	all->distance_light = DISTANCE_LIGHT_MIDDLE * DISTANCE_LIGHT_MIDDLE;
 	all->threads = NULL;
 	all->nb_shapes = 0;
+	all->render_hitbox = 1;
 }
 
 int	__parse_file_scene(t_all *all)

@@ -41,14 +41,11 @@ void print_bvh_dot(t_hitbox *node, FILE *file)
 	if (node->node_type == LEAF)
 	{
 		if (node->type == SPHERE)
-			fprintf(file, "\t\"%p\" [label=\"SPHERE (%.2f %.2f %.2f)\"];\n", (void *)node,
-				((t_sphere *)node->shape)->coord.x,((t_sphere *)node->shape)->coord.y, ((t_sphere *)node->shape)->coord.z);
+			fprintf(file, "\t\"%p\" [label=\"SPHERE\"];\n", (void *)node);
 		if (node->type == BOX)
 			fprintf(file, "\t\"%p\" [label=\"BOX\"];\n", (void *)node);
 		if (node->type == CYLINDER)
-			fprintf(file, "\t\"%p\" [label=\"CYLINDER (%.2f %.2f %.2f)\"];\n", (void *)node,
-				((t_cylinder *)node->shape)->coord.x,((t_cylinder *)node->shape)->coord.y, ((t_cylinder *)node->shape)->coord.z);
-
+			fprintf(file, "\t\"%p\" [label=\"CYLINDER\"];\n", (void *)node);
 	}
 	else if (node->node_type == INTERNAL)
 		fprintf(file, "\t\"%p\" [label=\"INTERNAL\"];\n", (void *)node);
@@ -95,8 +92,10 @@ int	main(int argc, char **argv)
 	tri_lib()->_user_content = all;
 	win = tri_lib()->create_window("QQQQQQQQQQQ",
 			all->win_width, all->win_height);
+	all->render_hb = tri_lib()->create_render(win);
 	win->auto_draw = 1;
-	launch_threads(all);
+	//launch_threads(all);
+	//usleep(1000);
 	//change_threads_mode(all, CONTINUE);
 	start_rays(all);
 	tri_lib()->draw_windows();

@@ -63,6 +63,7 @@ void	*thread_routine(void *content)
 	{
 		if (get_thread_mode_pause(all, thread) == (t_thread_mode)STOP)
 			return (NULL);
+		//start_rays_thread(all, thread);
 	}
 	return (NULL);
 }
@@ -94,7 +95,7 @@ void	draw_rays_to_render(t_all *all, t_render *render)
 
 	index[0] = mi_pix;
 	real[0] = 0;
-	pthread_mutex_lock(&all->mutex);
+	change_threads_mode(all, PAUSE);
 	while (real[0] < all->win_height)
 	{
 		real[1] = 0;
@@ -112,7 +113,7 @@ void	draw_rays_to_render(t_all *all, t_render *render)
 		real[0] += all->canvas.pixel_values;
 		index[0] = real[0] + mi_pix;
 	}
-	pthread_mutex_unlock(&all->mutex);
+	change_threads_mode(all, CONTINUE);
 }
 
 int	end_thread(t_all *all, unsigned int n_thread)
@@ -147,27 +148,21 @@ int	end_thread(t_all *all, unsigned int n_thread)
 void	distribute_lines_threads(t_all *all)
 {
 	unsigned int	i;
-	unsigned int	start;
 	unsigned int	n_lines;
 
 	i = 0;
-	n_lines = (double)((double)WIN_HEIGHT_ALL / (double)all->canvas.pixel_values / (double)all->n_thread);
+	n_lines = (int)((double)WIN_HEIGHT_ALL / (double)all->canvas.pixel_values / (double)all->n_thread) * all->canvas.pixel_values;
 	// change_threads_mode(all, PAUSE);
-	pthread_mutex_lock(&all->mutex);
 	while (i < all->n_thread)
 	{
-		start = i * all->canvas.pixel_values * n_lines;
-		if (start % all->canvas.pixel_values)
-			all->threads[i].start = ((start / all->canvas.pixel_values) + 1) * all->canvas.pixel_values;
-		else
-			all->threads[i].start = start;
+		all->threads[i].start = i * n_lines;
 		if (i + 1 == all->n_thread)
-			all->threads[i].end = WIN_HEIGHT_ALL - 1;
+			all->threads[i].end = WIN_HEIGHT_ALL;
 		else
-			all->threads[i].end = all->threads->start + n_lines - 1;
+			all->threads[i].end = all->threads[i].start + n_lines;
+		printf("Pixel_val = %i, Thread %u, start %i end %i\n", all->canvas.pixel_values, i, all->threads[i].start, all->threads[i].end);
 		++i;
 	}
-	pthread_mutex_unlock(&all->mutex);
 	// change_threads_mode(all, CONTINUE);
 }
 
@@ -190,22 +185,22 @@ int	launch_threads(t_all *all)
 	all->thread_states[(t_thread_mode)RESET] = 0;
 	pthread_mutex_init(&all->mutex, NULL);
 	i = 0;
-	n_lines = WIN_HEIGHT_ALL / all->n_thread;
+	n_lines = (int)((double)WIN_HEIGHT_ALL / (double)all->canvas.pixel_values / (double)all->n_thread) * all->canvas.pixel_values;
 	// actual_line = 0;
 	pthread_mutex_lock(&all->mutex);
 	while (i < all->n_thread)
 	{
 		all->threads[i].start = i * n_lines;
 		if (i + 1 == all->n_thread)
-			all->threads[i].end = WIN_HEIGHT_ALL - 1;
+			all->threads[i].end = WIN_HEIGHT_ALL;
 		else
-			all->threads[i].end = all->threads->start + n_lines - 1;
+			all->threads[i].end = all->threads[i].start + n_lines;
+		printf("Pixel_val = %i, Thread %u, start %i end %i\n", all->canvas.pixel_values, i, all->threads[i].start, all->threads[i].end);
 		all->threads[i].average_time = 0;
 		all->threads[i].all = all;
 		all->threads[i].mode = PAUSE;
 		++all->thread_states[(t_thread_mode)PAUSE];
 		gettimeofday(&all->threads[i].start_time, NULL);
-		// printf("Thread %u\n", i);
 		if (pthread_create(&all->threads[i].thread, NULL, thread_routine, all->threads + i))
 			return (end_thread(all, all->thread_states[(t_thread_mode)PAUSE] - 1));
 		++i;

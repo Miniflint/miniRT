@@ -4,7 +4,10 @@ int	get_key_press(t_tri_lib *lib, t_all *all)
 {
 	if (lib->event->key_id >= '1' && lib->event->key_id <= '9')
 	{
+		change_threads_mode(all, PAUSE);
 		all->canvas.pixel_values = ((lib->event->key_id - '0') << 1) - 1;
+		distribute_lines_threads(all);
+		change_threads_mode(all, CONTINUE);
 		lib->erase_render(&lib->event->win_id->_base_render._render);
 		return (2);
 	}
@@ -15,12 +18,18 @@ int	get_key_press(t_tri_lib *lib, t_all *all)
 	}
 	if (lib->event->key_id == 'p')
 	{
+		change_threads_mode(all, PAUSE);
 		all->canvas.pixel_values += (all->canvas.pixel_values < 253) << 1;
+		distribute_lines_threads(all);
+		change_threads_mode(all, CONTINUE);
 		return (1);
 	}
 	if (lib->event->key_id == 'o')
 	{
+		change_threads_mode(all, PAUSE);
 		all->canvas.pixel_values -= (all->canvas.pixel_values > 1) << 1;
+		distribute_lines_threads(all);
+		change_threads_mode(all, CONTINUE);
 		return (1);
 	}
 	if (lib->event->key_id == KEY_ESC)
@@ -89,12 +98,22 @@ void	get_distlight_and_fov(t_tri_lib *lib, t_all *all, int *start)
 	if (lib->_windows->event.key['y'])
 	{
 		*start = 2;
+		change_threads_mode(all, PAUSE);
 		all->distance_light -= get_fps_delta_f(lib, DISTANCE_LIGHT_MIDDLE * 2);
+		change_threads_mode(all, CONTINUE);
 	}
 	if (lib->_windows->event.key['u'])
 	{
 		*start = 2;
+		change_threads_mode(all, PAUSE);
 		all->distance_light += get_fps_delta_f(lib, DISTANCE_LIGHT_MIDDLE * 2);
+		change_threads_mode(all, CONTINUE);
+	}
+	if (lib->_windows->event.key['r'])
+	{
+		change_threads_mode(all, PAUSE);
+		all->render_hitbox = !all->render_hitbox; //Attention non thread compatible
+		change_threads_mode(all, CONTINUE);
 	}
 }
 
@@ -112,12 +131,14 @@ void	event_key_press(t_tri_lib *lib, void *a)
 	get_distlight_and_fov(lib, all, &start);
 	if (start)
 	{
+		change_threads_mode(all, PAUSE);
 		if (start == 2)
 			cal_fov(all);
 		else if (start == 3)
 			cal_rays(all);
 		else
 			reset_rays(all);
+		change_threads_mode(all, CONTINUE);
 		start_rays(all);
 	}
 }

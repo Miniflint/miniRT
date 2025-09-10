@@ -116,12 +116,12 @@ t_hitbox	*create_bhv(t_all *all, int start, int end, int depth)
 			return (box_around_cylinder(all->shapes[start].shape));
 	}
 	left = create_bhv(all, start, mid, depth + 1);
-	left->depth = depth;
 	right = create_bhv(all, mid + 1, end, depth + 1);
-	right->depth = depth;
 	parent = create_bvh_node(left, right);
 	if (!parent)
 		return (NULL);
+	right->depth = depth;
+	left->depth = depth;
 	parent->box = box_around_two_box(&left->box, &right->box);
 	parent->depth = depth;
 	return (parent);

@@ -47,6 +47,8 @@ typedef struct S_all
 	t_canvas		canvas;
 	t_shape			*shapes;
 	t_hitbox		*bvh;
+	t_render		*render_hb;
+	int				render_hitbox;
 	int				nb_shapes;
 	char			**argv;
 	int				argc;
@@ -197,6 +199,8 @@ void			set_shapes(t_ray *ray);
 int				check_t(t_quad q, t_ray *ray, t_cylinder *cylinder,
 					t_light_vec l);
 /* THREADS */
+void			start_rays_thread(t_all *all, t_threads *thread);
+void			distribute_lines_threads(t_all *all);
 int				launch_threads(t_all *all);
 unsigned long	get_time_diff(struct timeval *last);
 t_thread_mode	get_thread_mode(t_all *all, t_threads *thread);
@@ -216,16 +220,21 @@ int				move_point(t_tri_lib *lib, t_coord *point,
 					t_vec *dir, double amount);
 
 
+void			intersect_cylinder(t_ray *ray, t_cylinder *cylinder);
+
 t_vec			distance_box(t_vec *a, t_vec *b);
-int				bvh_on_path(t_ray *ray, t_bvh *bvh);
+int				bvh_on_path(t_ray *ray, t_box *box);
 t_bvh			create_box(t_vec a, t_vec b);
 void			print_box(t_bvh *bvh);
-int				shadow_intersect_box(t_ray *ray, t_bvh *bvh,
+int				shadow_intersect_box(t_ray *ray, t_box *box,
 					t_vec light_dir, double light_length);
 int				box_on_path(t_ray *ray, t_box *boxes,
 					t_vec light_dir, double light_length);
-
+int				intersect_hitbox(t_ray *ray, t_bvh *box);
 t_hitbox		*create_bhv(t_all *all, int start, int end, int depth);
 t_shape			*create_shape_array(t_all *all);
 t_bvh			box_around_two_box(t_bvh *first, t_bvh *second);
+void			intersect_box(t_ray *ray, t_box *box);
+int				shadow_intersect_hitbox(t_ray *ray, t_bvh *box, t_vec light_dir, double light_length);
+
 #endif

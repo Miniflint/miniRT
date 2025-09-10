@@ -32,13 +32,47 @@ void	init_ray(t_ray *ray)
 	ray->shape.t2 = INFINITY;
 }
 
+/*
+		tri_lib()->put_pixel_to_render(render, (t_argb){
+			.a=0.5, .r=(255 % (bvh->depth + 1)), .g=(255 % (bvh->depth + 1)), .b= (255 % (bvh->depth + 1))}, ray->y, ray->x);
+*/
+
+void	traverse_bvh(t_ray *ray, t_hitbox *bvh, t_render *render, int hb)
+{
+	if (!bvh)
+		return ;
+	if (intersect_hitbox(ray, &bvh->box))
+	{
+		if (hb)
+		{
+			tri_lib()->put_pixel_to_render(render, (t_argb){
+				.a=0.125,
+				.r=255,
+				.g=255,
+				.b=255}, ray->y, ray->x);
+		}
+		if (bvh->node_type == LEAF)
+		{
+			if (bvh->type == SPHERE)
+				intersect_ray_sphere(ray, (t_sphere *)bvh->shape);
+			else if (bvh->type == CYLINDER)
+				intersect_cylinder(ray, (t_cylinder *)bvh->shape);
+			else if (bvh->type == BOX)
+				intersect_box(ray, (t_box *)bvh->shape);
+			return ;
+		}
+		if (bvh->left)
+			traverse_bvh(ray, bvh->left, render, hb);
+		if (bvh->right)
+			traverse_bvh(ray, bvh->right, render, hb);
+	}
+}
+
 void	traceray(t_ray *ray, t_all *all)
 {
 	init_ray(ray);
+	traverse_bvh(ray, all->bvh, all->render_hb, all->render_hitbox);
 	closest_plane(ray, all->planes);
-	closest_sphere(ray, all->spheres);
-	closest_cylinder(ray, all->cylinders);
-	closest_box(ray, all->boxes);
 	if (isinf(ray->shape.t1))
 	{
 		ray->color_ray = ray->color;
@@ -92,10 +126,7 @@ void	start_rays_thread(t_all *all, t_threads *thread)
 	int				real[2];
 	const int		mi_pix = all->canvas.pixel_values >> 1;
 
-	if (thread->start % all->canvas.pixel_values)
-		real[0] = (thread->start / all->canvas.pixel_values) * all->canvas.pixel_values;
-	else
-		real[0] = thread->start;
+	real[0] = thread->start;
 	index[0] = mi_pix + real[0];
 	while (real[0] < thread->end)
 	{
@@ -105,6 +136,11 @@ void	start_rays_thread(t_all *all, t_threads *thread)
 		while (real[1] < all->win_width)
 		{
 			index[1] -= (index[1] >= all->win_width);
+			all->canvas.rays[index[0]][index[1]].y = index[0];
+			all->canvas.rays[index[0]][index[1]].x = index[1];
+			_replace_s_px_on_render(all->render_hb,
+				TRI_TRANSPARENT_UNSIGNED,
+				(t_point2d){real[1], real[0]}, all->canvas.pixel_values);
 			traceray(&all->canvas.rays[index[0]][index[1]], all);
 			real[1] += all->canvas.pixel_values;
 			index[1] = real[1] + mi_pix;
@@ -130,6 +166,11 @@ void	start_rays(t_all *all)
 		while (real[1] < all->win_width)
 		{
 			index[1] -= (index[1] >= all->win_width);
+			all->canvas.rays[index[0]][index[1]].y = index[1];
+			all->canvas.rays[index[0]][index[1]].x = index[0];
+			_replace_s_px_on_render(all->render_hb,
+				TRI_TRANSPARENT_UNSIGNED,
+				(t_point2d){real[1], real[0]}, all->canvas.pixel_values);
 			traceray(&all->canvas.rays[index[0]][index[1]], all);
 			real[1] += all->canvas.pixel_values;
 			index[1] = real[1] + mi_pix;

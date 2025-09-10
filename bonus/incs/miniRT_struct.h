@@ -123,6 +123,8 @@ typedef struct S_ray
 	t_rgb_f	color_shape;
 	t_rgb_f	color_diffuse;
 	t_shape	shape;
+	int		x;
+	int		y;
 }	t_ray;
 
 typedef struct S_Canvas
