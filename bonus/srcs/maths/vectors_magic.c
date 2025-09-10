@@ -23,3 +23,21 @@ void	make_perpendicular(t_cam *cam)
 	mag = dot_product(&cam->dir_y, &cam->dir_y);
 	norm_vectors(&cam->dir_y, mag, &cam->dir_y);
 }
+
+double	distance_formula(t_vec *a, t_vec *b)
+{
+	return (sqrt(
+		((a->x - b->x) * (a->x - b->x))
+		- ((a->y - b->y) * (a->y - b->y))
+		- ((a->z - b->z) * (a->z - b->z))
+	));
+}
+
+t_vec	distance_box(t_vec *a, t_vec *b)
+{
+	return ((t_vec){
+		.x = ((a->x + b->x) / 2),
+		.y = ((a->y + b->y) / 2),
+		.z = ((a->z + b->z) / 2)
+	});
+}

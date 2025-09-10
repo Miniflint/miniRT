@@ -91,8 +91,17 @@ typedef enum E_obj_type
 	PLANE,
 	CYLINDER,
 	BOX,
+	OBJECT,
+	HITBOX,
 	END_SHAPE
 }	t_obj_type;
+
+typedef enum E_node_type
+{
+	ROOT,
+	INTERNAL,
+	LEAF
+}	t_node_type;
 
 typedef struct s_shape
 {
@@ -109,7 +118,7 @@ typedef struct S_ray
 	t_coord	start;
 	t_coord	hit;
 	t_vec	dir;
-	t_argb	color;
+	t_rgb_f	color;
 	t_rgb_f	color_ray;
 	t_rgb_f	color_shape;
 	t_rgb_f	color_diffuse;
@@ -144,5 +153,16 @@ typedef struct S_box
 	t_rgb_f			color;
 	struct S_box	*next;
 }	t_box;
+
+typedef struct S_hitbox
+{
+	t_bvh			box;
+	void			*shape;
+	t_obj_type		type;
+	t_node_type		node_type;
+	int				depth;
+	struct S_hitbox	*left;
+	struct S_hitbox	*right;
+}	t_hitbox;
 
 #endif

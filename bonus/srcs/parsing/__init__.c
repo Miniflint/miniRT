@@ -22,6 +22,7 @@ void	ft_zeroes(t_all *all)
 	all->light_ratio = 1;
 	all->distance_light = DISTANCE_LIGHT_MIDDLE * DISTANCE_LIGHT_MIDDLE;
 	all->threads = NULL;
+	all->nb_shapes = 0;
 }
 
 int	__parse_file_scene(t_all *all)
@@ -86,7 +87,10 @@ int	__init__(t_all *all, char **argv, int argc)
 	apply_rgb_all_shape(all);
 	if (__parse_file_objs(all))
 		return (1);
-	print_all_structs(all);
+	create_shape_array(all);
+	all->bvh = create_bhv(all, 0, all->nb_shapes - 1, 0);
+	all->bvh->node_type = ROOT;
+//	print_all_structs(all);
 	make_perpendicular(&all->camera);
 	cal_fov(all);
 	return (0);

@@ -73,7 +73,5 @@ void	print_bx(t_box *box, int depth)
 	if (!depth)
 		printf("BOXES:\n");
 	print_box(&box->box);
-	printf("\tRGB: %d %d %d\n",
-		box->rgb_save.r, box->rgb_save.g, box->rgb_save.b);
 	print_bx(box->next, depth + 1);
 }

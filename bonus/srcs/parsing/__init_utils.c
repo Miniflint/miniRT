@@ -9,15 +9,15 @@ int	parse_type_scene(t_all *all, char **s)
 	else if (**s == 'L' && ft_iswhitespace(*((*s) + 1)))
 		return (get_light(&all->lights, s));
 	else if (**s == 's' && *((*s) + 1) == 'p' && ft_iswhitespace(*((*s) + 2)))
-		return (get_sphere(&all->spheres, s));
+		return (all->nb_shapes++, get_sphere(&all->spheres, s));
 	else if (**s == 'p' && *((*s) + 1) == 'l' && ft_iswhitespace(*((*s) + 2)))
 		return (get_plane(&all->planes, s));
 	else if (**s == 'c' && *((*s) + 1) == 'y' && ft_iswhitespace(*((*s) + 2)))
-		return (get_cylinder(&all->cylinders, s));
+		return (all->nb_shapes++, get_cylinder(&all->cylinders, s));
 	else if (**s == 'b' && *((*s) + 1) == 'x' && ft_iswhitespace(*((*s) + 2)))
-		return (get_box(&all->boxes, s));
+		return (all->nb_shapes++, get_box(&all->boxes, s));
 	else if (**s == 'o' && *((*s) + 1) == 'b' && ft_iswhitespace(*((*s) + 2)))
-		return (get_obj(&all->objects, s));
+		return (all->nb_shapes++, get_obj(&all->objects, s));
 	return (3);
 }
 

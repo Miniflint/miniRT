@@ -34,8 +34,50 @@ int	on_configure(int x, int y, void *param)
 	return (0);
 }
 
-// Dans main
+void print_bvh_dot(t_hitbox *node, FILE *file)
+{
+	if (!node)
+		return;
+	if (node->node_type == LEAF)
+	{
+		if (node->type == SPHERE)
+			fprintf(file, "\t\"%p\" [label=\"SPHERE (%.2f %.2f %.2f)\"];\n", (void *)node,
+				((t_sphere *)node->shape)->coord.x,((t_sphere *)node->shape)->coord.y, ((t_sphere *)node->shape)->coord.z);
+		if (node->type == BOX)
+			fprintf(file, "\t\"%p\" [label=\"BOX\"];\n", (void *)node);
+		if (node->type == CYLINDER)
+			fprintf(file, "\t\"%p\" [label=\"CYLINDER (%.2f %.2f %.2f)\"];\n", (void *)node,
+				((t_cylinder *)node->shape)->coord.x,((t_cylinder *)node->shape)->coord.y, ((t_cylinder *)node->shape)->coord.z);
 
+	}
+	else if (node->node_type == INTERNAL)
+		fprintf(file, "\t\"%p\" [label=\"INTERNAL\"];\n", (void *)node);
+	else if (node->node_type == ROOT)
+		fprintf(file, "\t\"%p\" [label=\"ROOT\"];\n", (void *)node);
+	if (node->left)
+	{
+		fprintf(file, "\t\"%p\" -> \"%p\";\n", (void *)node, (void *)node->left);
+		print_bvh_dot(node->left, file);
+	}
+	if (node->right)
+	{
+		fprintf(file, "\t\"%p\" -> \"%p\";\n", (void *)node, (void *)node->right);
+		print_bvh_dot(node->right, file);
+	}
+}
+
+void export_bvh_to_dot(t_hitbox *root)
+{
+	FILE *f;
+
+	f = fopen("out.dot", "w");
+	fprintf(f, "digraph BVH {\n");
+	print_bvh_dot(root, f);
+	fprintf(f, "}\n");
+	fclose(f);
+}
+
+// Dans main
 int	main(int argc, char **argv)
 {
 	t_all	*all;
@@ -46,6 +88,7 @@ int	main(int argc, char **argv)
 	all = __get_all();
 	if (__init__(all, argv, argc))
 		return (free_all(all), 1);
+	export_bvh_to_dot(all->bvh);
 	tri_lib()->init();
 	tri_lib()->auto_draw = 1;
 	tri_lib()->get_end_function(free_all);

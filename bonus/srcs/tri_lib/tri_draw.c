@@ -1,5 +1,6 @@
 #include "tri_lib.h"
 #include "tri_colors.h"
+#include "miniRT.h"
 
 void	_draw_render_to_render(t_render *top, t_render *base)
 {
@@ -45,6 +46,7 @@ void	_draw_window(t_win *win)
 
 	lib = tri_lib();
 	cursor = win->_renders;
+	draw_rays_to_render(__get_all(), &win->_base_render._render);//get rays color
 	while (cursor)
 	{
 		_draw_render_to_render(cursor, &win->_base_render._render);
@@ -52,7 +54,7 @@ void	_draw_window(t_win *win)
 	}
 	win->fps = _get_fps(&win->last_draw);
 	printf("\rfps: %.2lf                   ", win->fps);
-	fflush(stdout); //not permited
+	fflush(stdout);
 	mlx_put_image_to_window(lib->_mlx, win->_win,
 		win->_base_render._img._img, 0, 0);
 }

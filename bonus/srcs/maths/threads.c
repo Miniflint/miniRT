@@ -22,15 +22,15 @@ t_thread_mode	get_thread_mode(t_all *all, t_threads *thread)
 		--all->thread_states[thread->mode];
 		thread->mode = all->thread_mode;
 		++all->thread_states[thread->mode];
-		if (thread->mode == (t_thread_mode)PAUSE)
-			printf("thread %p in PAUSE mode\n", thread);
-		else if (thread->mode == (t_thread_mode)CONTINUE)
-			printf("thread %p in CONTINUE mode\n", thread);
-		else if (thread->mode == (t_thread_mode)STOP)
-			printf("thread %p in STOP mode\n", thread);
-		else if (thread->mode == (t_thread_mode)RESET)
-			printf("thread %p in RESET mode\n", thread);
-		fflush(stdout);
+		// if (thread->mode == (t_thread_mode)PAUSE)
+		// 	printf("thread %p in PAUSE mode\n", thread);
+		// else if (thread->mode == (t_thread_mode)CONTINUE)
+		// 	printf("thread %p in CONTINUE mode\n", thread);
+		// else if (thread->mode == (t_thread_mode)STOP)
+		// 	printf("thread %p in STOP mode\n", thread);
+		// else if (thread->mode == (t_thread_mode)RESET)
+		// 	printf("thread %p in RESET mode\n", thread);
+		// fflush(stdout);
 	}
 	pthread_mutex_unlock(&all->mutex);
 	return (thread->mode);
@@ -50,15 +50,15 @@ void	*thread_routine(void *content)
 
 	thread = content;
 	all = thread->all;
-	if (thread->mode == (t_thread_mode)PAUSE)
-		printf("thread %p in PAUSE mode\n", thread);
-	else if (thread->mode == (t_thread_mode)CONTINUE)
-		printf("thread %p in CONTINUE mode\n", thread);
-	else if (thread->mode == (t_thread_mode)STOP)
-		printf("thread %p in STOP mode\n", thread);
-	else if (thread->mode == (t_thread_mode)RESET)
-		printf("thread %p in RESET mode\n", thread);
-	fflush(stdout);
+	// if (thread->mode == (t_thread_mode)PAUSE)
+	// 	printf("thread %p in PAUSE mode\n", thread);
+	// else if (thread->mode == (t_thread_mode)CONTINUE)
+	// 	printf("thread %p in CONTINUE mode\n", thread);
+	// else if (thread->mode == (t_thread_mode)STOP)
+	// 	printf("thread %p in STOP mode\n", thread);
+	// else if (thread->mode == (t_thread_mode)RESET)
+	// 	printf("thread %p in RESET mode\n", thread);
+	// fflush(stdout);
 	while (1)
 	{
 		if (get_thread_mode_pause(all, thread) == (t_thread_mode)STOP)
@@ -86,6 +86,35 @@ void	change_threads_mode(t_all *all, t_thread_mode mode)
 	}
 }
 
+void	draw_rays_to_render(t_all *all, t_render *render)
+{
+	int				index[2];
+	int				real[2];
+	const int		mi_pix = all->canvas.pixel_values >> 1;
+
+	index[0] = mi_pix;
+	real[0] = 0;
+	pthread_mutex_lock(&all->mutex);
+	while (real[0] < all->win_height)
+	{
+		real[1] = 0;
+		index[1] = mi_pix;
+		index[0] -= (index[0] >= all->win_height);
+		while (real[1] < all->win_width)
+		{
+			index[1] -= (index[1] >= all->win_width);
+			_replace_s_px_on_render((t_render *)render,
+				rgb_f_to_unsigned(all->canvas.rays[index[0]][index[1]].color_ray),
+				(t_point2d){real[1], real[0]}, all->canvas.pixel_values);
+			real[1] += all->canvas.pixel_values;
+			index[1] = real[1] + mi_pix;
+		}
+		real[0] += all->canvas.pixel_values;
+		index[0] = real[0] + mi_pix;
+	}
+	pthread_mutex_unlock(&all->mutex);
+}
+
 int	end_thread(t_all *all, unsigned int n_thread)
 {
 	unsigned int	i;
@@ -108,6 +137,38 @@ int	end_thread(t_all *all, unsigned int n_thread)
 	free(all->threads);
 	all->threads = NULL;
 	return (1);
+}
+
+//	if (thread->start % all->canvas.pixel_values)
+//		real[0] = (thread->start / all->canvas.pixel_values) * all->canvas.pixel_values;
+//	else
+//		real[0] = thread->start;
+//
+void	distribute_lines_threads(t_all *all)
+{
+	unsigned int	i;
+	unsigned int	start;
+	unsigned int	n_lines;
+
+	i = 0;
+	n_lines = (double)((double)WIN_HEIGHT_ALL / (double)all->canvas.pixel_values / (double)all->n_thread);
+	// change_threads_mode(all, PAUSE);
+	pthread_mutex_lock(&all->mutex);
+	while (i < all->n_thread)
+	{
+		start = i * all->canvas.pixel_values * n_lines;
+		if (start % all->canvas.pixel_values)
+			all->threads[i].start = ((start / all->canvas.pixel_values) + 1) * all->canvas.pixel_values;
+		else
+			all->threads[i].start = start;
+		if (i + 1 == all->n_thread)
+			all->threads[i].end = WIN_HEIGHT_ALL - 1;
+		else
+			all->threads[i].end = all->threads->start + n_lines - 1;
+		++i;
+	}
+	pthread_mutex_unlock(&all->mutex);
+	// change_threads_mode(all, CONTINUE);
 }
 
 int	launch_threads(t_all *all)
@@ -144,7 +205,7 @@ int	launch_threads(t_all *all)
 		all->threads[i].mode = PAUSE;
 		++all->thread_states[(t_thread_mode)PAUSE];
 		gettimeofday(&all->threads[i].start_time, NULL);
-		printf("Thread %u\n", i);
+		// printf("Thread %u\n", i);
 		if (pthread_create(&all->threads[i].thread, NULL, thread_routine, all->threads + i))
 			return (end_thread(all, all->thread_states[(t_thread_mode)PAUSE] - 1));
 		++i;

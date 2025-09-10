@@ -45,7 +45,9 @@ typedef struct S_all
 	t_box			*boxes;
 	t_object		*objects;
 	t_canvas		canvas;
-	t_bvh			bvh;
+	t_shape			*shapes;
+	t_hitbox		*bvh;
+	int				nb_shapes;
 	char			**argv;
 	int				argc;
 	int				win_height;
@@ -161,8 +163,10 @@ t_vec			scalar_multiplication_no_v(t_vec *a, double b);
 t_vec			*norm_vectors(t_vec *a, double magnitude, t_vec *c);
 double			dot_product(register t_vec *a, register t_vec *b);
 t_vec			*cross_product(t_vec *a, t_vec *b, t_vec *c);
+double			distance_formula(t_vec *a, t_vec *b);
 
-unsigned int	traceray(t_ray *ray, t_all *all);
+// unsigned int	traceray(t_ray *ray, t_all *all);
+void			traceray(t_ray *ray, t_all *all);
 void			intersect_ray_sphere(t_ray *ray, t_sphere *sphere);
 void			intersect_plane(t_ray *ray, t_plane *plane);
 void			make_perpendicular(t_cam *cam);
@@ -200,6 +204,7 @@ t_thread_mode	get_thread_mode_pause(t_all *all, t_threads *thread);
 void			*thread_routine(void *content);
 void			change_threads_mode(t_all *all, t_thread_mode mode);
 int				end_thread(t_all *all, unsigned int n_thread);
+void			draw_rays_to_render(t_all *all, t_render *render);
 
 /* MOVEMENTS */
 int				get_key_press(t_tri_lib *lib, t_all *all);
@@ -210,6 +215,8 @@ void			event_key_press(t_tri_lib *lib, void *a);
 int				move_point(t_tri_lib *lib, t_coord *point,
 					t_vec *dir, double amount);
 
+
+t_vec			distance_box(t_vec *a, t_vec *b);
 int				bvh_on_path(t_ray *ray, t_bvh *bvh);
 t_bvh			create_box(t_vec a, t_vec b);
 void			print_box(t_bvh *bvh);
@@ -218,4 +225,7 @@ int				shadow_intersect_box(t_ray *ray, t_bvh *bvh,
 int				box_on_path(t_ray *ray, t_box *boxes,
 					t_vec light_dir, double light_length);
 
+t_hitbox		*create_bhv(t_all *all, int start, int end, int depth);
+t_shape			*create_shape_array(t_all *all);
+t_bvh			box_around_two_box(t_bvh *first, t_bvh *second);
 #endif
