@@ -19,6 +19,8 @@ t_bvh	box_around_two_box(t_bvh *first, t_bvh *second)
 {
 	t_bvh	new;
 
+	if (!second)
+		return (create_box(first->bottom[0], first->top[3]));
 	new.bottom[0] = (t_vec){
 		.x = fmin(fmin(first->bottom[0].x, first->bottom[3].x), fmin(second->bottom[0].x, second->bottom[3].x)),
 		.y = fmin(fmin(first->bottom[0].y, first->bottom[3].y), fmin(second->bottom[0].y, second->bottom[3].y)),
@@ -73,22 +75,23 @@ t_hitbox	*box_around_box(t_box *box)
 
 t_hitbox	*box_around_cylinder(t_cylinder *cyl)
 {
-	t_hitbox		*new;
-	const t_coord	end = scalar_multiplication_no_v(&cyl->coord, cyl->mag);
-	
+	t_hitbox	*new;
+	t_coord		end;
+
 	new = create_bvh_node(NULL, NULL);
 	if (!new)
 		return (NULL);
+	end = scalar_multiplication_no_v(&cyl->vec, cyl->height);
 	new->box = create_box(
 		(t_vec){
-			cyl->coord.x - cyl->radius,
-			cyl->coord.y - cyl->radius,
-			cyl->coord.z - cyl->radius
+			fmin(cyl->coord.x, end.x) - cyl->radius,
+			fmin(cyl->coord.y, end.y) - cyl->radius,
+			fmin(cyl->coord.z, end.z) - cyl->radius
 		},
 		(t_vec){
-			end.x + cyl->radius,
-			end.y + cyl->radius,
-			end.z + cyl->radius
+			fmax(cyl->coord.x, end.x) + cyl->radius,
+			fmax(cyl->coord.y, end.y) + cyl->radius,
+			fmax(cyl->coord.z, end.z) + cyl->radius
 		}
 	);
 	new->shape = (void *)cyl;

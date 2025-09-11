@@ -59,26 +59,25 @@ int	shadow_traverse_bvh(t_ray *ray,
 	t_hitbox *bvh,
 	t_render *render,
 	t_vec light_dir,
-	double light_lenght
+	double light_length
 )
 {
 	if (!bvh)
 		return (0);
-	if (shadow_intersect_hitbox(ray, &bvh->box, light_dir, light_lenght))
+	if (shadow_intersect_bvh(ray, &bvh->box, light_dir))
 	{
 		if (bvh->node_type == LEAF)
 		{
-			if ((bvh->type == SPHERE && sphere_on_the_path(ray, (t_sphere *)bvh->shape,
-				light_dir, light_lenght))
-				|| (bvh->type == BOX && box_on_path(ray, (t_box *)bvh->shape,
-					light_dir, light_lenght))
-				|| (bvh->type == CYLINDER && cylinder_on_the_path(ray, (t_cylinder *)bvh->shape,
-					light_dir, light_lenght)))
+			if ((bvh->type == SPHERE && shadow_intersect_sphere(ray, (t_sphere *)bvh->shape,
+				light_dir, light_length))
+				|| (bvh->type == BOX && shadow_intersect_bvh(ray, bvh->shape,
+					light_dir))
+				|| (bvh->type == CYLINDER && shadow_intersect_cylinder(ray, bvh->shape,
+					light_dir, light_length)))
 				return (1);
-			return (0);
 		}
-		if ((bvh->left && shadow_traverse_bvh(ray, bvh->left, render, light_dir, light_lenght))
-			|| (bvh->right && shadow_traverse_bvh(ray, bvh->right, render, light_dir, light_lenght)))
+		if ((bvh->left && shadow_traverse_bvh(ray, bvh->left, render, light_dir, light_length))
+			|| (bvh->right && shadow_traverse_bvh(ray, bvh->right, render, light_dir, light_length)))
 			return (1);
 	}
 	return (0);
@@ -97,11 +96,19 @@ void	get_rgb_norm_light_intensity(t_ray *ray, t_all *all, t_light *light)
 	light_length = sqrt(light_length_square);
 	norm_vectors(&light_dir, light_length, &light_dir);
 	intensity = dot_product(&ray->shape.normal, &light_dir);
-	if (intensity > 0)
+	if (intensity >= 0)
 	{
 		if (all->shadow_on
-			&& shadow_traverse_bvh(ray, all->bvh, all->render_hb, light_dir, light_length))
-			return ;
+			&&  ((plane_on_the_path(ray, all->planes,
+					light_dir, light_length))
+				|| (sphere_on_the_path(ray, all->spheres,
+					light_dir, light_length))
+				|| (box_on_path(ray, all->boxes,
+					light_dir))
+				|| (cylinder_on_the_path(ray, all->cylinders,
+					light_dir, light_length))))
+				// || shadow_traverse_bvh(ray, all->bvh, all->render_hb, light_dir, light_length)))
+				return ;
 		intensity *= (light->ratio * (all->distance_light
 					/ (light_length_square + all->distance_light)));
 		ray->color_diffuse.r += light->rgb_norm.r * intensity;

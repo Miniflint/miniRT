@@ -205,6 +205,7 @@ int				launch_threads(t_all *all);
 unsigned long	get_time_diff(struct timeval *last);
 t_thread_mode	get_thread_mode(t_all *all, t_threads *thread);
 t_thread_mode	get_thread_mode_pause(t_all *all, t_threads *thread);
+t_thread_mode	get_thread_mode_pause_reset(t_all *all, t_threads *thread);
 void			*thread_routine(void *content);
 void			change_threads_mode(t_all *all, t_thread_mode mode);
 int				end_thread(t_all *all, unsigned int n_thread);
@@ -219,6 +220,11 @@ void			event_key_press(t_tri_lib *lib, void *a);
 int				move_point(t_tri_lib *lib, t_coord *point,
 					t_vec *dir, double amount);
 
+/* RAYS SPECIAL */
+void			iter_rays(t_all *all, t_threads *thread, void (*f)(t_ray *, t_all *));
+t_thread_mode	iter_rays_line_stop(t_all *all, t_threads *thread, void (*f)(t_ray *, t_all *));
+void			get_closest_color(t_ray *ray, t_all *all);
+void			get_diffuse_light(t_ray *ray, t_all *all);
 
 void			intersect_cylinder(t_ray *ray, t_cylinder *cylinder);
 
@@ -226,15 +232,12 @@ t_vec			distance_box(t_vec *a, t_vec *b);
 int				bvh_on_path(t_ray *ray, t_box *box);
 t_bvh			create_box(t_vec a, t_vec b);
 void			print_box(t_bvh *bvh);
-int				shadow_intersect_box(t_ray *ray, t_box *box,
-					t_vec light_dir, double light_length);
-int				box_on_path(t_ray *ray, t_box *boxes,
-					t_vec light_dir, double light_length);
 int				intersect_hitbox(t_ray *ray, t_bvh *box);
 t_hitbox		*create_bhv(t_all *all, int start, int end, int depth);
 t_shape			*create_shape_array(t_all *all);
 t_bvh			box_around_two_box(t_bvh *first, t_bvh *second);
 void			intersect_box(t_ray *ray, t_box *box);
-int				shadow_intersect_hitbox(t_ray *ray, t_bvh *box, t_vec light_dir, double light_length);
+int				shadow_intersect_bvh(t_ray *ray, t_bvh *box, t_vec light_dir);
+int				box_on_path(t_ray *ray, t_box *boxes, t_vec light_dir);
 
 #endif

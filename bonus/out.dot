@@ -1,7 +1,7 @@
 digraph BVH {
-	"0x6000015b8300" [label="ROOT"];
-	"0x6000015b8300" -> "0x6000015b8000";
-	"0x6000015b8000" [label="BOX"];
-	"0x6000015b8300" -> "0x6000015b8200";
-	"0x6000015b8200" [label="BOX"];
+	"0x55c57b41db80" [label="ROOT"];
+	"0x55c57b41db80" -> "0x55c57b41d980";
+	"0x55c57b41d980" [label="SPHERE"];
+	"0x55c57b41db80" -> "0x55c57b41da80";
+	"0x55c57b41da80" [label="CYLINDER"];
 }

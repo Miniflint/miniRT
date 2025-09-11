@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tri_loop.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: herolle <herolle@student.42.fr>            +#+  +:+       +#+        */
+/*   By: trgoel <trgoel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 22:28:01 by herolle           #+#    #+#             */
-/*   Updated: 2025/08/29 18:45:30 by herolle          ###   ########.fr       */
+/*   Updated: 2025/09/11 18:47:11 by trgoel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	_call_user_main(t_tri_lib *lib)
 
 	if (lib->fps_max < TRI_INF_FPS)
 		while (!_get_tick_fps(lib, &lib->last_loop, &lib->fps))
-			;
+			usleep (500);
 	else
 		lib->fps = _get_fps(&lib->last_loop);
 	if (lib->fps <= 0)

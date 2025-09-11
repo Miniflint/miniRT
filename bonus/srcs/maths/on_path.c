@@ -36,8 +36,8 @@ int	cylinder_on_the_path(t_ray *ray, t_cylinder *cylinder,
 	return (0);
 }
 
-int	shadow_intersect_box(t_ray *ray, t_box *box,
-	t_vec light_dir, double light_length)
+int	shadow_intersect_bvh(t_ray *ray, t_bvh *box,
+	t_vec light_dir)
 {
 	double	t[2];
 	double	t_values[2];
@@ -46,40 +46,26 @@ int	shadow_intersect_box(t_ray *ray, t_box *box,
 	t_values[1] = INFINITY;
 	if (light_dir.x != 0.0f)
 	{
-		t[0] = (box->box.bottom[0].x - ray->hit.x) / light_dir.x;
-		t[1] = (box->box.top[3].x - ray->hit.x) / light_dir.x;
+		t[0] = (box->bottom[0].x - ray->hit.x) / light_dir.x;
+		t[1] = (box->top[3].x - ray->hit.x) / light_dir.x;
 		t_values[0] = fmax(t_values[0], fmin(t[0], t[1]));
 		t_values[1] = fmin(t_values[1], fmax(t[0], t[1]));
 	}
 	if (light_dir.y != 0.0f)
 	{
-		t[0] = (box->box.bottom[0].y - ray->hit.y) / light_dir.y;
-		t[1] = (box->box.top[3].y - ray->hit.y) / light_dir.y;
+		t[0] = (box->bottom[0].y - ray->hit.y) / light_dir.y;
+		t[1] = (box->top[3].y - ray->hit.y) / light_dir.y;
 		t_values[0] = fmax(t_values[0], fmin(t[0], t[1]));
 		t_values[1] = fmin(t_values[1], fmax(t[0], t[1]));
 	}
 	if (light_dir.z != 0.0f)
 	{
-		t[0] = (box->box.bottom[0].z - ray->hit.z) / light_dir.z;
-		t[1] = (box->box.top[3].z - ray->hit.z) / light_dir.z;
+		t[0] = (box->bottom[0].z - ray->hit.z) / light_dir.z;
+		t[1] = (box->top[3].z - ray->hit.z) / light_dir.z;
 		t_values[0] = fmax(t_values[0], fmin(t[0], t[1]));
 		t_values[1] = fmin(t_values[1], fmax(t[0], t[1]));
 	}
-	if (t_values[1] >= t_values[0] && t_values[1] > 0.0f)
-		if (t_values[0] > 0 && t_values[0] < light_length)
+	if (t_values[1] >= t_values[0] && t_values[1] > 1e-6)
 			return (1);
-	return (0);
-}
-
-int	box_on_path(t_ray *ray, t_box *boxes,
-		t_vec light_dir, double light_length)
-{
-	while (boxes)
-	{
-		if (shadow_intersect_box(ray, boxes,
-			light_dir, light_length))
-			return (1);
-		boxes = boxes->next;
-	}
 	return (0);
 }
