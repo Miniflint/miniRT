@@ -23,8 +23,8 @@ void	closest_plane(t_ray *ray, t_plane *plane)
 
 void	init_ray(t_ray *ray)
 {
-	ray->color_ray = (t_rgb_f){0, 0, 0};
-	ray->color_shape = (t_rgb_f){0, 0, 0};
+	// ray->color_ray = (t_rgb_f){0, 0, 0};
+	// ray->color_shape = (t_rgb_f){0, 0, 0};
 	ray->color_diffuse = (t_rgb_f){0, 0, 0};
 	ray->shape.type = CAMERA;
 	ray->shape.shape = NULL;
@@ -120,7 +120,7 @@ void	traceray(t_ray *ray, t_all *all)
 // 	return (rgb_f_to_unsigned(ray->color_ray));
 // }
 
-void	start_rays_thread(t_all *all, t_threads *thread)
+int	start_rays_thread(t_all *all, t_threads *thread)
 {
 	int				index[2];
 	int				real[2];
@@ -138,16 +138,21 @@ void	start_rays_thread(t_all *all, t_threads *thread)
 			index[1] -= (index[1] >= all->win_width);
 			all->canvas.rays[index[0]][index[1]].y = index[0];
 			all->canvas.rays[index[0]][index[1]].x = index[1];
-			_replace_s_px_on_render(all->render_hb,
-				TRI_TRANSPARENT_UNSIGNED,
-				(t_point2d){real[1], real[0]}, all->canvas.pixel_values);
+			if (all->render_hitbox)
+				_replace_s_px_on_render(all->render_hb, 0,
+					(t_point2d){real[1], real[0]}, all->canvas.pixel_values);
 			traceray(&all->canvas.rays[index[0]][index[1]], all);
 			real[1] += all->canvas.pixel_values;
 			index[1] = real[1] + mi_pix;
 		}
+		if (get_thread_mode_pause(all, thread) == (t_thread_mode)STOP)
+			return (1);
+		else if (thread->mode == (t_thread_mode)RESET)
+			return (0);
 		real[0] += all->canvas.pixel_values;
 		index[0] = real[0] + mi_pix;
 	}
+	return (0);
 }
 
 void	start_rays(t_all *all)
@@ -168,8 +173,7 @@ void	start_rays(t_all *all)
 			index[1] -= (index[1] >= all->win_width);
 			all->canvas.rays[index[0]][index[1]].y = index[1];
 			all->canvas.rays[index[0]][index[1]].x = index[0];
-			_replace_s_px_on_render(all->render_hb,
-				TRI_TRANSPARENT_UNSIGNED,
+			_replace_s_px_on_render(all->render_hb, 0,
 				(t_point2d){real[1], real[0]}, all->canvas.pixel_values);
 			traceray(&all->canvas.rays[index[0]][index[1]], all);
 			real[1] += all->canvas.pixel_values;

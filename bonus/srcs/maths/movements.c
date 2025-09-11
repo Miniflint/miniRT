@@ -11,12 +11,12 @@ int	get_key_press(t_tri_lib *lib, t_all *all)
 		lib->erase_render(&lib->event->win_id->_base_render._render);
 		return (2);
 	}
-	if (lib->event->key_id == 'k')
+	else if (lib->event->key_id == 'k')
 	{
 		all->shadow_on = !all->shadow_on;
 		return (2);
 	}
-	if (lib->event->key_id == 'p')
+	else if (lib->event->key_id == 'p')
 	{
 		change_threads_mode(all, PAUSE);
 		all->canvas.pixel_values += (all->canvas.pixel_values < 253) << 1;
@@ -24,7 +24,7 @@ int	get_key_press(t_tri_lib *lib, t_all *all)
 		change_threads_mode(all, CONTINUE);
 		return (1);
 	}
-	if (lib->event->key_id == 'o')
+	else if (lib->event->key_id == 'o')
 	{
 		change_threads_mode(all, PAUSE);
 		all->canvas.pixel_values -= (all->canvas.pixel_values > 1) << 1;
@@ -32,7 +32,14 @@ int	get_key_press(t_tri_lib *lib, t_all *all)
 		change_threads_mode(all, CONTINUE);
 		return (1);
 	}
-	if (lib->event->key_id == KEY_ESC)
+	else if (lib->event->key_id == 'r')
+	{
+		change_threads_mode(all, PAUSE);
+		all->render_hitbox = !all->render_hitbox; //Attention non thread compatible
+		change_threads_mode(all, CONTINUE);
+		return (1);
+	}
+	else if (lib->event->key_id == KEY_ESC)
 		lib->quit();
 	return (0);
 }
@@ -109,12 +116,6 @@ void	get_distlight_and_fov(t_tri_lib *lib, t_all *all, int *start)
 		all->distance_light += get_fps_delta_f(lib, DISTANCE_LIGHT_MIDDLE * 2);
 		change_threads_mode(all, CONTINUE);
 	}
-	if (lib->_windows->event.key['r'])
-	{
-		change_threads_mode(all, PAUSE);
-		all->render_hitbox = !all->render_hitbox; //Attention non thread compatible
-		change_threads_mode(all, CONTINUE);
-	}
 }
 
 void	event_key_press(t_tri_lib *lib, void *a)
@@ -139,6 +140,7 @@ void	event_key_press(t_tri_lib *lib, void *a)
 		else
 			reset_rays(all);
 		change_threads_mode(all, CONTINUE);
-		start_rays(all);
+		usleep(5000);
+		// start_rays(all);
 	}
 }

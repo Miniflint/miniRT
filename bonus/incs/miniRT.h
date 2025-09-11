@@ -199,7 +199,7 @@ void			set_shapes(t_ray *ray);
 int				check_t(t_quad q, t_ray *ray, t_cylinder *cylinder,
 					t_light_vec l);
 /* THREADS */
-void			start_rays_thread(t_all *all, t_threads *thread);
+int				start_rays_thread(t_all *all, t_threads *thread);
 void			distribute_lines_threads(t_all *all);
 int				launch_threads(t_all *all);
 unsigned long	get_time_diff(struct timeval *last);

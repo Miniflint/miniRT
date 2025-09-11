@@ -94,10 +94,10 @@ int	main(int argc, char **argv)
 			all->win_width, all->win_height);
 	all->render_hb = tri_lib()->create_render(win);
 	win->auto_draw = 1;
-	//launch_threads(all);
-	//usleep(1000);
-	//change_threads_mode(all, CONTINUE);
-	start_rays(all);
+	launch_threads(all);
+	usleep(1000);
+	change_threads_mode(all, CONTINUE);
+	// start_rays(all);
 	tri_lib()->draw_windows();
 	_main_loop(looped, (void *)all);
 	free_all(all);

@@ -63,7 +63,8 @@ void	*thread_routine(void *content)
 	{
 		if (get_thread_mode_pause(all, thread) == (t_thread_mode)STOP)
 			return (NULL);
-		//start_rays_thread(all, thread);
+		if (start_rays_thread(all, thread))
+			return (NULL);
 	}
 	return (NULL);
 }
@@ -95,7 +96,7 @@ void	draw_rays_to_render(t_all *all, t_render *render)
 
 	index[0] = mi_pix;
 	real[0] = 0;
-	change_threads_mode(all, PAUSE);
+	// change_threads_mode(all, PAUSE);
 	while (real[0] < all->win_height)
 	{
 		real[1] = 0;
@@ -113,7 +114,7 @@ void	draw_rays_to_render(t_all *all, t_render *render)
 		real[0] += all->canvas.pixel_values;
 		index[0] = real[0] + mi_pix;
 	}
-	change_threads_mode(all, CONTINUE);
+	// change_threads_mode(all, CONTINUE);
 }
 
 int	end_thread(t_all *all, unsigned int n_thread)

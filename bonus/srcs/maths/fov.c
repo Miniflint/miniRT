@@ -21,7 +21,7 @@ void	cal_fov(t_all *all)
 	{
 		color = get_background_color(
 				1 - (i * ((double)1 / all->win_height)),
-				(t_rgb_f){0, 0, 0}, (t_rgb_f){0, 0, 1});
+				(t_rgb_f){0, 0, 0}, (t_rgb_f){0.05, 0.05, 0.5});
 		all->canvas.pix_x[0] = start_pix_x;
 		j = 1;
 		while (j < all->win_width)
