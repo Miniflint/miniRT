@@ -77,24 +77,36 @@ void	*thread_routine(void *content)
 	{
 		if (get_thread_mode_pause_reset(all, thread) == (t_thread_mode)STOP)
 			return (NULL);
-		if (all->render_hitbox)
-			tri_lib()->erase_render(all->render_hb);
-		iter_rays(all, thread, get_closest_color);
-		if (get_thread_mode_pause(all, thread) == (t_thread_mode)STOP)
-			return (NULL);
-		else if (thread->mode ==(t_thread_mode)RESET)
-			continue ;
-		// iter_rays(all, thread, get_diffuse_light);
-		if (iter_rays_line_stop(all, thread, get_diffuse_light) == (t_thread_mode)STOP)
-			return (NULL);
-		else if (thread->mode ==(t_thread_mode)RESET)
-			continue ;
-		// if (start_rays_thread(all, thread) == (t_thread_mode)STOP)
-		// 	return (NULL);
-		// if (start_rays_thread_line(all, thread) == (t_thread_mode)STOP)
+
+		// if (all->render_hitbox)
+		// 	tri_lib()->erase_render(all->render_hb);
+		// iter_rays(all, thread, get_closest_color);
+		// if (get_thread_mode_pause(all, thread) == (t_thread_mode)STOP)
 		// 	return (NULL);
 		// else if (thread->mode ==(t_thread_mode)RESET)
 		// 	continue ;
+
+		// // iter_rays(all, thread, get_diffuse_light);
+
+		// if (iter_rays_line_stop(all, thread, get_diffuse_light) == (t_thread_mode)STOP)
+		// 	return (NULL);
+		// else if (thread->mode ==(t_thread_mode)RESET)
+		// 	continue ;
+
+		// if (start_rays_thread(all, thread) == (t_thread_mode)STOP)
+		// 	return (NULL);
+
+		
+		// if (start_rays_thread_line(all, thread) == (t_thread_mode)STOP)
+		// 	return (NULL);
+		// else if (thread->mode ==(t_thread_mode)RESET)
+			// continue ;
+
+		if (iter_rays_line_stop(all, thread, traceray) == (t_thread_mode)STOP)
+			return (NULL);
+		else if (thread->mode ==(t_thread_mode)RESET)
+			continue ;
+
 		if (get_thread_mode_pause_continue(all, thread) == (t_thread_mode)STOP)
 			return (NULL);
 	}
@@ -193,7 +205,7 @@ void	distribute_lines_threads(t_all *all)
 			all->threads[i].end = WIN_HEIGHT_ALL;
 		else
 			all->threads[i].end = all->threads[i].start + n_lines;
-		printf("Pixel_val = %i, Thread %u, start %i end %i\n", all->canvas.pixel_values, i, all->threads[i].start, all->threads[i].end);
+		// printf("Pixel_val = %i, Thread %u, start %i end %i\n", all->canvas.pixel_values, i, all->threads[i].start, all->threads[i].end);
 		++i;
 	}
 	// change_threads_mode(all, CONTINUE);
@@ -228,7 +240,7 @@ int	launch_threads(t_all *all)
 			all->threads[i].end = WIN_HEIGHT_ALL;
 		else
 			all->threads[i].end = all->threads[i].start + n_lines;
-		printf("Pixel_val = %i, Thread %u, start %i end %i\n", all->canvas.pixel_values, i, all->threads[i].start, all->threads[i].end);
+		// printf("Pixel_val = %i, Thread %u, start %i end %i\n", all->canvas.pixel_values, i, all->threads[i].start, all->threads[i].end);
 		all->threads[i].average_time = 0;
 		all->threads[i].all = all;
 		all->threads[i].mode = PAUSE;

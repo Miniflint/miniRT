@@ -88,11 +88,11 @@ int	__init__(t_all *all, char **argv, int argc)
 	apply_rgb_all_shape(all);
 	if (__parse_file_objs(all))
 		return (1);
+	// print_all_structs(all);
 	create_shape_array(all);
 	all->bvh = create_bhv(all, 0, all->nb_shapes - 1, 0);
 	if (all->bvh->node_type != LEAF)
 		all->bvh->node_type = ROOT;
-	print_all_structs(all);
 	make_perpendicular(&all->camera);
 	cal_fov(all);
 	return (0);

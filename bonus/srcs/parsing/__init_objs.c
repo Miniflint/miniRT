@@ -2,7 +2,7 @@
 
 int	parse_type_objs(t_object *object, char **s)
 {
-	if (**s == 'o' && ft_iswhitespace(*((*s) + 1)))
+	if ((**s == 'o' || **s == 'g') && ft_iswhitespace(*((*s) + 1)))
 		return (get_name(object->name, s));
 	else if (**s == 'v' && ft_iswhitespace(*((*s) + 1)))
 		return (get_vertices(&(object->vertices[object->i_vertice[I_V]]),
@@ -18,8 +18,6 @@ int	parse_type_objs(t_object *object, char **s)
 				s, object->curr_smoothing, &(object->indexes[I_FACES])));
 	else if (**s == 's' && ft_iswhitespace(*((*s) + 1)))
 		return (get_smoothing(&object->curr_smoothing, s));
-	else if (**s == 'g' && ft_iswhitespace(*((*s) + 1)))
-		return (get_name(object->curr_group, s));
 	return (3);
 }
 

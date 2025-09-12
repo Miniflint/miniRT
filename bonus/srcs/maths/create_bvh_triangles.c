@@ -62,24 +62,23 @@ t_hitbox	*box_around_triangle(t_face *face)
 	return (new);
 }
 
-t_hitbox	*recursive_triangles(t_object *obj,
+t_hitbox	*recursive_triangles(t_face *faces,
 	unsigned long start, unsigned long end, unsigned long depth)
 {
+	const unsigned int	mid = end / 2;
 	t_hitbox	*left;
 	t_hitbox	*right;
 	t_hitbox	*dad;
 
-	const unsigned int	mid = end / 2;
 	if (start > end)
 		return (NULL);
 	if (start == end)
 	{
-		if (!obj->faces[start].is_wrong)
-			return (NULL);
-		return (box_around_triangle(&obj->faces[start]));
+		if (!faces[start].is_wrong)
+			return (box_around_triangle(&faces[start]));
 	}
-	left = recursive_triangles(obj, start, mid, depth + 1);
-	right = recursive_triangles(obj, mid + 1, end, depth + 1);
+	left = recursive_triangles(faces, start, mid, depth + 1);
+	right = recursive_triangles(faces, mid + 1, end, depth + 1);
 	dad = create_bvh_node(left, right);
 	if (!dad)
 		return (NULL);
@@ -94,5 +93,5 @@ t_hitbox	*recursive_triangles(t_object *obj,
 
 t_hitbox	*create_bvh_triangles(t_object *obj)
 {
-	return (recursive_triangles(obj, 0, obj->nb_vertices, 0));
+	return (recursive_triangles(obj->faces, 0, obj->nb_faces - 1, 0));
 }

@@ -157,6 +157,7 @@ typedef struct S_box
 	struct S_box	*next;
 }	t_box;
 
+
 typedef struct S_hitbox
 {
 	t_bvh			box;
@@ -167,5 +168,12 @@ typedef struct S_hitbox
 	struct S_hitbox	*left;
 	struct S_hitbox	*right;
 }	t_hitbox;
+
+typedef struct S_task{
+	int start;
+	int end;
+	int depth;
+	t_hitbox **out;  // Pointer where the built node should be stored
+} t_task;
 
 #endif

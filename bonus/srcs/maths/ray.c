@@ -24,7 +24,7 @@ void	closest_plane(t_ray *ray, t_plane *plane)
 void	init_ray(t_ray *ray)
 {
 	// ray->color_ray = (t_rgb_f){0, 0, 0};
-	// ray->color_shape = (t_rgb_f){0, 0, 0};
+	ray->color_shape = (t_rgb_f){0, 0, 0};
 	ray->color_diffuse = (t_rgb_f){0, 0, 0};
 	ray->shape.type = CAMERA;
 	ray->shape.shape = NULL;
@@ -71,7 +71,10 @@ void	traverse_bvh(t_ray *ray, t_hitbox *bvh, t_render *render, int hb)
 void	get_diffuse_light(t_ray *ray, t_all *all)
 {
 	if (isinf(ray->shape.t1))
+	{
+		ray->color_ray = ray->color;
 		return ;
+	}
 	ray->hit = scalar_multiplication_no_v(&ray->dir, ray->shape.t1);
 	add_vectors(&ray->hit, &ray->start, &ray->hit);
 	set_shapes(ray);
@@ -81,7 +84,7 @@ void	get_diffuse_light(t_ray *ray, t_all *all)
 	diffuse_light(ray, all, all->lights);
 	ray->color_ray.r = ray->color_shape.r * ray->color_diffuse.r;
 	ray->color_ray.g = ray->color_shape.g * ray->color_diffuse.g;
-	ray->color_ray.b = ray->color_shape.b * ray->color_diffuse.b;	
+	ray->color_ray.b = ray->color_shape.b * ray->color_diffuse.b;
 }
 
 void	get_closest_color(t_ray *ray, t_all *all)
@@ -262,36 +265,36 @@ int	start_rays_thread_line(t_all *all, t_threads *thread)
 	return (thread->mode);
 }
 
-// int	start_rays_thread(t_all *all, t_threads *thread)
-// {
-// 	int				index[2];
-// 	int				real[2];
-// 	const int		mi_pix = all->canvas.pixel_values >> 1;
+int	start_rays_thread(t_all *all, t_threads *thread)
+{
+	int				index[2];
+	int				real[2];
+	const int		mi_pix = all->canvas.pixel_values >> 1;
 
-// 	real[0] = thread->start;
-// 	index[0] = mi_pix + real[0];
-// 	while (real[0] < thread->end)
-// 	{
-// 		real[1] = 0;
-// 		index[1] = mi_pix;
-// 		index[0] -= (index[0] >= thread->end);
-// 		while (real[1] < all->win_width)
-// 		{
-// 			index[1] -= (index[1] >= all->win_width);
-// 			all->canvas.rays[index[0]][index[1]].y = index[1];
-// 			all->canvas.rays[index[0]][index[1]].x = index[0];
-// 			if (all->render_hitbox)
-// 				_replace_s_px_on_render(all->render_hb, 0,
-// 					(t_point2d){real[1], real[0]}, all->canvas.pixel_values);
-// 			traceray(&all->canvas.rays[index[0]][index[1]], all);
-// 			real[1] += all->canvas.pixel_values;
-// 			index[1] = real[1] + mi_pix;
-// 		}
-// 		real[0] += all->canvas.pixel_values;
-// 		index[0] = real[0] + mi_pix;
-// 	}
-// 	return (0);
-// }
+	real[0] = thread->start;
+	index[0] = mi_pix + real[0];
+	while (real[0] < thread->end)
+	{
+		real[1] = 0;
+		index[1] = mi_pix;
+		index[0] -= (index[0] >= thread->end);
+		while (real[1] < all->win_width)
+		{
+			index[1] -= (index[1] >= all->win_width);
+			all->canvas.rays[index[0]][index[1]].y = index[1];
+			all->canvas.rays[index[0]][index[1]].x = index[0];
+			if (all->render_hitbox)
+				_replace_s_px_on_render(all->render_hb, 0,
+					(t_point2d){real[1], real[0]}, all->canvas.pixel_values);
+			traceray(&all->canvas.rays[index[0]][index[1]], all);
+			real[1] += all->canvas.pixel_values;
+			index[1] = real[1] + mi_pix;
+		}
+		real[0] += all->canvas.pixel_values;
+		index[0] = real[0] + mi_pix;
+	}
+	return (0);
+}
 
 void	start_rays(t_all *all)
 {
