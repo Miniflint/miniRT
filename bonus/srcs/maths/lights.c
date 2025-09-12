@@ -71,7 +71,7 @@ int	shadow_traverse_bvh(t_ray *ray,
 			if ((bvh->type == SPHERE && shadow_intersect_sphere(ray, (t_sphere *)bvh->shape,
 				light_dir, light_length))
 				|| (bvh->type == BOX && shadow_intersect_bvh(ray, bvh->shape,
-					light_dir))
+					light_dir)) // Manque light length
 				|| (bvh->type == CYLINDER && shadow_intersect_cylinder(ray, bvh->shape,
 					light_dir, light_length)))
 				return (1);
@@ -98,16 +98,21 @@ void	get_rgb_norm_light_intensity(t_ray *ray, t_all *all, t_light *light)
 	intensity = dot_product(&ray->shape.normal, &light_dir);
 	if (intensity >= 0)
 	{
+		
 		if (all->shadow_on
-			&&  ((plane_on_the_path(ray, all->planes,
+			&&
+				((plane_on_the_path(ray, all->planes,
 					light_dir, light_length))
+			#ifndef BVH
 				|| (sphere_on_the_path(ray, all->spheres,
 					light_dir, light_length))
 				|| (box_on_path(ray, all->boxes,
 					light_dir))
 				|| (cylinder_on_the_path(ray, all->cylinders,
 					light_dir, light_length))))
-				// || shadow_traverse_bvh(ray, all->bvh, all->render_hb, light_dir, light_length)))
+			# else
+				|| shadow_traverse_bvh(ray, all->bvh, all->render_hb, light_dir, light_length)))
+			# endif
 				return ;
 		intensity *= (light->ratio * (all->distance_light
 					/ (light_length_square + all->distance_light)));

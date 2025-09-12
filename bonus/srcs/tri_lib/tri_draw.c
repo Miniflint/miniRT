@@ -48,7 +48,9 @@ void	_draw_window(t_win *win)
 	lib = tri_lib();
 	all = __get_all();
 	cursor = win->_renders;
+	#ifdef THREADS
 	change_threads_mode(all, PAUSE);
+	#endif
 	draw_rays_to_render(all, &win->_base_render._render);//get rays color
 	if (all->render_hitbox)
 		while (cursor)
@@ -56,7 +58,9 @@ void	_draw_window(t_win *win)
 			_draw_render_to_render(cursor, &win->_base_render._render);
 			cursor = cursor->_next;
 		}
+	#ifdef THREADS
 	change_threads_mode(all, CONTINUE);
+	#endif
 	win->fps = _get_fps(&win->last_draw);
 	printf("\rfps: %.2lf                   ", win->fps);
 	fflush(stdout);

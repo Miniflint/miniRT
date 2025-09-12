@@ -48,9 +48,9 @@ void print_bvh_dot(t_hitbox *node, FILE *file)
 			fprintf(file, "\t\"%p\" [label=\"CYLINDER\"];\n", (void *)node);
 	}
 	else if (node->node_type == INTERNAL)
-		fprintf(file, "\t\"%p\" [label=\"INTERNAL\"];\n", (void *)node);
+		fprintf(file, "\t\"%p\" [label=\"%p\"];\n", (void *)node, (void *)node);
 	else if (node->node_type == ROOT)
-		fprintf(file, "\t\"%p\" [label=\"ROOT\"];\n", (void *)node);
+		fprintf(file, "\t\"%p\" [label=\"%p\"];\n", (void *)node, (void *)node);
 	if (node->left)
 	{
 		fprintf(file, "\t\"%p\" -> \"%p\";\n", (void *)node, (void *)node->left);
@@ -94,10 +94,21 @@ int	main(int argc, char **argv)
 			all->win_width, all->win_height);
 	all->render_hb = tri_lib()->create_render(win);
 	win->auto_draw = 1;
+#ifdef THREADS
+	printf("threads on\n");
 	launch_threads(all);
 	usleep(1000);
 	change_threads_mode(all, CONTINUE);
-	// start_rays(all);
+#else
+	printf("threads off\n");
+	start_rays(all);
+#endif
+#ifndef BVH
+	printf("BVH OFF\n");
+#else
+	printf("BVH ON\n");
+#endif
+
 	tri_lib()->draw_windows();
 	_main_loop(looped, (void *)all);
 	free_all(all);

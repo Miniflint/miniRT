@@ -112,11 +112,13 @@ t_hitbox	*create_bhv(t_all *all, int start, int end, int depth)
 	if (start == end)
 	{
 		if (all->shapes[start].type == SPHERE)
-			return (box_around_sphere((t_sphere *)all->shapes[start].shape));
+			return (box_around_sphere(all->shapes[start].shape));
 		else if (all->shapes[start].type == BOX)
 			return (box_around_box(all->shapes[start].shape));
 		else if (all->shapes[start].type == CYLINDER)
 			return (box_around_cylinder(all->shapes[start].shape));
+		//else if (all->shapes[start].type == OBJECT)
+		//	return (create_bvh_triangles(all->shapes[start].shape));
 	}
 	left = create_bhv(all, start, mid, depth + 1);
 	right = create_bhv(all, mid + 1, end, depth + 1);

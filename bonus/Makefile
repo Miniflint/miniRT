@@ -72,6 +72,14 @@ ifeq ($(NOLOOP), yes)
 	CFLAGS += -pg -DNOLOOP="1"
 endif
 
+ifeq ($(BVH), yes)
+	CFLAGS += -DBVH="1"
+endif
+
+ifeq ($(THREADS), yes)
+	CFLAGS += -DTHREADS="1"
+endif
+
 ifeq ($(strip $(SCREEN_X)),)
 else
 	CFLAGS += -DSCREEN_X=$(SCREEN_X)

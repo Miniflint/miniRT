@@ -88,7 +88,13 @@ void	get_closest_color(t_ray *ray, t_all *all)
 {
 	init_ray(ray);
 	closest_plane(ray, all->planes);
-	traverse_bvh(ray, all->bvh, all->render_hb, all->render_hitbox);
+	#ifndef BVH
+		closest_sphere(ray, all->spheres);
+		closest_cylinder(ray, all->cylinders);
+		closest_box(ray, all->boxes);
+	#else
+		traverse_bvh(ray, all->bvh, all->render_hb, all->render_hitbox);
+	#endif
 	if (isinf(ray->shape.t1))
 		ray->color_ray = ray->color;
 	else if (ray->shape.type == (t_obj_type)CYLINDER)
@@ -105,7 +111,13 @@ void	traceray(t_ray *ray, t_all *all)
 {
 	init_ray(ray);
 	closest_plane(ray, all->planes);
-	traverse_bvh(ray, all->bvh, all->render_hb, all->render_hitbox);
+	#ifndef BVH
+		closest_sphere(ray, all->spheres);
+		closest_cylinder(ray, all->cylinders);
+		closest_box(ray, all->boxes);
+	#else
+		traverse_bvh(ray, all->bvh, all->render_hb, all->render_hitbox);
+	#endif
 	if (isinf(ray->shape.t1))
 	{
 		ray->color_ray = ray->color;
@@ -215,7 +227,7 @@ void	iter_rays(t_all *all, t_threads *thread, void (*f)(t_ray *, t_all *))
 	}
 }
 
-int	start_rays_thread(t_all *all, t_threads *thread)
+int	start_rays_thread_line(t_all *all, t_threads *thread)
 {
 	int				index[2];
 	int				real[2];
@@ -241,14 +253,45 @@ int	start_rays_thread(t_all *all, t_threads *thread)
 			index[1] = real[1] + mi_pix;
 		}
 		if (get_thread_mode_pause(all, thread) == (t_thread_mode)STOP)
-			return (1);
+			return ((t_thread_mode)STOP);
 		else if (thread->mode == (t_thread_mode)RESET)
-			return (0);
+			return ((t_thread_mode)RESET);
 		real[0] += all->canvas.pixel_values;
 		index[0] = real[0] + mi_pix;
 	}
-	return (0);
+	return (thread->mode);
 }
+
+// int	start_rays_thread(t_all *all, t_threads *thread)
+// {
+// 	int				index[2];
+// 	int				real[2];
+// 	const int		mi_pix = all->canvas.pixel_values >> 1;
+
+// 	real[0] = thread->start;
+// 	index[0] = mi_pix + real[0];
+// 	while (real[0] < thread->end)
+// 	{
+// 		real[1] = 0;
+// 		index[1] = mi_pix;
+// 		index[0] -= (index[0] >= thread->end);
+// 		while (real[1] < all->win_width)
+// 		{
+// 			index[1] -= (index[1] >= all->win_width);
+// 			all->canvas.rays[index[0]][index[1]].y = index[1];
+// 			all->canvas.rays[index[0]][index[1]].x = index[0];
+// 			if (all->render_hitbox)
+// 				_replace_s_px_on_render(all->render_hb, 0,
+// 					(t_point2d){real[1], real[0]}, all->canvas.pixel_values);
+// 			traceray(&all->canvas.rays[index[0]][index[1]], all);
+// 			real[1] += all->canvas.pixel_values;
+// 			index[1] = real[1] + mi_pix;
+// 		}
+// 		real[0] += all->canvas.pixel_values;
+// 		index[0] = real[0] + mi_pix;
+// 	}
+// 	return (0);
+// }
 
 void	start_rays(t_all *all)
 {

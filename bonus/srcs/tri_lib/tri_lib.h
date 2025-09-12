@@ -6,7 +6,7 @@
 /*   By: trgoel <trgoel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 03:38:29 by hermesrolle       #+#    #+#             */
-/*   Updated: 2025/09/11 20:37:57 by trgoel           ###   ########.fr       */
+/*   Updated: 2025/09/12 02:49:46 by trgoel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 # include "tri_lib_gb.h"
 # include "tri_colors.h"
 # define BACKGROUND_COLOR 0x00000000
-# define FPS_MAX 10000
+# define FPS_MAX 30
 # define FPS_TARGET 24.0
 # define TRI_INF_FPS 1000.0
 

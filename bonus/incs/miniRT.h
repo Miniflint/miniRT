@@ -30,6 +30,7 @@
 # include "miniRT_objs.h"
 # include <pthread.h>
 # define PI_DEFINED 3.14159265358979323846
+// # define THREADS
 
 # define BUFF_SIZE 32768
 //# define BUFF_SIZE 1
@@ -200,6 +201,7 @@ int				check_t(t_quad q, t_ray *ray, t_cylinder *cylinder,
 					t_light_vec l);
 /* THREADS */
 int				start_rays_thread(t_all *all, t_threads *thread);
+int				start_rays_thread_line(t_all *all, t_threads *thread);
 void			distribute_lines_threads(t_all *all);
 int				launch_threads(t_all *all);
 unsigned long	get_time_diff(struct timeval *last);
@@ -239,5 +241,8 @@ t_bvh			box_around_two_box(t_bvh *first, t_bvh *second);
 void			intersect_box(t_ray *ray, t_box *box);
 int				shadow_intersect_bvh(t_ray *ray, t_bvh *box, t_vec light_dir);
 int				box_on_path(t_ray *ray, t_box *boxes, t_vec light_dir);
+
+t_hitbox		*create_bvh_triangles(t_object *obj);
+t_hitbox	*create_bvh_node(t_hitbox *l, t_hitbox *r);
 
 #endif

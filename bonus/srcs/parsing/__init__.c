@@ -92,7 +92,7 @@ int	__init__(t_all *all, char **argv, int argc)
 	all->bvh = create_bhv(all, 0, all->nb_shapes - 1, 0);
 	if (all->bvh->node_type != LEAF)
 		all->bvh->node_type = ROOT;
-//	print_all_structs(all);
+	print_all_structs(all);
 	make_perpendicular(&all->camera);
 	cal_fov(all);
 	return (0);

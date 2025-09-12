@@ -50,7 +50,7 @@ t_thread_mode	get_thread_mode_pause_reset(t_all *all, t_threads *thread)
 	return (thread->mode);
 }
 
-t_thread_mode	get_thread_mode_pause_coninue(t_all *all, t_threads *thread)
+t_thread_mode	get_thread_mode_pause_continue(t_all *all, t_threads *thread)
 {
 	while (get_thread_mode(all, thread) == (t_thread_mode)PAUSE || thread->mode == (t_thread_mode)CONTINUE)
 		usleep(200);
@@ -89,10 +89,14 @@ void	*thread_routine(void *content)
 			return (NULL);
 		else if (thread->mode ==(t_thread_mode)RESET)
 			continue ;
-		if (get_thread_mode_pause_coninue(all, thread) == (t_thread_mode)STOP)
-			return (NULL);
-		// if (start_rays_thread(all, thread))
+		// if (start_rays_thread(all, thread) == (t_thread_mode)STOP)
 		// 	return (NULL);
+		// if (start_rays_thread_line(all, thread) == (t_thread_mode)STOP)
+		// 	return (NULL);
+		// else if (thread->mode ==(t_thread_mode)RESET)
+		// 	continue ;
+		if (get_thread_mode_pause_continue(all, thread) == (t_thread_mode)STOP)
+			return (NULL);
 	}
 	return (NULL);
 }
@@ -189,7 +193,7 @@ void	distribute_lines_threads(t_all *all)
 			all->threads[i].end = WIN_HEIGHT_ALL;
 		else
 			all->threads[i].end = all->threads[i].start + n_lines;
-		// printf("Pixel_val = %i, Thread %u, start %i end %i\n", all->canvas.pixel_values, i, all->threads[i].start, all->threads[i].end);
+		printf("Pixel_val = %i, Thread %u, start %i end %i\n", all->canvas.pixel_values, i, all->threads[i].start, all->threads[i].end);
 		++i;
 	}
 	// change_threads_mode(all, CONTINUE);
@@ -224,7 +228,7 @@ int	launch_threads(t_all *all)
 			all->threads[i].end = WIN_HEIGHT_ALL;
 		else
 			all->threads[i].end = all->threads[i].start + n_lines;
-		// printf("Pixel_val = %i, Thread %u, start %i end %i\n", all->canvas.pixel_values, i, all->threads[i].start, all->threads[i].end);
+		printf("Pixel_val = %i, Thread %u, start %i end %i\n", all->canvas.pixel_values, i, all->threads[i].start, all->threads[i].end);
 		all->threads[i].average_time = 0;
 		all->threads[i].all = all;
 		all->threads[i].mode = PAUSE;

@@ -92,6 +92,7 @@ typedef enum E_obj_type
 	CYLINDER,
 	BOX,
 	OBJECT,
+	TRIANGLE,
 	HITBOX,
 	END_SHAPE
 }	t_obj_type;

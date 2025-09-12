@@ -4,10 +4,14 @@ int	get_key_press(t_tri_lib *lib, t_all *all)
 {
 	if (lib->event->key_id >= '1' && lib->event->key_id <= '9')
 	{
+		#ifdef THREADS
 		change_threads_mode(all, RESET);
+		#endif
 		all->canvas.pixel_values = ((lib->event->key_id - '0') << 1) - 1;
 		distribute_lines_threads(all);
+		#ifdef THREADS
 		change_threads_mode(all, CONTINUE);
+		#endif
 		lib->erase_render(&lib->event->win_id->_base_render._render);
 		return (2);
 	}
@@ -18,25 +22,37 @@ int	get_key_press(t_tri_lib *lib, t_all *all)
 	}
 	else if (lib->event->key_id == 'p')
 	{
+		#ifdef THREADS
 		change_threads_mode(all, RESET);
+		#endif
 		all->canvas.pixel_values += (all->canvas.pixel_values < 253) << 1;
 		distribute_lines_threads(all);
+		#ifdef THREADS
 		change_threads_mode(all, CONTINUE);
+		#endif
 		return (1);
 	}
 	else if (lib->event->key_id == 'o')
 	{
+		#ifdef THREADS
 		change_threads_mode(all, RESET);
+		#endif
 		all->canvas.pixel_values -= (all->canvas.pixel_values > 1) << 1;
 		distribute_lines_threads(all);
+		#ifdef THREADS
 		change_threads_mode(all, CONTINUE);
+		#endif
 		return (1);
 	}
 	else if (lib->event->key_id == 'r')
 	{
+		#ifdef THREADS
 		change_threads_mode(all, RESET);
+		#endif
 		all->render_hitbox = !all->render_hitbox; //Attention non thread compatible
+		#ifdef THREADS
 		change_threads_mode(all, CONTINUE);
+		#endif
 		return (1);
 	}
 	else if (lib->event->key_id == KEY_ESC)
@@ -105,16 +121,24 @@ void	get_distlight_and_fov(t_tri_lib *lib, t_all *all, int *start)
 	if (lib->_windows->event.key['y'])
 	{
 		*start = 2;
+		#ifdef THREADS
 		change_threads_mode(all, RESET);
+		#endif
 		all->distance_light -= get_fps_delta_f(lib, DISTANCE_LIGHT_MIDDLE * 2);
+		#ifdef THREADS
 		change_threads_mode(all, CONTINUE);
+		#endif
 	}
 	if (lib->_windows->event.key['u'])
 	{
 		*start = 2;
+		#ifdef THREADS
 		change_threads_mode(all, RESET);
+		#endif
 		all->distance_light += get_fps_delta_f(lib, DISTANCE_LIGHT_MIDDLE * 2);
+		#ifdef THREADS
 		change_threads_mode(all, CONTINUE);
+		#endif
 	}
 }
 
@@ -132,15 +156,20 @@ void	event_key_press(t_tri_lib *lib, void *a)
 	get_distlight_and_fov(lib, all, &start);
 	if (start)
 	{
+		#ifdef THREADS
 		change_threads_mode(all, RESET);
+		#endif
 		if (start == 2)
 			cal_fov(all);
 		else if (start == 3)
 			cal_rays(all);
 		else
 			reset_rays(all);
+		#ifdef THREADS
 		change_threads_mode(all, CONTINUE);
-		// usleep(5000);
-		// start_rays(all);
+		usleep(5000);
+		#else
+		start_rays(all);
+		#endif
 	}
 }
