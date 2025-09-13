@@ -199,6 +199,9 @@ int	end_thread(t_all *all, unsigned int n_thread)
 	i = 0;
 	while (i < n_thread)
 		pthread_join(all->threads[i++].thread, NULL);
+	// i = 0;
+	// while (i < n_thread)
+	// 	queue_free(&all->threads[i].queue);
 	free(all->threads);
 	all->threads = NULL;
 	return (1);
@@ -263,6 +266,9 @@ int	launch_threads(t_all *all)
 		all->threads[i].average_time = 0;
 		all->threads[i].all = all;
 		all->threads[i].mode = PAUSE;
+		// if (queue_init(&all->threads[i].queue, all->nb_shapes))
+		// 	end_thread(all, all->thread_states[(t_thread_mode)PAUSE]);
+		// all->threads[i].queue.thread = all->threads + i;
 		++all->thread_states[(t_thread_mode)PAUSE];
 		gettimeofday(&all->threads[i].start_time, NULL);
 		if (pthread_create(&all->threads[i].thread, NULL, thread_routine, all->threads + i))

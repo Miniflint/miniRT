@@ -1,7 +1,27 @@
 digraph BVH {
-	"0x556d1b18add0" [label="0x556d1b18add0"];
-	"0x556d1b18add0" -> "0x556d1b18abd0";
-	"0x556d1b18abd0" [label="BOX"];
-	"0x556d1b18add0" -> "0x556d1b18acd0";
-	"0x556d1b18acd0" [label="BOX"];
+	"0x56474c55d270" [label="0x56474c55d270"];
+	"0x56474c55d270" -> "0x56474c55c600";
+	"0x56474c55c600" [label="SPHERE"];
+	"0x56474c55d270" -> "0x56474c55d170";
+	"0x56474c55d170" [label="0x56474c55d170"];
+	"0x56474c55d170" -> "0x56474c55cf70";
+	"0x56474c55cf70" [label="0x56474c55cf70"];
+	"0x56474c55cf70" -> "0x56474c55cb70";
+	"0x56474c55cb70" [label="TRIANGLE"];
+	"0x56474c55cf70" -> "0x56474c55cc70";
+	"0x56474c55cc70" [label="TRIANGLE"];
+	"0x56474c55d170" -> "0x56474c55d070";
+	"0x56474c55d070" [label="0x56474c55d070"];
+	"0x56474c55d070" -> "0x56474c55cd70";
+	"0x56474c55cd70" [label="0x56474c55cd70"];
+	"0x56474c55cd70" -> "0x56474c55c770";
+	"0x56474c55c770" [label="TRIANGLE"];
+	"0x56474c55cd70" -> "0x56474c55c870";
+	"0x56474c55c870" [label="TRIANGLE"];
+	"0x56474c55d070" -> "0x56474c55ce70";
+	"0x56474c55ce70" [label="0x56474c55ce70"];
+	"0x56474c55ce70" -> "0x56474c55c970";
+	"0x56474c55c970" [label="TRIANGLE"];
+	"0x56474c55ce70" -> "0x56474c55ca70";
+	"0x56474c55ca70" [label="TRIANGLE"];
 }

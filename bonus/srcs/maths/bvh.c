@@ -113,6 +113,7 @@ t_hitbox	*create_bvh_iter(t_all *all, int end, int depth)
 
 	if (queue_init(&q, end))
 		return (NULL);
+	l = NULL;
 	i = -1;
 	while (++i < end)
 	{

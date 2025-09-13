@@ -248,6 +248,8 @@ t_hitbox		*create_bvh_triangles(t_object *obj);
 t_hitbox		*create_bvh_node(t_hitbox *l, t_hitbox *r);
 int				free_hitboxes(t_hitbox *root, unsigned long capacity);
 
+void			intersect_triangle(t_ray *ray, t_face *face);
+
 /* DATA STRUCTURE */
 t_hitbox	*queue_free(t_queue *q);
 t_hitbox	*queue_pop(t_queue *q);

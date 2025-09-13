@@ -49,6 +49,8 @@ typedef struct S_all		t_all;
 
 typedef t_coord				t_vec;
 typedef t_argb				t_rgb;
+typedef struct 	s_threads	t_threads;
+typedef struct 	S_queue		t_queue;
 
 // typedef struct S_rgb
 // {
@@ -59,8 +61,10 @@ typedef t_argb				t_rgb;
 
 typedef struct S_material
 {
-	double	ks;
-	double	shininess;
+	double	ks; // >= 0
+	double	shininess; // >= 0
+	double	metalness; // entre 0 et 1
+	double	reflection; // entre 0 et 1
 }			t_material;
 
 typedef struct s_light_vec
@@ -68,26 +72,6 @@ typedef struct s_light_vec
 	t_vec	light_dir;
 	double	light_lenght;
 }			t_light_vec;
-
-typedef enum e_thread_mode
-{
-	CONTINUE,
-	PAUSE,
-	STOP,
-	RESET,
-	NONE
-}	t_thread_mode;
-
-typedef struct s_threads
-{
-	t_thread_mode	mode;
-	pthread_t		thread;
-	int				start;
-	int				end;
-	struct timeval	start_time;
-	unsigned long	average_time;
-	t_all			*all;
-}					t_threads;
 
 typedef enum E_obj_type
 {
@@ -129,18 +113,20 @@ typedef struct s_shape
 
 typedef struct S_ray
 {
-	t_coord	start;
-	t_coord	hit;
-	t_vec	dir;
-	t_rgb_f	color;
-	t_rgb_f	color_ray;
-	t_rgb_f	color_shape;
-	t_rgb_f	color_diffuse;
-	t_rgb_f	color_specular;
-	t_shape	shape;
-	char	to_draw;
-	int		x;
-	int		y;
+	t_coord		start;
+	t_coord		hit;
+	t_vec		dir;
+	t_rgb_f		color;
+	t_rgb_f		color_ray;
+	t_rgb_f		color_shape;
+	t_rgb_f		color_diffuse;
+	t_rgb_f		color_specular;
+	t_shape		shape;
+	t_threads	*curr;
+	double		reflection;
+	char		to_draw;
+	int			x;
+	int			y;
 }	t_ray;
 
 typedef struct S_Canvas
@@ -180,7 +166,29 @@ typedef struct S_queue
 	unsigned long	back;
 	unsigned long	front;
     unsigned long	capacity;
+	t_threads		*thread;
 	t_hitbox 		**nodes;
 }	t_queue;
+
+typedef enum e_thread_mode
+{
+	CONTINUE,
+	PAUSE,
+	STOP,
+	RESET,
+	NONE
+}	t_thread_mode;
+
+typedef struct s_threads
+{
+	t_thread_mode	mode;
+	pthread_t		thread;
+	int				start;
+	int				end;
+	struct timeval	start_time;
+	unsigned long	average_time;
+	t_queue			queue;
+	t_all			*all;
+}					t_threads;
 
 #endif

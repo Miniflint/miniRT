@@ -82,15 +82,14 @@ t_hitbox	*iterative_triangles(t_face *faces, unsigned long end, int depth)
 	t_hitbox		*right;
 	t_hitbox		*dad;
 
+	leaf = NULL;
 	if (queue_init(&q, end))
 		return (NULL);
 	i = -1;
 	while (++i < end)
 	{
 		if (faces[i].is_wrong == 0)
-		{
 			leaf = box_around_triangle(&faces[i]);
-		}
 		if (!leaf)
 		{
 			while (i && --i)

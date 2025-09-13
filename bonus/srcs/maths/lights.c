@@ -83,6 +83,45 @@ int	shadow_traverse_bvh(t_ray *ray,
 	return (0);
 }
 
+int	shadow_traverse_bvh_iter(t_ray *ray, t_hitbox *bvh,
+	t_vec light_dir,
+	double light_length)
+{
+	t_queue		q;
+	t_hitbox	*curr;
+
+	if (queue_init(&q, __get_all()->nb_shapes))
+		return (1);
+	queue_push(&q, bvh);
+	while (!queue_is_empty(&q))
+	{
+		curr = queue_pop(&q);
+		if (!curr || !shadow_intersect_bvh(ray, &curr->box, light_dir))
+			continue ;
+		if (curr->node_type == LEAF)
+		{
+			if (curr->type == SPHERE &&
+				shadow_intersect_sphere(ray, curr->shape, light_dir, light_length))
+				return (queue_free(&q), 1);
+			else if (curr->type == BOX
+				&& shadow_intersect_bvh(ray, curr->shape, light_dir))
+				return (queue_free(&q), 1);
+			else if (curr->type == CYLINDER
+				&& shadow_intersect_cylinder(ray, curr->shape, light_dir, light_length))
+				return (queue_free(&q), 1);
+		}
+		else
+		{
+			if (curr->left)
+				queue_push(&q, curr->left);
+			if (curr->right)
+				queue_push(&q, curr->right);
+		}
+	}
+	queue_free(&q);
+	return (0);
+}
+
 void	specular(t_ray *ray, t_vec light_dir, t_light *light, double light_scale)
 {
 	t_vec	v; //= ray->dir inverser
@@ -130,7 +169,7 @@ void	get_rgb_norm_light_intensity(t_ray *ray, t_all *all, t_light *light)
 				|| (cylinder_on_the_path(ray, all->cylinders,
 					light_dir, light_length))))
 			# else
-				|| shadow_traverse_bvh(ray, all->bvh, all->render_hb, light_dir, light_length)))
+				|| shadow_traverse_bvh_iter(ray, all->bvh, light_dir, light_length)))
 			# endif
 				return ;
 		light_scale = (light->ratio * (all->distance_light

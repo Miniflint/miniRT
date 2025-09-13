@@ -31,6 +31,31 @@ void	init_ray(t_ray *ray, t_all *all)
 	ray->color_specular = (t_rgb_f){0, 0, 0};
 	ray->shape.type = CAMERA;
 	ray->shape.shape = NULL;
+	ray->reflection = 1;
+	ray->shape.t1 = INFINITY;
+	ray->shape.t2 = INFINITY;
+}
+
+// ReflectRay(R, N) {
+//     return 2 * N * dot(N, R) - R;
+// }
+
+void	init_reflect_ray(t_ray *ray, __attribute_maybe_unused__ t_all *all, t_rgb_f *ray_color_save)
+{
+	t_vec	vec;
+	t_vec	vec2;
+
+	// ray->color_ray = (t_rgb_f){0, 0, 0};
+	*ray_color_save = ray->color_ray;
+	ray->color_shape = (t_rgb_f){0, 0, 0};
+	ray->color_diffuse = (t_rgb_f){0, 0, 0};
+	ray->color_specular = (t_rgb_f){0, 0, 0};
+	ray->start = ray->hit;
+	vec = scalar_multiplication_no_v(&ray->shape.normal, 2);
+	vec2 = scalar_multiplication_no_v(&vec, dot_product(&ray->shape.normal, &ray->dir));
+	ray->dir = sub_vectors_no_v(&vec2, &ray->dir);
+	ray->shape.type = CAMERA;
+	ray->shape.shape = NULL;
 	ray->shape.t1 = INFINITY;
 	ray->shape.t2 = INFINITY;
 }
@@ -40,35 +65,73 @@ void	init_ray(t_ray *ray, t_all *all)
 			.a=0.5, .r=(255 % (bvh->depth + 1)), .g=(255 % (bvh->depth + 1)), .b= (255 % (bvh->depth + 1))}, ray->y, ray->x);
 */
 
-void	traverse_bvh(t_ray *ray, t_hitbox *bvh, t_render *render, int hb)
+// void	traverse_bvh(t_ray *ray, t_hitbox *bvh, t_render *render, int hb)
+// {
+// 	if (!bvh)
+// 		return ;
+// 	if (intersect_hitbox(ray, &bvh->box))
+// 	{
+// 		if (hb)
+// 		{
+// 			tri_lib()->put_pixel_to_render(render, (t_argb){
+// 				.a=0.125,
+// 				.r=255,
+// 				.g=255,
+// 				.b=255}, ray->y, ray->x);
+// 		}
+// 		if (bvh->node_type == LEAF)
+// 		{
+// 			if (bvh->type == SPHERE)
+// 				intersect_ray_sphere(ray, (t_sphere *)bvh->shape);
+// 			else if (bvh->type == CYLINDER)
+// 				intersect_cylinder(ray, (t_cylinder *)bvh->shape);
+// 			else if (bvh->type == BOX)
+// 				intersect_box(ray, (t_box *)bvh->shape);
+// 			return ;
+// 		}
+// 		if (bvh->left)
+// 			traverse_bvh(ray, bvh->left, render, hb);
+// 		if (bvh->right)
+// 			traverse_bvh(ray, bvh->right, render, hb);
+// 	}
+// }
+
+void	traverse_bvh_iter(t_ray *ray, t_hitbox *bvh, t_render *render, int hb)
 {
-	if (!bvh)
+	t_queue		q;
+	t_hitbox	*curr;
+
+	if (queue_init(&q, __get_all()->nb_shapes))
 		return ;
-	if (intersect_hitbox(ray, &bvh->box))
+	queue_push(&q, bvh);
+	while (!queue_is_empty(&q))
 	{
+		curr = queue_pop(&q);
+		if (!curr || !intersect_hitbox(ray, &curr->box))
+			continue ;
 		if (hb)
+			tri_lib()->put_pixel_to_render(render, (t_argb){.a=0.25, .r=255,
+				.g=255,.b=255}, ray->y, ray->x);
+		if (curr->node_type == LEAF)
 		{
-			tri_lib()->put_pixel_to_render(render, (t_argb){
-				.a=0.125,
-				.r=255,
-				.g=255,
-				.b=255}, ray->y, ray->x);
+			if (curr->type == SPHERE)
+				intersect_ray_sphere(ray, (t_sphere *)curr->shape);
+			else if (curr->type == CYLINDER)
+				intersect_cylinder(ray, (t_cylinder *)curr->shape);
+			else if (curr->type == BOX)
+				intersect_box(ray, (t_box *)curr->shape);
+			else if (curr->type == TRIANGLE)
+				intersect_triangle(ray, (t_face *)curr->shape);
 		}
-		if (bvh->node_type == LEAF)
+		else
 		{
-			if (bvh->type == SPHERE)
-				intersect_ray_sphere(ray, (t_sphere *)bvh->shape);
-			else if (bvh->type == CYLINDER)
-				intersect_cylinder(ray, (t_cylinder *)bvh->shape);
-			else if (bvh->type == BOX)
-				intersect_box(ray, (t_box *)bvh->shape);
-			return ;
+			if (curr->left)
+				queue_push(&q, curr->left);
+			if (curr->right)
+				queue_push(&q, curr->right);
 		}
-		if (bvh->left)
-			traverse_bvh(ray, bvh->left, render, hb);
-		if (bvh->right)
-			traverse_bvh(ray, bvh->right, render, hb);
 	}
+	queue_free(&q);
 }
 
 void	get_diffuse_light(t_ray *ray, t_all *all)
@@ -101,7 +164,7 @@ void	get_closest_color(t_ray *ray, t_all *all)
 		closest_cylinder(ray, all->cylinders);
 		closest_box(ray, all->boxes);
 	#else
-		traverse_bvh(ray, all->bvh, all->render_hb, all->render_hitbox);
+		traverse_bvh_iter(ray, all->bvh, all->render_hb, all->render_hitbox);
 	#endif
 	if (isinf(ray->shape.t1))
 		ray->color_ray = ray->color;
@@ -125,13 +188,42 @@ void	traceray(t_ray *ray, t_all *all)
 		closest_cylinder(ray, all->cylinders);
 		closest_box(ray, all->boxes);
 	#else
-		traverse_bvh(ray, all->bvh, all->render_hb, all->render_hitbox);
+		traverse_bvh_iter(ray, all->bvh, all->render_hb, all->render_hitbox);
 	#endif
 	if (isinf(ray->shape.t1))
 	{
 		ray->color_ray = ray->color;
 		return ;
 	}
+	ray->hit = scalar_multiplication_no_v(&ray->dir, ray->shape.t1);
+	add_vectors(&ray->hit, &ray->start, &ray->hit);
+	set_shapes(ray);
+	if (dot_product(&ray->shape.normal, &ray->dir) > 0)
+		ray->shape.normal = (t_vec){-ray->shape.normal.x,
+			-ray->shape.normal.y, -ray->shape.normal.z};
+	diffuse_light(ray, all, all->lights);
+	ray->color_ray.r = ray->color_shape.r * ray->color_diffuse.r + ray->color_specular.r;
+	ray->color_ray.g = ray->color_shape.g * ray->color_diffuse.g + ray->color_specular.g;
+	ray->color_ray.b = ray->color_shape.b * ray->color_diffuse.b + ray->color_specular.b;
+}
+
+void	traceray_reflection(t_ray *ray, t_all *all)
+{
+	t_rgb_f	ray_color_save;
+
+	if (ray->reflection <= 0)
+		return ;
+	init_reflect_ray(ray, all, &ray_color_save);
+	closest_plane(ray, all->planes);
+	#ifndef BVH
+		closest_sphere(ray, all->spheres);
+		closest_cylinder(ray, all->cylinders);
+		closest_box(ray, all->boxes);
+	#else
+		traverse_bvh_iter(ray, all->bvh, all->render_hb, 0);
+	#endif
+	if (isinf(ray->shape.t1))
+		return ;
 	ray->hit = scalar_multiplication_no_v(&ray->dir, ray->shape.t1);
 	add_vectors(&ray->hit, &ray->start, &ray->hit);
 	set_shapes(ray);
