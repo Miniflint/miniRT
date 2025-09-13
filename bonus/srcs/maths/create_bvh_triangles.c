@@ -1,8 +1,14 @@
 #include "miniRT.h"
 
-double	lowest_2(double a, double b)
+double lowest_2(double a, double b)
 {
-	return a + (b - a) * (b < a);
+	const int a_nz = a != 0.0;
+	const int b_nz = b != 0.0;
+	const double both_nonzero = (double)(a_nz & b_nz);
+	const double only_a = (double)(a_nz & !b_nz);
+	const double only_b = (double)((!a_nz) & b_nz);
+
+	return (both_nonzero * (a + (b - a) * (b < a)) + only_a * a + only_b * b);
 }
 
 double	lowest_3(double a, double b, double c)
@@ -10,9 +16,15 @@ double	lowest_3(double a, double b, double c)
 	return (lowest_2(lowest_2(a, b), c));
 }
 
-double	highest_2(double a, double b)
+double highest_2(double a, double b)
 {
-	return a + (b - a) * (b < a);
+	const int a_nz = a != 0.0;
+	const int b_nz = b != 0.0;
+	const double both_nonzero = (double)(a_nz & b_nz);
+	const double only_a = (double)(a_nz & !b_nz);
+	const double only_b = (double)((!a_nz) & b_nz);
+
+	return (both_nonzero * (a + (b - a) * (b > a)) + only_a * a + only_b * b);
 }
 
 double	highest_3(double a, double b, double c)
@@ -62,36 +74,52 @@ t_hitbox	*box_around_triangle(t_face *face)
 	return (new);
 }
 
-t_hitbox	*recursive_triangles(t_face *faces,
-	unsigned long start, unsigned long end, unsigned long depth)
+t_hitbox	*iterative_triangles(t_face *faces, unsigned long end, int depth)
 {
-	const unsigned int	mid = end / 2;
-	t_hitbox	*left;
-	t_hitbox	*right;
-	t_hitbox	*dad;
+	unsigned long	i;
+	t_queue			q;
+	t_hitbox		*leaf;
+	t_hitbox		*right;
+	t_hitbox		*dad;
 
-	if (start > end)
+	if (queue_init(&q, end))
 		return (NULL);
-	if (start == end)
+	i = -1;
+	while (++i < end)
 	{
-		if (!faces[start].is_wrong)
-			return (box_around_triangle(&faces[start]));
+		if (faces[i].is_wrong == 0)
+		{
+			leaf = box_around_triangle(&faces[i]);
+		}
+		if (!leaf)
+		{
+			while (i && --i)
+				free(q.nodes[i]);
+			return (queue_free(&q));
+		}
+		queue_push(&q, leaf);
 	}
-	left = recursive_triangles(faces, start, mid, depth + 1);
-	right = recursive_triangles(faces, mid + 1, end, depth + 1);
-	dad = create_bvh_node(left, right);
-	if (!dad)
-		return (NULL);
-	dad->type = HITBOX;
-	dad->node_type = INTERNAL;
-	left->depth = depth;
-	right->depth = depth;
-	dad->box = box_around_two_box(&left->box, &right->box);
-	dad->depth = depth;
+	while (queue_size(&q) > 1)
+	{
+		leaf = queue_pop(&q);
+		right = NULL;
+		if (!queue_is_empty(&q))
+			right = queue_pop(&q);
+		dad = create_bvh_node(leaf, right);
+		if (!dad)
+			return (NULL);
+		dad->box = box_around_two_box(&leaf->box, &right->box);
+		dad->depth = depth;
+		queue_push(&q, dad);
+		depth += 1;
+	}
+	dad = queue_pop(&q);
+	queue_free(&q);
+	dad->node_type = ROOT;
 	return (dad);
 }
 
 t_hitbox	*create_bvh_triangles(t_object *obj)
 {
-	return (recursive_triangles(obj->faces, 0, obj->nb_faces - 1, 0));
+	return (iterative_triangles(obj->faces, obj->nb_faces, 0));
 }

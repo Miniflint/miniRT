@@ -85,12 +85,13 @@ int	__init__(t_all *all, char **argv, int argc)
 		return (printf("Error: you must have 1 ambient light\n"), 1);
 	if (all->camera.nb <= 0)
 		return (printf("Error: you must have 1 camera\n"), 1);
-	apply_rgb_all_shape(all);
 	if (__parse_file_objs(all))
 		return (1);
-	// print_all_structs(all);
+	apply_rgb_all_shape(all);
+	print_all_structs(all);
 	create_shape_array(all);
-	all->bvh = create_bhv(all, 0, all->nb_shapes - 1, 0);
+	all->bvh = create_bvh_iter(all, all->nb_shapes, 0);
+	printf("%p\n", (void *)all->bvh);
 	if (all->bvh->node_type != LEAF)
 		all->bvh->node_type = ROOT;
 	make_perpendicular(&all->camera);

@@ -1,4 +1,5 @@
 #include "miniRT.h"
+#include "tri_colors.h"
 
 // all->canvas.pixel_values
 
@@ -80,18 +81,21 @@ void	*thread_routine(void *content)
 
 		// if (all->render_hitbox)
 		// 	tri_lib()->erase_render(all->render_hb);
-		// iter_rays(all, thread, get_closest_color);
-		// if (get_thread_mode_pause(all, thread) == (t_thread_mode)STOP)
-		// 	return (NULL);
-		// else if (thread->mode ==(t_thread_mode)RESET)
-		// 	continue ;
+		if (iter_rays_line_stop(all, thread, get_closest_color) == (t_thread_mode)STOP)
+			return (NULL);
+		else if (thread->mode ==(t_thread_mode)RESET)
+			continue ;
+		if (get_thread_mode_pause(all, thread) == (t_thread_mode)STOP)
+			return (NULL);
+		else if (thread->mode ==(t_thread_mode)RESET)
+			continue ;
 
-		// // iter_rays(all, thread, get_diffuse_light);
+		// iter_rays(all, thread, get_diffuse_light);
 
-		// if (iter_rays_line_stop(all, thread, get_diffuse_light) == (t_thread_mode)STOP)
-		// 	return (NULL);
-		// else if (thread->mode ==(t_thread_mode)RESET)
-		// 	continue ;
+		if (iter_rays_line_stop(all, thread, get_diffuse_light) == (t_thread_mode)STOP)
+			return (NULL);
+		else if (thread->mode ==(t_thread_mode)RESET)
+			continue ;
 
 		// if (start_rays_thread(all, thread) == (t_thread_mode)STOP)
 		// 	return (NULL);
@@ -102,10 +106,10 @@ void	*thread_routine(void *content)
 		// else if (thread->mode ==(t_thread_mode)RESET)
 			// continue ;
 
-		if (iter_rays_line_stop(all, thread, traceray) == (t_thread_mode)STOP)
-			return (NULL);
-		else if (thread->mode ==(t_thread_mode)RESET)
-			continue ;
+		// if (iter_rays_line_stop(all, thread, traceray) == (t_thread_mode)STOP)
+		// 	return (NULL);
+		// else if (thread->mode ==(t_thread_mode)RESET)
+		// 	continue ;
 
 		if (get_thread_mode_pause_continue(all, thread) == (t_thread_mode)STOP)
 			return (NULL);
@@ -132,6 +136,14 @@ void	change_threads_mode(t_all *all, t_thread_mode mode)
 	}
 }
 
+// _mix_colors_render_to_render(
+// 				unsigned_to_argb((top->_data)[i]),
+// 				unsigned_to_argb((base->_data)[i]));
+unsigned int	color_with_hitbox(t_ray *ray, t_all *all, int x, int y)
+{
+	return (_mix_colors_render_to_render(unsigned_to_argb(_get_pixel(all->render_hb, x, y)), rgb_f_to_argb(ray->color_ray)));
+}
+
 void	draw_rays_to_render(t_all *all, t_render *render)
 {
 	int				index[2];
@@ -140,7 +152,6 @@ void	draw_rays_to_render(t_all *all, t_render *render)
 
 	index[0] = mi_pix;
 	real[0] = 0;
-	// change_threads_mode(all, PAUSE);
 	while (real[0] < all->win_height)
 	{
 		real[1] = 0;
@@ -149,16 +160,24 @@ void	draw_rays_to_render(t_all *all, t_render *render)
 		while (real[1] < all->win_width)
 		{
 			index[1] -= (index[1] >= all->win_width);
-			_replace_s_px_on_render((t_render *)render,
-				rgb_f_to_unsigned(all->canvas.rays[index[0]][index[1]].color_ray),
-				(t_point2d){real[1], real[0]}, all->canvas.pixel_values);
+			if (all->canvas.rays[index[0]][index[1]].to_draw)
+			{
+				if (all->render_hitbox)
+					_replace_s_px_on_render((t_render *)render,
+						color_with_hitbox(&all->canvas.rays[index[0]][index[1]], all, index[1], index[0]),
+						(t_point2d){real[1], real[0]}, all->canvas.pixel_values);
+				else
+					_replace_s_px_on_render((t_render *)render,
+						rgb_f_to_unsigned(all->canvas.rays[index[0]][index[1]].color_ray),
+						(t_point2d){real[1], real[0]}, all->canvas.pixel_values);
+				all->canvas.rays[index[0]][index[1]].to_draw = 0;
+			}
 			real[1] += all->canvas.pixel_values;
 			index[1] = real[1] + mi_pix;
 		}
 		real[0] += all->canvas.pixel_values;
 		index[0] = real[0] + mi_pix;
 	}
-	// change_threads_mode(all, CONTINUE);
 }
 
 int	end_thread(t_all *all, unsigned int n_thread)

@@ -44,10 +44,11 @@ typedef struct s_quad
 // 	double	b;
 // }	t_rgb_norm;
 
-typedef unsigned char	t_minuint;
-typedef struct S_all	t_all;
-typedef t_coord			t_vec;
-typedef t_argb			t_rgb;
+typedef unsigned char		t_minuint;
+typedef struct S_all		t_all;
+
+typedef t_coord				t_vec;
+typedef t_argb				t_rgb;
 
 // typedef struct S_rgb
 // {
@@ -55,6 +56,12 @@ typedef t_argb			t_rgb;
 // 	t_minuint	g;
 // 	t_minuint	b;
 // }	t_rgb;
+
+typedef struct S_material
+{
+	double	ks;
+	double	shininess;
+}			t_material;
 
 typedef struct s_light_vec
 {
@@ -111,6 +118,12 @@ typedef struct s_shape
 	double		t2;
 	t_vec		normal;
 	t_coord		origin;
+	t_vec		cyl_normal;
+	double		cyl_normal_mag;
+	t_vec		cyl_p;
+	t_vec		cyl_v;
+	double		cyl_mag;
+	t_material	material;
 	void		*shape;
 }				t_shape;
 
@@ -123,7 +136,9 @@ typedef struct S_ray
 	t_rgb_f	color_ray;
 	t_rgb_f	color_shape;
 	t_rgb_f	color_diffuse;
+	t_rgb_f	color_specular;
 	t_shape	shape;
+	char	to_draw;
 	int		x;
 	int		y;
 }	t_ray;
@@ -140,6 +155,7 @@ typedef struct S_Canvas
 	t_ray			rays_save[WIN_HEIGHT_ALL][WIN_WIDTH_ALL];
 }	t_canvas;	
 
+/* TRISTAN */
 typedef struct S_bvh
 {
 	t_vec	top[4];
@@ -147,16 +163,6 @@ typedef struct S_bvh
 	t_vec	*a;
 	t_vec	*b;
 }	t_bvh;
-
-typedef struct S_box
-{
-	t_bvh			box;
-	t_rgb			rgb;
-	t_rgb			rgb_save;
-	t_rgb_f			color;
-	struct S_box	*next;
-}	t_box;
-
 
 typedef struct S_hitbox
 {
@@ -169,11 +175,12 @@ typedef struct S_hitbox
 	struct S_hitbox	*right;
 }	t_hitbox;
 
-typedef struct S_task{
-	int start;
-	int end;
-	int depth;
-	t_hitbox **out;  // Pointer where the built node should be stored
-} t_task;
+typedef struct S_queue
+{
+	unsigned long	back;
+	unsigned long	front;
+    unsigned long	capacity;
+	t_hitbox 		**nodes;
+}	t_queue;
 
 #endif

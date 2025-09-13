@@ -21,11 +21,14 @@ void	closest_plane(t_ray *ray, t_plane *plane)
 	}
 }
 
-void	init_ray(t_ray *ray)
+void	init_ray(t_ray *ray, t_all *all)
 {
 	// ray->color_ray = (t_rgb_f){0, 0, 0};
+	if (all->render_hitbox)
+		_replace_s_px_on_render(all->render_hb, TRI_TRANSPARENT_UNSIGNED, (t_point2d){ray->y, ray->x}, all->canvas.pixel_values);
 	ray->color_shape = (t_rgb_f){0, 0, 0};
 	ray->color_diffuse = (t_rgb_f){0, 0, 0};
+	ray->color_specular = (t_rgb_f){0, 0, 0};
 	ray->shape.type = CAMERA;
 	ray->shape.shape = NULL;
 	ray->shape.t1 = INFINITY;
@@ -73,6 +76,7 @@ void	get_diffuse_light(t_ray *ray, t_all *all)
 	if (isinf(ray->shape.t1))
 	{
 		ray->color_ray = ray->color;
+		ray->to_draw = 1;
 		return ;
 	}
 	ray->hit = scalar_multiplication_no_v(&ray->dir, ray->shape.t1);
@@ -82,14 +86,15 @@ void	get_diffuse_light(t_ray *ray, t_all *all)
 		ray->shape.normal = (t_vec){-ray->shape.normal.x,
 			-ray->shape.normal.y, -ray->shape.normal.z};
 	diffuse_light(ray, all, all->lights);
-	ray->color_ray.r = ray->color_shape.r * ray->color_diffuse.r;
-	ray->color_ray.g = ray->color_shape.g * ray->color_diffuse.g;
-	ray->color_ray.b = ray->color_shape.b * ray->color_diffuse.b;
+	ray->color_ray.r = ray->color_shape.r * ray->color_diffuse.r + ray->color_specular.r;
+	ray->color_ray.g = ray->color_shape.g * ray->color_diffuse.g + ray->color_specular.g;
+	ray->color_ray.b = ray->color_shape.b * ray->color_diffuse.b + ray->color_specular.b;
+	ray->to_draw = 1;
 }
 
 void	get_closest_color(t_ray *ray, t_all *all)
 {
-	init_ray(ray);
+	init_ray(ray, all);
 	closest_plane(ray, all->planes);
 	#ifndef BVH
 		closest_sphere(ray, all->spheres);
@@ -108,11 +113,12 @@ void	get_closest_color(t_ray *ray, t_all *all)
 		ray->color_ray = ((t_box *)(ray->shape.shape))->color;
 	else if (ray->shape.type == (t_obj_type)PLANE)
 		ray->color_ray = ((t_plane *)(ray->shape.shape))->color;
+	ray->to_draw = 1;
 }
 
 void	traceray(t_ray *ray, t_all *all)
 {
-	init_ray(ray);
+	init_ray(ray, all);
 	closest_plane(ray, all->planes);
 	#ifndef BVH
 		closest_sphere(ray, all->spheres);
@@ -133,9 +139,9 @@ void	traceray(t_ray *ray, t_all *all)
 		ray->shape.normal = (t_vec){-ray->shape.normal.x,
 			-ray->shape.normal.y, -ray->shape.normal.z};
 	diffuse_light(ray, all, all->lights);
-	ray->color_ray.r = ray->color_shape.r * ray->color_diffuse.r;
-	ray->color_ray.g = ray->color_shape.g * ray->color_diffuse.g;
-	ray->color_ray.b = ray->color_shape.b * ray->color_diffuse.b;
+	ray->color_ray.r = ray->color_shape.r * ray->color_diffuse.r + ray->color_specular.r;
+	ray->color_ray.g = ray->color_shape.g * ray->color_diffuse.g + ray->color_specular.g;
+	ray->color_ray.b = ray->color_shape.b * ray->color_diffuse.b + ray->color_specular.b;
 }
 
 // unsigned int	traceray(t_ray *ray, t_all *all)

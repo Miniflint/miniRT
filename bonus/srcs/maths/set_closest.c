@@ -2,14 +2,15 @@
 
 void	set_cylinder(t_ray *ray, t_cylinder *cylinder)
 {
-	cylinder->v = scalar_multiplication_no_v(&cylinder->vec, cylinder->mag);
-	cylinder->normal = sub_vectors_no_v(&cylinder->p, &cylinder->v);
-	cylinder->normal_mag = vec_magnitude(&cylinder->normal);
+	ray->shape.cyl_v = scalar_multiplication_no_v(&cylinder->vec, ray->shape.cyl_mag);
+	ray->shape.cyl_normal = sub_vectors_no_v(&ray->shape.cyl_p, &ray->shape.cyl_v);
+	ray->shape.cyl_normal_mag = vec_magnitude(&ray->shape.cyl_normal);
 	ray->shape.origin = cylinder->coord;
-	ray->shape.normal = cylinder->normal;
+	ray->shape.normal = ray->shape.cyl_normal;
 	norm_vectors(&ray->shape.normal,
-		cylinder->normal_mag, &ray->shape.normal);
+		ray->shape.cyl_normal_mag, &ray->shape.normal);
 	ray->color_shape = cylinder->color;
+	ray->shape.material = cylinder->material;
 }
 
 void	set_shapes(t_ray *ray)
@@ -21,15 +22,21 @@ void	set_shapes(t_ray *ray)
 		norm_vectors(&ray->shape.normal,
 			vec_magnitude(&ray->shape.normal), &ray->shape.normal);
 		ray->color_shape = ((t_sphere *)(ray->shape.shape))->color;
+		ray->shape.material = ((t_sphere *)(ray->shape.shape))->material;
 	}
 	else if (ray->shape.type == PLANE)
 	{
 		//ray->shape.origin = ((t_plane *)(ray->shape.shape))->coord;
 		ray->shape.normal = ((t_plane *)(ray->shape.shape))->vec;
 		ray->color_shape = ((t_plane *)(ray->shape.shape))->color;
+		ray->shape.material = ((t_plane *)(ray->shape.shape))->material;
 	}
 	else if (ray->shape.type == CYLINDER)
 		set_cylinder(ray, (t_cylinder *)ray->shape.shape);
 	else if (ray->shape.type == BOX)
+	{
 		ray->color_shape = ((t_box *)(ray->shape.shape))->color;
+		ray->shape.material = ((t_box *)(ray->shape.shape))->material;
+	}
+	ray->shape.material = (t_material){.ks=0.8, .shininess=256}; //En attendant le parsing
 }

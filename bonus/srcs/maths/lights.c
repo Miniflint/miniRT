@@ -83,12 +83,32 @@ int	shadow_traverse_bvh(t_ray *ray,
 	return (0);
 }
 
+void	specular(t_ray *ray, t_vec light_dir, t_light *light, double light_scale)
+{
+	t_vec	v; //= ray->dir inverser
+	t_vec	h;
+	double	ndoth;
+	double	intensity;
+
+	v = scalar_multiplication_no_v(&ray->dir, -1);
+	add_vectors(&light_dir, &v, &h);
+	norm_vectors(&h, vec_magnitude(&h), &h);
+	ndoth = dot_product(&ray->shape.normal, &h);
+	if (ndoth <= 0)
+		return ;
+	intensity = ray->shape.material.ks * pow(ndoth, ray->shape.material.shininess) * light_scale;
+	ray->color_specular.r += light->rgb_norm.r * intensity;
+	ray->color_specular.g += light->rgb_norm.g * intensity;
+	ray->color_specular.b += light->rgb_norm.b * intensity;
+}
+
 void	get_rgb_norm_light_intensity(t_ray *ray, t_all *all, t_light *light)
 {
 	t_vec		light_dir;
 	double		light_length;
 	double		light_length_square;
 	double		intensity;
+	double		light_scale;
 
 	sub_vectors(&light->coord, &ray->hit, &light_dir);
 	light_length_square = light_dir.x * light_dir.x
@@ -97,8 +117,7 @@ void	get_rgb_norm_light_intensity(t_ray *ray, t_all *all, t_light *light)
 	norm_vectors(&light_dir, light_length, &light_dir);
 	intensity = dot_product(&ray->shape.normal, &light_dir);
 	if (intensity >= 0)
-	{
-		
+	{	
 		if (all->shadow_on
 			&&
 				((plane_on_the_path(ray, all->planes,
@@ -114,8 +133,10 @@ void	get_rgb_norm_light_intensity(t_ray *ray, t_all *all, t_light *light)
 				|| shadow_traverse_bvh(ray, all->bvh, all->render_hb, light_dir, light_length)))
 			# endif
 				return ;
-		intensity *= (light->ratio * (all->distance_light
+		light_scale = (light->ratio * (all->distance_light
 					/ (light_length_square + all->distance_light)));
+		specular(ray, light_dir, light, light_scale);
+		intensity *= light_scale;
 		ray->color_diffuse.r += light->rgb_norm.r * intensity;
 		ray->color_diffuse.g += light->rgb_norm.g * intensity;
 		ray->color_diffuse.b += light->rgb_norm.b * intensity;

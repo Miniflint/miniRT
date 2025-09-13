@@ -20,13 +20,25 @@ void	__init_faces(t_face *face, unsigned char vert_ind[3], int *err, int *i)
 {
 	*err = 0;
 	*i = -1;
-	ft_memset(vert_ind, 0, sizeof(vert_ind[0]));
-	ft_memset(face->vertices, 0, sizeof(face->vertices));
-	ft_memset(face->v_texture, 0, sizeof(face->v_texture));
-	ft_memset(face->v_normale, 0, sizeof(face->v_normale));
-	ft_memset(face->v_indexes, 0, sizeof(face->v_indexes));
-	ft_memset(face->vt_indexes, 0, sizeof(face->vt_indexes));
-	ft_memset(face->vn_indexes, 0, sizeof(face->vn_indexes));
+	unsigned int	j;
+
+	j = -1;
+	while (++j < 3)
+	{
+		vert_ind[j] = 0;
+		face->vertices[j] = 0;
+		face->v_texture[j] = 0;
+		face->v_normale[j] = 0;
+		face->v_indexes[j] = 0;
+		face->vt_indexes[j] = 0;
+		face->vn_indexes[j] = 0;
+	}
+	face->vertices[j] = 0;
+	face->v_texture[j] = 0;
+	face->v_normale[j] = 0;
+	face->v_indexes[j] = 0;
+	face->vt_indexes[j] = 0;
+	face->vn_indexes[j] = 0;
 }
 
 void	ifs(t_object *object, const char *restrict s)

@@ -3,6 +3,8 @@
 
 # include "miniRT.h"
 
+typedef struct S_material	t_material;
+
 typedef struct S_ambient_light
 {
 	t_minuint	nb;
@@ -39,6 +41,7 @@ typedef struct S_sphere
 	t_rgb			rgb;
 	t_rgb_f			color;
 	t_rgb			rgb_save;
+	t_material		material;
 	struct S_sphere	*next;
 }	t_sphere;
 
@@ -49,6 +52,7 @@ typedef struct S_plane
 	t_rgb			rgb;
 	t_rgb_f			color;
 	t_rgb			rgb_save;
+	t_material		material;
 	struct S_plane	*next;
 }	t_plane;
 
@@ -60,15 +64,21 @@ typedef struct S_cylinder
 	double				radius_squared;
 	double				diameter;
 	double				height;
-	t_vec				normal;
-	double				normal_mag;
 	t_rgb				rgb;
 	t_rgb_f				color;
 	t_rgb				rgb_save;
-	t_vec				p;
-	t_vec				v;
-	double				mag;
+		t_material		material;
 	struct S_cylinder	*next;
 }	t_cylinder;
+
+typedef struct S_box
+{
+	t_bvh			box;
+	t_rgb			rgb;
+	t_rgb			rgb_save;
+	t_rgb_f			color;
+	t_material		material;
+	struct S_box	*next;
+}	t_box;
 
 #endif

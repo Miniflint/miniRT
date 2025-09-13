@@ -28,6 +28,7 @@ void	cal_fov(t_all *all)
 		{
 			all->canvas.pix_x[j] = all->canvas.pix_x[j - 1] + all->canvas.unit;
 			all->canvas.rays_save[i][j].color = color;
+			all->canvas.rays_save[i][j].to_draw = 0;
 			++j;
 		}
 		all->canvas.pix_y[i] = all->canvas.pix_y[i - 1] + all->canvas.unit;

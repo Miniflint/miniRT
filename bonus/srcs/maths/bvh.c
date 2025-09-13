@@ -82,6 +82,9 @@ t_hitbox	*box_around_cylinder(t_cylinder *cyl)
 	if (!new)
 		return (NULL);
 	end = scalar_multiplication_no_v(&cyl->vec, cyl->height);
+	end.x += cyl->coord.x;
+	end.y += cyl->coord.y;
+	end.z += cyl->coord.z;
 	new->box = create_box(
 		(t_vec){
 			fmin(cyl->coord.x, end.x) - cyl->radius,
@@ -100,34 +103,53 @@ t_hitbox	*box_around_cylinder(t_cylinder *cyl)
 	return (new);
 }
 
-t_hitbox	*create_bhv(t_all *all, int start, int end, int depth)
+t_hitbox	*create_bvh_iter(t_all *all, int end, int depth)
 {
-	const int	mid = (start + end) / 2;
-	t_hitbox	*left;
-	t_hitbox	*right;
-	t_hitbox	*parent;
+	t_queue		q;
+	t_hitbox	*l;
+	t_hitbox	*r;
+	t_hitbox	*dad;
+	int			i;
 
-	if (start > end)
+	if (queue_init(&q, end))
 		return (NULL);
-	if (start == end)
+	i = -1;
+	while (++i < end)
 	{
-		if (all->shapes[start].type == SPHERE)
-			return (box_around_sphere(all->shapes[start].shape));
-		else if (all->shapes[start].type == BOX)
-			return (box_around_box(all->shapes[start].shape));
-		else if (all->shapes[start].type == CYLINDER)
-			return (box_around_cylinder(all->shapes[start].shape));
-		//else if (all->shapes[start].type == OBJECT)
-		//	return (create_bvh_triangles(all->shapes[start].shape));
+		if (all->shapes[i].type == SPHERE)
+			l = box_around_sphere(all->shapes[i].shape);
+		else if (all->shapes[i].type == BOX)
+			l = box_around_box(all->shapes[i].shape);
+		else if (all->shapes[i].type == CYLINDER)
+			l = box_around_cylinder(all->shapes[i].shape);
+		else if (all->shapes[i].type == OBJECT)
+			l = create_bvh_triangles(all->shapes[i].shape);
+		if (!l)
+		{
+			while (i && --i)
+				free(q.nodes[i]);
+			return (queue_free(&q));
+		}
+		queue_push(&q, l);
 	}
-	left = create_bhv(all, start, mid, depth + 1);
-	right = create_bhv(all, mid + 1, end, depth + 1);
-	parent = create_bvh_node(left, right);
-	if (!parent)
-		return (NULL);
-	right->depth = depth;
-	left->depth = depth;
-	parent->box = box_around_two_box(&left->box, &right->box);
-	parent->depth = depth;
-	return (parent);
+	while (queue_size(&q) > 1)
+	{
+		l = queue_pop(&q);
+		r = NULL;
+		if (!queue_is_empty(&q))
+			r = queue_pop(&q);
+		dad = create_bvh_node(l, r);
+		if (!dad)
+			return (NULL);
+		dad->box = box_around_two_box(&l->box, &r->box);
+		l->depth = depth;
+		r->depth = depth;
+		queue_push(&q, dad);
+		dad->depth = depth;
+	}
+	dad = queue_pop(&q);
+	queue_free(&q);
+	dad->node_type = ROOT;
+	dad->type = END_SHAPE;
+	return (dad);
 }

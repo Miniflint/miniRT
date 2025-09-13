@@ -23,8 +23,8 @@ static int	set_ts(double t, t_ray *ray, t_cylinder *cylinder)
 		mag = dot_product(&p, &cylinder->vec);
 		if (mag < 0 || mag > cylinder->height || isnan(mag) || isinf(mag))
 			return (0);
-		cylinder->p = p;
-		cylinder->mag = mag;
+		ray->shape.cyl_p = p;
+		ray->shape.cyl_mag = mag;
 		ray->shape.t1 = t;
 		ray->shape.shape = cylinder;
 		ray->shape.type = CYLINDER;

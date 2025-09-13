@@ -105,6 +105,7 @@ void			print_pl(t_plane *plane, int depth);
 void			print_cy(t_cylinder *cylinder, int depth);
 void			print_bx(t_box *box, int depth);			
 void			print_ob(t_object *object, int depth);
+void			print_vec(t_vec v);
 
 /* INIT */
 int				__init__(t_all *all, char **argv, int argc);
@@ -230,12 +231,13 @@ void			get_diffuse_light(t_ray *ray, t_all *all);
 
 void			intersect_cylinder(t_ray *ray, t_cylinder *cylinder);
 
+t_hitbox		*create_bvh_iter(t_all *all, int end, int depth);
 t_vec			distance_box(t_vec *a, t_vec *b);
 int				bvh_on_path(t_ray *ray, t_box *box);
 t_bvh			create_box(t_vec a, t_vec b);
 void			print_box(t_bvh *bvh);
 int				intersect_hitbox(t_ray *ray, t_bvh *box);
-t_hitbox		*create_bhv(t_all *all, int start, int end, int depth);
+t_hitbox		*create_bvh(t_all *all, int start, int end, int depth);
 t_shape			*create_shape_array(t_all *all);
 t_bvh			box_around_two_box(t_bvh *first, t_bvh *second);
 void			intersect_box(t_ray *ray, t_box *box);
@@ -243,6 +245,15 @@ int				shadow_intersect_bvh(t_ray *ray, t_bvh *box, t_vec light_dir);
 int				box_on_path(t_ray *ray, t_box *boxes, t_vec light_dir);
 
 t_hitbox		*create_bvh_triangles(t_object *obj);
-t_hitbox	*create_bvh_node(t_hitbox *l, t_hitbox *r);
+t_hitbox		*create_bvh_node(t_hitbox *l, t_hitbox *r);
+int				free_hitboxes(t_hitbox *root, unsigned long capacity);
+
+/* DATA STRUCTURE */
+t_hitbox	*queue_free(t_queue *q);
+t_hitbox	*queue_pop(t_queue *q);
+int			queue_push(t_queue *q, t_hitbox *curr);
+int			queue_size(t_queue *q);
+int			queue_is_empty(t_queue *q);
+int			queue_init(t_queue *q, int capacity);
 
 #endif

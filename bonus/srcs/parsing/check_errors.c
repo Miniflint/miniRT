@@ -12,6 +12,7 @@ int	__parse_file_objs(t_all *all)
 			return (1);
 		i++;
 	}
+	all->nb_shapes += i - 2;
 	return (0);
 }
 

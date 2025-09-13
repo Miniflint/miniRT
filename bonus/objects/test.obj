@@ -20,7 +20,7 @@ f 1 2 3
 s off
 
 # Another face with no smoothing
-f 1 3 4
+f 1 3 5
 
 # Point element
 # p 5

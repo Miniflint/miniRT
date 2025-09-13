@@ -1,541 +1,154 @@
-==6291== Memcheck, a memory error detector
-==6291== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
-==6291== Using Valgrind-3.18.1-42b08ed5bd-20211015 and LibVEX; rerun with -h for copyright info
-==6291== Command: ./miniRT_bonus maps/aaa.rt
-==6291== Parent PID: 4103057
-==6291== 
---6291-- 
---6291-- Valgrind options:
---6291--    --leak-check=full
---6291--    --show-leak-kinds=all
---6291--    --track-origins=yes
---6291--    --verbose
---6291--    --log-file=val_out.log
---6291-- Contents of /proc/version:
---6291--   Linux version 6.6.72-x64v3-t2-jammy-xanmod1 (root@fv-az1245-313) (gcc (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0, GNU ld (GNU Binutils for Ubuntu) 2.38) #xanmod1 SMP PREEMPT_DYNAMIC Sat Jan 18 01:41:53 UTC 2025
---6291-- 
---6291-- Arch and hwcaps: AMD64, LittleEndian, amd64-cx16-lzcnt-rdtscp-sse3-ssse3-avx-avx2-bmi-f16c-rdrand-rdseed
---6291-- Page sizes: currently 4096, max supported 4096
---6291-- Valgrind library directory: /usr/libexec/valgrind
---6291-- Reading syms from /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus
---6291-- Reading syms from /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2
---6291--   Considering /usr/lib/debug/.build-id/9c/b53985768bb99f138f48655f7b8bf7e420d13d.debug ..
---6291--   .. build-id is valid
---6291-- Reading syms from /usr/libexec/valgrind/memcheck-amd64-linux
---6291--    object doesn't have a symbol table
---6291--    object doesn't have a dynamic symbol table
---6291-- Scheduler: using generic scheduler lock implementation.
-==6291== Warning: set address range perms: large range [0x125000, 0x17cd8000) (defined)
---6291-- Reading suppressions file: /usr/libexec/valgrind/default.supp
-==6291== embedded gdbserver: reading from /tmp/vgdb-pipe-from-vgdb-to-6291-by-trgoel-on-???
-==6291== embedded gdbserver: writing to   /tmp/vgdb-pipe-to-vgdb-from-6291-by-trgoel-on-???
-==6291== embedded gdbserver: shared mem   /tmp/vgdb-pipe-shared-mem-vgdb-6291-by-trgoel-on-???
-==6291== 
-==6291== TO CONTROL THIS PROCESS USING vgdb (which you probably
-==6291== don't want to do, unless you know exactly what you're doing,
-==6291== or are doing some strange experiment):
-==6291==   /usr/bin/vgdb --pid=6291 ...command...
-==6291== 
-==6291== TO DEBUG THIS PROCESS USING GDB: start GDB like this
-==6291==   /path/to/gdb ./miniRT_bonus
-==6291== and then give GDB the following command
-==6291==   target remote | /usr/bin/vgdb --pid=6291
-==6291== --pid is optional if only one valgrind process is running
-==6291== 
---6291-- REDIR: 0x17d02a40 (ld-linux-x86-64.so.2:strlen) redirected to 0x580bcec2 (???)
---6291-- REDIR: 0x17d02810 (ld-linux-x86-64.so.2:index) redirected to 0x580bcedc (???)
---6291-- Reading syms from /usr/libexec/valgrind/vgpreload_core-amd64-linux.so
---6291--    object doesn't have a symbol table
---6291-- Reading syms from /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so
---6291--    object doesn't have a symbol table
-==6291== WARNING: new redirection conflicts with existing -- ignoring it
---6291--     old: 0x17d02a40 (strlen              ) R-> (0000.0) 0x580bcec2 ???
---6291--     new: 0x17d02a40 (strlen              ) R-> (2007.0) 0x18526e30 strlen
---6291-- REDIR: 0x17cff220 (ld-linux-x86-64.so.2:strcmp) redirected to 0x18527cd0 (strcmp)
---6291-- REDIR: 0x17d02fa0 (ld-linux-x86-64.so.2:mempcpy) redirected to 0x1852b840 (mempcpy)
---6291-- Reading syms from /usr/lib/x86_64-linux-gnu/libXext.so.6.4.0
---6291--    object doesn't have a symbol table
---6291-- Reading syms from /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0
---6291--    object doesn't have a symbol table
---6291-- Reading syms from /usr/lib/x86_64-linux-gnu/libm.so.6
---6291--   Considering /usr/lib/debug/.build-id/a3/ad9bb40b4907e509e4404cb972645c19675ca3.debug ..
---6291--   .. build-id is valid
---6291-- Reading syms from /usr/lib/x86_64-linux-gnu/libc.so.6
---6291--   Considering /usr/lib/debug/.build-id/d5/197096f709801829b118af1b7cf6631efa2dcd.debug ..
---6291--   .. build-id is valid
-==6291== WARNING: new redirection conflicts with existing -- ignoring it
---6291--     old: 0x1882dc60 (memalign            ) R-> (1011.0) 0x18526080 memalign
---6291--     new: 0x1882dc60 (memalign            ) R-> (1017.0) 0x18526050 aligned_alloc
-==6291== WARNING: new redirection conflicts with existing -- ignoring it
---6291--     old: 0x1882dc60 (memalign            ) R-> (1011.0) 0x18526080 memalign
---6291--     new: 0x1882dc60 (memalign            ) R-> (1017.0) 0x18526020 aligned_alloc
-==6291== WARNING: new redirection conflicts with existing -- ignoring it
---6291--     old: 0x1882dc60 (memalign            ) R-> (1011.0) 0x18526080 memalign
---6291--     new: 0x1882dc60 (memalign            ) R-> (1017.0) 0x18526050 aligned_alloc
-==6291== WARNING: new redirection conflicts with existing -- ignoring it
---6291--     old: 0x1882dc60 (memalign            ) R-> (1011.0) 0x18526080 memalign
---6291--     new: 0x1882dc60 (memalign            ) R-> (1017.0) 0x18526020 aligned_alloc
---6291-- Reading syms from /usr/lib/x86_64-linux-gnu/libxcb.so.1.1.0
---6291--    object doesn't have a symbol table
---6291-- Reading syms from /usr/lib/x86_64-linux-gnu/libXau.so.6.0.0
---6291--    object doesn't have a symbol table
---6291-- Reading syms from /usr/lib/x86_64-linux-gnu/libXdmcp.so.6.0.0
---6291--    object doesn't have a symbol table
---6291-- Reading syms from /usr/lib/x86_64-linux-gnu/libbsd.so.0.11.5
---6291--    object doesn't have a symbol table
---6291-- Reading syms from /usr/lib/x86_64-linux-gnu/libmd.so.0.0.5
---6291--    object doesn't have a symbol table
---6291-- REDIR: 0x18830720 (libc.so.6:strnlen) redirected to 0x18517220 (_vgnU_ifunc_wrapper)
---6291-- REDIR: 0x188309e0 (libc.so.6:strpbrk) redirected to 0x18517220 (_vgnU_ifunc_wrapper)
---6291-- REDIR: 0x188302e0 (libc.so.6:strcmp) redirected to 0x18517220 (_vgnU_ifunc_wrapper)
---6291-- REDIR: 0x1884ecd0 (libc.so.6:wcsnlen) redirected to 0x18517220 (_vgnU_ifunc_wrapper)
---6291-- REDIR: 0x188316d0 (libc.so.6:memset) redirected to 0x18517220 (_vgnU_ifunc_wrapper)
---6291-- REDIR: 0x1884d540 (libc.so.6:wcslen) redirected to 0x18517220 (_vgnU_ifunc_wrapper)
---6291-- REDIR: 0x18831c10 (libc.so.6:memcpy@@GLIBC_2.14) redirected to 0x18517220 (_vgnU_ifunc_wrapper)
---6291-- REDIR: 0x1884d370 (libc.so.6:wcschr) redirected to 0x18517220 (_vgnU_ifunc_wrapper)
---6291-- REDIR: 0x18830260 (libc.so.6:index) redirected to 0x18517220 (_vgnU_ifunc_wrapper)
---6291-- REDIR: 0x18830960 (libc.so.6:rindex) redirected to 0x18517220 (_vgnU_ifunc_wrapper)
---6291-- REDIR: 0x188315a0 (libc.so.6:memmove) redirected to 0x18517220 (_vgnU_ifunc_wrapper)
-==6291== Preferring higher priority redirection:
---6291--     old: 0x189287c0 (__memcpy_avx_unalign) R-> (2018.0) 0x18528f90 __memcpy_avx_unaligned_erms
---6291--     new: 0x189287c0 (__memcpy_avx_unalign) R-> (2018.1) 0x1852a880 memmove
---6291-- REDIR: 0x1884d3f0 (libc.so.6:wcscmp) redirected to 0x18517220 (_vgnU_ifunc_wrapper)
---6291-- REDIR: 0x188319e0 (libc.so.6:stpncpy) redirected to 0x18517220 (_vgnU_ifunc_wrapper)
---6291-- REDIR: 0x1884d9b0 (libc.so.6:wmemchr) redirected to 0x18517220 (_vgnU_ifunc_wrapper)
---6291-- REDIR: 0x18830830 (libc.so.6:strncmp) redirected to 0x18517220 (_vgnU_ifunc_wrapper)
---6291-- REDIR: 0x18831a70 (libc.so.6:strcasecmp) redirected to 0x18517220 (_vgnU_ifunc_wrapper)
---6291-- REDIR: 0x18830420 (libc.so.6:strcspn) redirected to 0x18517220 (_vgnU_ifunc_wrapper)
---6291-- REDIR: 0x1884d470 (libc.so.6:wcscpy) redirected to 0x18517220 (_vgnU_ifunc_wrapper)
---6291-- REDIR: 0x188301d0 (libc.so.6:strcat) redirected to 0x18517220 (_vgnU_ifunc_wrapper)
---6291-- REDIR: 0x18831b60 (libc.so.6:strncasecmp_l) redirected to 0x18517220 (_vgnU_ifunc_wrapper)
---6291-- REDIR: 0x18831480 (libc.so.6:bcmp) redirected to 0x18517220 (_vgnU_ifunc_wrapper)
---6291-- REDIR: 0x18839570 (libc.so.6:memrchr) redirected to 0x18517220 (_vgnU_ifunc_wrapper)
---6291-- REDIR: 0x18833010 (libc.so.6:strchrnul) redirected to 0x18517220 (_vgnU_ifunc_wrapper)
---6291-- REDIR: 0x18830390 (libc.so.6:strcpy) redirected to 0x18517220 (_vgnU_ifunc_wrapper)
---6291-- REDIR: 0x18831b10 (libc.so.6:strcasecmp_l) redirected to 0x18517220 (_vgnU_ifunc_wrapper)
---6291-- REDIR: 0x188306a0 (libc.so.6:strlen) redirected to 0x18517220 (_vgnU_ifunc_wrapper)
---6291-- REDIR: 0x188308d0 (libc.so.6:strncpy) redirected to 0x18517220 (_vgnU_ifunc_wrapper)
---6291-- REDIR: 0x18831950 (libc.so.6:stpcpy) redirected to 0x18517220 (_vgnU_ifunc_wrapper)
---6291-- REDIR: 0x188313f0 (libc.so.6:memchr) redirected to 0x18517220 (_vgnU_ifunc_wrapper)
---6291-- REDIR: 0x18830b00 (libc.so.6:strspn) redirected to 0x18517220 (_vgnU_ifunc_wrapper)
---6291-- REDIR: 0x188317d0 (libc.so.6:mempcpy) redirected to 0x18517220 (_vgnU_ifunc_wrapper)
---6291-- REDIR: 0x18831ac0 (libc.so.6:strncasecmp) redirected to 0x18517220 (_vgnU_ifunc_wrapper)
---6291-- REDIR: 0x18832f80 (libc.so.6:rawmemchr) redirected to 0x18517220 (_vgnU_ifunc_wrapper)
---6291-- REDIR: 0x18925610 (libc.so.6:__strrchr_avx2) redirected to 0x18526810 (rindex)
---6291-- REDIR: 0x1882d0a0 (libc.so.6:malloc) redirected to 0x18520820 (malloc)
---6291-- REDIR: 0x1882d3e0 (libc.so.6:free) redirected to 0x18523210 (free)
---6291-- REDIR: 0x18925400 (libc.so.6:__strchrnul_avx2) redirected to 0x1852b330 (strchrnul)
---6291-- REDIR: 0x18928780 (libc.so.6:__mempcpy_avx_unaligned_erms) redirected to 0x1852b440 (mempcpy)
-==6291== Use of uninitialised value of size 8
-==6291==    at 0x10FC1E: set_face_value_on_slash (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10FF8F: get_each_part_face (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10FE78: set_face_parts (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x11056A: get_faces (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10F208: parse_type_objs (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10F53F: __set_values_objs (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10F685: create_obj_path (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10C2D0: get_obj (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10BAD8: parse_type_scene (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10BBE6: __set_values_scene (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10B4C0: __parse_file_scene (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10B6D3: __init__ (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==  Uninitialised value was created by a stack allocation
-==6291==    at 0x110471: get_faces (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291== 
-==6291== Use of uninitialised value of size 8
-==6291==    at 0x10FC43: set_face_value_on_slash (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10FF8F: get_each_part_face (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10FE78: set_face_parts (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x11056A: get_faces (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10F208: parse_type_objs (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10F53F: __set_values_objs (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10F685: create_obj_path (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10C2D0: get_obj (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10BAD8: parse_type_scene (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10BBE6: __set_values_scene (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10B4C0: __parse_file_scene (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10B6D3: __init__ (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==  Uninitialised value was created by a stack allocation
-==6291==    at 0x110471: get_faces (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291== 
-==6291== Use of uninitialised value of size 8
-==6291==    at 0x10FC1E: set_face_value_on_slash (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10FF8F: get_each_part_face (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10FEC2: set_face_parts (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x11056A: get_faces (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10F208: parse_type_objs (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10F53F: __set_values_objs (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10F685: create_obj_path (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10C2D0: get_obj (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10BAD8: parse_type_scene (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10BBE6: __set_values_scene (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10B4C0: __parse_file_scene (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10B6D3: __init__ (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==  Uninitialised value was created by a stack allocation
-==6291==    at 0x110471: get_faces (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291== 
-==6291== Use of uninitialised value of size 8
-==6291==    at 0x10FC43: set_face_value_on_slash (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10FF8F: get_each_part_face (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10FEC2: set_face_parts (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x11056A: get_faces (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10F208: parse_type_objs (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10F53F: __set_values_objs (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10F685: create_obj_path (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10C2D0: get_obj (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10BAD8: parse_type_scene (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10BBE6: __set_values_scene (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10B4C0: __parse_file_scene (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10B6D3: __init__ (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==  Uninitialised value was created by a stack allocation
-==6291==    at 0x110471: get_faces (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291== 
-==6291== Invalid write of size 8
-==6291==    at 0x10FC1E: set_face_value_on_slash (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10FF8F: get_each_part_face (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10FE78: set_face_parts (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x11056A: get_faces (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10F208: parse_type_objs (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10F53F: __set_values_objs (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10F685: create_obj_path (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10C2D0: get_obj (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10BAD8: parse_type_scene (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10BBE6: __set_values_scene (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10B4C0: __parse_file_scene (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10B6D3: __init__ (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==  Address 0x1a1ec7c8 is 8,218,504 bytes inside a block of size 8,220,576 in arena "client"
-==6291== 
-==6291== Invalid write of size 8
-==6291==    at 0x10FC43: set_face_value_on_slash (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10FF8F: get_each_part_face (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10FE78: set_face_parts (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x11056A: get_faces (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10F208: parse_type_objs (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10F53F: __set_values_objs (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10F685: create_obj_path (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10C2D0: get_obj (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10BAD8: parse_type_scene (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10BBE6: __set_values_scene (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10B4C0: __parse_file_scene (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10B6D3: __init__ (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==  Address 0x1a1ec7a8 is 8,218,472 bytes inside a block of size 8,220,576 in arena "client"
-==6291== 
-==6291== Invalid write of size 8
-==6291==    at 0x10FC1E: set_face_value_on_slash (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10FF8F: get_each_part_face (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10FEC2: set_face_parts (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x11056A: get_faces (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10F208: parse_type_objs (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10F53F: __set_values_objs (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10F685: create_obj_path (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10C2D0: get_obj (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10BAD8: parse_type_scene (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10BBE6: __set_values_scene (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10B4C0: __parse_file_scene (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10B6D3: __init__ (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==  Address 0x1a1ec7e0 is 8,218,528 bytes inside a block of size 8,220,576 in arena "client"
-==6291== 
-==6291== Invalid write of size 8
-==6291==    at 0x10FC43: set_face_value_on_slash (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10FF8F: get_each_part_face (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10FEC2: set_face_parts (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x11056A: get_faces (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10F208: parse_type_objs (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10F53F: __set_values_objs (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10F685: create_obj_path (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10C2D0: get_obj (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10BAD8: parse_type_scene (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10BBE6: __set_values_scene (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10B4C0: __parse_file_scene (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10B6D3: __init__ (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==  Address 0x1a1ec7c0 is 8,218,496 bytes inside a block of size 8,220,576 in arena "client"
-==6291== 
-==6291== Stack overflow in thread #1: can't grow stack to 0x1ffe801000
-==6291== 
-==6291== Process terminating with default action of signal 11 (SIGSEGV)
-==6291==  Access not within mapped region at address 0x1FFE801FF8
-==6291== Stack overflow in thread #1: can't grow stack to 0x1ffe801000
-==6291==    at 0x18812EC9: _IO_file_write@@GLIBC_2.2.5 (fileops.c:1173)
-==6291==  If you believe this happened as a result of a stack
-==6291==  overflow in your program's main thread (unlikely but
-==6291==  possible), you can try to increase the size of the
-==6291==  main thread stack using the --main-stacksize= flag.
-==6291==  The main thread stack size used in this run was 8388608.
-==6291== 
-==6291== HEAP SUMMARY:
-==6291==     in use at exit: 9,395,512 bytes in 12 blocks
-==6291==   total heap usage: 30 allocs, 18 frees, 24,364,070 bytes allocated
-==6291== 
-==6291== Searching for pointers to 12 not-freed blocks
-==6291== Checked 406,734,784 bytes
-==6291== 
-==6291== 80 bytes in 1 blocks are still reachable in loss record 1 of 10
-==6291==    at 0x18520899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==6291==    by 0x10BC72: create_empty_node (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10D57C: get_light (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10B8B8: parse_type_scene (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10BBE6: __set_values_scene (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10B4C0: __parse_file_scene (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10B6D3: __init__ (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10AED6: main (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291== 
-==6291== 160 bytes in 1 blocks are still reachable in loss record 2 of 10
-==6291==    at 0x18520899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==6291==    by 0x110D92: create_shape_array (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10B75C: __init__ (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10AED6: main (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291== 
-==6291== 248 bytes in 1 blocks are still reachable in loss record 3 of 10
-==6291==    at 0x18520899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==6291==    by 0x11B340: create_bvh_node (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x111344: box_around_triangle (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x111657: recursive_triangles (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x111677: recursive_triangles (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x111677: recursive_triangles (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x111677: recursive_triangles (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x111677: recursive_triangles (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x111677: recursive_triangles (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x111677: recursive_triangles (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x111677: recursive_triangles (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x111677: recursive_triangles (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291== 
-==6291== 496 bytes in 2 blocks are still reachable in loss record 4 of 10
-==6291==    at 0x18520899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==6291==    by 0x11B340: create_bvh_node (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x111344: box_around_triangle (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x111657: recursive_triangles (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x11169B: recursive_triangles (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x111677: recursive_triangles (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x111677: recursive_triangles (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x111677: recursive_triangles (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x111677: recursive_triangles (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x111677: recursive_triangles (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x111677: recursive_triangles (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x111677: recursive_triangles (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291== 
-==6291== 496 bytes in 2 blocks are still reachable in loss record 5 of 10
-==6291==    at 0x18520899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==6291==    by 0x11B340: create_bvh_node (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x1116B2: recursive_triangles (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x111677: recursive_triangles (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x111677: recursive_triangles (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x111677: recursive_triangles (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x111677: recursive_triangles (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x111677: recursive_triangles (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x111677: recursive_triangles (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x111677: recursive_triangles (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x111677: recursive_triangles (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x111677: recursive_triangles (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291== 
-==6291== 680 bytes in 1 blocks are still reachable in loss record 6 of 10
-==6291==    at 0x18520899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==6291==    by 0x10BC72: create_empty_node (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10F632: create_obj_path (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10C2D0: get_obj (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10BAD8: parse_type_scene (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10BBE6: __set_values_scene (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10B4C0: __parse_file_scene (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10B6D3: __init__ (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10AED6: main (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291== 
-==6291== 1,024 bytes in 1 blocks are still reachable in loss record 7 of 10
-==6291==    at 0x18520899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==6291==    by 0x18806BA3: _IO_file_doallocate (filedoalloc.c:101)
-==6291==    by 0x18815CDF: _IO_doallocbuf (genops.c:347)
-==6291==    by 0x18814F5F: _IO_file_overflow@@GLIBC_2.2.5 (fileops.c:744)
-==6291==    by 0x188136D4: _IO_new_file_xsputn (fileops.c:1243)
-==6291==    by 0x188136D4: _IO_file_xsputn@@GLIBC_2.2.5 (fileops.c:1196)
-==6291==    by 0x187FD14C: outstring_func (vfprintf-internal.c:239)
-==6291==    by 0x187FD14C: __vfprintf_internal (vfprintf-internal.c:1263)
-==6291==    by 0x187E879E: printf (printf.c:33)
-==6291==    by 0x10C17E: get_letters (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10F27E: __mallocate_objs_values (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10F523: __set_values_objs (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10F685: create_obj_path (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10C2D0: get_obj (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291== 
-==6291== 587,040 bytes in 1 blocks are still reachable in loss record 8 of 10
-==6291==    at 0x18520899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==6291==    by 0x10F3AA: __mallocate_objs_values (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10F523: __set_values_objs (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10F685: create_obj_path (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10C2D0: get_obj (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10BAD8: parse_type_scene (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10BBE6: __set_values_scene (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10B4C0: __parse_file_scene (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10B6D3: __init__ (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10AED6: main (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291== 
-==6291== 587,064 bytes in 1 blocks are still reachable in loss record 9 of 10
-==6291==    at 0x18520899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==6291==    by 0x10F2BC: __mallocate_objs_values (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10F523: __set_values_objs (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10F685: create_obj_path (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10C2D0: get_obj (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10BAD8: parse_type_scene (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10BBE6: __set_values_scene (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10B4C0: __parse_file_scene (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10B6D3: __init__ (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10AED6: main (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291== 
-==6291== 8,218,224 bytes in 1 blocks are still reachable in loss record 10 of 10
-==6291==    at 0x18520899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==6291==    by 0x10F429: __mallocate_objs_values (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10F523: __set_values_objs (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10F685: create_obj_path (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10C2D0: get_obj (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10BAD8: parse_type_scene (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10BBE6: __set_values_scene (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10B4C0: __parse_file_scene (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10B6D3: __init__ (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10AED6: main (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291== 
-==6291== LEAK SUMMARY:
-==6291==    definitely lost: 0 bytes in 0 blocks
-==6291==    indirectly lost: 0 bytes in 0 blocks
-==6291==      possibly lost: 0 bytes in 0 blocks
-==6291==    still reachable: 9,395,512 bytes in 12 blocks
-==6291==         suppressed: 0 bytes in 0 blocks
-==6291== 
-==6291== ERROR SUMMARY: 195680 errors from 8 contexts (suppressed: 0 from 0)
-==6291== 
-==6291== 1 errors in context 1 of 8:
-==6291== Invalid write of size 8
-==6291==    at 0x10FC43: set_face_value_on_slash (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10FF8F: get_each_part_face (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10FEC2: set_face_parts (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x11056A: get_faces (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10F208: parse_type_objs (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10F53F: __set_values_objs (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10F685: create_obj_path (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10C2D0: get_obj (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10BAD8: parse_type_scene (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10BBE6: __set_values_scene (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10B4C0: __parse_file_scene (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10B6D3: __init__ (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==  Address 0x1a1ec7c0 is 8,218,496 bytes inside a block of size 8,220,576 in arena "client"
-==6291== 
-==6291== 
-==6291== 1 errors in context 2 of 8:
-==6291== Invalid write of size 8
-==6291==    at 0x10FC1E: set_face_value_on_slash (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10FF8F: get_each_part_face (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10FEC2: set_face_parts (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x11056A: get_faces (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10F208: parse_type_objs (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10F53F: __set_values_objs (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10F685: create_obj_path (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10C2D0: get_obj (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10BAD8: parse_type_scene (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10BBE6: __set_values_scene (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10B4C0: __parse_file_scene (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10B6D3: __init__ (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==  Address 0x1a1ec7e0 is 8,218,528 bytes inside a block of size 8,220,576 in arena "client"
-==6291== 
-==6291== 
-==6291== 3 errors in context 3 of 8:
-==6291== Invalid write of size 8
-==6291==    at 0x10FC43: set_face_value_on_slash (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10FF8F: get_each_part_face (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10FE78: set_face_parts (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x11056A: get_faces (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10F208: parse_type_objs (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10F53F: __set_values_objs (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10F685: create_obj_path (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10C2D0: get_obj (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10BAD8: parse_type_scene (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10BBE6: __set_values_scene (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10B4C0: __parse_file_scene (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10B6D3: __init__ (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==  Address 0x1a1ec7a8 is 8,218,472 bytes inside a block of size 8,220,576 in arena "client"
-==6291== 
-==6291== 
-==6291== 3 errors in context 4 of 8:
-==6291== Invalid write of size 8
-==6291==    at 0x10FC1E: set_face_value_on_slash (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10FF8F: get_each_part_face (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10FE78: set_face_parts (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x11056A: get_faces (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10F208: parse_type_objs (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10F53F: __set_values_objs (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10F685: create_obj_path (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10C2D0: get_obj (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10BAD8: parse_type_scene (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10BBE6: __set_values_scene (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10B4C0: __parse_file_scene (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10B6D3: __init__ (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==  Address 0x1a1ec7c8 is 8,218,504 bytes inside a block of size 8,220,576 in arena "client"
-==6291== 
-==6291== 
-==6291== 24459 errors in context 5 of 8:
-==6291== Use of uninitialised value of size 8
-==6291==    at 0x10FC43: set_face_value_on_slash (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10FF8F: get_each_part_face (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10FEC2: set_face_parts (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x11056A: get_faces (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10F208: parse_type_objs (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10F53F: __set_values_objs (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10F685: create_obj_path (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10C2D0: get_obj (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10BAD8: parse_type_scene (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10BBE6: __set_values_scene (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10B4C0: __parse_file_scene (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10B6D3: __init__ (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==  Uninitialised value was created by a stack allocation
-==6291==    at 0x110471: get_faces (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291== 
-==6291== 
-==6291== 24459 errors in context 6 of 8:
-==6291== Use of uninitialised value of size 8
-==6291==    at 0x10FC1E: set_face_value_on_slash (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10FF8F: get_each_part_face (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10FEC2: set_face_parts (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x11056A: get_faces (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10F208: parse_type_objs (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10F53F: __set_values_objs (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10F685: create_obj_path (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10C2D0: get_obj (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10BAD8: parse_type_scene (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10BBE6: __set_values_scene (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10B4C0: __parse_file_scene (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10B6D3: __init__ (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==  Uninitialised value was created by a stack allocation
-==6291==    at 0x110471: get_faces (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291== 
-==6291== 
-==6291== 73377 errors in context 7 of 8:
-==6291== Use of uninitialised value of size 8
-==6291==    at 0x10FC43: set_face_value_on_slash (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10FF8F: get_each_part_face (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10FE78: set_face_parts (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x11056A: get_faces (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10F208: parse_type_objs (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10F53F: __set_values_objs (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10F685: create_obj_path (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10C2D0: get_obj (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10BAD8: parse_type_scene (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10BBE6: __set_values_scene (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10B4C0: __parse_file_scene (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10B6D3: __init__ (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==  Uninitialised value was created by a stack allocation
-==6291==    at 0x110471: get_faces (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291== 
-==6291== 
-==6291== 73377 errors in context 8 of 8:
-==6291== Use of uninitialised value of size 8
-==6291==    at 0x10FC1E: set_face_value_on_slash (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10FF8F: get_each_part_face (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10FE78: set_face_parts (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x11056A: get_faces (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10F208: parse_type_objs (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10F53F: __set_values_objs (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10F685: create_obj_path (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10C2D0: get_obj (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10BAD8: parse_type_scene (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10BBE6: __set_values_scene (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10B4C0: __parse_file_scene (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==    by 0x10B6D3: __init__ (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291==  Uninitialised value was created by a stack allocation
-==6291==    at 0x110471: get_faces (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==6291== 
-==6291== ERROR SUMMARY: 195680 errors from 8 contexts (suppressed: 0 from 0)
+==3616513== Memcheck, a memory error detector
+==3616513== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==3616513== Using Valgrind-3.18.1-42b08ed5bd-20211015 and LibVEX; rerun with -h for copyright info
+==3616513== Command: ./miniRT_bonus maps/aaa.rt
+==3616513== Parent PID: 3540984
+==3616513== 
+--3616513-- 
+--3616513-- Valgrind options:
+--3616513--    --leak-check=full
+--3616513--    --show-leak-kinds=all
+--3616513--    --track-origins=yes
+--3616513--    --verbose
+--3616513--    --log-file=val_out.log
+--3616513-- Contents of /proc/version:
+--3616513--   Linux version 6.6.72-x64v3-t2-jammy-xanmod1 (root@fv-az1245-313) (gcc (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0, GNU ld (GNU Binutils for Ubuntu) 2.38) #xanmod1 SMP PREEMPT_DYNAMIC Sat Jan 18 01:41:53 UTC 2025
+--3616513-- 
+--3616513-- Arch and hwcaps: AMD64, LittleEndian, amd64-cx16-lzcnt-rdtscp-sse3-ssse3-avx-avx2-bmi-f16c-rdrand-rdseed
+--3616513-- Page sizes: currently 4096, max supported 4096
+--3616513-- Valgrind library directory: /usr/libexec/valgrind
+--3616513-- Reading syms from /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus
+--3616513-- Reading syms from /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2
+--3616513--   Considering /usr/lib/debug/.build-id/9c/b53985768bb99f138f48655f7b8bf7e420d13d.debug ..
+--3616513--   .. build-id is valid
+--3616513-- Reading syms from /usr/libexec/valgrind/memcheck-amd64-linux
+--3616513--    object doesn't have a symbol table
+--3616513--    object doesn't have a dynamic symbol table
+--3616513-- Scheduler: using generic scheduler lock implementation.
+==3616513== Warning: set address range perms: large range [0x126000, 0x2468f000) (defined)
+--3616513-- Reading suppressions file: /usr/libexec/valgrind/default.supp
+==3616513== embedded gdbserver: reading from /tmp/vgdb-pipe-from-vgdb-to-3616513-by-trgoel-on-???
+==3616513== embedded gdbserver: writing to   /tmp/vgdb-pipe-to-vgdb-from-3616513-by-trgoel-on-???
+==3616513== embedded gdbserver: shared mem   /tmp/vgdb-pipe-shared-mem-vgdb-3616513-by-trgoel-on-???
+==3616513== 
+==3616513== TO CONTROL THIS PROCESS USING vgdb (which you probably
+==3616513== don't want to do, unless you know exactly what you're doing,
+==3616513== or are doing some strange experiment):
+==3616513==   /usr/bin/vgdb --pid=3616513 ...command...
+==3616513== 
+==3616513== TO DEBUG THIS PROCESS USING GDB: start GDB like this
+==3616513==   /path/to/gdb ./miniRT_bonus
+==3616513== and then give GDB the following command
+==3616513==   target remote | /usr/bin/vgdb --pid=3616513
+==3616513== --pid is optional if only one valgrind process is running
+==3616513== 
+--3616513-- REDIR: 0x246b9a40 (ld-linux-x86-64.so.2:strlen) redirected to 0x580bcec2 (???)
+--3616513-- REDIR: 0x246b9810 (ld-linux-x86-64.so.2:index) redirected to 0x580bcedc (???)
+--3616513-- Reading syms from /usr/libexec/valgrind/vgpreload_core-amd64-linux.so
+--3616513--    object doesn't have a symbol table
+--3616513-- Reading syms from /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so
+--3616513--    object doesn't have a symbol table
+==3616513== WARNING: new redirection conflicts with existing -- ignoring it
+--3616513--     old: 0x246b9a40 (strlen              ) R-> (0000.0) 0x580bcec2 ???
+--3616513--     new: 0x246b9a40 (strlen              ) R-> (2007.0) 0x24edde30 strlen
+--3616513-- REDIR: 0x246b6220 (ld-linux-x86-64.so.2:strcmp) redirected to 0x24edecd0 (strcmp)
+--3616513-- REDIR: 0x246b9fa0 (ld-linux-x86-64.so.2:mempcpy) redirected to 0x24ee2840 (mempcpy)
+--3616513-- Reading syms from /usr/lib/x86_64-linux-gnu/libXext.so.6.4.0
+--3616513--    object doesn't have a symbol table
+--3616513-- Reading syms from /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0
+--3616513--    object doesn't have a symbol table
+--3616513-- Reading syms from /usr/lib/x86_64-linux-gnu/libm.so.6
+--3616513--   Considering /usr/lib/debug/.build-id/a3/ad9bb40b4907e509e4404cb972645c19675ca3.debug ..
+--3616513--   .. build-id is valid
+--3616513-- Reading syms from /usr/lib/x86_64-linux-gnu/libc.so.6
+--3616513--   Considering /usr/lib/debug/.build-id/d5/197096f709801829b118af1b7cf6631efa2dcd.debug ..
+--3616513--   .. build-id is valid
+==3616513== WARNING: new redirection conflicts with existing -- ignoring it
+--3616513--     old: 0x251e4c60 (memalign            ) R-> (1011.0) 0x24edd080 memalign
+--3616513--     new: 0x251e4c60 (memalign            ) R-> (1017.0) 0x24edd050 aligned_alloc
+==3616513== WARNING: new redirection conflicts with existing -- ignoring it
+--3616513--     old: 0x251e4c60 (memalign            ) R-> (1011.0) 0x24edd080 memalign
+--3616513--     new: 0x251e4c60 (memalign            ) R-> (1017.0) 0x24edd020 aligned_alloc
+==3616513== WARNING: new redirection conflicts with existing -- ignoring it
+--3616513--     old: 0x251e4c60 (memalign            ) R-> (1011.0) 0x24edd080 memalign
+--3616513--     new: 0x251e4c60 (memalign            ) R-> (1017.0) 0x24edd050 aligned_alloc
+==3616513== WARNING: new redirection conflicts with existing -- ignoring it
+--3616513--     old: 0x251e4c60 (memalign            ) R-> (1011.0) 0x24edd080 memalign
+--3616513--     new: 0x251e4c60 (memalign            ) R-> (1017.0) 0x24edd020 aligned_alloc
+--3616513-- Reading syms from /usr/lib/x86_64-linux-gnu/libxcb.so.1.1.0
+--3616513--    object doesn't have a symbol table
+--3616513-- Reading syms from /usr/lib/x86_64-linux-gnu/libXau.so.6.0.0
+--3616513--    object doesn't have a symbol table
+--3616513-- Reading syms from /usr/lib/x86_64-linux-gnu/libXdmcp.so.6.0.0
+--3616513--    object doesn't have a symbol table
+--3616513-- Reading syms from /usr/lib/x86_64-linux-gnu/libbsd.so.0.11.5
+--3616513--    object doesn't have a symbol table
+--3616513-- Reading syms from /usr/lib/x86_64-linux-gnu/libmd.so.0.0.5
+--3616513--    object doesn't have a symbol table
+--3616513-- REDIR: 0x251e7720 (libc.so.6:strnlen) redirected to 0x24ece220 (_vgnU_ifunc_wrapper)
+--3616513-- REDIR: 0x251e79e0 (libc.so.6:strpbrk) redirected to 0x24ece220 (_vgnU_ifunc_wrapper)
+--3616513-- REDIR: 0x251e72e0 (libc.so.6:strcmp) redirected to 0x24ece220 (_vgnU_ifunc_wrapper)
+--3616513-- REDIR: 0x25205cd0 (libc.so.6:wcsnlen) redirected to 0x24ece220 (_vgnU_ifunc_wrapper)
+--3616513-- REDIR: 0x251e86d0 (libc.so.6:memset) redirected to 0x24ece220 (_vgnU_ifunc_wrapper)
+--3616513-- REDIR: 0x25204540 (libc.so.6:wcslen) redirected to 0x24ece220 (_vgnU_ifunc_wrapper)
+--3616513-- REDIR: 0x251e8c10 (libc.so.6:memcpy@@GLIBC_2.14) redirected to 0x24ece220 (_vgnU_ifunc_wrapper)
+--3616513-- REDIR: 0x25204370 (libc.so.6:wcschr) redirected to 0x24ece220 (_vgnU_ifunc_wrapper)
+--3616513-- REDIR: 0x251e7260 (libc.so.6:index) redirected to 0x24ece220 (_vgnU_ifunc_wrapper)
+--3616513-- REDIR: 0x251e7960 (libc.so.6:rindex) redirected to 0x24ece220 (_vgnU_ifunc_wrapper)
+--3616513-- REDIR: 0x251e85a0 (libc.so.6:memmove) redirected to 0x24ece220 (_vgnU_ifunc_wrapper)
+==3616513== Preferring higher priority redirection:
+--3616513--     old: 0x252df7c0 (__memcpy_avx_unalign) R-> (2018.0) 0x24edff90 __memcpy_avx_unaligned_erms
+--3616513--     new: 0x252df7c0 (__memcpy_avx_unalign) R-> (2018.1) 0x24ee1880 memmove
+--3616513-- REDIR: 0x252043f0 (libc.so.6:wcscmp) redirected to 0x24ece220 (_vgnU_ifunc_wrapper)
+--3616513-- REDIR: 0x251e89e0 (libc.so.6:stpncpy) redirected to 0x24ece220 (_vgnU_ifunc_wrapper)
+--3616513-- REDIR: 0x252049b0 (libc.so.6:wmemchr) redirected to 0x24ece220 (_vgnU_ifunc_wrapper)
+--3616513-- REDIR: 0x251e7830 (libc.so.6:strncmp) redirected to 0x24ece220 (_vgnU_ifunc_wrapper)
+--3616513-- REDIR: 0x251e8a70 (libc.so.6:strcasecmp) redirected to 0x24ece220 (_vgnU_ifunc_wrapper)
+--3616513-- REDIR: 0x251e7420 (libc.so.6:strcspn) redirected to 0x24ece220 (_vgnU_ifunc_wrapper)
+--3616513-- REDIR: 0x25204470 (libc.so.6:wcscpy) redirected to 0x24ece220 (_vgnU_ifunc_wrapper)
+--3616513-- REDIR: 0x251e71d0 (libc.so.6:strcat) redirected to 0x24ece220 (_vgnU_ifunc_wrapper)
+--3616513-- REDIR: 0x251e8b60 (libc.so.6:strncasecmp_l) redirected to 0x24ece220 (_vgnU_ifunc_wrapper)
+--3616513-- REDIR: 0x251e8480 (libc.so.6:bcmp) redirected to 0x24ece220 (_vgnU_ifunc_wrapper)
+--3616513-- REDIR: 0x251f0570 (libc.so.6:memrchr) redirected to 0x24ece220 (_vgnU_ifunc_wrapper)
+--3616513-- REDIR: 0x251ea010 (libc.so.6:strchrnul) redirected to 0x24ece220 (_vgnU_ifunc_wrapper)
+--3616513-- REDIR: 0x251e7390 (libc.so.6:strcpy) redirected to 0x24ece220 (_vgnU_ifunc_wrapper)
+--3616513-- REDIR: 0x251e8b10 (libc.so.6:strcasecmp_l) redirected to 0x24ece220 (_vgnU_ifunc_wrapper)
+--3616513-- REDIR: 0x251e76a0 (libc.so.6:strlen) redirected to 0x24ece220 (_vgnU_ifunc_wrapper)
+--3616513-- REDIR: 0x251e78d0 (libc.so.6:strncpy) redirected to 0x24ece220 (_vgnU_ifunc_wrapper)
+--3616513-- REDIR: 0x251e8950 (libc.so.6:stpcpy) redirected to 0x24ece220 (_vgnU_ifunc_wrapper)
+--3616513-- REDIR: 0x251e83f0 (libc.so.6:memchr) redirected to 0x24ece220 (_vgnU_ifunc_wrapper)
+--3616513-- REDIR: 0x251e7b00 (libc.so.6:strspn) redirected to 0x24ece220 (_vgnU_ifunc_wrapper)
+--3616513-- REDIR: 0x251e87d0 (libc.so.6:mempcpy) redirected to 0x24ece220 (_vgnU_ifunc_wrapper)
+--3616513-- REDIR: 0x251e8ac0 (libc.so.6:strncasecmp) redirected to 0x24ece220 (_vgnU_ifunc_wrapper)
+--3616513-- REDIR: 0x251e9f80 (libc.so.6:rawmemchr) redirected to 0x24ece220 (_vgnU_ifunc_wrapper)
+--3616513-- REDIR: 0x252dc610 (libc.so.6:__strrchr_avx2) redirected to 0x24edd810 (rindex)
+--3616513-- REDIR: 0x251e40a0 (libc.so.6:malloc) redirected to 0x24ed7820 (malloc)
+--3616513-- REDIR: 0x251e43e0 (libc.so.6:free) redirected to 0x24eda210 (free)
+--3616513-- REDIR: 0x252dc400 (libc.so.6:__strchrnul_avx2) redirected to 0x24ee2330 (strchrnul)
+--3616513-- REDIR: 0x252df780 (libc.so.6:__mempcpy_avx_unaligned_erms) redirected to 0x24ee2440 (mempcpy)
+--3616513-- REDIR: 0x252dc7e0 (libc.so.6:__strlen_avx2) redirected to 0x24eddd10 (strlen)
+--3616513-- REDIR: 0x252df7c0 (libc.so.6:__memcpy_avx_unaligned_erms) redirected to 0x24ee1880 (memmove)
+--3616513-- REDIR: 0x252dc960 (libc.so.6:__strnlen_avx2) redirected to 0x24eddcb0 (strnlen)
+--3616513-- REDIR: 0x251e7fc0 (libc.so.6:__GI_strstr) redirected to 0x24ee2ae0 (__strstr_sse2)
+--3616513-- REDIR: 0x252d7d80 (libc.so.6:__strncmp_avx2) redirected to 0x24ede3e0 (strncmp)
+--3616513-- REDIR: 0x251e5520 (libc.so.6:calloc) redirected to 0x24edc9d0 (calloc)
+--3616513-- REDIR: 0x252737e0 (libc.so.6:__strcpy_chk) redirected to 0x24ee23a0 (__strcpy_chk)
+--3616513-- REDIR: 0x252d8a80 (libc.so.6:__memcmp_avx2_movbe) redirected to 0x24ee1010 (bcmp)
+--3616513-- REDIR: 0x252dff80 (libc.so.6:__memset_avx2_unaligned_erms) redirected to 0x24ee1770 (memset)
+--3616513-- REDIR: 0x251e4740 (libc.so.6:realloc) redirected to 0x24edcc50 (realloc)
+--3616513-- REDIR: 0x252de040 (libc.so.6:__strncpy_avx2) redirected to 0x24eddfe0 (strncpy)
+--3616513-- REDIR: 0x252d7940 (libc.so.6:__strcmp_avx2) redirected to 0x24edebd0 (strcmp)
+--3616513-- REDIR: 0x252ddcb0 (libc.so.6:__strcpy_avx2) redirected to 0x24edde60 (strcpy)
+--3616513-- REDIR: 0x252d82c0 (libc.so.6:__memchr_avx2) redirected to 0x24eded50 (memchr)
+==3616513== 
+==3616513== HEAP SUMMARY:
+==3616513==     in use at exit: 0 bytes in 0 blocks
+==3616513==   total heap usage: 720 allocs, 720 frees, 6,563,268 bytes allocated
+==3616513== 
+==3616513== All heap blocks were freed -- no leaks are possible
+==3616513== 
+==3616513== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 1 from 1)
+--3616513-- 
+--3616513-- used_suppression:      1 X on SUSE11 writev uninit padding /usr/libexec/valgrind/default.supp:377
+==3616513== 
+==3616513== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 1 from 1)

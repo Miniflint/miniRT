@@ -30,6 +30,7 @@ void	print_all_structs(t_all *all)
 	print_cy(all->cylinders, 0);
 	print_bx(all->boxes, 0);
 	print_ob(all->objects, 0);
+	printf("\n");
 }
 
 int	__set_values_scene(t_all *all, char **s)

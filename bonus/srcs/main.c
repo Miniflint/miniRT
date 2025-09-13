@@ -42,10 +42,12 @@ void print_bvh_dot(t_hitbox *node, FILE *file)
 	{
 		if (node->type == SPHERE)
 			fprintf(file, "\t\"%p\" [label=\"SPHERE\"];\n", (void *)node);
-		if (node->type == BOX)
+		else if (node->type == BOX)
 			fprintf(file, "\t\"%p\" [label=\"BOX\"];\n", (void *)node);
-		if (node->type == CYLINDER)
+		else if (node->type == CYLINDER)
 			fprintf(file, "\t\"%p\" [label=\"CYLINDER\"];\n", (void *)node);
+		else if (node->type == TRIANGLE)
+			fprintf(file, "\t\"%p\" [label=\"TRIANGLE\"];\n", (void *)node);
 	}
 	else if (node->node_type == INTERNAL)
 		fprintf(file, "\t\"%p\" [label=\"%p\"];\n", (void *)node, (void *)node);
@@ -94,19 +96,19 @@ int	main(int argc, char **argv)
 			all->win_width, all->win_height);
 	all->render_hb = tri_lib()->create_render(win);
 	win->auto_draw = 1;
-#ifdef THREADS
-	printf("threads on\n");
-	launch_threads(all);
-	usleep(1000);
-	change_threads_mode(all, CONTINUE);
-#else
-	printf("threads off\n");
-	start_rays(all);
-#endif
 #ifndef BVH
 	printf("BVH OFF\n");
 #else
 	printf("BVH ON\n");
+#endif
+#ifdef THREADS
+	printf("threads on\n");
+	launch_threads(all);
+	usleep(10000);
+	change_threads_mode(all, CONTINUE);
+#else
+	printf("threads off\n");
+	start_rays(all);
 #endif
 
 	tri_lib()->draw_windows();

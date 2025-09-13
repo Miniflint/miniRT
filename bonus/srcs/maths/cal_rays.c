@@ -1,13 +1,21 @@
 #include "miniRT.h"
 #include "tri_lib.h"
 
-void	_init_canvas(t_all *all)
+void	_init_canvas(t_all *all) //VFOV
 {
 	all->canvas.size_y = 2 * tan((all->camera.fov * (PI_DEFINED / 180)) / 2);
 	all->canvas.unit = all->canvas.size_y / (double)all->win_height;
 	all->canvas.size_x = all->win_width * all->canvas.unit;
 	all->canvas.pix_y[0] = -(all->canvas.size_y / 2);
 }
+
+// void	_init_canvas(t_all *all)
+// {
+// 	all->canvas.size_x = 2 * tan((all->camera.fov * (PI_DEFINED / 180)) / 2);
+// 	all->canvas.unit = all->canvas.size_x / (double)all->win_width;
+// 	all->canvas.size_y = all->win_height * all->canvas.unit;
+// 	all->canvas.pix_y[0] = -(all->canvas.size_y / 2);
+// }
 
 void	init_start_ray(t_all *all)
 {
@@ -26,8 +34,12 @@ void	init_start_ray(t_all *all)
 
 void	_cal_rays_ext(t_all *all, int i, int *j)
 {
+	// t_rgb_f	temp;
+
 	all->canvas.rays_save[i][*j].start = all->camera.viewpoint;
+	// temp = all->canvas.rays[i][*j].color_ray;
 	all->canvas.rays[i][*j] = all->canvas.rays_save[i][*j];
+	// all->canvas.rays[i][*j].color_ray = temp;
 	++(*j);
 }
 
@@ -64,6 +76,7 @@ void	reset_rays(t_all *all)
 {
 	int		i;
 	int		j;
+	// t_rgb_f	temp;
 
 	i = 0;
 	while (i < all->win_height)
@@ -72,7 +85,9 @@ void	reset_rays(t_all *all)
 		while (j < all->win_width)
 		{
 			all->canvas.rays_save[i][j].start = all->camera.viewpoint;
+			// temp = all->canvas.rays[i][j].color_ray;
 			all->canvas.rays[i][j] = all->canvas.rays_save[i][j];
+			// all->canvas.rays[i][j].color_ray = temp;
 			++j;
 		}
 		++i;

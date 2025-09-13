@@ -16,15 +16,29 @@ void	print_pts(t_vec v)
 
 void	print_box(t_bvh *bvh)
 {
-	int	i;
-
-	i = 0;
-	while (i < 4)
-	{
-		print_pts(bvh->bottom[i]);
-		print_pts(bvh->top[i]);
-		i++;
-	}
+	printf("\t\t\t(%3.2f,%3.2f,%3.2f)     (%3.2f,%3.2f,%3.2f)\n", bvh->top[2].x,
+		bvh->top[2].y, bvh->top[2].z, bvh->top[3].x, bvh->top[3].y,
+		bvh->top[3].z);
+	printf("                   \t      ____________________ \n");
+	printf("                   \t    /                    /|\n");
+	printf("                   \t   /                    / |\n");
+	printf("                   \t  /                    /  |\n");
+	printf("                   \t /                    /   |\n");
+	printf("(%3.2f,%3.2f,%3.2f)\t/___________________ /(%3.2f,%3.2f,%3.2f)\n",
+		bvh->top[0].x, bvh->top[0].y, bvh->top[0].z, bvh->top[1].x,
+		bvh->top[1].y, bvh->top[1].z);
+	printf("                   \t|                   |     |\n");
+	printf("                   \t|                   |     |\n");
+	printf("                   \t|                   |     |\n");
+	printf("                   \t|                   |    / (%3.2f,%3.2f,%3.2f) \
+		\n", bvh->bottom[3].x, bvh->bottom[3].y, bvh->bottom[3].z);
+	printf("                   \t|                   |   /\n");
+	printf("                   \t|                   |  /\n");
+	printf("                   \t|                   | /\n");
+	printf("                   \t|___________________|/\n");
+	printf("             (%3.2f,%3.2f,%3.2f)     (%3.2f,%3.2f,%3.2f)\n\n",
+		bvh->bottom[0].x, bvh->bottom[0].y, bvh->bottom[0].z,
+		bvh->bottom[1].x, bvh->bottom[1].y, bvh->bottom[1].z);
 }
 
 t_bvh	create_box(t_vec a, t_vec b)
