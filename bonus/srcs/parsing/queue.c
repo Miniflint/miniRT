@@ -27,6 +27,8 @@ int	queue_push(t_queue *q, t_hitbox *curr)
 {
 	unsigned long	next_back;
 
+	if (!q->capacity)
+		return (0);
 	next_back = (q->back + 1) % q->capacity;
 	q->nodes[q->back] = curr;
 	if (next_back == q->front)

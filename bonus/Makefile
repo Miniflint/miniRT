@@ -61,15 +61,11 @@ else ifeq ($(UNAME), Linux)
 endif
 
 ifeq ($(DEBUG), yes)
-	CFLAGS += -pg
+	CFLAGS += -g
 endif
 
 ifeq ($(OPTI), yes)
 	CFLAGS += -O3
-endif
-
-ifeq ($(NOLOOP), yes)
-	CFLAGS += -pg -DNOLOOP="1"
 endif
 
 ifeq ($(BVH), yes)
