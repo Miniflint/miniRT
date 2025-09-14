@@ -60,7 +60,7 @@ t_hitbox	*box_around_triangle(t_face *face)
 			highest[1],
 			highest[2]
 	});
-	print_box(&new->box);
+	//print_box(&new->box);
 	new->shape = (void *)face;
 	new->type = TRIANGLE;
 	new->node_type = LEAF;

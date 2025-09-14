@@ -47,7 +47,7 @@ void print_bvh_dot_iter(t_hitbox *root, FILE *file)
 		curr = queue_pop(&q);
 		if (!curr)
 			continue ;
-		printf("[label=\"%p\"];\n", (void *)curr);
+		//printf("[label=\"%p\"];\n", (void *)curr);
 		if (curr->node_type == LEAF)
 		{
 			if (curr->type == SPHERE)

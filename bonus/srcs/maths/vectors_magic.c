@@ -19,7 +19,7 @@ void	make_perpendicular(t_cam *cam)
 	cross_product(&cam->dir, &ideal_up, &cam->dir_x);
 	mag = dot_product(&cam->dir_x, &cam->dir_x);
 	norm_vectors(&cam->dir_x, sqrt(mag), &cam->dir_x);
-	cross_product(&cam->dir, &cam->dir_x, &cam->dir_y);
+	cross_product(&cam->dir_x, &cam->dir, &cam->dir_y);
 	mag = dot_product(&cam->dir_y, &cam->dir_y);
 	norm_vectors(&cam->dir_y, sqrt(mag), &cam->dir_y);
 }
