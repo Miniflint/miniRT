@@ -64,7 +64,7 @@ typedef struct S_material
 	double	ks; // >= 0
 	double	shininess; // >= 0
 	double	metalness; // entre 0 et 1
-	double	reflection; // entre 0 et 1
+	t_rgb_f	reflection; // entre 0 et 1
 }			t_material;
 
 typedef struct s_light_vec
@@ -123,7 +123,8 @@ typedef struct S_ray
 	t_rgb_f		color_specular;
 	t_shape		shape;
 	t_threads	*curr;
-	double		reflection;
+	t_rgb_f		reflection;
+	char		end;
 	char		to_draw;
 	int			x;
 	int			y;

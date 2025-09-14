@@ -44,5 +44,5 @@ void	set_shapes(t_ray *ray)
 		ray->color_shape =  (t_rgb_f){0.5, 0.5, 0.5};//((t_face *)(ray->shape.shape))->color;
 		//ray->shape.material = ((t_face *)(ray->shape.shape))->material;
 	}
-	ray->shape.material = (t_material){.ks=0.8, .shininess=256}; //En attendant le parsing
+	ray->shape.material = (t_material){.ks=0.8, .shininess=256, .reflection={0, 0, 0}}; //En attendant le parsing
 }

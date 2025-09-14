@@ -93,10 +93,18 @@ void	*thread_routine(void *content)
 		// iter_rays(all, thread, get_diffuse_light);
 		if (all->render_on)
 		{
-			if (iter_rays_line_stop(all, thread, get_diffuse_light) == (t_thread_mode)STOP)
+			iter_rays(all, thread, init_color_ray);
+			if (iter_rays_line_stop(all, thread, get_local_color) == (t_thread_mode)STOP)
 				return (NULL);
 			else if (thread->mode ==(t_thread_mode)RESET)
 				continue ;
+			while (1)
+			{
+			if (iter_rays_line_stop(all, thread, traceray_reflection) == (t_thread_mode)STOP)
+				return (NULL);
+			else if (thread->mode ==(t_thread_mode)RESET)
+				break ;
+			}
 
 			// if (start_rays_thread(all, thread) == (t_thread_mode)STOP)
 			// 	return (NULL);
@@ -112,7 +120,7 @@ void	*thread_routine(void *content)
 			// else if (thread->mode ==(t_thread_mode)RESET)
 			// 	continue ;
 		}
-		if (get_thread_mode_pause_continue(all, thread) == (t_thread_mode)STOP)
+		else if (get_thread_mode_pause_continue(all, thread) == (t_thread_mode)STOP)
 			return (NULL);
 	}
 	return (NULL);

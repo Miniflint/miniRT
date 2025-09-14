@@ -182,6 +182,9 @@ void			reset_rays(t_all *all);
 int				rotate_camera(t_vec *original, t_vec *axis,
 					t_vec *for_perpendicular, double angle);
 void			diffuse_light(t_ray *ray, t_all *all, t_light *light);
+void			get_local_color(t_ray *ray, t_all *all);
+void			init_color_ray(t_ray *ray);
+void			traceray_reflection(t_ray *ray, t_all *all);
 void			closest_cylinder(t_ray *ray, t_cylinder *cylinder);
 void			closest_box(t_ray *ray, t_box *boxes);
 
@@ -225,7 +228,7 @@ int				move_point(t_tri_lib *lib, t_coord *point,
 					t_vec *dir, double amount);
 
 /* RAYS SPECIAL */
-void			iter_rays(t_all *all, t_threads *thread, void (*f)(t_ray *, t_all *));
+void			iter_rays(t_all *all, t_threads *thread, void (*f)(t_ray *));
 t_thread_mode	iter_rays_line_stop(t_all *all, t_threads *thread, void (*f)(t_ray *, t_all *));
 void			get_closest_color(t_ray *ray, t_all *all);
 void			get_diffuse_light(t_ray *ray, t_all *all);

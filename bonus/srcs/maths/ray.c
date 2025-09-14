@@ -24,14 +24,16 @@ void	closest_plane(t_ray *ray, t_plane *plane)
 void	init_ray(t_ray *ray, t_all *all)
 {
 	// ray->color_ray = (t_rgb_f){0, 0, 0};
+	ray->end = 0;
 	if (all->render_hitbox)
 		_replace_s_px_on_render(all->render_hb, 0, (t_point2d){ray->y, ray->x}, all->canvas.pixel_values);
 	ray->color_shape = (t_rgb_f){0, 0, 0};
 	ray->color_diffuse = (t_rgb_f){0, 0, 0};
 	ray->color_specular = (t_rgb_f){0, 0, 0};
+	ray->color_ray = (t_rgb_f){0, 0, 0};
 	ray->shape.type = CAMERA;
 	ray->shape.shape = NULL;
-	ray->reflection = 1;
+	ray->reflection = (t_rgb_f){1, 1, 1};
 	ray->shape.t1 = INFINITY;
 	ray->shape.t2 = INFINITY;
 }
@@ -40,25 +42,282 @@ void	init_ray(t_ray *ray, t_all *all)
 //     return 2 * N * dot(N, R) - R;
 // }
 
-void	init_reflect_ray(t_ray *ray, t_all *all, t_rgb_f *ray_color_save)
+void	init_reflect_ray(t_ray *ray, t_all *all)
 {
 	t_vec	vec;
-	t_vec	vec2;
 
 	(void)all;
 	// ray->color_ray = (t_rgb_f){0, 0, 0};
-	*ray_color_save = ray->color_ray;
 	ray->color_shape = (t_rgb_f){0, 0, 0};
 	ray->color_diffuse = (t_rgb_f){0, 0, 0};
 	ray->color_specular = (t_rgb_f){0, 0, 0};
-	ray->start = ray->hit;
-	vec = scalar_multiplication_no_v(&ray->shape.normal, 2);
-	vec2 = scalar_multiplication_no_v(&vec, dot_product(&ray->shape.normal, &ray->dir));
-	ray->dir = sub_vectors_no_v(&vec2, &ray->dir);
+	add_vectors(&ray->hit, scalar_multiplication(&ray->shape.normal, 1e-6, &vec), &ray->start);
+	vec = scalar_multiplication_no_v(&ray->shape.normal, 2.0 * dot_product(&ray->shape.normal, &ray->dir));
+	ray->dir = sub_vectors_no_v(&ray->dir, &vec);
+	norm_vectors(&ray->dir, vec_magnitude(&ray->dir), &ray->dir);
 	ray->shape.type = CAMERA;
 	ray->shape.shape = NULL;
 	ray->shape.t1 = INFINITY;
 	ray->shape.t2 = INFINITY;
+}
+
+void	traverse_bvh_iter(t_ray *ray, t_hitbox *bvh, t_render *render, int hb)
+{
+	t_queue		q;
+	t_hitbox	*curr;
+	const t_all	*all = __get_all();
+
+	if (queue_init(&q, all->nb_shapes))
+		return ;
+	queue_push(&q, bvh);
+	while (!queue_is_empty(&q))
+	{
+		curr = queue_pop(&q);
+		if (!curr || !intersect_hitbox(ray, &curr->box))
+			continue ;
+		if (hb)
+			tri_lib()->put_pixel_to_render(render, (t_argb){.a=0.25, .r=255,
+				.g=255,.b=255}, ray->y, ray->x);
+		if (curr->node_type == LEAF)
+		{
+			if (all->render_on)
+			{
+				if (curr->type == SPHERE)
+					intersect_ray_sphere(ray, (t_sphere *)curr->shape);
+				else if (curr->type == CYLINDER)
+					intersect_cylinder(ray, (t_cylinder *)curr->shape);
+				else if (curr->type == BOX)
+					intersect_box(ray, (t_box *)curr->shape);
+				else if (curr->type == TRIANGLE)
+					intersect_triangle(ray, (t_face *)curr->shape);
+			}
+		}
+		else
+		{
+			if (curr->left)
+				queue_push(&q, curr->left);
+			if (curr->right)
+				queue_push(&q, curr->right);
+		}
+	}
+	queue_free(&q);
+}
+
+void	get_diffuse_light(t_ray *ray, t_all *all)
+{
+	if (isinf(ray->shape.t1))
+	{
+		ray->color_ray = ray->color;
+		ray->to_draw = 1;
+		return ;
+	}
+	ray->hit = scalar_multiplication_no_v(&ray->dir, ray->shape.t1);
+	add_vectors(&ray->hit, &ray->start, &ray->hit);
+	set_shapes(ray);
+	if (dot_product(&ray->shape.normal, &ray->dir) > 0)
+		ray->shape.normal = (t_vec){-ray->shape.normal.x,
+			-ray->shape.normal.y, -ray->shape.normal.z};
+	diffuse_light(ray, all, all->lights);
+	ray->color_ray.r = ray->color_shape.r * ray->color_diffuse.r + ray->color_specular.r;
+	ray->color_ray.g = ray->color_shape.g * ray->color_diffuse.g + ray->color_specular.g;
+	ray->color_ray.b = ray->color_shape.b * ray->color_diffuse.b + ray->color_specular.b;
+	ray->to_draw = 1;
+}
+
+void	get_local_color(t_ray *ray, t_all *all)
+{
+	t_rgb_f	reflection;
+
+	if (isinf(ray->shape.t1) || ray->end)
+	{
+		ray->end = 1;
+		return ;
+	}
+	ray->hit = scalar_multiplication_no_v(&ray->dir, ray->shape.t1);
+	add_vectors(&ray->hit, &ray->start, &ray->hit);
+	set_shapes(ray);
+	if (dot_product(&ray->shape.normal, &ray->dir) > 0)
+		ray->shape.normal = (t_vec){-ray->shape.normal.x,
+			-ray->shape.normal.y, -ray->shape.normal.z};
+	diffuse_light(ray, all, all->lights);
+	reflection = ray->shape.material.reflection;
+	ray->color_ray.r += (ray->color_shape.r * ray->color_diffuse.r + ray->color_specular.r) * (1.0 - reflection.r) * ray->reflection.r;
+	ray->color_ray.g += (ray->color_shape.g * ray->color_diffuse.g + ray->color_specular.g) * (1.0 - reflection.g) * ray->reflection.g;
+	ray->color_ray.b += (ray->color_shape.b * ray->color_diffuse.b + ray->color_specular.b) * (1.0 - reflection.b) * ray->reflection.b;
+	ray->reflection.r *= reflection.r;
+	ray->reflection.g *= reflection.g;
+	ray->reflection.b *= reflection.b;
+	ray->to_draw = 1;
+	if (ray->reflection.r <= 0 && ray->reflection.g <= 0 && ray->reflection.b <= 0)
+		ray->end = 1;
+}
+
+void	init_color_ray(t_ray *ray)
+{
+	if (!ray->end)
+		ray->color_ray = (t_rgb_f){0, 0, 0};
+}
+
+void	get_closest_color(t_ray *ray, t_all *all)
+{
+	init_ray(ray, all);
+	closest_plane(ray, all->planes);
+	#ifndef BVH
+		closest_sphere(ray, all->spheres);
+		closest_cylinder(ray, all->cylinders);
+		closest_box(ray, all->boxes);
+	#else
+		traverse_bvh_iter(ray, all->bvh, all->render_hb, all->render_hitbox);
+	#endif
+	if (isinf(ray->shape.t1))
+	{
+		ray->end = 1;
+		ray->color_ray = ray->color;
+	}
+	else if (ray->shape.type == (t_obj_type)CYLINDER)
+		ray->color_ray = ((t_cylinder *)(ray->shape.shape))->color;
+	else if (ray->shape.type == (t_obj_type)SPHERE)
+		ray->color_ray = ((t_sphere *)(ray->shape.shape))->color;
+	else if (ray->shape.type == (t_obj_type)BOX)
+		ray->color_ray = ((t_box *)(ray->shape.shape))->color;
+	else if (ray->shape.type == (t_obj_type)PLANE)
+		ray->color_ray = ((t_plane *)(ray->shape.shape))->color;
+	ray->to_draw = 1;
+}
+
+void	traceray_reflection(t_ray *ray, t_all *all)
+{
+	if (ray->end)
+		return ;
+	init_reflect_ray(ray, all);
+	closest_plane(ray, all->planes);
+	#ifndef BVH
+		closest_sphere(ray, all->spheres);
+		closest_cylinder(ray, all->cylinders);
+		closest_box(ray, all->boxes);
+	#else
+		traverse_bvh_iter(ray, all->bvh, all->render_hb, 0);
+	#endif
+	get_local_color(ray, all);
+}
+
+t_thread_mode	iter_rays_line_stop(t_all *all, t_threads *thread, void (*f)(t_ray *, t_all *))
+{
+	int				index[2];
+	int				real[2];
+	const int		mi_pix = all->canvas.pixel_values >> 1;
+
+	real[0] = thread->start;
+	index[0] = mi_pix + real[0];
+	while (real[0] < thread->end)
+	{
+		real[1] = 0;
+		index[1] = mi_pix;
+		index[0] -= (index[0] >= thread->end);
+		while (real[1] < all->win_width)
+		{
+			index[1] -= (index[1] >= all->win_width);
+			all->canvas.rays[index[0]][index[1]].y = index[1];
+			all->canvas.rays[index[0]][index[1]].x = index[0];
+			// if (all->render_hitbox)
+			// 	_replace_s_px_on_render(all->render_hb, 0,
+			// 		(t_point2d){real[1], real[0]}, all->canvas.pixel_values);
+			f(&all->canvas.rays[index[0]][index[1]], all);
+			real[1] += all->canvas.pixel_values;
+			index[1] = real[1] + mi_pix;
+		}
+		if (get_thread_mode_pause(all, thread) == (t_thread_mode)STOP)
+			return ((t_thread_mode)STOP);
+		else if (thread->mode == (t_thread_mode)RESET)
+			return ((t_thread_mode)RESET);
+		real[0] += all->canvas.pixel_values;
+		index[0] = real[0] + mi_pix;
+	}
+	return (((t_thread_mode)CONTINUE));
+}
+
+void	iter_rays(t_all *all, t_threads *thread, void (*f)(t_ray *))
+{
+	int				index[2];
+	int				real[2];
+	const int		mi_pix = all->canvas.pixel_values >> 1;
+
+	real[0] = thread->start;
+	index[0] = mi_pix + real[0];
+	while (real[0] < thread->end)
+	{
+		real[1] = 0;
+		index[1] = mi_pix;
+		index[0] -= (index[0] >= thread->end);
+		while (real[1] < all->win_width)
+		{
+			index[1] -= (index[1] >= all->win_width);
+			f(&all->canvas.rays[index[0]][index[1]]);
+			real[1] += all->canvas.pixel_values;
+			index[1] = real[1] + mi_pix;
+		}
+		real[0] += all->canvas.pixel_values;
+		index[0] = real[0] + mi_pix;
+	}
+}
+
+//--------NO THREADS--------//
+
+void	traceray(t_ray *ray, t_all *all)
+{
+	init_ray(ray, all);
+	closest_plane(ray, all->planes);
+	#ifndef BVH
+		closest_sphere(ray, all->spheres);
+		closest_cylinder(ray, all->cylinders);
+		closest_box(ray, all->boxes);
+	#else
+		traverse_bvh_iter(ray, all->bvh, all->render_hb, all->render_hitbox);
+	#endif
+	if (isinf(ray->shape.t1))
+	{
+		ray->color_ray = ray->color;
+		return ;
+	}
+	ray->hit = scalar_multiplication_no_v(&ray->dir, ray->shape.t1);
+	add_vectors(&ray->hit, &ray->start, &ray->hit);
+	set_shapes(ray);
+	if (dot_product(&ray->shape.normal, &ray->dir) > 0)
+		ray->shape.normal = (t_vec){-ray->shape.normal.x,
+			-ray->shape.normal.y, -ray->shape.normal.z};
+	diffuse_light(ray, all, all->lights);
+	ray->color_ray.r = ray->color_shape.r * ray->color_diffuse.r + ray->color_specular.r;
+	ray->color_ray.g = ray->color_shape.g * ray->color_diffuse.g + ray->color_specular.g;
+	ray->color_ray.b = ray->color_shape.b * ray->color_diffuse.b + ray->color_specular.b;
+}
+
+void	start_rays(t_all *all)
+{
+	int				index[2];
+	int				real[2];
+	const int		mi_pix = all->canvas.pixel_values >> 1;
+
+	index[0] = mi_pix;
+	real[0] = 0;
+	while (real[0] < all->win_height)
+	{
+		real[1] = 0;
+		index[1] = mi_pix;
+		index[0] -= (index[0] >= all->win_height);
+		while (real[1] < all->win_width)
+		{
+			index[1] -= (index[1] >= all->win_width);
+			all->canvas.rays[index[0]][index[1]].y = index[1];
+			all->canvas.rays[index[0]][index[1]].x = index[0];
+			_replace_s_px_on_render(all->render_hb, 0,
+				(t_point2d){real[1], real[0]}, all->canvas.pixel_values);
+			traceray(&all->canvas.rays[index[0]][index[1]], all);
+			real[1] += all->canvas.pixel_values;
+			index[1] = real[1] + mi_pix;
+		}
+		real[0] += all->canvas.pixel_values;
+		index[0] = real[0] + mi_pix;
+	}
 }
 
 /*
@@ -97,147 +356,6 @@ void	init_reflect_ray(t_ray *ray, t_all *all, t_rgb_f *ray_color_save)
 // 	}
 // }
 
-void	traverse_bvh_iter(t_ray *ray, t_hitbox *bvh, t_render *render, int hb)
-{
-	t_queue		q;
-	t_hitbox	*curr;
-	const t_all	*all = __get_all();
-
-	if (queue_init(&q, all->nb_shapes))
-		return ;
-	queue_push(&q, bvh);
-	while (!queue_is_empty(&q))
-	{
-		curr = queue_pop(&q);
-		if (!curr || !intersect_hitbox(ray, &curr->box))
-			continue ;
-		if (hb)
-			tri_lib()->put_pixel_to_render(render, (t_argb){.a=0.25, .r=255,
-				.g=255,.b=255}, ray->y, ray->x);
-		if (curr->node_type == LEAF)
-		{
-			if (curr->type == SPHERE && all->render_on)
-				intersect_ray_sphere(ray, (t_sphere *)curr->shape);
-			else if (curr->type == CYLINDER)
-				intersect_cylinder(ray, (t_cylinder *)curr->shape);
-			else if (curr->type == BOX)
-				intersect_box(ray, (t_box *)curr->shape);
-			else if (curr->type == TRIANGLE)
-				intersect_triangle(ray, (t_face *)curr->shape);
-		}
-		else
-		{
-			if (curr->left)
-				queue_push(&q, curr->left);
-			if (curr->right)
-				queue_push(&q, curr->right);
-		}
-	}
-	queue_free(&q);
-}
-
-void	get_diffuse_light(t_ray *ray, t_all *all)
-{
-	if (isinf(ray->shape.t1))
-	{
-		ray->color_ray = ray->color;
-		ray->to_draw = 1;
-		return ;
-	}
-	ray->hit = scalar_multiplication_no_v(&ray->dir, ray->shape.t1);
-	add_vectors(&ray->hit, &ray->start, &ray->hit);
-	set_shapes(ray);
-	if (dot_product(&ray->shape.normal, &ray->dir) > 0)
-		ray->shape.normal = (t_vec){-ray->shape.normal.x,
-			-ray->shape.normal.y, -ray->shape.normal.z};
-	diffuse_light(ray, all, all->lights);
-	ray->color_ray.r = ray->color_shape.r * ray->color_diffuse.r + ray->color_specular.r;
-	ray->color_ray.g = ray->color_shape.g * ray->color_diffuse.g + ray->color_specular.g;
-	ray->color_ray.b = ray->color_shape.b * ray->color_diffuse.b + ray->color_specular.b;
-	ray->to_draw = 1;
-}
-
-void	get_closest_color(t_ray *ray, t_all *all)
-{
-	init_ray(ray, all);
-	closest_plane(ray, all->planes);
-	#ifndef BVH
-		closest_sphere(ray, all->spheres);
-		closest_cylinder(ray, all->cylinders);
-		closest_box(ray, all->boxes);
-	#else
-		traverse_bvh_iter(ray, all->bvh, all->render_hb, all->render_hitbox);
-	#endif
-	if (isinf(ray->shape.t1))
-		ray->color_ray = ray->color;
-	else if (ray->shape.type == (t_obj_type)CYLINDER)
-		ray->color_ray = ((t_cylinder *)(ray->shape.shape))->color;
-	else if (ray->shape.type == (t_obj_type)SPHERE)
-		ray->color_ray = ((t_sphere *)(ray->shape.shape))->color;
-	else if (ray->shape.type == (t_obj_type)BOX)
-		ray->color_ray = ((t_box *)(ray->shape.shape))->color;
-	else if (ray->shape.type == (t_obj_type)PLANE)
-		ray->color_ray = ((t_plane *)(ray->shape.shape))->color;
-	ray->to_draw = 1;
-}
-
-void	traceray(t_ray *ray, t_all *all)
-{
-	init_ray(ray, all);
-	closest_plane(ray, all->planes);
-	#ifndef BVH
-		closest_sphere(ray, all->spheres);
-		closest_cylinder(ray, all->cylinders);
-		closest_box(ray, all->boxes);
-	#else
-		traverse_bvh_iter(ray, all->bvh, all->render_hb, all->render_hitbox);
-	#endif
-	if (isinf(ray->shape.t1))
-	{
-		ray->color_ray = ray->color;
-		return ;
-	}
-	ray->hit = scalar_multiplication_no_v(&ray->dir, ray->shape.t1);
-	add_vectors(&ray->hit, &ray->start, &ray->hit);
-	set_shapes(ray);
-	if (dot_product(&ray->shape.normal, &ray->dir) > 0)
-		ray->shape.normal = (t_vec){-ray->shape.normal.x,
-			-ray->shape.normal.y, -ray->shape.normal.z};
-	diffuse_light(ray, all, all->lights);
-	ray->color_ray.r = ray->color_shape.r * ray->color_diffuse.r + ray->color_specular.r;
-	ray->color_ray.g = ray->color_shape.g * ray->color_diffuse.g + ray->color_specular.g;
-	ray->color_ray.b = ray->color_shape.b * ray->color_diffuse.b + ray->color_specular.b;
-}
-
-void	traceray_reflection(t_ray *ray, t_all *all)
-{
-	t_rgb_f	ray_color_save;
-
-	if (ray->reflection <= 0)
-		return ;
-	init_reflect_ray(ray, all, &ray_color_save);
-	closest_plane(ray, all->planes);
-	#ifndef BVH
-		closest_sphere(ray, all->spheres);
-		closest_cylinder(ray, all->cylinders);
-		closest_box(ray, all->boxes);
-	#else
-		traverse_bvh_iter(ray, all->bvh, all->render_hb, 0);
-	#endif
-	if (isinf(ray->shape.t1))
-		return ;
-	ray->hit = scalar_multiplication_no_v(&ray->dir, ray->shape.t1);
-	add_vectors(&ray->hit, &ray->start, &ray->hit);
-	set_shapes(ray);
-	if (dot_product(&ray->shape.normal, &ray->dir) > 0)
-		ray->shape.normal = (t_vec){-ray->shape.normal.x,
-			-ray->shape.normal.y, -ray->shape.normal.z};
-	diffuse_light(ray, all, all->lights);
-	ray->color_ray.r = ray->color_shape.r * ray->color_diffuse.r + ray->color_specular.r;
-	ray->color_ray.g = ray->color_shape.g * ray->color_diffuse.g + ray->color_specular.g;
-	ray->color_ray.b = ray->color_shape.b * ray->color_diffuse.b + ray->color_specular.b;
-}
-
 // unsigned int	traceray(t_ray *ray, t_all *all)
 // {
 // 	init_ray(ray);
@@ -268,162 +386,98 @@ void	traceray_reflection(t_ray *ray, t_all *all)
 // 	return (rgb_f_to_unsigned(ray->color_ray));
 // }
 
-t_thread_mode	iter_rays_line_stop(t_all *all, t_threads *thread, void (*f)(t_ray *, t_all *))
-{
-	int				index[2];
-	int				real[2];
-	const int		mi_pix = all->canvas.pixel_values >> 1;
+// void	iter_rays(t_all *all, t_threads *thread, void (*f)(t_ray *, t_all *))
+// {
+// 	int				index[2];
+// 	int				real[2];
+// 	const int		mi_pix = all->canvas.pixel_values >> 1;
 
-	real[0] = thread->start;
-	index[0] = mi_pix + real[0];
-	while (real[0] < thread->end)
-	{
-		real[1] = 0;
-		index[1] = mi_pix;
-		index[0] -= (index[0] >= thread->end);
-		while (real[1] < all->win_width)
-		{
-			index[1] -= (index[1] >= all->win_width);
-			all->canvas.rays[index[0]][index[1]].y = index[1];
-			all->canvas.rays[index[0]][index[1]].x = index[0];
-			// if (all->render_hitbox)
-			// 	_replace_s_px_on_render(all->render_hb, 0,
-			// 		(t_point2d){real[1], real[0]}, all->canvas.pixel_values);
-			f(&all->canvas.rays[index[0]][index[1]], all);
-			real[1] += all->canvas.pixel_values;
-			index[1] = real[1] + mi_pix;
-		}
-		if (get_thread_mode_pause(all, thread) == (t_thread_mode)STOP)
-			return ((t_thread_mode)STOP);
-		else if (thread->mode == (t_thread_mode)RESET)
-			return ((t_thread_mode)RESET);
-		real[0] += all->canvas.pixel_values;
-		index[0] = real[0] + mi_pix;
-	}
-	return (((t_thread_mode)CONTINUE));
-}
+// 	real[0] = thread->start;
+// 	index[0] = mi_pix + real[0];
+// 	while (real[0] < thread->end)
+// 	{
+// 		real[1] = 0;
+// 		index[1] = mi_pix;
+// 		index[0] -= (index[0] >= thread->end);
+// 		while (real[1] < all->win_width)
+// 		{
+// 			index[1] -= (index[1] >= all->win_width);
+// 			all->canvas.rays[index[0]][index[1]].y = index[1];
+// 			all->canvas.rays[index[0]][index[1]].x = index[0];
+// 			f(&all->canvas.rays[index[0]][index[1]], all);
+// 			real[1] += all->canvas.pixel_values;
+// 			index[1] = real[1] + mi_pix;
+// 		}
+// 		real[0] += all->canvas.pixel_values;
+// 		index[0] = real[0] + mi_pix;
+// 	}
+// }
 
-void	iter_rays(t_all *all, t_threads *thread, void (*f)(t_ray *, t_all *))
-{
-	int				index[2];
-	int				real[2];
-	const int		mi_pix = all->canvas.pixel_values >> 1;
+// int	start_rays_thread_line(t_all *all, t_threads *thread)
+// {
+// 	int				index[2];
+// 	int				real[2];
+// 	const int		mi_pix = all->canvas.pixel_values >> 1;
 
-	real[0] = thread->start;
-	index[0] = mi_pix + real[0];
-	while (real[0] < thread->end)
-	{
-		real[1] = 0;
-		index[1] = mi_pix;
-		index[0] -= (index[0] >= thread->end);
-		while (real[1] < all->win_width)
-		{
-			index[1] -= (index[1] >= all->win_width);
-			all->canvas.rays[index[0]][index[1]].y = index[1];
-			all->canvas.rays[index[0]][index[1]].x = index[0];
-			f(&all->canvas.rays[index[0]][index[1]], all);
-			real[1] += all->canvas.pixel_values;
-			index[1] = real[1] + mi_pix;
-		}
-		real[0] += all->canvas.pixel_values;
-		index[0] = real[0] + mi_pix;
-	}
-}
+// 	real[0] = thread->start;
+// 	index[0] = mi_pix + real[0];
+// 	while (real[0] < thread->end)
+// 	{
+// 		real[1] = 0;
+// 		index[1] = mi_pix;
+// 		index[0] -= (index[0] >= thread->end);
+// 		while (real[1] < all->win_width)
+// 		{
+// 			index[1] -= (index[1] >= all->win_width);
+// 			all->canvas.rays[index[0]][index[1]].y = index[1];
+// 			all->canvas.rays[index[0]][index[1]].x = index[0];
+// 			if (all->render_hitbox)
+// 				_replace_s_px_on_render(all->render_hb, 0,
+// 					(t_point2d){real[1], real[0]}, all->canvas.pixel_values);
+// 			traceray(&all->canvas.rays[index[0]][index[1]], all);
+// 			real[1] += all->canvas.pixel_values;
+// 			index[1] = real[1] + mi_pix;
+// 		}
+// 		if (get_thread_mode_pause(all, thread) == (t_thread_mode)STOP)
+// 			return ((t_thread_mode)STOP);
+// 		else if (thread->mode == (t_thread_mode)RESET)
+// 			return ((t_thread_mode)RESET);
+// 		real[0] += all->canvas.pixel_values;
+// 		index[0] = real[0] + mi_pix;
+// 	}
+// 	return (thread->mode);
+// }
 
-int	start_rays_thread_line(t_all *all, t_threads *thread)
-{
-	int				index[2];
-	int				real[2];
-	const int		mi_pix = all->canvas.pixel_values >> 1;
+// int	start_rays_thread(t_all *all, t_threads *thread)
+// {
+// 	int				index[2];
+// 	int				real[2];
+// 	const int		mi_pix = all->canvas.pixel_values >> 1;
 
-	real[0] = thread->start;
-	index[0] = mi_pix + real[0];
-	while (real[0] < thread->end)
-	{
-		real[1] = 0;
-		index[1] = mi_pix;
-		index[0] -= (index[0] >= thread->end);
-		while (real[1] < all->win_width)
-		{
-			index[1] -= (index[1] >= all->win_width);
-			all->canvas.rays[index[0]][index[1]].y = index[1];
-			all->canvas.rays[index[0]][index[1]].x = index[0];
-			if (all->render_hitbox)
-				_replace_s_px_on_render(all->render_hb, 0,
-					(t_point2d){real[1], real[0]}, all->canvas.pixel_values);
-			traceray(&all->canvas.rays[index[0]][index[1]], all);
-			real[1] += all->canvas.pixel_values;
-			index[1] = real[1] + mi_pix;
-		}
-		if (get_thread_mode_pause(all, thread) == (t_thread_mode)STOP)
-			return ((t_thread_mode)STOP);
-		else if (thread->mode == (t_thread_mode)RESET)
-			return ((t_thread_mode)RESET);
-		real[0] += all->canvas.pixel_values;
-		index[0] = real[0] + mi_pix;
-	}
-	return (thread->mode);
-}
-
-int	start_rays_thread(t_all *all, t_threads *thread)
-{
-	int				index[2];
-	int				real[2];
-	const int		mi_pix = all->canvas.pixel_values >> 1;
-
-	real[0] = thread->start;
-	index[0] = mi_pix + real[0];
-	while (real[0] < thread->end)
-	{
-		real[1] = 0;
-		index[1] = mi_pix;
-		index[0] -= (index[0] >= thread->end);
-		while (real[1] < all->win_width)
-		{
-			index[1] -= (index[1] >= all->win_width);
-			all->canvas.rays[index[0]][index[1]].y = index[1];
-			all->canvas.rays[index[0]][index[1]].x = index[0];
-			if (all->render_hitbox)
-				_replace_s_px_on_render(all->render_hb, 0,
-					(t_point2d){real[1], real[0]}, all->canvas.pixel_values);
-			traceray(&all->canvas.rays[index[0]][index[1]], all);
-			real[1] += all->canvas.pixel_values;
-			index[1] = real[1] + mi_pix;
-		}
-		real[0] += all->canvas.pixel_values;
-		index[0] = real[0] + mi_pix;
-	}
-	return (0);
-}
-
-void	start_rays(t_all *all)
-{
-	int				index[2];
-	int				real[2];
-	const int		mi_pix = all->canvas.pixel_values >> 1;
-
-	index[0] = mi_pix;
-	real[0] = 0;
-	while (real[0] < all->win_height)
-	{
-		real[1] = 0;
-		index[1] = mi_pix;
-		index[0] -= (index[0] >= all->win_height);
-		while (real[1] < all->win_width)
-		{
-			index[1] -= (index[1] >= all->win_width);
-			all->canvas.rays[index[0]][index[1]].y = index[1];
-			all->canvas.rays[index[0]][index[1]].x = index[0];
-			_replace_s_px_on_render(all->render_hb, 0,
-				(t_point2d){real[1], real[0]}, all->canvas.pixel_values);
-			traceray(&all->canvas.rays[index[0]][index[1]], all);
-			real[1] += all->canvas.pixel_values;
-			index[1] = real[1] + mi_pix;
-		}
-		real[0] += all->canvas.pixel_values;
-		index[0] = real[0] + mi_pix;
-	}
-}
+// 	real[0] = thread->start;
+// 	index[0] = mi_pix + real[0];
+// 	while (real[0] < thread->end)
+// 	{
+// 		real[1] = 0;
+// 		index[1] = mi_pix;
+// 		index[0] -= (index[0] >= thread->end);
+// 		while (real[1] < all->win_width)
+// 		{
+// 			index[1] -= (index[1] >= all->win_width);
+// 			all->canvas.rays[index[0]][index[1]].y = index[1];
+// 			all->canvas.rays[index[0]][index[1]].x = index[0];
+// 			if (all->render_hitbox)
+// 				_replace_s_px_on_render(all->render_hb, 0,
+// 					(t_point2d){real[1], real[0]}, all->canvas.pixel_values);
+// 			traceray(&all->canvas.rays[index[0]][index[1]], all);
+// 			real[1] += all->canvas.pixel_values;
+// 			index[1] = real[1] + mi_pix;
+// 		}
+// 		real[0] += all->canvas.pixel_values;
+// 		index[0] = real[0] + mi_pix;
+// 	}
+// 	return (0);
+// }
 
 // void	start_rays(t_all *all)
 // {
