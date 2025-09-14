@@ -56,62 +56,80 @@ void intersect_triangle(t_ray *ray, t_face *face)
     t_vec q;
     double u, v, t;
 
-	//printf("ray->dir: ");
-	// print_vec(ray->dir);
-	//printf("ray->start: ");
-	// print_vec(ray->start);
-	//printf("vertice[0]: ");
-	// print_vec((face->vertices[0])[0]);
-	//printf("vertice[1]: ");
-	// print_vec((face->vertices[1])[0]);
-	//printf("vertice[2]: ");
-	// print_vec((face->vertices[2])[0]);
-	// Calculate the edges of the triangle
-	e[0] = sub_vectors_no_v(face->vertices[1], face->vertices[0]); // e1 = v2 - v1
-    e[1] = sub_vectors_no_v(face->vertices[2], face->vertices[0]); // e2 = v3 - v1
-	//printf("e[0]: ");
-	// print_vec(e[0]);
-	//printf("e[1]: ");
-	// print_vec(e[1]);
-
-	// Vector from ray origin to vertex V1
+	e[0] = sub_vectors_no_v(face->vertices[1], face->vertices[0]);
+    e[1] = sub_vectors_no_v(face->vertices[2], face->vertices[0]);
 	p = sub_vectors_no_v(&ray->start, face->vertices[0]);
-	//printf("p: ");
-	// print_vec(p);
-
-	// Calculate the determinant
-	cross_product(&ray->dir, &e[1], &d); // d = ray->direction × e2
-	//printf("d: ");
-	// print_vec(d);
-    det = dot_product(&e[0], &d); // det = e1 · d
-
-	// Check if the ray is parallel to the triangle
-	//printf("det ?%f\n\t", det);
-	if (det < 1e-6 && det > -1e-6)
+	cross_product(&ray->dir, &e[1], &d);
+    det = dot_product(&e[0], &d);
+	if (fabs(det) < 1e-6 && fabs(det) > -1e-6)
 		return;
-	//printf("det: %f\n", det);
-
-	// Calculate u parameter
-	//printf("cal_parameter ?\n\t");
 	u = dot_product(&p, &d) / det;
 	if (u < 0 || u > 1)
 		return ;
-	//printf("cal_parameter: %f\n", u);
-
-	// Calculate v parameter
-	//printf("cal_parameter_v ?\n\t");
-	cross_product(&p, &e[0], &q); // q = p × e1
+	cross_product(&p, &e[0], &q);
 	v = dot_product(&ray->dir, &q) / det;
 	if (v < 1e-6 || u + v > 1)
 		return ;
-	//printf("cal_parameter_v: %f\n", v);
-
-	// Calculate t parameter
-	//printf("cal_parameter_t ?\n\t");
 	t = dot_product(&e[1], &q) / det;
 	if (t < 1e-6)
 		return ;
-	//printf("cal_parameter_t: %f\n", t);
-	// Set the intersection details
 	set_ts(t, ray, face, &q);
+}
+
+void intersect_triangle_quad(t_ray *ray, t_face *face, t_inter *inter)
+{
+	t_vec e[2];
+	t_vec d;
+	t_vec p;
+	double det;
+	t_vec q;
+	double u, v, t;
+
+	e[0] = sub_vectors_no_v(face->vertices[1], face->vertices[0]);
+	e[1] = sub_vectors_no_v(face->vertices[2], face->vertices[0]);
+	p = sub_vectors_no_v(&ray->start, face->vertices[0]);
+	cross_product(&ray->dir, &e[1], &d);
+	det = dot_product(&e[0], &d);
+	printf("det: %f\n", det);
+	if (fabs(det) < 1e-6)
+		return;
+	u = dot_product(&p, &d) / det;
+	printf("u: %f\n", u);
+	if (u < 0.0f || u > 1)
+		return ;
+	cross_product(&p, &e[0], &q);
+	print_vec(q);
+	v = dot_product(&ray->dir, &q) / det;
+	printf("v: %f\n", v);
+	if (v < 0.0f || u + v > 1)
+		return ;
+	t = dot_product(&e[1], &q) / det;
+	printf("t: %f\n", t);
+	if (t < -1e-6)
+		return ;
+	inter->t = t;
+	cross_product(&e[0], &e[1], &inter->normale);
+	inter->found += 1;
+}
+
+void intersect_quad(t_ray *ray, t_face *face)
+{
+	t_face	new;
+	t_inter	inter;
+
+	inter.found = 0;
+	new.vertices[0] = face->vertices[0];
+	new.vertices[1] = face->vertices[1];
+	new.vertices[2] = face->vertices[2];
+	intersect_triangle_quad(ray, &new, &inter);
+	if (face->vertices[3])
+	{
+		new.vertices[0] = face->vertices[2];
+		new.vertices[1] = face->vertices[3];
+		new.vertices[2] = face->vertices[0];
+		intersect_triangle_quad(ray, &new, &inter);
+	}
+	if (!inter.found)
+			return ;
+	set_ts(inter.t, ray, face, &inter.normale);
 }

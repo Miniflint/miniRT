@@ -1,7 +1,8 @@
 # Triangle.obj
-v 0.0 0.0 10.0  # Vertex 1
-v 10.0 0.0 0.0  # Vertex 2
+v 0 0 0  # Vertex 1
+v 10.0 0 0  # Vertex 2
 v 0.0 10.0 0.0  # Vertex 3
+v 10.0 10.0 0.0  # Vertex 4
 
 # Face
-f 1 2 3
+f 1 2 3 4

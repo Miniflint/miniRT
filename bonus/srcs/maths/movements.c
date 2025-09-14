@@ -13,7 +13,7 @@ int	get_key_press(t_tri_lib *lib, t_all *all)
 			all->camera.dir.y, all->camera.dir.z, all->camera.fov);
 		printf("----------------------\n");
 		fflush(stdout);
-		return (2);
+		return (0);
 	}
 	else if (lib->event->key_id == 'k')
 	{
@@ -72,7 +72,7 @@ int	get_key_press(t_tri_lib *lib, t_all *all)
 			all->camera.dir.y, all->camera.dir.z, all->camera.fov);
 		printf("<-------------------------------->\n");
 		fflush(stdout);
-		return (2);
+		return (0);
 	}
 	else if (lib->event->key_id >= '1' && lib->event->key_id <= '9')
 	{

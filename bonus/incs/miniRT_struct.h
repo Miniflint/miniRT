@@ -192,4 +192,11 @@ typedef struct s_threads
 	t_all			*all;
 }					t_threads;
 
+typedef struct	S_triange_inter
+{
+	double	t;
+	t_vec	normale;
+	int		found;
+}	t_inter;
+
 #endif

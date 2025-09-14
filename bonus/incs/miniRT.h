@@ -51,6 +51,7 @@ typedef struct S_all
 	t_render		*render_hb;
 	int				render_hitbox;
 	int				nb_shapes;
+	int				nb_items;
 	char			**argv;
 	int				argc;
 	int				win_height;
@@ -201,6 +202,8 @@ int				shadow_intersect_sphere(t_ray *ray, t_sphere *sphere,
 					t_vec light_dir, double light_lenght);
 int				shadow_intersect_plane(t_ray *ray, t_plane *plane,
 					t_vec light_dir, double light_lenght);
+int 			shadow_intersect_triangle(t_ray *ray, t_face *face,
+					t_vec light_dir, double light_length);
 void			set_cylinder(t_ray *ray, t_cylinder *cylinder);
 void			set_shapes(t_ray *ray);
 int				check_t(t_quad q, t_ray *ray, t_cylinder *cylinder,
@@ -252,6 +255,10 @@ t_hitbox		*create_bvh_node(t_hitbox *l, t_hitbox *r);
 int				free_hitboxes(t_hitbox *root, unsigned long capacity);
 
 void			intersect_triangle(t_ray *ray, t_face *face);
+void 			intersect_quad(t_ray *ray, t_face *face);
+unsigned long 	get_depth_objs(t_object *root);
+
+void 			sort_shape(t_shape *arr);
 
 /* DATA STRUCTURE */
 t_hitbox	*queue_free(t_queue *q);
@@ -260,5 +267,6 @@ int			queue_push(t_queue *q, t_hitbox *curr);
 int			queue_size(t_queue *q);
 int			queue_is_empty(t_queue *q);
 int			queue_init(t_queue *q, int capacity);
+void		queue_print(t_queue queue);
 
 #endif
