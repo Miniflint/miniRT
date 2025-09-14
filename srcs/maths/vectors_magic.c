@@ -6,7 +6,7 @@
 /*   By: trgoel <trgoel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 21:06:55 by trgoel            #+#    #+#             */
-/*   Updated: 2025/09/06 21:06:58 by trgoel           ###   ########.fr       */
+/*   Updated: 2025/09/14 20:51:13 by trgoel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,8 @@ void	make_perpendicular(t_cam *cam)
 		ideal_up = (t_vec){.x = 0, .y = 1, .z = 0};
 	cross_product(&cam->dir, &ideal_up, &cam->dir_x);
 	mag = dot_product(&cam->dir_x, &cam->dir_x);
-	norm_vectors(&cam->dir_x, mag, &cam->dir_x);
+	norm_vectors(&cam->dir_x, sqrt(mag), &cam->dir_x);
 	cross_product(&cam->dir, &cam->dir_x, &cam->dir_y);
 	mag = dot_product(&cam->dir_y, &cam->dir_y);
-	norm_vectors(&cam->dir_y, mag, &cam->dir_y);
+	norm_vectors(&cam->dir_y, sqrt(mag), &cam->dir_y);
 }

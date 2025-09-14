@@ -141,7 +141,7 @@ void	traverse_bvh_iter(t_ray *ray, t_hitbox *bvh, t_render *render, int hb)
 	t_hitbox	*curr;
 	const t_all	*all = __get_all();
 
-	if (queue_init(&q, all->nb_shapes))
+	if (queue_init(&q, all->nb_items))
 		return ;
 	queue_push(&q, bvh);
 	while (!queue_is_empty(&q))

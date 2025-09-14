@@ -47,10 +47,11 @@ void	set_shapes(t_ray *ray)
 		ray->shape.material =(t_material){
 			.ks=0.8,
 			.shininess=256,
-			.reflection={1 - ray->color_shape.r,
-				1 - ray->color_shape.g,
-				1 - ray->color_shape.b
-			}
+			//.reflection={1 - ray->color_shape.r,
+			//	1 - ray->color_shape.g,
+			//	1 - ray->color_shape.b
+			//}
+			.reflection={0,0,0}
 		};
 	}
 }

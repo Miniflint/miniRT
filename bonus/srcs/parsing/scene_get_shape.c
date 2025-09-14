@@ -127,7 +127,7 @@ int	get_cylinder(t_cylinder **head, char **const restrict s)
 	if (get_rgb(&cylinder->rgb_save, s))
 		return (free(cylinder), printf("\tCylinders problems\n"), 1);
 	if (get_material(&cylinder->material, s))
-		return (3);
+		return (1);
 	cylinder->color = argb_to_rgbf(cylinder->rgb_save);
 	cylinder->next = *head;
 	*head = cylinder;

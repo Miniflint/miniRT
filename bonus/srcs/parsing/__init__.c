@@ -158,10 +158,10 @@ int	__init__(t_all *all, char **argv, int argc)
 	if (__parse_file_objs(all))
 		return (1);
 	apply_rgb_all_shape(all);
-	print_all_structs(all);
+	all->nb_items = all->nb_shapes + get_depth_objs(all->objects);
+	//print_all_structs(all);
 	create_shape_array(all);
 	all->bvh = create_bvh_iter(all, all->nb_shapes, 0);
-	printf("%p\n", (void *)all->bvh);
 	if (all->bvh->node_type != LEAF)
 		all->bvh->node_type = ROOT;
 	make_perpendicular(&all->camera);

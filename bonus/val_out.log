@@ -1,711 +1,99 @@
-==3687456== Memcheck, a memory error detector
-==3687456== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
-==3687456== Using Valgrind-3.18.1-42b08ed5bd-20211015 and LibVEX; rerun with -h for copyright info
-==3687456== Command: ./miniRT_bonus maps/test2.rt
-==3687456== Parent PID: 3540984
-==3687456== 
---3687456-- 
---3687456-- Valgrind options:
---3687456--    --leak-check=full
---3687456--    --show-leak-kinds=all
---3687456--    --track-origins=yes
---3687456--    --verbose
---3687456--    --log-file=val_out.log
---3687456-- Contents of /proc/version:
---3687456--   Linux version 6.6.72-x64v3-t2-jammy-xanmod1 (root@fv-az1245-313) (gcc (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0, GNU ld (GNU Binutils for Ubuntu) 2.38) #xanmod1 SMP PREEMPT_DYNAMIC Sat Jan 18 01:41:53 UTC 2025
---3687456-- 
---3687456-- Arch and hwcaps: AMD64, LittleEndian, amd64-cx16-lzcnt-rdtscp-sse3-ssse3-avx-avx2-bmi-f16c-rdrand-rdseed
---3687456-- Page sizes: currently 4096, max supported 4096
---3687456-- Valgrind library directory: /usr/libexec/valgrind
---3687456-- Reading syms from /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus
---3687456-- Reading syms from /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2
---3687456--   Considering /usr/lib/debug/.build-id/9c/b53985768bb99f138f48655f7b8bf7e420d13d.debug ..
---3687456--   .. build-id is valid
---3687456-- Reading syms from /usr/libexec/valgrind/memcheck-amd64-linux
---3687456--    object doesn't have a symbol table
---3687456--    object doesn't have a dynamic symbol table
---3687456-- Scheduler: using generic scheduler lock implementation.
-==3687456== Warning: set address range perms: large range [0x126000, 0x25e4a000) (defined)
---3687456-- Reading suppressions file: /usr/libexec/valgrind/default.supp
-==3687456== embedded gdbserver: reading from /tmp/vgdb-pipe-from-vgdb-to-3687456-by-trgoel-on-???
-==3687456== embedded gdbserver: writing to   /tmp/vgdb-pipe-to-vgdb-from-3687456-by-trgoel-on-???
-==3687456== embedded gdbserver: shared mem   /tmp/vgdb-pipe-shared-mem-vgdb-3687456-by-trgoel-on-???
-==3687456== 
-==3687456== TO CONTROL THIS PROCESS USING vgdb (which you probably
-==3687456== don't want to do, unless you know exactly what you're doing,
-==3687456== or are doing some strange experiment):
-==3687456==   /usr/bin/vgdb --pid=3687456 ...command...
-==3687456== 
-==3687456== TO DEBUG THIS PROCESS USING GDB: start GDB like this
-==3687456==   /path/to/gdb ./miniRT_bonus
-==3687456== and then give GDB the following command
-==3687456==   target remote | /usr/bin/vgdb --pid=3687456
-==3687456== --pid is optional if only one valgrind process is running
-==3687456== 
---3687456-- REDIR: 0x25e74a40 (ld-linux-x86-64.so.2:strlen) redirected to 0x580bcec2 (???)
---3687456-- REDIR: 0x25e74810 (ld-linux-x86-64.so.2:index) redirected to 0x580bcedc (???)
---3687456-- Reading syms from /usr/libexec/valgrind/vgpreload_core-amd64-linux.so
---3687456--    object doesn't have a symbol table
---3687456-- Reading syms from /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so
---3687456--    object doesn't have a symbol table
-==3687456== WARNING: new redirection conflicts with existing -- ignoring it
---3687456--     old: 0x25e74a40 (strlen              ) R-> (0000.0) 0x580bcec2 ???
---3687456--     new: 0x25e74a40 (strlen              ) R-> (2007.0) 0x26698e30 strlen
---3687456-- REDIR: 0x25e71220 (ld-linux-x86-64.so.2:strcmp) redirected to 0x26699cd0 (strcmp)
---3687456-- REDIR: 0x25e74fa0 (ld-linux-x86-64.so.2:mempcpy) redirected to 0x2669d840 (mempcpy)
---3687456-- Reading syms from /usr/lib/x86_64-linux-gnu/libXext.so.6.4.0
---3687456--    object doesn't have a symbol table
---3687456-- Reading syms from /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0
---3687456--    object doesn't have a symbol table
---3687456-- Reading syms from /usr/lib/x86_64-linux-gnu/libm.so.6
---3687456--   Considering /usr/lib/debug/.build-id/a3/ad9bb40b4907e509e4404cb972645c19675ca3.debug ..
---3687456--   .. build-id is valid
---3687456-- Reading syms from /usr/lib/x86_64-linux-gnu/libc.so.6
---3687456--   Considering /usr/lib/debug/.build-id/d5/197096f709801829b118af1b7cf6631efa2dcd.debug ..
---3687456--   .. build-id is valid
-==3687456== WARNING: new redirection conflicts with existing -- ignoring it
---3687456--     old: 0x2699fc60 (memalign            ) R-> (1011.0) 0x26698080 memalign
---3687456--     new: 0x2699fc60 (memalign            ) R-> (1017.0) 0x26698050 aligned_alloc
-==3687456== WARNING: new redirection conflicts with existing -- ignoring it
---3687456--     old: 0x2699fc60 (memalign            ) R-> (1011.0) 0x26698080 memalign
---3687456--     new: 0x2699fc60 (memalign            ) R-> (1017.0) 0x26698020 aligned_alloc
-==3687456== WARNING: new redirection conflicts with existing -- ignoring it
---3687456--     old: 0x2699fc60 (memalign            ) R-> (1011.0) 0x26698080 memalign
---3687456--     new: 0x2699fc60 (memalign            ) R-> (1017.0) 0x26698050 aligned_alloc
-==3687456== WARNING: new redirection conflicts with existing -- ignoring it
---3687456--     old: 0x2699fc60 (memalign            ) R-> (1011.0) 0x26698080 memalign
---3687456--     new: 0x2699fc60 (memalign            ) R-> (1017.0) 0x26698020 aligned_alloc
---3687456-- Reading syms from /usr/lib/x86_64-linux-gnu/libxcb.so.1.1.0
---3687456--    object doesn't have a symbol table
---3687456-- Reading syms from /usr/lib/x86_64-linux-gnu/libXau.so.6.0.0
---3687456--    object doesn't have a symbol table
---3687456-- Reading syms from /usr/lib/x86_64-linux-gnu/libXdmcp.so.6.0.0
---3687456--    object doesn't have a symbol table
---3687456-- Reading syms from /usr/lib/x86_64-linux-gnu/libbsd.so.0.11.5
---3687456--    object doesn't have a symbol table
---3687456-- Reading syms from /usr/lib/x86_64-linux-gnu/libmd.so.0.0.5
---3687456--    object doesn't have a symbol table
---3687456-- REDIR: 0x269a2720 (libc.so.6:strnlen) redirected to 0x26689220 (_vgnU_ifunc_wrapper)
---3687456-- REDIR: 0x269a29e0 (libc.so.6:strpbrk) redirected to 0x26689220 (_vgnU_ifunc_wrapper)
---3687456-- REDIR: 0x269a22e0 (libc.so.6:strcmp) redirected to 0x26689220 (_vgnU_ifunc_wrapper)
---3687456-- REDIR: 0x269c0cd0 (libc.so.6:wcsnlen) redirected to 0x26689220 (_vgnU_ifunc_wrapper)
---3687456-- REDIR: 0x269a36d0 (libc.so.6:memset) redirected to 0x26689220 (_vgnU_ifunc_wrapper)
---3687456-- REDIR: 0x269bf540 (libc.so.6:wcslen) redirected to 0x26689220 (_vgnU_ifunc_wrapper)
---3687456-- REDIR: 0x269a3c10 (libc.so.6:memcpy@@GLIBC_2.14) redirected to 0x26689220 (_vgnU_ifunc_wrapper)
---3687456-- REDIR: 0x269bf370 (libc.so.6:wcschr) redirected to 0x26689220 (_vgnU_ifunc_wrapper)
---3687456-- REDIR: 0x269a2260 (libc.so.6:index) redirected to 0x26689220 (_vgnU_ifunc_wrapper)
---3687456-- REDIR: 0x269a2960 (libc.so.6:rindex) redirected to 0x26689220 (_vgnU_ifunc_wrapper)
---3687456-- REDIR: 0x269a35a0 (libc.so.6:memmove) redirected to 0x26689220 (_vgnU_ifunc_wrapper)
-==3687456== Preferring higher priority redirection:
---3687456--     old: 0x26a9a7c0 (__memcpy_avx_unalign) R-> (2018.0) 0x2669af90 __memcpy_avx_unaligned_erms
---3687456--     new: 0x26a9a7c0 (__memcpy_avx_unalign) R-> (2018.1) 0x2669c880 memmove
---3687456-- REDIR: 0x269bf3f0 (libc.so.6:wcscmp) redirected to 0x26689220 (_vgnU_ifunc_wrapper)
---3687456-- REDIR: 0x269a39e0 (libc.so.6:stpncpy) redirected to 0x26689220 (_vgnU_ifunc_wrapper)
---3687456-- REDIR: 0x269bf9b0 (libc.so.6:wmemchr) redirected to 0x26689220 (_vgnU_ifunc_wrapper)
---3687456-- REDIR: 0x269a2830 (libc.so.6:strncmp) redirected to 0x26689220 (_vgnU_ifunc_wrapper)
---3687456-- REDIR: 0x269a3a70 (libc.so.6:strcasecmp) redirected to 0x26689220 (_vgnU_ifunc_wrapper)
---3687456-- REDIR: 0x269a2420 (libc.so.6:strcspn) redirected to 0x26689220 (_vgnU_ifunc_wrapper)
---3687456-- REDIR: 0x269bf470 (libc.so.6:wcscpy) redirected to 0x26689220 (_vgnU_ifunc_wrapper)
---3687456-- REDIR: 0x269a21d0 (libc.so.6:strcat) redirected to 0x26689220 (_vgnU_ifunc_wrapper)
---3687456-- REDIR: 0x269a3b60 (libc.so.6:strncasecmp_l) redirected to 0x26689220 (_vgnU_ifunc_wrapper)
---3687456-- REDIR: 0x269a3480 (libc.so.6:bcmp) redirected to 0x26689220 (_vgnU_ifunc_wrapper)
---3687456-- REDIR: 0x269ab570 (libc.so.6:memrchr) redirected to 0x26689220 (_vgnU_ifunc_wrapper)
---3687456-- REDIR: 0x269a5010 (libc.so.6:strchrnul) redirected to 0x26689220 (_vgnU_ifunc_wrapper)
---3687456-- REDIR: 0x269a2390 (libc.so.6:strcpy) redirected to 0x26689220 (_vgnU_ifunc_wrapper)
---3687456-- REDIR: 0x269a3b10 (libc.so.6:strcasecmp_l) redirected to 0x26689220 (_vgnU_ifunc_wrapper)
---3687456-- REDIR: 0x269a26a0 (libc.so.6:strlen) redirected to 0x26689220 (_vgnU_ifunc_wrapper)
---3687456-- REDIR: 0x269a28d0 (libc.so.6:strncpy) redirected to 0x26689220 (_vgnU_ifunc_wrapper)
---3687456-- REDIR: 0x269a3950 (libc.so.6:stpcpy) redirected to 0x26689220 (_vgnU_ifunc_wrapper)
---3687456-- REDIR: 0x269a33f0 (libc.so.6:memchr) redirected to 0x26689220 (_vgnU_ifunc_wrapper)
---3687456-- REDIR: 0x269a2b00 (libc.so.6:strspn) redirected to 0x26689220 (_vgnU_ifunc_wrapper)
---3687456-- REDIR: 0x269a37d0 (libc.so.6:mempcpy) redirected to 0x26689220 (_vgnU_ifunc_wrapper)
---3687456-- REDIR: 0x269a3ac0 (libc.so.6:strncasecmp) redirected to 0x26689220 (_vgnU_ifunc_wrapper)
---3687456-- REDIR: 0x269a4f80 (libc.so.6:rawmemchr) redirected to 0x26689220 (_vgnU_ifunc_wrapper)
---3687456-- REDIR: 0x26a97610 (libc.so.6:__strrchr_avx2) redirected to 0x26698810 (rindex)
---3687456-- REDIR: 0x2699f0a0 (libc.so.6:malloc) redirected to 0x26692820 (malloc)
---3687456-- REDIR: 0x2699f3e0 (libc.so.6:free) redirected to 0x26695210 (free)
---3687456-- REDIR: 0x26a977e0 (libc.so.6:__strlen_avx2) redirected to 0x26698d10 (strlen)
---3687456-- REDIR: 0x26a97400 (libc.so.6:__strchrnul_avx2) redirected to 0x2669d330 (strchrnul)
---3687456-- REDIR: 0x26a9a780 (libc.so.6:__mempcpy_avx_unaligned_erms) redirected to 0x2669d440 (mempcpy)
---3687456-- REDIR: 0x26a9a7c0 (libc.so.6:__memcpy_avx_unaligned_erms) redirected to 0x2669c880 (memmove)
---3687456-- REDIR: 0x269a2fc0 (libc.so.6:__GI_strstr) redirected to 0x2669dae0 (__strstr_sse2)
---3687456-- REDIR: 0x26a92d80 (libc.so.6:__strncmp_avx2) redirected to 0x266993e0 (strncmp)
---3687456-- REDIR: 0x269a0520 (libc.so.6:calloc) redirected to 0x266979d0 (calloc)
---3687456-- REDIR: 0x26a2e7e0 (libc.so.6:__strcpy_chk) redirected to 0x2669d3a0 (__strcpy_chk)
---3687456-- REDIR: 0x26a93a80 (libc.so.6:__memcmp_avx2_movbe) redirected to 0x2669c010 (bcmp)
---3687456-- REDIR: 0x26a9af80 (libc.so.6:__memset_avx2_unaligned_erms) redirected to 0x2669c770 (memset)
---3687456-- REDIR: 0x2699f740 (libc.so.6:realloc) redirected to 0x26697c50 (realloc)
---3687456-- REDIR: 0x26a99040 (libc.so.6:__strncpy_avx2) redirected to 0x26698fe0 (strncpy)
---3687456-- REDIR: 0x26a92940 (libc.so.6:__strcmp_avx2) redirected to 0x26699bd0 (strcmp)
---3687456-- REDIR: 0x26a98cb0 (libc.so.6:__strcpy_avx2) redirected to 0x26698e60 (strcpy)
---3687456-- REDIR: 0x26a932c0 (libc.so.6:__memchr_avx2) redirected to 0x26699d50 (memchr)
-==3687456== 
-==3687456== Process terminating with default action of signal 2 (SIGINT)
-==3687456==    at 0x2684A9D0: fmin (s_fmin.S:23)
-==3687456==    by 0x11C3CA: intersect_hitbox (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x1154AC: traverse_bvh (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x115635: traverse_bvh (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x115635: traverse_bvh (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x115607: traverse_bvh (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x115635: traverse_bvh (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x115607: traverse_bvh (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x115607: traverse_bvh (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x115607: traverse_bvh (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x115635: traverse_bvh (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x115B7D: get_closest_color (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456== 
-==3687456== HEAP SUMMARY:
-==3687456==     in use at exit: 260,763,354 bytes in 22,317 blocks
-==3687456==   total heap usage: 32,858 allocs, 10,541 frees, 390,435,125 bytes allocated
-==3687456== 
-==3687456== Searching for pointers to 22,317 not-freed blocks
-==3687456== Checked 734,032,368 bytes
-==3687456== 
-==3687456== 3 bytes in 1 blocks are still reachable in loss record 1 of 60
-==3687456==    at 0x26692899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==3687456==    by 0x269A258E: strdup (strdup.c:42)
-==3687456==    by 0x26702B45: XOpenDisplay (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==3687456==    by 0x11DAE6: mlx_init (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x112CFF: _init_tri_lib (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x10AF6A: main (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456== 
-==3687456== 8 bytes in 1 blocks are still reachable in loss record 2 of 60
-==3687456==    at 0x26692899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==3687456==    by 0x269A258E: strdup (strdup.c:42)
-==3687456==    by 0x266FF9AE: XInitExtension (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==3687456==    by 0x266C4820: XextAddDisplay (in /usr/lib/x86_64-linux-gnu/libXext.so.6.4.0)
-==3687456==    by 0x266C99E2: XShmQueryVersion (in /usr/lib/x86_64-linux-gnu/libXext.so.6.4.0)
-==3687456==    by 0x11D923: mlx_int_deal_shm (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x11DB92: mlx_init (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x112CFF: _init_tri_lib (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x10AF6A: main (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456== 
-==3687456== 8 bytes in 1 blocks are still reachable in loss record 3 of 60
-==3687456==    at 0x26692899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==3687456==    by 0x266C2B34: ??? (in /usr/lib/x86_64-linux-gnu/libXext.so.6.4.0)
-==3687456==    by 0x266C49DF: XextAddDisplay (in /usr/lib/x86_64-linux-gnu/libXext.so.6.4.0)
-==3687456==    by 0x266C99E2: XShmQueryVersion (in /usr/lib/x86_64-linux-gnu/libXext.so.6.4.0)
-==3687456==    by 0x11D923: mlx_int_deal_shm (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x11DB92: mlx_init (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x112CFF: _init_tri_lib (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x10AF6A: main (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456== 
-==3687456== 10 bytes in 1 blocks are still reachable in loss record 4 of 60
-==3687456==    at 0x26692899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==3687456==    by 0x269A258E: strdup (strdup.c:42)
-==3687456==    by 0x266FF9AE: XInitExtension (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==3687456==    by 0x26769213: XkbUseExtension (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==3687456==    by 0x267036A8: XOpenDisplay (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==3687456==    by 0x11DAE6: mlx_init (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x112CFF: _init_tri_lib (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x10AF6A: main (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456== 
-==3687456== 16 bytes in 1 blocks are still reachable in loss record 5 of 60
-==3687456==    at 0x26692899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==3687456==    by 0x26B342EE: xcb_connect_to_fd (in /usr/lib/x86_64-linux-gnu/libxcb.so.1.1.0)
-==3687456==    by 0x26B34E6B: xcb_connect_to_display_with_auth_info (in /usr/lib/x86_64-linux-gnu/libxcb.so.1.1.0)
-==3687456==    by 0x26712EE9: _XConnectXCB (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==3687456==    by 0x26702B68: XOpenDisplay (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==3687456==    by 0x11DAE6: mlx_init (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x112CFF: _init_tri_lib (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x10AF6A: main (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456== 
-==3687456== 21 bytes in 1 blocks are still reachable in loss record 6 of 60
-==3687456==    at 0x26692899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==3687456==    by 0x2670303E: XOpenDisplay (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==3687456==    by 0x11DAE6: mlx_init (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x112CFF: _init_tri_lib (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x10AF6A: main (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456== 
-==3687456== 24 bytes in 1 blocks are still reachable in loss record 7 of 60
-==3687456==    at 0x26692899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==3687456==    by 0x266C4041: XextCreateExtension (in /usr/lib/x86_64-linux-gnu/libXext.so.6.4.0)
-==3687456==    by 0x266C44CC: ??? (in /usr/lib/x86_64-linux-gnu/libXext.so.6.4.0)
-==3687456==    by 0x266C49C8: XextAddDisplay (in /usr/lib/x86_64-linux-gnu/libXext.so.6.4.0)
-==3687456==    by 0x266C99E2: XShmQueryVersion (in /usr/lib/x86_64-linux-gnu/libXext.so.6.4.0)
-==3687456==    by 0x11D923: mlx_int_deal_shm (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x11DB92: mlx_init (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x112CFF: _init_tri_lib (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x10AF6A: main (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456== 
-==3687456== 24 bytes in 1 blocks are still reachable in loss record 8 of 60
-==3687456==    at 0x26692899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==3687456==    by 0x269A258E: strdup (strdup.c:42)
-==3687456==    by 0x266FF9AE: XInitExtension (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==3687456==    by 0x266C4820: XextAddDisplay (in /usr/lib/x86_64-linux-gnu/libXext.so.6.4.0)
-==3687456==    by 0x266C450A: ??? (in /usr/lib/x86_64-linux-gnu/libXext.so.6.4.0)
-==3687456==    by 0x266C49C8: XextAddDisplay (in /usr/lib/x86_64-linux-gnu/libXext.so.6.4.0)
-==3687456==    by 0x266C99E2: XShmQueryVersion (in /usr/lib/x86_64-linux-gnu/libXext.so.6.4.0)
-==3687456==    by 0x11D923: mlx_int_deal_shm (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x11DB92: mlx_init (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x112CFF: _init_tri_lib (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x10AF6A: main (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456== 
-==3687456== 24 bytes in 1 blocks are still reachable in loss record 9 of 60
-==3687456==    at 0x26692899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==3687456==    by 0x266C49F5: XextAddDisplay (in /usr/lib/x86_64-linux-gnu/libXext.so.6.4.0)
-==3687456==    by 0x266C99E2: XShmQueryVersion (in /usr/lib/x86_64-linux-gnu/libXext.so.6.4.0)
-==3687456==    by 0x11D923: mlx_int_deal_shm (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x11DB92: mlx_init (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x112CFF: _init_tri_lib (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x10AF6A: main (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456== 
-==3687456== 24 bytes in 1 blocks are still reachable in loss record 10 of 60
-==3687456==    at 0x26692899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==3687456==    by 0x26710A65: ??? (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==3687456==    by 0x267192C6: _XReply (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==3687456==    by 0x2671977E: XSync (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==3687456==    by 0x11E238: mlx_int_new_xshm_image (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x11E480: mlx_new_image (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x114046: _create_base_render (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x11263D: _create_window (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x10AFC6: main (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456== 
-==3687456== 29 bytes in 1 blocks are still reachable in loss record 11 of 60
-==3687456==    at 0x26692899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==3687456==    by 0x266FC0CD: _XUpdateAtomCache (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==3687456==    by 0x266FE929: XInternAtom (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==3687456==    by 0x11DB84: mlx_init (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x112CFF: _init_tri_lib (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x10AF6A: main (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456== 
-==3687456== 32 bytes in 1 blocks are still reachable in loss record 12 of 60
-==3687456==    at 0x266927A9: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==3687456==    by 0x26B3815E: ??? (in /usr/lib/x86_64-linux-gnu/libxcb.so.1.1.0)
-==3687456==    by 0x26B38237: xcb_get_extension_data (in /usr/lib/x86_64-linux-gnu/libxcb.so.1.1.0)
-==3687456==    by 0x26B382EE: xcb_prefetch_maximum_request_length (in /usr/lib/x86_64-linux-gnu/libxcb.so.1.1.0)
-==3687456==    by 0x26B38364: xcb_get_maximum_request_length (in /usr/lib/x86_64-linux-gnu/libxcb.so.1.1.0)
-==3687456==    by 0x2670352B: XOpenDisplay (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==3687456==    by 0x11DAE6: mlx_init (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x112CFF: _init_tri_lib (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x10AF6A: main (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456== 
-==3687456== 32 bytes in 1 blocks are still reachable in loss record 13 of 60
-==3687456==    at 0x26692899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==3687456==    by 0x26B311B7: ??? (in /usr/lib/x86_64-linux-gnu/libxcb.so.1.1.0)
-==3687456==    by 0x26B31A08: ??? (in /usr/lib/x86_64-linux-gnu/libxcb.so.1.1.0)
-==3687456==    by 0x26B31EB0: ??? (in /usr/lib/x86_64-linux-gnu/libxcb.so.1.1.0)
-==3687456==    by 0x26B32E44: xcb_wait_for_reply (in /usr/lib/x86_64-linux-gnu/libxcb.so.1.1.0)
-==3687456==    by 0x26B38292: xcb_get_extension_data (in /usr/lib/x86_64-linux-gnu/libxcb.so.1.1.0)
-==3687456==    by 0x26B382EE: xcb_prefetch_maximum_request_length (in /usr/lib/x86_64-linux-gnu/libxcb.so.1.1.0)
-==3687456==    by 0x26B38364: xcb_get_maximum_request_length (in /usr/lib/x86_64-linux-gnu/libxcb.so.1.1.0)
-==3687456==    by 0x2670352B: XOpenDisplay (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==3687456==    by 0x11DAE6: mlx_init (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x112CFF: _init_tri_lib (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x10AF6A: main (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456== 
-==3687456== 32 bytes in 1 blocks are still reachable in loss record 14 of 60
-==3687456==    at 0x26692899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==3687456==    by 0x266C47FF: XextAddDisplay (in /usr/lib/x86_64-linux-gnu/libXext.so.6.4.0)
-==3687456==    by 0x266C99E2: XShmQueryVersion (in /usr/lib/x86_64-linux-gnu/libXext.so.6.4.0)
-==3687456==    by 0x11D923: mlx_int_deal_shm (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x11DB92: mlx_init (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x112CFF: _init_tri_lib (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x10AF6A: main (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456== 
-==3687456== 32 bytes in 1 blocks are still reachable in loss record 15 of 60
-==3687456==    at 0x26692899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==3687456==    by 0x266C47FF: XextAddDisplay (in /usr/lib/x86_64-linux-gnu/libXext.so.6.4.0)
-==3687456==    by 0x266C450A: ??? (in /usr/lib/x86_64-linux-gnu/libXext.so.6.4.0)
-==3687456==    by 0x266C49C8: XextAddDisplay (in /usr/lib/x86_64-linux-gnu/libXext.so.6.4.0)
-==3687456==    by 0x266C99E2: XShmQueryVersion (in /usr/lib/x86_64-linux-gnu/libXext.so.6.4.0)
-==3687456==    by 0x11D923: mlx_int_deal_shm (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x11DB92: mlx_init (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x112CFF: _init_tri_lib (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x10AF6A: main (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456== 
-==3687456== 33 bytes in 1 blocks are still reachable in loss record 16 of 60
-==3687456==    at 0x26692899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==3687456==    by 0x266FC0CD: _XUpdateAtomCache (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==3687456==    by 0x266FE929: XInternAtom (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==3687456==    by 0x11DB6F: mlx_init (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x112CFF: _init_tri_lib (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x10AF6A: main (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456== 
-==3687456== 40 bytes in 1 blocks are still reachable in loss record 17 of 60
-==3687456==    at 0x26692899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==3687456==    by 0x267131F1: _XPollfdCacheInit (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==3687456==    by 0x26702E71: XOpenDisplay (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==3687456==    by 0x11DAE6: mlx_init (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x112CFF: _init_tri_lib (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x10AF6A: main (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456== 
-==3687456== 48 bytes in 1 blocks are still reachable in loss record 18 of 60
-==3687456==    at 0x26692899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==3687456==    by 0x26712E71: _XConnectXCB (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==3687456==    by 0x26702B68: XOpenDisplay (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==3687456==    by 0x11DAE6: mlx_init (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x112CFF: _init_tri_lib (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x10AF6A: main (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456== 
-==3687456== 48 bytes in 1 blocks are still reachable in loss record 19 of 60
-==3687456==    at 0x26692899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==3687456==    by 0x26712E87: _XConnectXCB (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==3687456==    by 0x26702B68: XOpenDisplay (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==3687456==    by 0x11DAE6: mlx_init (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x112CFF: _init_tri_lib (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x10AF6A: main (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456== 
-==3687456== 48 bytes in 1 blocks are still reachable in loss record 20 of 60
-==3687456==    at 0x26692899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==3687456==    by 0x113D76: _new_render (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x113E97: _create_render (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x10AFDC: main (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456== 
-==3687456== 72 bytes in 1 blocks are still reachable in loss record 21 of 60
-==3687456==    at 0x26697A83: calloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==3687456==    by 0x26702F20: XOpenDisplay (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==3687456==    by 0x11DAE6: mlx_init (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x112CFF: _init_tri_lib (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x10AF6A: main (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456== 
-==3687456== 88 bytes in 1 blocks are still reachable in loss record 22 of 60
-==3687456==    at 0x26697A83: calloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==3687456==    by 0x11E14B: mlx_int_new_xshm_image (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x11E480: mlx_new_image (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x114046: _create_base_render (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x11263D: _create_window (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x10AFC6: main (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456== 
-==3687456== 112 bytes in 1 blocks are still reachable in loss record 23 of 60
-==3687456==    at 0x26697A83: calloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==3687456==    by 0x26712D72: _XConnectXCB (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==3687456==    by 0x26702B68: XOpenDisplay (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==3687456==    by 0x11DAE6: mlx_init (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x112CFF: _init_tri_lib (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x10AF6A: main (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456== 
-==3687456== 112 bytes in 1 blocks are still reachable in loss record 24 of 60
-==3687456==    at 0x26697A83: calloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==3687456==    by 0x26703200: XOpenDisplay (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==3687456==    by 0x11DAE6: mlx_init (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x112CFF: _init_tri_lib (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x10AF6A: main (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456== 
-==3687456== 128 bytes in 1 blocks are still reachable in loss record 25 of 60
-==3687456==    at 0x26697A83: calloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==3687456==    by 0x2670312E: XOpenDisplay (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==3687456==    by 0x11DAE6: mlx_init (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x112CFF: _init_tri_lib (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x10AF6A: main (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456== 
-==3687456== 128 bytes in 1 blocks are still reachable in loss record 26 of 60
-==3687456==    at 0x26697A83: calloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==3687456==    by 0x266FF99E: XInitExtension (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==3687456==    by 0x26769213: XkbUseExtension (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==3687456==    by 0x267036A8: XOpenDisplay (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==3687456==    by 0x11DAE6: mlx_init (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x112CFF: _init_tri_lib (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x10AF6A: main (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456== 
-==3687456== 128 bytes in 1 blocks are still reachable in loss record 27 of 60
-==3687456==    at 0x26697A83: calloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==3687456==    by 0x266FF99E: XInitExtension (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==3687456==    by 0x266C4820: XextAddDisplay (in /usr/lib/x86_64-linux-gnu/libXext.so.6.4.0)
-==3687456==    by 0x266C99E2: XShmQueryVersion (in /usr/lib/x86_64-linux-gnu/libXext.so.6.4.0)
-==3687456==    by 0x11D923: mlx_int_deal_shm (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x11DB92: mlx_init (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x112CFF: _init_tri_lib (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x10AF6A: main (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456== 
-==3687456== 128 bytes in 1 blocks are still reachable in loss record 28 of 60
-==3687456==    at 0x26697A83: calloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==3687456==    by 0x266FF99E: XInitExtension (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==3687456==    by 0x266C4820: XextAddDisplay (in /usr/lib/x86_64-linux-gnu/libXext.so.6.4.0)
-==3687456==    by 0x266C450A: ??? (in /usr/lib/x86_64-linux-gnu/libXext.so.6.4.0)
-==3687456==    by 0x266C49C8: XextAddDisplay (in /usr/lib/x86_64-linux-gnu/libXext.so.6.4.0)
-==3687456==    by 0x266C99E2: XShmQueryVersion (in /usr/lib/x86_64-linux-gnu/libXext.so.6.4.0)
-==3687456==    by 0x11D923: mlx_int_deal_shm (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x11DB92: mlx_init (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x112CFF: _init_tri_lib (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x10AF6A: main (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456== 
-==3687456== 136 bytes in 1 blocks are still reachable in loss record 29 of 60
-==3687456==    at 0x26692899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==3687456==    by 0x11DACE: mlx_init (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x112CFF: _init_tri_lib (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x10AF6A: main (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456== 
-==3687456== 136 bytes in 1 blocks are still reachable in loss record 30 of 60
-==3687456==    at 0x26697A83: calloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==3687456==    by 0x266C30C3: XShmCreateImage (in /usr/lib/x86_64-linux-gnu/libXext.so.6.4.0)
-==3687456==    by 0x11E17B: mlx_int_new_xshm_image (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x11E480: mlx_new_image (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x114046: _create_base_render (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x11263D: _create_window (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x10AFC6: main (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456== 
-==3687456== 150 bytes in 1 blocks are still reachable in loss record 31 of 60
-==3687456==    at 0x26692899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==3687456==    by 0x26703710: XOpenDisplay (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==3687456==    by 0x11DAE6: mlx_init (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x112CFF: _init_tri_lib (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x10AF6A: main (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456== 
-==3687456== 152 bytes in 1 blocks are still reachable in loss record 32 of 60
-==3687456==    at 0x26697A83: calloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==3687456==    by 0x2676940E: XkbUseExtension (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==3687456==    by 0x267036A8: XOpenDisplay (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==3687456==    by 0x11DAE6: mlx_init (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x112CFF: _init_tri_lib (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x10AF6A: main (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456== 
-==3687456== 160 bytes in 1 blocks are still reachable in loss record 33 of 60
-==3687456==    at 0x26692899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==3687456==    by 0x266F19EF: XCreateGC (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==3687456==    by 0x267035A4: XOpenDisplay (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==3687456==    by 0x11DAE6: mlx_init (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x112CFF: _init_tri_lib (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x10AF6A: main (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456== 
-==3687456== 160 bytes in 1 blocks are still reachable in loss record 34 of 60
-==3687456==    at 0x26692899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==3687456==    by 0x266F19EF: XCreateGC (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==3687456==    by 0x11DCF9: mlx_new_window (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x1125FC: _create_window (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x10AFC6: main (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456== 
-==3687456== 168 bytes in 1 blocks are still reachable in loss record 35 of 60
-==3687456==    at 0x26697A83: calloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==3687456==    by 0x267030B2: XOpenDisplay (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==3687456==    by 0x11DAE6: mlx_init (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x112CFF: _init_tri_lib (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x10AF6A: main (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456== 
-==3687456== 208 bytes in 1 blocks are still reachable in loss record 36 of 60
-==3687456==    at 0x26692899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==3687456==    by 0x266C2AE9: ??? (in /usr/lib/x86_64-linux-gnu/libXext.so.6.4.0)
-==3687456==    by 0x266C49DF: XextAddDisplay (in /usr/lib/x86_64-linux-gnu/libXext.so.6.4.0)
-==3687456==    by 0x266C99E2: XShmQueryVersion (in /usr/lib/x86_64-linux-gnu/libXext.so.6.4.0)
-==3687456==    by 0x11D923: mlx_int_deal_shm (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x11DB92: mlx_init (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x112CFF: _init_tri_lib (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x10AF6A: main (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456== 
-==3687456== 208 bytes in 1 blocks are still reachable in loss record 37 of 60
-==3687456==    at 0x26692899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==3687456==    by 0x26714FAE: _XEnq (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==3687456==    by 0x26717BB6: ??? (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==3687456==    by 0x26718EC0: _XReadEvents (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==3687456==    by 0x26719205: XWindowEvent (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==3687456==    by 0x11DFF5: mlx_int_wait_first_expose (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x11DD35: mlx_new_window (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x1125FC: _create_window (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x10AFC6: main (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456== 
-==3687456== 344 bytes in 1 blocks are still reachable in loss record 38 of 60
-==3687456==    at 0x26692899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==3687456==    by 0x1125A8: _create_window (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x10AFC6: main (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456== 
-==3687456== 480 bytes in 6 blocks are still reachable in loss record 39 of 60
-==3687456==    at 0x26692899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==3687456==    by 0x10BDB7: create_empty_node (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x10D71C: get_light (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x10B9F3: parse_type_scene (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x10BD2B: __set_values_scene (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x10B5D3: __parse_file_scene (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x10B7E6: __init__ (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x10AF33: main (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456== 
-==3687456== 512 bytes in 1 blocks are still reachable in loss record 40 of 60
-==3687456==    at 0x26697A83: calloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==3687456==    by 0x266FE46A: ??? (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==3687456==    by 0x266FE84E: XInternAtom (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==3687456==    by 0x11DB6F: mlx_init (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x112CFF: _init_tri_lib (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x10AF6A: main (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456== 
-==3687456== 616 bytes in 1 blocks are still reachable in loss record 41 of 60
-==3687456==    at 0x26692899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==3687456==    by 0x11B1C0: launch_threads (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x10B019: main (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456== 
-==3687456== 832 bytes in 4 blocks are still reachable in loss record 42 of 60
-==3687456==    at 0x26692899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==3687456==    by 0x26714FAE: _XEnq (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==3687456==    by 0x26717BB6: ??? (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==3687456==    by 0x26718F01: _XReadEvents (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==3687456==    by 0x26719205: XWindowEvent (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==3687456==    by 0x11DFF5: mlx_int_wait_first_expose (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x11DD35: mlx_new_window (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x1125FC: _create_window (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x10AFC6: main (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456== 
-==3687456== 832 bytes in 4 blocks are still reachable in loss record 43 of 60
-==3687456==    at 0x26692899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==3687456==    by 0x26714FAE: _XEnq (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==3687456==    by 0x26717BB6: ??? (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==3687456==    by 0x2671940C: _XReply (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==3687456==    by 0x2671977E: XSync (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==3687456==    by 0x11E238: mlx_int_new_xshm_image (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x11E480: mlx_new_image (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x114046: _create_base_render (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x11263D: _create_window (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x10AFC6: main (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456== 
-==3687456== 936 bytes in 1 blocks are still reachable in loss record 44 of 60
-==3687456==    at 0x26692899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==3687456==    by 0x11DC5F: mlx_new_window (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x1125FC: _create_window (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x10AFC6: main (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456== 
-==3687456== 1,024 bytes in 1 blocks are still reachable in loss record 45 of 60
-==3687456==    at 0x26692899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==3687456==    by 0x26978BA3: _IO_file_doallocate (filedoalloc.c:101)
-==3687456==    by 0x26987CDF: _IO_doallocbuf (genops.c:347)
-==3687456==    by 0x26986F5F: _IO_file_overflow@@GLIBC_2.2.5 (fileops.c:744)
-==3687456==    by 0x269856D4: _IO_new_file_xsputn (fileops.c:1243)
-==3687456==    by 0x269856D4: _IO_file_xsputn@@GLIBC_2.2.5 (fileops.c:1196)
-==3687456==    by 0x2697AF1B: puts (ioputs.c:40)
-==3687456==    by 0x10C535: print_ac (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x10BC43: print_all_structs (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x10B86F: __init__ (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x10AF33: main (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456== 
-==3687456== 1,040 bytes in 5 blocks are still reachable in loss record 46 of 60
-==3687456==    at 0x26692899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==3687456==    by 0x26714FAE: _XEnq (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==3687456==    by 0x26717BB6: ??? (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==3687456==    by 0x26718EC0: _XReadEvents (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==3687456==    by 0x267191D0: XWindowEvent (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==3687456==    by 0x11DFF5: mlx_int_wait_first_expose (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x11DD35: mlx_new_window (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x1125FC: _create_window (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x10AFC6: main (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456== 
-==3687456== 2,496 bytes in 12 blocks are still reachable in loss record 47 of 60
-==3687456==    at 0x26692899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==3687456==    by 0x26714FAE: _XEnq (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==3687456==    by 0x26717BB6: ??? (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==3687456==    by 0x26718F01: _XReadEvents (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==3687456==    by 0x267191D0: XWindowEvent (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==3687456==    by 0x11DFF5: mlx_int_wait_first_expose (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x11DD35: mlx_new_window (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x1125FC: _create_window (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x10AFC6: main (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456== 
-==3687456== 2,992 bytes in 11 blocks are possibly lost in loss record 48 of 60
-==3687456==    at 0x26697A83: calloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==3687456==    by 0x25E5E7D9: calloc (rtld-malloc.h:44)
-==3687456==    by 0x25E5E7D9: allocate_dtv (dl-tls.c:375)
-==3687456==    by 0x25E5E7D9: _dl_allocate_tls (dl-tls.c:634)
-==3687456==    by 0x2698F7B4: allocate_stack (allocatestack.c:430)
-==3687456==    by 0x2698F7B4: pthread_create@@GLIBC_2.34 (pthread_create.c:647)
-==3687456==    by 0x11B481: launch_threads (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x10B019: main (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456== 
-==3687456== 4,704 bytes in 1 blocks are still reachable in loss record 49 of 60
-==3687456==    at 0x26697A83: calloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==3687456==    by 0x26702B31: XOpenDisplay (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==3687456==    by 0x11DAE6: mlx_init (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x112CFF: _init_tri_lib (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x10AF6A: main (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456== 
-==3687456== 12,308 bytes in 1 blocks are still reachable in loss record 50 of 60
-==3687456==    at 0x26697CD3: realloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==3687456==    by 0x26B344FB: xcb_connect_to_fd (in /usr/lib/x86_64-linux-gnu/libxcb.so.1.1.0)
-==3687456==    by 0x26B34E6B: xcb_connect_to_display_with_auth_info (in /usr/lib/x86_64-linux-gnu/libxcb.so.1.1.0)
-==3687456==    by 0x26712EE9: _XConnectXCB (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==3687456==    by 0x26702B68: XOpenDisplay (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==3687456==    by 0x11DAE6: mlx_init (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x112CFF: _init_tri_lib (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x10AF6A: main (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456== 
-==3687456== 12,800 bytes in 1 blocks are possibly lost in loss record 51 of 60
-==3687456==    at 0x26692899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==3687456==    by 0x111E63: queue_init (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x117430: shadow_traverse_bvh_iter (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x1179A7: get_rgb_norm_light_intensity (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x117AF9: diffuse_light (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x115A4F: get_diffuse_light (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x1160CE: iter_rays_line_stop (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x11AA62: thread_routine (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x2698EAC2: start_thread (pthread_create.c:442)
-==3687456==    by 0x26A1FA03: clone (clone.S:100)
-==3687456== 
-==3687456== 16,384 bytes in 1 blocks are still reachable in loss record 52 of 60
-==3687456==    at 0x26697A83: calloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==3687456==    by 0x26702EBE: XOpenDisplay (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==3687456==    by 0x11DAE6: mlx_init (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x112CFF: _init_tri_lib (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x10AF6A: main (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456== 
-==3687456== 21,168 bytes in 1 blocks are still reachable in loss record 53 of 60
-==3687456==    at 0x26697A83: calloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==3687456==    by 0x26B34204: xcb_connect_to_fd (in /usr/lib/x86_64-linux-gnu/libxcb.so.1.1.0)
-==3687456==    by 0x26B34E6B: xcb_connect_to_display_with_auth_info (in /usr/lib/x86_64-linux-gnu/libxcb.so.1.1.0)
-==3687456==    by 0x26712EE9: _XConnectXCB (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==3687456==    by 0x26702B68: XOpenDisplay (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==3687456==    by 0x11DAE6: mlx_init (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x112CFF: _init_tri_lib (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x10AF6A: main (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456== 
-==3687456== 28,224 bytes in 2 blocks are still reachable in loss record 54 of 60
-==3687456==    at 0x26697A83: calloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==3687456==    by 0x26703290: XOpenDisplay (in /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0)
-==3687456==    by 0x11DAE6: mlx_init (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x112CFF: _init_tri_lib (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x10AF6A: main (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456== 
-==3687456== 115,200 bytes in 800 blocks are still reachable in loss record 55 of 60
-==3687456==    at 0x26692899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==3687456==    by 0x10BDB7: create_empty_node (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x10DA3D: get_sphere (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x10BA65: parse_type_scene (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x10BD2B: __set_values_scene (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x10B5D3: __parse_file_scene (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x10B7E6: __init__ (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x10AF33: main (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456== 
-==3687456== 160,200 bytes in 1 blocks are still reachable in loss record 56 of 60
-==3687456==    at 0x26692899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==3687456==    by 0x11111E: create_shape_array (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x10B87B: __init__ (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x10AF33: main (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456== 
-==3687456== 198,152 bytes in 799 blocks are still reachable in loss record 57 of 60
-==3687456==    at 0x26692899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==3687456==    by 0x11C710: create_bvh_node (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x11D6DA: create_bvh_iter (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x10B898: __init__ (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x10AF33: main (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456== 
-==3687456== 198,400 bytes in 800 blocks are still reachable in loss record 58 of 60
-==3687456==    at 0x26692899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==3687456==    by 0x11C710: create_bvh_node (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x11CB75: box_around_sphere (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x11D4B5: create_bvh_iter (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x10B898: __init__ (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x10AF33: main (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456== 
-==3687456== 6,220,800 bytes in 1 blocks are still reachable in loss record 59 of 60
-==3687456==    at 0x26692899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==3687456==    by 0x113DC4: _new_render (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x113E97: _create_render (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x10AFDC: main (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456== 
-==3687456== 253,760,000 bytes in 19,825 blocks are definitely lost in loss record 60 of 60
-==3687456==    at 0x26692899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==3687456==    by 0x111E63: queue_init (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x117430: shadow_traverse_bvh_iter (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x1179A7: get_rgb_norm_light_intensity (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x117AF9: diffuse_light (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x115A4F: get_diffuse_light (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x1160CE: iter_rays_line_stop (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x11AA62: thread_routine (in /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus)
-==3687456==    by 0x2698EAC2: start_thread (pthread_create.c:442)
-==3687456==    by 0x26A1FA03: clone (clone.S:100)
-==3687456== 
-==3687456== LEAK SUMMARY:
-==3687456==    definitely lost: 253,760,000 bytes in 19,825 blocks
-==3687456==    indirectly lost: 0 bytes in 0 blocks
-==3687456==      possibly lost: 15,792 bytes in 12 blocks
-==3687456==    still reachable: 6,987,562 bytes in 2,480 blocks
-==3687456==         suppressed: 0 bytes in 0 blocks
-==3687456== 
-==3687456== ERROR SUMMARY: 3 errors from 3 contexts (suppressed: 1 from 1)
---3687456-- 
---3687456-- used_suppression:      1 X on SUSE11 writev uninit padding /usr/libexec/valgrind/default.supp:377
-==3687456== 
-==3687456== ERROR SUMMARY: 3 errors from 3 contexts (suppressed: 1 from 1)
+==2329935== Memcheck, a memory error detector
+==2329935== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==2329935== Using Valgrind-3.18.1-42b08ed5bd-20211015 and LibVEX; rerun with -h for copyright info
+==2329935== Command: ./miniRT_bonus maps/ring.rt
+==2329935== Parent PID: 2206874
+==2329935== 
+--2329935-- 
+--2329935-- Valgrind options:
+--2329935--    --leak-check=full
+--2329935--    --show-leak-kinds=all
+--2329935--    --track-origins=yes
+--2329935--    --verbose
+--2329935--    --log-file=val_out.log
+--2329935-- Contents of /proc/version:
+--2329935--   Linux version 6.6.72-x64v3-t2-jammy-xanmod1 (root@fv-az1245-313) (gcc (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0, GNU ld (GNU Binutils for Ubuntu) 2.38) #xanmod1 SMP PREEMPT_DYNAMIC Sat Jan 18 01:41:53 UTC 2025
+--2329935-- 
+--2329935-- Arch and hwcaps: AMD64, LittleEndian, amd64-cx16-lzcnt-rdtscp-sse3-ssse3-avx-avx2-bmi-f16c-rdrand-rdseed
+--2329935-- Page sizes: currently 4096, max supported 4096
+--2329935-- Valgrind library directory: /usr/libexec/valgrind
+--2329935-- Reading syms from /home/trgoel/Documents/cursus/miniRT/bonus/miniRT_bonus
+--2329935-- Reading syms from /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2
+--2329935--   Considering /usr/lib/debug/.build-id/9c/b53985768bb99f138f48655f7b8bf7e420d13d.debug ..
+--2329935--   .. build-id is valid
+--2329935-- Reading syms from /usr/libexec/valgrind/memcheck-amd64-linux
+--2329935--    object doesn't have a symbol table
+--2329935--    object doesn't have a dynamic symbol table
+--2329935-- Scheduler: using generic scheduler lock implementation.
+--2329935-- Reading suppressions file: /usr/libexec/valgrind/default.supp
+==2329935== embedded gdbserver: reading from /tmp/vgdb-pipe-from-vgdb-to-2329935-by-trgoel-on-???
+==2329935== embedded gdbserver: writing to   /tmp/vgdb-pipe-to-vgdb-from-2329935-by-trgoel-on-???
+==2329935== embedded gdbserver: shared mem   /tmp/vgdb-pipe-shared-mem-vgdb-2329935-by-trgoel-on-???
+==2329935== 
+==2329935== TO CONTROL THIS PROCESS USING vgdb (which you probably
+==2329935== don't want to do, unless you know exactly what you're doing,
+==2329935== or are doing some strange experiment):
+==2329935==   /usr/bin/vgdb --pid=2329935 ...command...
+==2329935== 
+==2329935== TO DEBUG THIS PROCESS USING GDB: start GDB like this
+==2329935==   /path/to/gdb ./miniRT_bonus
+==2329935== and then give GDB the following command
+==2329935==   target remote | /usr/bin/vgdb --pid=2329935
+==2329935== --pid is optional if only one valgrind process is running
+==2329935== 
+--2329935-- REDIR: 0x402aa40 (ld-linux-x86-64.so.2:strlen) redirected to 0x580bcec2 (???)
+--2329935-- REDIR: 0x402a810 (ld-linux-x86-64.so.2:index) redirected to 0x580bcedc (???)
+--2329935-- Reading syms from /usr/libexec/valgrind/vgpreload_core-amd64-linux.so
+--2329935--    object doesn't have a symbol table
+--2329935-- Reading syms from /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so
+--2329935--    object doesn't have a symbol table
+==2329935== WARNING: new redirection conflicts with existing -- ignoring it
+--2329935--     old: 0x0402aa40 (strlen              ) R-> (0000.0) 0x580bcec2 ???
+--2329935--     new: 0x0402aa40 (strlen              ) R-> (2007.0) 0x0484ee30 strlen
+--2329935-- REDIR: 0x4027220 (ld-linux-x86-64.so.2:strcmp) redirected to 0x484fcd0 (strcmp)
+--2329935-- REDIR: 0x402afa0 (ld-linux-x86-64.so.2:mempcpy) redirected to 0x4853840 (mempcpy)
+--2329935-- Reading syms from /usr/lib/x86_64-linux-gnu/libXext.so.6.4.0
+--2329935--    object doesn't have a symbol table
+--2329935-- Reading syms from /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0
+--2329935--    object doesn't have a symbol table
+--2329935-- Reading syms from /usr/lib/x86_64-linux-gnu/libm.so.6
+--2329935--   Considering /usr/lib/debug/.build-id/a3/ad9bb40b4907e509e4404cb972645c19675ca3.debug ..
+--2329935--   .. build-id is valid
+--2329935-- Reading syms from /usr/lib/x86_64-linux-gnu/libc.so.6
+--2329935--   Considering /usr/lib/debug/.build-id/d5/197096f709801829b118af1b7cf6631efa2dcd.debug ..
+--2329935--   .. build-id is valid
+==2329935== WARNING: new redirection conflicts with existing -- ignoring it
+--2329935--     old: 0x04b55c60 (memalign            ) R-> (1011.0) 0x0484e080 memalign
+--2329935--     new: 0x04b55c60 (memalign            ) R-> (1017.0) 0x0484e050 aligned_alloc
+==2329935== WARNING: new redirection conflicts with existing -- ignoring it
+--2329935--     old: 0x04b55c60 (memalign            ) R-> (1011.0) 0x0484e080 memalign
+--2329935--     new: 0x04b55c60 (memalign            ) R-> (1017.0) 0x0484e020 aligned_alloc
+==2329935== WARNING: new redirection conflicts with existing -- ignoring it
+--2329935--     old: 0x04b55c60 (memalign            ) R-> (1011.0) 0x0484e080 memalign
+--2329935--     new: 0x04b55c60 (memalign            ) R-> (1017.0) 0x0484e050 aligned_alloc
+==2329935== WARNING: new redirection conflicts with existing -- ignoring it
+--2329935--     old: 0x04b55c60 (memalign            ) R-> (1011.0) 0x0484e080 memalign
+--2329935--     new: 0x04b55c60 (memalign            ) R-> (1017.0) 0x0484e020 aligned_alloc
+==2329935== 
+==2329935== Process terminating with default action of signal 2 (SIGINT)
+==2329935==    at 0x4026B16: __open_nocancel (open64_nocancel.c:39)
+==2329935==    by 0x4006978: open_verify.constprop.0 (dl-load.c:1626)
+==2329935==    by 0x4007107: open_path (dl-load.c:1922)
+==2329935==    by 0x400A6B0: _dl_map_object (dl-load.c:2158)
+==2329935==    by 0x4003494: openaux (dl-deps.c:64)
+==2329935==    by 0x401D349: _dl_catch_exception (dl-error-skeleton.c:208)
+==2329935==    by 0x4003C7B: _dl_map_object_deps (dl-deps.c:248)
+==2329935==    by 0x402339F: dl_main (rtld.c:1970)
+==2329935==    by 0x401F83B: _dl_sysdep_start (dl-sysdep.c:256)
+==2329935==    by 0x4021597: _dl_start_final (rtld.c:507)
+==2329935==    by 0x4021597: _dl_start (rtld.c:596)
+==2329935==    by 0x4020297: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+==2329935==    by 0x1: ???
+==2329935== 
+==2329935== HEAP SUMMARY:
+==2329935==     in use at exit: 0 bytes in 0 blocks
+==2329935==   total heap usage: 0 allocs, 0 frees, 0 bytes allocated
+==2329935== 
+==2329935== All heap blocks were freed -- no leaks are possible
+==2329935== 
+==2329935== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
