@@ -150,7 +150,10 @@ t_hitbox	*create_bvh_iter(t_all *all, int end, int depth)
 	}
 	dad = queue_pop(&q);
 	queue_free(&q);
-	dad->node_type = ROOT;
-	dad->type = END_SHAPE;
+	if (dad->node_type == INTERNAL)
+	{
+		dad->node_type = ROOT;
+		dad->type = OBJECT;
+	}
 	return (dad);
 }

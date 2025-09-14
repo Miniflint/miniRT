@@ -1,5 +1,36 @@
 #include "miniRT.h"
 
+#ifdef SSAA
+
+void	ft_zeroes(t_all *all)
+{
+	all->ambient_light.ratio = 0;
+	all->ambient_light.rgb = (t_rgb){0, 0, 0, 0};
+	all->ambient_light.nb = 0;
+	all->camera.viewpoint = (t_coord){0, 0, 0};
+	all->camera.nb = 0;
+	all->camera.dir = (t_vec){0, 0, 0};
+	all->camera.fov = 0;
+	all->line_count = 1;
+	all->cylinders = NULL;
+	all->objects = NULL;
+	all->spheres = NULL;
+	all->planes = NULL;
+	all->lights = NULL;
+	all->win_width = WIN_WIDTH_ALL * 2;
+	all->win_height = WIN_HEIGHT_ALL * 2;
+	all->shadow_on = 1;
+	all->render_on = 1;
+	all->canvas.pixel_values = 2;
+	all->light_ratio = 1;
+	all->distance_light = DISTANCE_LIGHT_MIDDLE * DISTANCE_LIGHT_MIDDLE;
+	all->threads = NULL;
+	all->nb_shapes = 0;
+	all->render_hitbox = 1;
+}
+
+#else
+
 void	ft_zeroes(t_all *all)
 {
 	all->ambient_light.ratio = 0;
@@ -26,6 +57,8 @@ void	ft_zeroes(t_all *all)
 	all->nb_shapes = 0;
 	all->render_hitbox = 1;
 }
+
+#endif
 
 int	__parse_file_scene(t_all *all)
 {
@@ -73,9 +106,45 @@ void	zeroes_two(t_object *object, char *path)
 		object->curr_group[i] = 0;
 }
 
+int	init_canvas_pix(t_all *all, t_canvas *canvas)
+{
+	canvas->pix_y = malloc((all->win_height) * sizeof(double));
+	if (!canvas->pix_y)
+		return (1);
+	canvas->pix_x = malloc((all->win_width) * sizeof(double));
+	if (!canvas->pix_x)
+		return (1);
+	return (0);
+}
+
+int	init_canvas(t_all *all, t_canvas *canvas)
+{
+	int	i;
+
+	canvas->rays = malloc((all->win_height + 1) * sizeof(t_ray *));
+	if (!canvas->rays)
+		return (1);
+	canvas->rays_save = malloc((all->win_height + 1) * sizeof(t_ray *));
+	if (!canvas->rays_save)
+		return (1);
+	i = 0;
+	while (i < all->win_height)
+	{
+		canvas->rays[i] = malloc((all->win_width) * sizeof(t_ray));
+		if (!canvas->rays[i])
+			return (1);
+		canvas->rays_save[i] = malloc((all->win_width) * sizeof(t_ray));
+		if (!canvas->rays_save[i++])
+			return (1);
+	}
+	return (init_canvas_pix(all, canvas));
+}
+
 int	__init__(t_all *all, char **argv, int argc)
 {
 	ft_zeroes(all);
+	if (init_canvas(all, &all->canvas))
+		return (1);
 	all->argv = argv;
 	all->argc = argc;
 	if (check_ext(all->argv))
@@ -89,7 +158,7 @@ int	__init__(t_all *all, char **argv, int argc)
 	if (__parse_file_objs(all))
 		return (1);
 	apply_rgb_all_shape(all);
-	// print_all_structs(all);
+	print_all_structs(all);
 	create_shape_array(all);
 	all->bvh = create_bvh_iter(all, all->nb_shapes, 0);
 	printf("%p\n", (void *)all->bvh);

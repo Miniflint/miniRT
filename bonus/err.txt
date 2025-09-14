@@ -1,0 +1,32 @@
+srcs/maths/threads.c: In function ‘draw_rays_to_render’:
+srcs/maths/threads.c:204:60: error: incompatible type for argument 3 of ‘_replace_pixel_on_render’
+  204 |                                                 (t_point2d){real[1], real[0]});
+      |                                                            ^~~~~~~~~~~~~~~~~~
+      |                                                            |
+      |                                                            t_point2d {aka struct s_point2d}
+In file included from ./incs/miniRT.h:27,
+                 from srcs/maths/threads.c:1:
+./srcs/tri_lib/tri_lib.h:257:73: note: expected ‘int’ but argument is of type ‘t_point2d’ {aka ‘struct s_point2d’}
+  257 |                                                 unsigned int color, int x, int y);
+      |                                                                     ~~~~^
+srcs/maths/threads.c:202:41: error: too few arguments to function ‘_replace_pixel_on_render’
+  202 |                                         _replace_pixel_on_render((t_render *)render,
+      |                                         ^~~~~~~~~~~~~~~~~~~~~~~~
+./srcs/tri_lib/tri_lib.h:256:33: note: declared here
+  256 | void                            _replace_pixel_on_render(t_render *render,
+      |                                 ^~~~~~~~~~~~~~~~~~~~~~~~
+srcs/maths/threads.c:208:60: error: incompatible type for argument 3 of ‘_replace_pixel_on_render’
+  208 |                                                 (t_point2d){real[1], real[0]});
+      |                                                            ^~~~~~~~~~~~~~~~~~
+      |                                                            |
+      |                                                            t_point2d {aka struct s_point2d}
+./srcs/tri_lib/tri_lib.h:257:73: note: expected ‘int’ but argument is of type ‘t_point2d’ {aka ‘struct s_point2d’}
+  257 |                                                 unsigned int color, int x, int y);
+      |                                                                     ~~~~^
+srcs/maths/threads.c:206:41: error: too few arguments to function ‘_replace_pixel_on_render’
+  206 |                                         _replace_pixel_on_render((t_render *)render,
+      |                                         ^~~~~~~~~~~~~~~~~~~~~~~~
+./srcs/tri_lib/tri_lib.h:256:33: note: declared here
+  256 | void                            _replace_pixel_on_render(t_render *render,
+      |                                 ^~~~~~~~~~~~~~~~~~~~~~~~
+make: *** [Makefile:105: objs/threads.o] Error 1

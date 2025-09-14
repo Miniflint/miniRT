@@ -16,11 +16,22 @@ typedef unsigned char	t_color;
 
 typedef struct s_argb
 {
-	double	a;
+	float	a;
 	t_color	r;
 	t_color	g;
 	t_color	b;
 }			t_argb;
+
+#ifdef LIMITED_MEMORY
+
+typedef struct s_rgb_f
+{
+	float	r;
+	float	g;
+	float	b;
+}			t_rgb_f;
+
+#else
 
 typedef struct s_rgb_f
 {
@@ -28,6 +39,9 @@ typedef struct s_rgb_f
 	double	g;
 	double	b;
 }			t_rgb_f;
+
+#endif
+
 
 t_argb			unsigned_to_argb(unsigned int color);
 unsigned int	argb_to_unsigned(t_argb color);

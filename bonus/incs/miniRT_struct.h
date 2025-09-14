@@ -136,10 +136,10 @@ typedef struct S_Canvas
 	double			size_y;
 	double			unit;
 	t_minuint		pixel_values;
-	double			pix_x[WIN_WIDTH_ALL];
-	double			pix_y[WIN_HEIGHT_ALL];
-	t_ray			rays[WIN_HEIGHT_ALL][WIN_WIDTH_ALL];
-	t_ray			rays_save[WIN_HEIGHT_ALL][WIN_WIDTH_ALL];
+	double			*pix_x;
+	double			*pix_y;
+	t_ray			**rays;
+	t_ray			**rays_save;
 }	t_canvas;	
 
 /* TRISTAN */

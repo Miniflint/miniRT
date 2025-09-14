@@ -2,13 +2,9 @@
 
 double lowest_2(double a, double b)
 {
-	const int a_nz = a != 0.0;
-	const int b_nz = b != 0.0;
-	const double both_nonzero = (double)(a_nz & b_nz);
-	const double only_a = (double)(a_nz & !b_nz);
-	const double only_b = (double)((!a_nz) & b_nz);
-
-	return (both_nonzero * (a + (b - a) * (b < a)) + only_a * a + only_b * b);
+	if (a < b)
+		return (a);
+	return (b);
 }
 
 double	lowest_3(double a, double b, double c)
@@ -18,13 +14,9 @@ double	lowest_3(double a, double b, double c)
 
 double highest_2(double a, double b)
 {
-	const int a_nz = a != 0.0;
-	const int b_nz = b != 0.0;
-	const double both_nonzero = (double)(a_nz & b_nz);
-	const double only_a = (double)(a_nz & !b_nz);
-	const double only_b = (double)((!a_nz) & b_nz);
-
-	return (both_nonzero * (a + (b - a) * (b > a)) + only_a * a + only_b * b);
+	if (a > b)
+		return (a);
+	return (b);
 }
 
 double	highest_3(double a, double b, double c)
@@ -68,6 +60,7 @@ t_hitbox	*box_around_triangle(t_face *face)
 			highest[1],
 			highest[2]
 	});
+	print_box(&new->box);
 	new->shape = (void *)face;
 	new->type = TRIANGLE;
 	new->node_type = LEAF;
@@ -114,7 +107,11 @@ t_hitbox	*iterative_triangles(t_face *faces, unsigned long end, int depth)
 	}
 	dad = queue_pop(&q);
 	queue_free(&q);
-	dad->node_type = ROOT;
+	if (dad->node_type == INTERNAL)
+	{
+		dad->node_type = ROOT;
+		dad->type = OBJECT;
+	}
 	return (dad);
 }
 

@@ -18,6 +18,8 @@ int	get_box(t_box **head, char **const restrict s)
 		return (free(box), 3);
 	if (get_rgb(&box->rgb_save, s))
 		return (free(box), printf("\tboxs problem\n"), 1);
+	if (get_material(&box->material, s))
+		return (3);
 	box->color = argb_to_rgbf(box->rgb_save);
 	box->box = create_box(box->box.bottom[0], box->box.top[3]);
 	box->box.a = &box->box.bottom[0];

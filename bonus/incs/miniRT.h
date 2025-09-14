@@ -14,10 +14,10 @@
 #  include <unistd.h>
 # endif
 # ifndef WIN_WIDTH_ALL
-#  define WIN_WIDTH_ALL 1080
+#  define WIN_WIDTH_ALL 1920
 # endif
 # ifndef WIN_HEIGHT_ALL
-#  define WIN_HEIGHT_ALL 720
+#  define WIN_HEIGHT_ALL 1080
 # endif
 # ifndef DISTANCE_LIGHT_MIDDLE
 #  define DISTANCE_LIGHT_MIDDLE 200
@@ -126,6 +126,7 @@ int				get_vec(t_vec *vec, char **const restrict s);
 int				get_coord(t_coord *coord, char **const restrict s);
 int				get_ambient_light(t_amb_light *a_light,
 					char **const restrict s);
+int				get_material(t_material *material, char **const restrict s);
 int				get_camera(t_cam *camera, char **const restrict s);
 int				get_light(t_light **head, char **const restrict s);
 int				get_sphere(t_sphere **head, char **const restrict s);
@@ -205,8 +206,6 @@ void			set_shapes(t_ray *ray);
 int				check_t(t_quad q, t_ray *ray, t_cylinder *cylinder,
 					t_light_vec l);
 /* THREADS */
-int				start_rays_thread(t_all *all, t_threads *thread);
-int				start_rays_thread_line(t_all *all, t_threads *thread);
 void			distribute_lines_threads(t_all *all);
 int				launch_threads(t_all *all);
 unsigned long	get_time_diff(struct timeval *last);

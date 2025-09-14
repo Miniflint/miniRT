@@ -73,3 +73,25 @@ int	get_vec(t_vec *vec, char **const restrict s)
 	norm_vectors(vec, vec_magnitude(vec), vec);
 	return (0);
 }
+
+int	get_material(t_material *material, char **const restrict s)
+{
+	t_argb				tmp;
+
+	if (skip_till_number(s, 0))
+		return (3);
+	material->ks = ft_atof(s);
+	if (material->ks < 0.00)
+		return (printf("Error: coefficient speculaire < 0.0\n"), 3);
+	if (skip_till_number(s, 0))
+		return (3);
+	material->shininess = ft_atof(s);
+	if (material->shininess < 0.00)
+		return (printf("Error: shininess < 0.0\n"), 3);
+	if (skip_till_number(s, 0))
+		return (3);
+	if (get_rgb(&tmp, s))
+		return (1);
+	material->reflection = argb_to_rgbf((t_argb)tmp);
+	return (0);
+}

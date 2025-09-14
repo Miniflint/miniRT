@@ -52,6 +52,11 @@ t_bvh	create_box(t_vec a, t_vec b)
 		a = b;
 		b = tmp;
 	}
+		a.x += 0.1;
+	if (a.y == b.y)
+		a.y += 0.1;
+	if (a.z == b.z)
+		a.z += 0.1;
 	new.bottom[0] = (t_vec){.x = a.x, .y = a.y, .z = a.z};
 	new.bottom[1] = (t_vec){.x = b.x, .y = a.y, .z = a.z};
 	new.bottom[2] = (t_vec){.x = a.x, .y = b.y, .z = a.z};

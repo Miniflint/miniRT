@@ -52,6 +52,31 @@ unsigned long get_depth_objs(t_object *root)
 	return (get_depth_objs(root->next), root->nb_faces);
 }
 
+void	*free_canvas(t_all *all, t_canvas *canvas)
+{
+	int	i;
+
+	i = -1;
+	if (!canvas->rays)
+		return (NULL);
+	if (!canvas->rays_save)
+		return (free(canvas->rays), NULL);
+	while (++i < all->win_width)
+	{
+		if (!canvas->rays[i])
+			return (NULL);
+		free(canvas->rays[i]);
+		if (!canvas->rays_save[i])
+			return (NULL);
+		free(canvas->rays_save[i]);
+	}
+	if (canvas->pix_y)
+		free(canvas->pix_y);
+	if (canvas->pix_x)
+		free(canvas->pix_x);
+	return (NULL);
+}
+
 int	free_all(void *content)
 {
 	t_all	*all;
@@ -66,6 +91,7 @@ int	free_all(void *content)
 	all->boxes = free_bx(all->boxes);
 	nb_objs = get_depth_objs(all->objects);
 	all->objects = free_objs(all->objects);
+	free_canvas(all, &all->canvas);
 	free(all->shapes);
 	if (free_hitboxes(all->bvh, 2 * (all->nb_shapes + nb_objs)))
 		return (printf("error freeing\n"), 1);

@@ -21,6 +21,27 @@ void	closest_plane(t_ray *ray, t_plane *plane)
 	}
 }
 
+#ifdef SSAA
+
+void	init_ray(t_ray *ray, t_all *all)
+{
+	// ray->color_ray = (t_rgb_f){0, 0, 0};
+	ray->end = 0;
+	if (all->render_hitbox && !(ray->x % 2) && !(ray->y % 2))
+		_replace_pixel_on_render(all->render_hb, 0, ray->y >> 1, ray->x >> 1);
+	ray->color_shape = (t_rgb_f){0, 0, 0};
+	ray->color_diffuse = (t_rgb_f){0, 0, 0};
+	ray->color_specular = (t_rgb_f){0, 0, 0};
+	ray->color_ray = (t_rgb_f){0, 0, 0};
+	ray->shape.type = CAMERA;
+	ray->shape.shape = NULL;
+	ray->reflection = (t_rgb_f){1, 1, 1};
+	ray->shape.t1 = INFINITY;
+	ray->shape.t2 = INFINITY;
+}
+
+#else
+
 void	init_ray(t_ray *ray, t_all *all)
 {
 	// ray->color_ray = (t_rgb_f){0, 0, 0};
@@ -37,6 +58,8 @@ void	init_ray(t_ray *ray, t_all *all)
 	ray->shape.t1 = INFINITY;
 	ray->shape.t2 = INFINITY;
 }
+
+#endif
 
 // ReflectRay(R, N) {
 //     return 2 * N * dot(N, R) - R;
@@ -60,6 +83,57 @@ void	init_reflect_ray(t_ray *ray, t_all *all)
 	ray->shape.t1 = INFINITY;
 	ray->shape.t2 = INFINITY;
 }
+
+#ifdef SSAA
+
+void	traverse_bvh_iter(t_ray *ray, t_hitbox *bvh, t_render *render, int hb)
+{
+	t_queue		q;
+	t_hitbox	*curr;
+	const t_all	*all = __get_all();
+
+	if (queue_init(&q, all->nb_shapes))
+		return ;
+	queue_push(&q, bvh);
+	while (!queue_is_empty(&q))
+	{
+		curr = queue_pop(&q);
+		if (!curr || !intersect_hitbox(ray, &curr->box))
+			continue ;
+		if (hb && !(ray->x % 2) && !(ray->y % 2))
+			tri_lib()->put_pixel_to_render(render, (t_argb){.a=0.25, .r=255,
+				.g=255,.b=255}, ray->y >> 1, ray->x >> 1);
+		if (curr->node_type == LEAF)
+		{
+			if (all->render_on)
+			{
+				if (curr->type == SPHERE)
+					intersect_ray_sphere(ray, (t_sphere *)curr->shape);
+				else if (curr->type == CYLINDER)
+					intersect_cylinder(ray, (t_cylinder *)curr->shape);
+				else if (curr->type == BOX)
+					intersect_box(ray, (t_box *)curr->shape);
+				else if (curr->type == TRIANGLE)
+				{
+					if (hb && !(ray->x % 2) && !(ray->y % 2))
+						tri_lib()->put_pixel_to_render(all->render_hb, (t_argb){.a=0.25, .r=255,
+					.g=0,.b=0}, ray->y >> 1, ray->x >> 1);
+					intersect_triangle(ray, (t_face *)curr->shape);
+				}
+			}
+		}
+		else
+		{
+			if (curr->left)
+				queue_push(&q, curr->left);
+			if (curr->right)
+				queue_push(&q, curr->right);
+		}
+	}
+	queue_free(&q);
+}
+
+#else
 
 void	traverse_bvh_iter(t_ray *ray, t_hitbox *bvh, t_render *render, int hb)
 {
@@ -89,7 +163,9 @@ void	traverse_bvh_iter(t_ray *ray, t_hitbox *bvh, t_render *render, int hb)
 				else if (curr->type == BOX)
 					intersect_box(ray, (t_box *)curr->shape);
 				else if (curr->type == TRIANGLE)
+				{
 					intersect_triangle(ray, (t_face *)curr->shape);
+				}
 			}
 		}
 		else
@@ -102,6 +178,8 @@ void	traverse_bvh_iter(t_ray *ray, t_hitbox *bvh, t_render *render, int hb)
 	}
 	queue_free(&q);
 }
+
+#endif
 
 void	get_diffuse_light(t_ray *ray, t_all *all)
 {
@@ -201,6 +279,55 @@ void	traceray_reflection(t_ray *ray, t_all *all)
 	get_local_color(ray, all);
 }
 
+#ifdef SSAA
+
+t_thread_mode	iter_rays_line_stop(t_all *all, t_threads *thread, void (*f)(t_ray *, t_all *))
+{
+	int				i;
+	int				j;
+
+	i = thread->start;
+	while (i < thread->end)
+	{
+		j = 0;
+		while (j < all->win_width)
+		{
+			j -= (j >= all->win_width);
+			all->canvas.rays[i][j].y = j;
+			all->canvas.rays[i][j].x = i;
+			f(&all->canvas.rays[i][j], all);
+			++j;
+		}
+		if (get_thread_mode_pause(all, thread) == (t_thread_mode)STOP)
+			return ((t_thread_mode)STOP);
+		else if (thread->mode == (t_thread_mode)RESET)
+			return ((t_thread_mode)RESET);
+		++i;
+	}
+	return (((t_thread_mode)CONTINUE));
+}
+
+void	iter_rays(t_all *all, t_threads *thread, void (*f)(t_ray *))
+{
+	int				i;
+	int				j;
+
+	i = thread->start;
+	while (i < thread->end)
+	{
+		j = 0;
+		while (j < all->win_width)
+		{
+			j -= (j >= all->win_width);
+			f(&all->canvas.rays[i][j]);
+			++j;
+		}
+		++i;
+	}
+}
+
+#else
+
 t_thread_mode	iter_rays_line_stop(t_all *all, t_threads *thread, void (*f)(t_ray *, t_all *))
 {
 	int				index[2];
@@ -260,6 +387,8 @@ void	iter_rays(t_all *all, t_threads *thread, void (*f)(t_ray *))
 		index[0] = real[0] + mi_pix;
 	}
 }
+
+#endif
 
 //--------NO THREADS--------//
 

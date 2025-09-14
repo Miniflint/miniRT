@@ -161,6 +161,61 @@ void	change_threads_mode(t_all *all, t_thread_mode mode)
 // 	return (TRI_OPAQUE_UNSIGNED | (base.r << 16) | (base.g << 8) | base.b);
 // }
 
+#ifdef SSAA
+
+static t_rgb_f	get_color_average(t_all *all, int i, int j)
+{
+	t_rgb_f	ret;
+
+	ret.r = all->canvas.rays[i][j].color_ray.r * 0.25 + all->canvas.rays[i + 1][j].color_ray.r * 0.25 + all->canvas.rays[i][j + 1].color_ray.r * 0.25 + all->canvas.rays[i + 1][j + 1].color_ray.r * 0.25;
+	ret.g = all->canvas.rays[i][j].color_ray.g * 0.25 + all->canvas.rays[i + 1][j].color_ray.g * 0.25 + all->canvas.rays[i][j + 1].color_ray.g * 0.25 + all->canvas.rays[i + 1][j + 1].color_ray.g * 0.25;
+	ret.b = all->canvas.rays[i][j].color_ray.b * 0.25 + all->canvas.rays[i + 1][j].color_ray.b * 0.25 + all->canvas.rays[i][j + 1].color_ray.b * 0.25 + all->canvas.rays[i + 1][j + 1].color_ray.b * 0.25;
+	return (ret);
+}
+
+static unsigned int	color_with_hitbox_ssaa(t_rgb_f color, t_all *all, int x, int y)
+{
+	if (all->render_on)
+		return (TRI_OPAQUE_UNSIGNED | (_mix_colors_render_to_render(unsigned_to_argb(_get_pixel(all->render_hb, x, y)), rgb_f_to_argb(color)) & 0xFFFFFF));
+	else
+		return (TRI_OPAQUE_UNSIGNED | (_get_pixel(all->render_hb, x, y) & 0xFFFFFF));
+}
+
+void	draw_rays_to_render(t_all *all, t_render *render)
+{
+	int				index[2];
+	int				real[2];
+
+	index[0] = 0;
+	real[0] = 0;
+	while (real[0] < WIN_HEIGHT_ALL)
+	{
+		real[1] = 0;
+		index[1] = 0;
+		while (real[1] < WIN_WIDTH_ALL)
+		{
+			if (all->canvas.rays[index[0]][index[1]].to_draw)
+			{
+				if (all->render_hitbox || !all->render_on)
+					_replace_pixel_on_render((t_render *)render,
+						color_with_hitbox_ssaa(get_color_average(all, index[0], index[1]), all, real[1], real[0]),
+						real[1], real[0]);
+				else
+					_replace_pixel_on_render((t_render *)render,
+						rgb_f_to_unsigned(get_color_average(all, index[0], index[1])),
+						real[1], real[0]);
+			}
+			++real[1];
+			index[1] += 2;
+		}
+		++real[0];
+		index[0] += 2;
+	}
+}
+
+#else
+
+
 unsigned int	color_with_hitbox(t_ray *ray, t_all *all, int x, int y)
 {
 	if (all->render_on)
@@ -205,6 +260,8 @@ void	draw_rays_to_render(t_all *all, t_render *render)
 	}
 }
 
+#endif
+
 int	end_thread(t_all *all, unsigned int n_thread)
 {
 	unsigned int	i;
@@ -243,13 +300,13 @@ void	distribute_lines_threads(t_all *all)
 	unsigned int	n_lines;
 
 	i = 0;
-	n_lines = (int)((double)WIN_HEIGHT_ALL / (double)all->canvas.pixel_values / (double)all->n_thread) * all->canvas.pixel_values;
+	n_lines = (int)((double)all->win_height / (double)all->canvas.pixel_values / (double)all->n_thread) * all->canvas.pixel_values;
 	// change_threads_mode(all, PAUSE);
 	while (i < all->n_thread)
 	{
 		all->threads[i].start = i * n_lines;
 		if (i + 1 == all->n_thread)
-			all->threads[i].end = WIN_HEIGHT_ALL;
+			all->threads[i].end = all->win_height;
 		else
 			all->threads[i].end = all->threads[i].start + n_lines;
 		// printf("Pixel_val = %i, Thread %u, start %i end %i\n", all->canvas.pixel_values, i, all->threads[i].start, all->threads[i].end);
@@ -277,14 +334,14 @@ int	launch_threads(t_all *all)
 	all->thread_states[(t_thread_mode)RESET] = 0;
 	pthread_mutex_init(&all->mutex, NULL);
 	i = 0;
-	n_lines = (int)((double)WIN_HEIGHT_ALL / (double)all->canvas.pixel_values / (double)all->n_thread) * all->canvas.pixel_values;
+	n_lines = (int)((double)all->win_height / (double)all->canvas.pixel_values / (double)all->n_thread) * all->canvas.pixel_values;
 	// actual_line = 0;
 	pthread_mutex_lock(&all->mutex);
 	while (i < all->n_thread)
 	{
 		all->threads[i].start = i * n_lines;
 		if (i + 1 == all->n_thread)
-			all->threads[i].end = WIN_HEIGHT_ALL;
+			all->threads[i].end = all->win_height;
 		else
 			all->threads[i].end = all->threads[i].start + n_lines;
 		// printf("Pixel_val = %i, Thread %u, start %i end %i\n", all->canvas.pixel_values, i, all->threads[i].start, all->threads[i].end);

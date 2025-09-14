@@ -38,6 +38,8 @@ int	get_sphere(t_sphere **head, char **const restrict s)
 		return (free(sphere), 3);
 	if (get_rgb(&sphere->rgb_save, s))
 		return (free(sphere), printf("\tSpheres problem\n"), 1);
+	if (get_material(&sphere->material, s))
+		return (3);
 	sphere->color = argb_to_rgbf(sphere->rgb_save);
 	sphere->next = *head;
 	*head = sphere;
@@ -65,6 +67,8 @@ int	get_plane(t_plane **head, char **const restrict s)
 		return (free(plane), 3);
 	if (get_rgb(&plane->rgb_save, s))
 		return (free(plane), printf("\tPlanes problems\n"), 1);
+	if (get_material(&plane->material, s))
+		return (1);
 	plane->color = argb_to_rgbf(plane->rgb_save);
 	plane->next = *head;
 	*head = plane;
@@ -122,6 +126,8 @@ int	get_cylinder(t_cylinder **head, char **const restrict s)
 		return (free(cylinder), 3);
 	if (get_rgb(&cylinder->rgb_save, s))
 		return (free(cylinder), printf("\tCylinders problems\n"), 1);
+	if (get_material(&cylinder->material, s))
+		return (3);
 	cylinder->color = argb_to_rgbf(cylinder->rgb_save);
 	cylinder->next = *head;
 	*head = cylinder;

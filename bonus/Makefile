@@ -37,7 +37,7 @@ OBJS := $(patsubst $(SRC_DIR)/%.c, $(OBJS_DIR)/%.o, $(SRC_FILES)) \
 NAME = miniRT_bonus
 CC = gcc
 
-CFLAGS = -Wall -Werror -Wextra -I$(SRC_DIR_INC) -I$(TRI_DIR_INC)
+CFLAGS = -m64 -Wall -Werror -Wextra -I$(SRC_DIR_INC) -I$(TRI_DIR_INC)
 
 UNAME := $(shell uname)
 
@@ -80,14 +80,27 @@ ifeq ($(THREADS), yes)
 	CFLAGS += -DTHREADS="1"
 endif
 
-ifeq ($(strip $(SCREEN_X)),)
-else
-	CFLAGS += -DSCREEN_X=$(SCREEN_X)
+ifeq ($(SSAA), yes)
+	CFLAGS += -DSSAA="1"
+	CFLAGS += -DLIMITED_MEMORY="1"
 endif
 
-ifeq ($(strip $(SCREEN_Y)),)
+ifeq ($(SSAA), unlimited)
+	CFLAGS += -DSSAA="1"
+endif
+
+ifeq ($(LIMITED_MEMORY), yes)
+	CFLAGS += -DLIMITED_MEMORY="1"
+endif
+
+ifeq ($(strip $(WIDTH)),)
 else
-	CFLAGS += -DSCREEN_Y=$(SCREEN_Y)
+	CFLAGS += -DWIN_WIDTH_ALL=$(WIDTH)
+endif
+
+ifeq ($(strip $(HEIGHT)),)
+else
+	CFLAGS += -DWIN_HEIGHT_ALL=$(HEIGHT)
 endif
 
 all: $(NAME)
