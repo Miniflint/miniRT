@@ -9,6 +9,7 @@ void	iter_sphere(t_shape *shapes, t_all *all, int *i)
 	{
 		shapes[*i].type = SPHERE;
 		shapes[*i].shape = (void *)tmp;
+		shapes[*i].origin = tmp->coord;
 		tmp = tmp->next;
 		*i += 1;
 	}
@@ -23,6 +24,7 @@ void	iter_cylinder(t_shape *shapes, t_all *all, int *i)
 	{
 		shapes[*i].type = CYLINDER;
 		shapes[*i].shape = (void *)tmp;
+		shapes[*i].origin = tmp->coord;
 		tmp = tmp->next;
 		*i += 1;
 	}
@@ -37,6 +39,7 @@ void	iter_box(t_shape *shapes, t_all *all, int *i)
 	{
 		shapes[*i].type = BOX;
 		shapes[*i].shape = (void *)tmp;
+		shapes[*i].origin = tmp->box.bottom[0];
 		tmp = tmp->next;
 		*i += 1;
 	}

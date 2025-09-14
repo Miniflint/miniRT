@@ -163,9 +163,7 @@ void	traverse_bvh_iter(t_ray *ray, t_hitbox *bvh, t_render *render, int hb)
 				else if (curr->type == BOX)
 					intersect_box(ray, (t_box *)curr->shape);
 				else if (curr->type == TRIANGLE)
-				{
-					intersect_triangle(ray, (t_face *)curr->shape);
-				}
+					intersect_quad(ray, (t_face *)curr->shape);
 			}
 		}
 		else

@@ -109,6 +109,9 @@ int	shadow_traverse_bvh_iter(t_ray *ray, t_hitbox *bvh,
 			else if (curr->type == CYLINDER
 				&& shadow_intersect_cylinder(ray, curr->shape, light_dir, light_length))
 				return (queue_free(&q), 1);
+			else if (curr->type == TRIANGLE
+				&& shadow_intersect_triangle(ray, curr->shape, light_dir, light_length))
+				return (queue_free(&q), 1);
 		}
 		else
 		{

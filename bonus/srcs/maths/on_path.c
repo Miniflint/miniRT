@@ -69,3 +69,34 @@ int	shadow_intersect_bvh(t_ray *ray, t_bvh *box,
 			return (1);
 	return (0);
 }
+
+int shadow_intersect_triangle(t_ray *ray, t_face *face, t_vec light_dir, double light_length)
+{
+	t_vec e[2];
+	t_vec d;
+	t_vec p;
+	double det;
+    t_vec q;
+    double u, v, t;
+
+	e[0] = sub_vectors_no_v(face->vertices[1], face->vertices[0]);
+    e[1] = sub_vectors_no_v(face->vertices[2], face->vertices[0]);
+	p = sub_vectors_no_v(&ray->hit, face->vertices[0]);
+	cross_product(&light_dir, &e[1], &d);
+    det = dot_product(&e[0], &d);
+	if (det < 1e-6 && det > -1e-6)
+		return (1);
+	u = dot_product(&p, &d) / det;
+	if (u < 0 || u > 1)
+		return (1);
+	cross_product(&p, &e[0], &q);
+	v = dot_product(&light_dir, &q) / det;
+	if (v < 1e-6 || u + v > 1)
+		return (1);
+	t = dot_product(&e[1], &q) / det;
+	if (t < 1e-6)
+		return (1);
+	if (t < light_length && t <= -1e-6)
+		return (1);
+	return (0);
+}
