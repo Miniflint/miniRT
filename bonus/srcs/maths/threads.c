@@ -83,7 +83,7 @@ void	*thread_routine(void *content)
 		// 	tri_lib()->erase_render(all->render_hb);
 		if (iter_rays_line_stop(all, thread, get_closest_color) == (t_thread_mode)STOP)
 			return (NULL);
-		else if (thread->mode ==(t_thread_mode)RESET)
+		else if (thread->mode == (t_thread_mode)RESET)
 			continue ;
 		if (get_thread_mode_pause(all, thread) == (t_thread_mode)STOP)
 			return (NULL);
@@ -91,26 +91,27 @@ void	*thread_routine(void *content)
 			continue ;
 
 		// iter_rays(all, thread, get_diffuse_light);
+		if (all->render_on)
+		{
+			if (iter_rays_line_stop(all, thread, get_diffuse_light) == (t_thread_mode)STOP)
+				return (NULL);
+			else if (thread->mode ==(t_thread_mode)RESET)
+				continue ;
 
-		if (iter_rays_line_stop(all, thread, get_diffuse_light) == (t_thread_mode)STOP)
-			return (NULL);
-		else if (thread->mode ==(t_thread_mode)RESET)
-			continue ;
+			// if (start_rays_thread(all, thread) == (t_thread_mode)STOP)
+			// 	return (NULL);
 
-		// if (start_rays_thread(all, thread) == (t_thread_mode)STOP)
-		// 	return (NULL);
+			
+			// if (start_rays_thread_line(all, thread) == (t_thread_mode)STOP)
+			// 	return (NULL);
+			// else if (thread->mode ==(t_thread_mode)RESET)
+				// continue ;
 
-		
-		// if (start_rays_thread_line(all, thread) == (t_thread_mode)STOP)
-		// 	return (NULL);
-		// else if (thread->mode ==(t_thread_mode)RESET)
-			// continue ;
-
-		// if (iter_rays_line_stop(all, thread, traceray) == (t_thread_mode)STOP)
-		// 	return (NULL);
-		// else if (thread->mode ==(t_thread_mode)RESET)
-		// 	continue ;
-
+			// if (iter_rays_line_stop(all, thread, traceray) == (t_thread_mode)STOP)
+			// 	return (NULL);
+			// else if (thread->mode ==(t_thread_mode)RESET)
+			// 	continue ;
+		}
 		if (get_thread_mode_pause_continue(all, thread) == (t_thread_mode)STOP)
 			return (NULL);
 	}
@@ -139,9 +140,25 @@ void	change_threads_mode(t_all *all, t_thread_mode mode)
 // _mix_colors_render_to_render(
 // 				unsigned_to_argb((top->_data)[i]),
 // 				unsigned_to_argb((base->_data)[i]));
+
+// unsigned int	mix_colors_top_to_base(t_argb top, t_argb base)
+// {
+// 	if (top.a >= 1.0000)
+// 		return (TRI_OPAQUE_UNSIGNED | (top.r << 16) | (top.g << 8) | top.b);
+// 	if (top.a <= 0.0000)
+// 		return (TRI_OPAQUE_UNSIGNED | (base.r << 16) | (base.g << 8) | base.b);
+// 	base.r = top.r + base.r * (1.0 - top.a);
+// 	base.g = top.g + base.g * (1.0 - top.a);
+// 	base.b = top.b + base.b * (1.0 - top.a);
+// 	return (TRI_OPAQUE_UNSIGNED | (base.r << 16) | (base.g << 8) | base.b);
+// }
+
 unsigned int	color_with_hitbox(t_ray *ray, t_all *all, int x, int y)
 {
-	return (_mix_colors_render_to_render(unsigned_to_argb(_get_pixel(all->render_hb, x, y)), rgb_f_to_argb(ray->color_ray)));
+	if (all->render_on)
+		return (TRI_OPAQUE_UNSIGNED | (_mix_colors_render_to_render(unsigned_to_argb(_get_pixel(all->render_hb, x, y)), rgb_f_to_argb(ray->color_ray)) & 0xFFFFFF));
+	else
+		return (TRI_OPAQUE_UNSIGNED | (_get_pixel(all->render_hb, x, y) & 0xFFFFFF));
 }
 
 void	draw_rays_to_render(t_all *all, t_render *render)
@@ -162,7 +179,7 @@ void	draw_rays_to_render(t_all *all, t_render *render)
 			index[1] -= (index[1] >= all->win_width);
 			if (all->canvas.rays[index[0]][index[1]].to_draw)
 			{
-				if (all->render_hitbox)
+				if (all->render_hitbox || !all->render_on)
 					_replace_s_px_on_render((t_render *)render,
 						color_with_hitbox(&all->canvas.rays[index[0]][index[1]], all, index[1], index[0]),
 						(t_point2d){real[1], real[0]}, all->canvas.pixel_values);

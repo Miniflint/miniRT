@@ -56,6 +56,7 @@ typedef struct S_all
 	int				win_height;
 	int				win_width;
 	char			shadow_on;
+	char			render_on;
 	unsigned long	line_count;
 	double			light_ratio;
 	double			distance_light;

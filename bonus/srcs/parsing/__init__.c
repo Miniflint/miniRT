@@ -18,6 +18,7 @@ void	ft_zeroes(t_all *all)
 	all->win_width = WIN_WIDTH_ALL;
 	all->win_height = WIN_HEIGHT_ALL;
 	all->shadow_on = 1;
+	all->render_on = 1;
 	all->canvas.pixel_values = 3;
 	all->light_ratio = 1;
 	all->distance_light = DISTANCE_LIGHT_MIDDLE * DISTANCE_LIGHT_MIDDLE;

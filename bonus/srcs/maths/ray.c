@@ -25,7 +25,7 @@ void	init_ray(t_ray *ray, t_all *all)
 {
 	// ray->color_ray = (t_rgb_f){0, 0, 0};
 	if (all->render_hitbox)
-		_replace_s_px_on_render(all->render_hb, TRI_TRANSPARENT_UNSIGNED, (t_point2d){ray->y, ray->x}, all->canvas.pixel_values);
+		_replace_s_px_on_render(all->render_hb, 0, (t_point2d){ray->y, ray->x}, all->canvas.pixel_values);
 	ray->color_shape = (t_rgb_f){0, 0, 0};
 	ray->color_diffuse = (t_rgb_f){0, 0, 0};
 	ray->color_specular = (t_rgb_f){0, 0, 0};
@@ -40,11 +40,12 @@ void	init_ray(t_ray *ray, t_all *all)
 //     return 2 * N * dot(N, R) - R;
 // }
 
-void	init_reflect_ray(t_ray *ray, __attribute_maybe_unused__ t_all *all, t_rgb_f *ray_color_save)
+void	init_reflect_ray(t_ray *ray, t_all *all, t_rgb_f *ray_color_save)
 {
 	t_vec	vec;
 	t_vec	vec2;
 
+	(void)all;
 	// ray->color_ray = (t_rgb_f){0, 0, 0};
 	*ray_color_save = ray->color_ray;
 	ray->color_shape = (t_rgb_f){0, 0, 0};
@@ -100,8 +101,9 @@ void	traverse_bvh_iter(t_ray *ray, t_hitbox *bvh, t_render *render, int hb)
 {
 	t_queue		q;
 	t_hitbox	*curr;
+	const t_all	*all = __get_all();
 
-	if (queue_init(&q, __get_all()->nb_shapes))
+	if (queue_init(&q, all->nb_shapes))
 		return ;
 	queue_push(&q, bvh);
 	while (!queue_is_empty(&q))
@@ -114,7 +116,7 @@ void	traverse_bvh_iter(t_ray *ray, t_hitbox *bvh, t_render *render, int hb)
 				.g=255,.b=255}, ray->y, ray->x);
 		if (curr->node_type == LEAF)
 		{
-			if (curr->type == SPHERE)
+			if (curr->type == SPHERE && all->render_on)
 				intersect_ray_sphere(ray, (t_sphere *)curr->shape);
 			else if (curr->type == CYLINDER)
 				intersect_cylinder(ray, (t_cylinder *)curr->shape);

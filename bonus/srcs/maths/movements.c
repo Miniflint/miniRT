@@ -49,7 +49,24 @@ int	get_key_press(t_tri_lib *lib, t_all *all)
 		#ifdef THREADS
 		change_threads_mode(all, RESET);
 		#endif
-		all->render_hitbox = !all->render_hitbox; //Attention non thread compatible
+		if (!all->render_on)
+			all->render_hitbox = 1;
+		else
+			all->render_hitbox = !all->render_hitbox; //Attention non thread compatible
+		printf("render_hit_box : %i render_all : %i\n", all->render_hitbox, all->render_on);
+		#ifdef THREADS
+		change_threads_mode(all, CONTINUE);
+		#endif
+		return (1);
+	}
+	else if (lib->event->key_id == '0')
+	{
+		#ifdef THREADS
+		change_threads_mode(all, RESET);
+		#endif
+		all->render_on = !all->render_on;
+		all->render_hitbox = !all->render_on;
+		printf("render_hit_box : %i render_all : %i\n", all->render_hitbox, all->render_on);
 		#ifdef THREADS
 		change_threads_mode(all, CONTINUE);
 		#endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tri_put_pixel_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: trgoel <trgoel@student.42.fr>              +#+  +:+       +#+        */
+/*   By: hermesrolle <hermesrolle@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 03:59:18 by hermesrolle       #+#    #+#             */
-/*   Updated: 2025/09/06 17:18:55 by trgoel           ###   ########.fr       */
+/*   Updated: 2025/09/14 03:40:52 by hermesrolle      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ unsigned int	_get_pixel(t_render *render, int x, int y)
 		|| y >= render->_height)
 		return (tri_lib()->_bg_color);
 	return ((render->_data)[(y * render->_width) + x]);
-	return (0);
 }
 
 void	_erase_window(t_win *win)
