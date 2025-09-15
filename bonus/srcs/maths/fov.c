@@ -10,14 +10,14 @@
 
 t_rgb_f	get_background_color(t_all *all, int i)
 {
-	double	alpha;
-	int		select;
+	double			alpha;
+	int				select;
 	t_rgb_f const	color[5] = {
-		{0.1569,0.2078,0.3098},
-		{0.2902,0.3882,0.5882},
-		{0.6,0.6078,0.7686},
-		{0.9294,0.6156,0.5019},
-		{0.7098,0.3725,0.3412}
+	{0.1569, 0.2078, 0.3098},
+	{0.2902, 0.3882, 0.5882},
+	{0.6, 0.6078, 0.7686},
+	{0.9294, 0.6156, 0.5019},
+	{0.7098, 0.3725, 0.3412}
 	};
 
 	alpha = ((double)i * ((double)4.0 / (double)all->win_height));
@@ -25,7 +25,8 @@ t_rgb_f	get_background_color(t_all *all, int i)
 	if (select >= 4)
 		return (color[4]);
 	alpha -= (double)select;
-	return ((t_rgb_f){color[select + 1].r * alpha + color[select].r * (1.0 - alpha),
+	return ((t_rgb_f){
+		color[select + 1].r * alpha + color[select].r * (1.0 - alpha),
 		color[select + 1].g * alpha + color[select].g * (1.0 - alpha),
 		color[select + 1].b * alpha + color[select].b * (1.0 - alpha)});
 }

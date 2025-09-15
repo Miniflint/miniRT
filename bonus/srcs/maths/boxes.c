@@ -76,37 +76,6 @@ int	check_val(double a)
 	return (0);
 }
 
-int	bvh_on_path(t_ray *ray, t_box *box)
-{
-	double	t[2];
-	double	t_values[2];
-
-	t_values[0] = -INFINITY;
-	t_values[1] = INFINITY;
-	if (ray->dir.x != 0.0f)
-	{
-		t[0] = (box->box.bottom[0].x - ray->start.x) / ray->dir.x;
-		t[1] = (box->box.top[3].x - ray->start.x) / ray->dir.x;
-		t_values[0] = fmax(t_values[0], fmin(t[0], t[1]));
-		t_values[1] = fmin(t_values[1], fmax(t[0], t[1]));
-	}
-	if (ray->dir.y != 0.0f)
-	{
-		t[0] = (box->box.bottom[0].y - ray->start.y) / ray->dir.y;
-		t[1] = (box->box.top[3].y - ray->start.y) / ray->dir.y;
-		t_values[0] = fmax(t_values[0], fmin(t[0], t[1]));
-		t_values[1] = fmin(t_values[1], fmax(t[0], t[1]));
-	}
-	if (ray->dir.z != 0.0f)
-	{
-		t[0] = (box->box.bottom[0].z - ray->start.z) / ray->dir.z;
-		t[1] = (box->box.top[3].z - ray->start.z) / ray->dir.z;
-		t_values[0] = fmax(t_values[0], fmin(t[0], t[1]));
-		t_values[1] = fmin(t_values[1], fmax(t[0], t[1]));
-	}
-	return (t_values[1] >= t_values[0] && t_values[1] >= 1e-6);
-}
-
 static int	set_ts(double t, t_ray *ray, t_box *box, t_vec xyz)
 {
 	if (t >= 1e-6 && (isinf(ray->shape.t1) || t < ray->shape.t1))
@@ -120,11 +89,25 @@ static int	set_ts(double t, t_ray *ray, t_box *box, t_vec xyz)
 	return (0);
 }
 
+static void	update_t_values(double t[2], double t_values[2])
+{
+	t_values[0] = fmax(t_values[0], fmin(t[0], t[1]));
+	t_values[1] = fmin(t_values[1], fmax(t[0], t[1]));
+}
+
+static double	update_t_values_entry(double t[2], double t_values[2])
+{
+	const double	entry = fmin(t[0], t[1]);
+
+	t_values[0] = fmax(t_values[0], entry);
+	t_values[1] = fmin(t_values[1], fmax(t[0], t[1]));
+	return (entry);
+}
+
 void	intersect_box(t_ray *ray, t_box *box)
 {
 	double	t[2];
 	double	t_values[2];
-	double	entry;
 	t_vec	best_normal;
 
 	t_values[0] = -INFINITY;
@@ -133,31 +116,22 @@ void	intersect_box(t_ray *ray, t_box *box)
 	{
 		t[0] = (box->box.bottom[0].x - ray->start.x) / ray->dir.x;
 		t[1] = (box->box.top[3].x - ray->start.x) / ray->dir.x;
-		entry = fmin(t[0], t[1]);
-		if (entry > t_values[0])
+		if (update_t_values_entry(t, t_values) > t_values[0])
 			best_normal = (t_vec){1, 0, 0};
-		t_values[0] = fmax(t_values[0], entry);
-		t_values[1] = fmin(t_values[1], fmax(t[0], t[1]));
 	}
 	if (ray->dir.y != 0.0f)
 	{
 		t[0] = (box->box.bottom[0].y - ray->start.y) / ray->dir.y;
 		t[1] = (box->box.top[3].y - ray->start.y) / ray->dir.y;
-		entry = fmin(t[0], t[1]);
-		if (entry > t_values[0])
+		if (update_t_values_entry(t, t_values) > t_values[0])
 			best_normal = (t_vec){0, 1, 0};
-		t_values[0] = fmax(t_values[0], entry);
-		t_values[1] = fmin(t_values[1], fmax(t[0], t[1]));
 	}
 	if (ray->dir.z != 0.0f)
 	{
 		t[0] = (box->box.bottom[0].z - ray->start.z) / ray->dir.z;
 		t[1] = (box->box.top[3].z - ray->start.z) / ray->dir.z;
-		entry = fmin(t[0], t[1]);
-		if (entry > t_values[0])
+		if (update_t_values_entry(t, t_values) > t_values[0])
 			best_normal = (t_vec){0, 0, 1};
-		t_values[0] = fmax(t_values[0], entry);
-		t_values[1] = fmin(t_values[1], fmax(t[0], t[1]));
 	}
 	if (t_values[1] >= t_values[0] && t_values[1] > 0.0f)
 	{
@@ -167,11 +141,11 @@ void	intersect_box(t_ray *ray, t_box *box)
 			set_ts(t_values[0], ray, box, best_normal);
 	}
 }
+
 int	intersect_hitbox(t_ray *ray, t_bvh *box)
 {
 	double	t[2];
 	double	t_values[2];
-	double	entry;
 
 	t_values[0] = -INFINITY;
 	t_values[1] = INFINITY;
@@ -179,25 +153,19 @@ int	intersect_hitbox(t_ray *ray, t_bvh *box)
 	{
 		t[0] = (box->bottom[0].x - ray->start.x) / ray->dir.x;
 		t[1] = (box->top[3].x - ray->start.x) / ray->dir.x;
-		entry = fmin(t[0], t[1]);
-		t_values[0] = fmax(t_values[0], entry);
-		t_values[1] = fmin(t_values[1], fmax(t[0], t[1]));
+		update_t_values(t, t_values);
 	}
 	if (ray->dir.y != 0.0f)
 	{
 		t[0] = (box->bottom[0].y - ray->start.y) / ray->dir.y;
 		t[1] = (box->top[3].y - ray->start.y) / ray->dir.y;
-		entry = fmin(t[0], t[1]);
-		t_values[0] = fmax(t_values[0], entry);
-		t_values[1] = fmin(t_values[1], fmax(t[0], t[1]));
+		update_t_values(t, t_values);
 	}
 	if (ray->dir.z != 0.0f)
 	{
 		t[0] = (box->bottom[0].z - ray->start.z) / ray->dir.z;
 		t[1] = (box->top[3].z - ray->start.z) / ray->dir.z;
-		entry = fmin(t[0], t[1]);
-		t_values[0] = fmax(t_values[0], entry);
-		t_values[1] = fmin(t_values[1], fmax(t[0], t[1]));
+		update_t_values(t, t_values);
 	}
 	return (t_values[1] >= t_values[0] && t_values[1] >= 1e-6);
 }
@@ -215,7 +183,7 @@ int	box_on_path(t_ray *ray, t_box *boxes, t_vec light_dir)
 {
 	while (boxes)
 	{
-		if(shadow_intersect_bvh(ray, &boxes->box, light_dir))
+		if (shadow_intersect_bvh(ray, &boxes->box, light_dir))
 			return (1);
 		boxes = boxes->next;
 	}

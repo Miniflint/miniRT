@@ -14,7 +14,6 @@ void	print_vertice(t_object *object)
 	while (i < object->nb_vertices)
 	{
 		printf("\tV   %li: %p | ", i + 1, &(object->vertices[i]));
-		print_vec(object->vertices[i]);
 		i++;
 	}
 	i = 0;
@@ -22,7 +21,6 @@ void	print_vertice(t_object *object)
 	while (i < object->nb_vt)
 	{
 		printf("\tv_t %li: %p | ", i + 1, &(object->vt[i]));
-		print_vec(object->vt[i]);
 		i++;
 	}
 	i = 0;
@@ -30,7 +28,6 @@ void	print_vertice(t_object *object)
 	while (i < object->nb_vn)
 	{
 		printf("\tv_n %li: %p | ", i + 1, &(object->vn[i]));
-		print_vec(object->vn[i]);
 		i++;
 	}
 }

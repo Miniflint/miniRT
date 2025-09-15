@@ -241,7 +241,6 @@ void			intersect_cylinder(t_ray *ray, t_cylinder *cylinder);
 
 t_hitbox		*create_bvh_iter(t_all *all, int end, int depth);
 t_vec			distance_box(t_vec *a, t_vec *b);
-int				bvh_on_path(t_ray *ray, t_box *box);
 t_bvh			create_box(t_vec a, t_vec b);
 void			print_box(t_bvh *bvh);
 int				intersect_hitbox(t_ray *ray, t_bvh *box);
@@ -255,6 +254,8 @@ t_hitbox		*create_bvh_node(t_hitbox *l, t_hitbox *r);
 int				free_hitboxes(t_hitbox *root, unsigned long capacity);
 
 void 			intersect_quad(t_ray *ray, t_face *face);
+
+void			export_bvh_to_dot(t_hitbox *root);
 
 /* DATA STRUCTURE */
 t_hitbox	*queue_free(t_queue *q);

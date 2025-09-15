@@ -61,7 +61,6 @@ void	iter_obj(t_shape *shapes, t_all *all, int *i)
 
 t_shape	*create_shape_array(t_all *all)
 {
-	printf("%d\n", all->nb_shapes);
 	int		i;
 	t_shape	*shapes;
 

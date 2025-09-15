@@ -1,3 +1,272 @@
+
+
+int	queue_helper(t_queue *q, int depth)
+{
+	t_hitbox	*l;
+	t_hitbox	*r;
+	t_hitbox	*dad;
+
+	while (queue_size(q) > 1)
+	{
+		l = queue_pop(q);
+		r = NULL;
+		if (!queue_is_empty(q))
+			r = queue_pop(q);
+		dad = create_bvh_node(l, r);
+		if (!dad)
+			return (1);
+		dad->box = box_around_two_box(&l->box, &r->box);
+		l->depth = depth;
+		r->depth = depth;
+		queue_push(q, dad);
+		dad->depth = depth;
+	}
+	return (0);
+}
+
+t_hitbox	*queue_helper_2(t_all *all, t_queue *q, int i)
+{
+	t_hitbox	*dad;
+
+	dad = NULL;
+	if (all->shapes[i].type == SPHERE)
+		dad = box_around_sphere(all->shapes[i].shape);
+	else if (all->shapes[i].type == BOX)
+		dad = box_around_box(all->shapes[i].shape);
+	else if (all->shapes[i].type == CYLINDER)
+		dad = box_around_cylinder(all->shapes[i].shape);
+	else if (all->shapes[i].type == OBJECT)
+		dad = create_bvh_triangles(all->shapes[i].shape);
+	if (!dad)
+	{
+		while (i && --i)
+			free(q->nodes[i]);
+		return (queue_free(q));
+	}
+	return (dad);
+}
+
+t_hitbox	*create_bvh_iter(t_all *all, int end, int depth)
+{
+	t_queue		q;
+	t_hitbox	*dad;
+	int			i;
+
+	if (queue_init(&q, end))
+		return (NULL);
+	dad = NULL;
+	i = -1;
+	while (++i < end)
+	{
+		dad = queue_helper_2(all, &q, i);
+		queue_push(&q, dad);
+	}
+	if(queue_helper(&q, depth))
+		return (NULL);
+	dad = queue_pop(&q);
+	queue_free(&q);
+	if (dad->node_type == INTERNAL)
+	{
+		dad->node_type = ROOT;
+		dad->type = OBJECT;
+	}
+	return (dad);
+}
+
+
+
+
+
+
+
+#include "miniRT.h"
+#include "tri_lib.h"
+
+// int	shadow_intersect_sphere(t_ray *ray, t_sphere *sphere,
+// 			t_vec light_dir, double light_lenght)
+// {
+// 	double			disciminant;
+// 	const t_vec		CO = sub_vectors_no_v(&ray->hit, &sphere->coord);
+// 	const double	b = 2 * dot_product((t_vec *)&CO, &light_dir);
+// 	const double	c = dot_product((t_vec *)&CO, (t_vec *)&CO)
+// - sphere->radius_squared;
+// 	double			t;
+
+// 	disciminant = b * b - 4.0 * c;
+// le a dans "b * b - 4 * a * c" supprimé car
+// a = dot d'un vecteur unitaire avec lui même ce qui donne toujours 1
+// 	if (disciminant < 0)
+// 		return (0);
+// 	disciminant = sqrt(disciminant);
+// 	t = (-b - disciminant) / 2.0;
+// 	if ((t >= 1e-6 && t < light_lenght))
+// 		return (1);
+// 	//t = (-b + disciminant) / 2.0;
+// 	//if ((t >= 1e-6 && t < light_lenght))
+// 	//	return (1);
+// 	return (0);
+// }
+
+int	check_t(t_quad q, t_ray *ray, t_cylinder *cylinder, t_light_vec l)
+{
+	t_vec		p;
+	double		mag;
+	const t_vec	*cyl_co = &cylinder->coord;
+
+	q.t = (q.b - q.discriminant) / q.a;
+	if (q.t >= 1e-6 && q.t < l.light_lenght)
+	{
+		add_vectors(&ray->hit,
+			scalar_multiplication(&l.light_dir, q.t, &p), &p);
+		mag = dot_product(sub_vectors(&p, (t_vec *)cyl_co, &p), &cylinder->vec);
+		if (mag >= 0
+			&& mag <= cylinder->height && !isnan(mag) && !isinf(mag))
+			return (1);
+	}
+	q.t = (q.b + q.discriminant) / q.a;
+	if (q.t >= 1e-6 && q.t < l.light_lenght)
+	{
+		add_vectors(&ray->hit,
+			scalar_multiplication(&l.light_dir, q.t, &p), &p);
+		mag = dot_product(sub_vectors(&p, (t_vec *)cyl_co, &p), &cylinder->vec);
+		if (mag >= 0
+			&& mag <= cylinder->height && !isnan(mag) && !isinf(mag))
+			return (1);
+	}
+	return (0);
+}
+
+int	shadow_traverse_bvh_core(t_ray *ray, t_hitbox *curr, t_light_vec l)
+{
+	if (curr->type == SPHERE
+		&& shadow_intersect_sphere(ray, curr->shape,
+			l.light_dir, l.light_lenght))
+		return (1);
+	else if (curr->type == BOX
+		&& shadow_intersect_bvh(ray, curr->shape, l.light_dir))
+		return (1);
+	else if (curr->type == CYLINDER
+		&& shadow_intersect_cylinder(ray, curr->shape,
+			l.light_dir, l.light_lenght))
+		return (1);
+	else if (curr->type == TRIANGLE
+		&& shadow_intersect_quad(ray, curr->shape,
+			l.light_dir, l.light_lenght))
+		return (1);
+	return (0);
+}
+
+void	push_correct_hitbox(t_queue *q, t_hitbox *curr)
+{
+	if (curr->left)
+		queue_push(q, curr->left);
+	if (curr->right)
+		queue_push(q, curr->right);
+}
+
+int	shadow_traverse_bvh_iter(t_ray *ray, t_hitbox *bvh,
+	t_vec light_dir,
+	double light_length)
+{
+	t_queue		q;
+	t_hitbox	*curr;
+
+	if (queue_init(&q, __get_all()->nb_shapes))
+		return (1);
+	queue_push(&q, bvh);
+	while (!queue_is_empty(&q))
+	{
+		curr = queue_pop(&q);
+		if (!curr || !shadow_intersect_bvh(ray, &curr->box, light_dir))
+			continue ;
+		if (curr->node_type == LEAF)
+		{
+			if (shadow_traverse_bvh_core(ray, curr,
+					(t_light_vec){light_dir, light_length}))
+				return (queue_free(&q), 1);
+		}
+		else
+			push_correct_hitbox(&q, curr);
+	}
+	queue_free(&q);
+	return (0);
+}
+
+void	specular(t_ray *ray, t_vec light_dir, t_light *light, double light_scale)
+{
+	t_vec	v;
+	t_vec	h;
+	double	ndoth;
+	double	intensity;
+
+	v = scalar_multiplication_no_v(&ray->dir, -1);
+	add_vectors(&light_dir, &v, &h);
+	norm_vectors(&h, vec_magnitude(&h), &h);
+	ndoth = dot_product(&ray->shape.normal, &h);
+	if (ndoth <= 0)
+		return ;
+	intensity = ray->shape.material.ks * pow(ndoth, ray->shape.material.shininess) * light_scale;
+	ray->color_specular.r += light->rgb_norm.r * intensity;
+	ray->color_specular.g += light->rgb_norm.g * intensity;
+	ray->color_specular.b += light->rgb_norm.b * intensity;
+}
+
+void	get_rgb_norm_light_intensity(t_ray *ray, t_all *all, t_light *light)
+{
+	t_vec		light_dir;
+	double		light_length;
+	double		light_length_square;
+	double		intensity;
+	double		light_scale;
+
+	sub_vectors(&light->coord, &ray->hit, &light_dir);
+	light_length_square = light_dir.x * light_dir.x
+		+ light_dir.y * light_dir.y + light_dir.z * light_dir.z;
+	light_length = sqrt(light_length_square);
+	norm_vectors(&light_dir, light_length, &light_dir);
+	intensity = dot_product(&ray->shape.normal, &light_dir);
+	if (intensity >= 0)
+	{	
+		if (all->shadow_on
+			&&
+				((plane_on_the_path(ray, all->planes,
+					light_dir, light_length))
+				|| shadow_traverse_bvh_iter(ray, all->bvh, light_dir, light_length)))
+				return ;
+		light_scale = (light->ratio * (all->distance_light
+					/ (light_length_square + all->distance_light)));
+		specular(ray, light_dir, light, light_scale);
+		intensity *= light_scale;
+		ray->color_diffuse.r += light->rgb_norm.r * intensity;
+		ray->color_diffuse.g += light->rgb_norm.g * intensity;
+		ray->color_diffuse.b += light->rgb_norm.b * intensity;
+	}
+}
+
+void	diffuse_light(t_ray *ray, t_all *all, t_light *light)
+{
+	t_rgb_f	ambiant_light;
+
+	while (light)
+	{
+		get_rgb_norm_light_intensity(ray, all, light);
+		light = light->next;
+	}
+	ambiant_light = all->ambient_light.rgb_norm;
+	ray->color_diffuse.r += ambiant_light.r;
+	ray->color_diffuse.g += ambiant_light.g;
+	ray->color_diffuse.b += ambiant_light.b;
+}
+
+
+
+
+
+
+
+
+
+
 #include "miniRT.h"
 #include "tri_lib.h"
 
@@ -172,8 +441,8 @@ void	get_local_color(t_ray *ray, t_all *all)
 	ray->reflection.g *= reflection.g;
 	ray->reflection.b *= reflection.b;
 	ray->to_draw = 1;
-	ray->end = ray->reflection.r <= 0
-		&& ray->reflection.g <= 0 && ray->reflection.b <= 0;
+	if (ray->reflection.r < 1 && ray->reflection.g < 1 && ray->reflection.b < 1)
+		ray->end = 1;
 }
 
 void	init_color_ray(t_ray *ray)

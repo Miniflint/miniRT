@@ -36,10 +36,8 @@ int	get_sphere(t_sphere **head, char **const restrict s)
 	set_spherical_object(sphere, SPHERE);
 	if (skip_till_number(s, 0))
 		return (free(sphere), 3);
-	if (get_rgb(&sphere->rgb_save, s))
+	if (get_rgb(&sphere->rgb_save, s) || get_material(&sphere->material, s))
 		return (free(sphere), printf("\tSpheres problem\n"), 1);
-	if (get_material(&sphere->material, s))
-		return (free(sphere), 3);
 	sphere->color = argb_to_rgbf(sphere->rgb_save);
 	sphere->next = *head;
 	*head = sphere;
@@ -124,10 +122,8 @@ int	get_cylinder(t_cylinder **head, char **const restrict s)
 			printf("Error: Cylinders height value < 0.0\n"), 1);
 	if (skip_till_number(s, 0))
 		return (free(cylinder), 3);
-	if (get_rgb(&cylinder->rgb_save, s))
+	if (get_rgb(&cylinder->rgb_save, s) || get_material(&cylinder->material, s))
 		return (free(cylinder), printf("\tCylinders problems\n"), 1);
-	if (get_material(&cylinder->material, s))
-		return (free(cylinder), 1);
 	cylinder->color = argb_to_rgbf(cylinder->rgb_save);
 	cylinder->next = *head;
 	*head = cylinder;
