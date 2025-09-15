@@ -106,26 +106,27 @@ void	zeroes_two(t_object *object, char *path)
 		object->curr_group[i] = 0;
 }
 
-int	init_canvas_pix(t_all *all, t_canvas *canvas)
+int	init_canvas(t_all *all, t_canvas *canvas)
 {
+	int	i;
+
+	canvas->rays = NULL;
+	canvas->rays_save = NULL;
+	canvas->pix_y = NULL;
+	canvas->pix_x = NULL;
+	canvas->rays = malloc((all->win_height + 1) * sizeof(t_ray *));
+	if (!canvas->rays)
+		return (1);
+	canvas->rays[0] = NULL;
+	canvas->rays_save = malloc((all->win_height + 1) * sizeof(t_ray *));
+	if (!canvas->rays_save)
+		return (1);
+	canvas->rays_save[0] = NULL;
 	canvas->pix_y = malloc((all->win_height) * sizeof(double));
 	if (!canvas->pix_y)
 		return (1);
 	canvas->pix_x = malloc((all->win_width) * sizeof(double));
 	if (!canvas->pix_x)
-		return (1);
-	return (0);
-}
-
-int	init_canvas(t_all *all, t_canvas *canvas)
-{
-	int	i;
-
-	canvas->rays = malloc((all->win_height + 1) * sizeof(t_ray *));
-	if (!canvas->rays)
-		return (1);
-	canvas->rays_save = malloc((all->win_height + 1) * sizeof(t_ray *));
-	if (!canvas->rays_save)
 		return (1);
 	i = 0;
 	while (i < all->win_height)
@@ -134,10 +135,11 @@ int	init_canvas(t_all *all, t_canvas *canvas)
 		if (!canvas->rays[i])
 			return (1);
 		canvas->rays_save[i] = malloc((all->win_width) * sizeof(t_ray));
-		if (!canvas->rays_save[i++])
+		if (!canvas->rays_save[i])
 			return (1);
+		i++;
 	}
-	return (init_canvas_pix(all, canvas));
+	return (0);
 }
 
 int	__init__(t_all *all, char **argv, int argc)
@@ -158,10 +160,13 @@ int	__init__(t_all *all, char **argv, int argc)
 	if (__parse_file_objs(all))
 		return (1);
 	apply_rgb_all_shape(all);
-	print_all_structs(all);
+	all->nb_items = all->nb_shapes + get_depth_objs(all->objects);
+	//print_all_structs(all);
 	create_shape_array(all);
+	sort_shape(all->shapes);
 	all->bvh = create_bvh_iter(all, all->nb_shapes, 0);
-	printf("%p\n", (void *)all->bvh);
+	if (!all->bvh)
+		return (1);
 	if (all->bvh->node_type != LEAF)
 		all->bvh->node_type = ROOT;
 	make_perpendicular(&all->camera);

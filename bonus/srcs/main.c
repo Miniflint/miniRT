@@ -34,35 +34,50 @@ int	on_configure(int x, int y, void *param)
 	return (0);
 }
 
-void print_bvh_dot(t_hitbox *node, FILE *file)
+void	print_bvh_dot_iter(t_hitbox *root, FILE *file)
 {
-	if (!node)
-		return;
-	if (node->node_type == LEAF)
+	t_queue 	q;
+	t_hitbox	*curr;
+
+	if (queue_init(&q,
+		__get_all()->nb_shapes + get_depth_objs(__get_all()->objects)))
+		return ;
+	queue_push(&q, root);
+	while (!queue_is_empty(&q))
 	{
-		if (node->type == SPHERE)
-			fprintf(file, "\t\"%p\" [label=\"SPHERE\"];\n", (void *)node);
-		else if (node->type == BOX)
-			fprintf(file, "\t\"%p\" [label=\"BOX\"];\n", (void *)node);
-		else if (node->type == CYLINDER)
-			fprintf(file, "\t\"%p\" [label=\"CYLINDER\"];\n", (void *)node);
-		else if (node->type == TRIANGLE)
-			fprintf(file, "\t\"%p\" [label=\"TRIANGLE\"];\n", (void *)node);
+		curr = queue_pop(&q);
+		if (!curr)
+			continue ;
+		if (curr->node_type == LEAF)
+		{
+			if (curr->type == SPHERE)
+				fprintf(file, "\t\"%p\" [label=\"SPHERE\"];\n", (void *)curr);
+			else if (curr->type == BOX)
+				fprintf(file, "\t\"%p\" [label=\"BOX\"];\n", (void *)curr);
+			else if (curr->type == CYLINDER)
+				fprintf(file, "\t\"%p\" [label=\"CYLINDER\"];\n", (void *)curr);
+			else if (curr->type == TRIANGLE)
+				fprintf(file, "\t\"%p\" [label=\"TRIANGLE\"];\n", (void *)curr);
+		}
+		else
+		{
+			if (curr->node_type == INTERNAL)
+				fprintf(file, "\t\"%p\" [label=\"%p\"];\n", (void *)curr, (void *)curr);
+			else if (curr->node_type == ROOT)
+				fprintf(file, "\t\"%p\" [label=\"%p\"];\n", (void *)curr, (void *)curr);
+			if (curr->left)
+			{
+				fprintf(file, "\t\"%p\" -> \"%p\";\n", (void *)curr, (void *)curr->left);
+				queue_push(&q, curr->left);
+			}
+			if (curr->right)
+			{
+				fprintf(file, "\t\"%p\" -> \"%p\";\n", (void *)curr, (void *)curr->right);
+				queue_push(&q, curr->right);
+			}
+		}
 	}
-	else if (node->node_type == INTERNAL)
-		fprintf(file, "\t\"%p\" [label=\"%p\"];\n", (void *)node, (void *)node);
-	else if (node->node_type == ROOT)
-		fprintf(file, "\t\"%p\" [label=\"%p\"];\n", (void *)node, (void *)node);
-	if (node->left)
-	{
-		fprintf(file, "\t\"%p\" -> \"%p\";\n", (void *)node, (void *)node->left);
-		print_bvh_dot(node->left, file);
-	}
-	if (node->right)
-	{
-		fprintf(file, "\t\"%p\" -> \"%p\";\n", (void *)node, (void *)node->right);
-		print_bvh_dot(node->right, file);
-	}
+	queue_free(&q);
 }
 
 void export_bvh_to_dot(t_hitbox *root)
@@ -71,7 +86,7 @@ void export_bvh_to_dot(t_hitbox *root)
 
 	f = fopen("out.dot", "w");
 	fprintf(f, "digraph BVH {\n");
-	print_bvh_dot(root, f);
+	print_bvh_dot_iter(root, f);
 	fprintf(f, "}\n");
 	fclose(f);
 }

@@ -60,14 +60,17 @@ t_hitbox	*box_around_triangle(t_face *face)
 			highest[1],
 			highest[2]
 	});
-	print_box(&new->box);
+	//print_box(&new->box);
 	new->shape = (void *)face;
 	new->type = TRIANGLE;
 	new->node_type = LEAF;
 	return (new);
 }
 
-t_hitbox	*iterative_triangles(t_face *faces, unsigned long end, int depth)
+t_hitbox	*iterative_triangles(t_face *faces,
+	unsigned long end,
+	int depth
+)
 {
 	unsigned long	i;
 	t_queue			q;
@@ -108,10 +111,7 @@ t_hitbox	*iterative_triangles(t_face *faces, unsigned long end, int depth)
 	dad = queue_pop(&q);
 	queue_free(&q);
 	if (dad->node_type == INTERNAL)
-	{
 		dad->node_type = ROOT;
-		dad->type = OBJECT;
-	}
 	return (dad);
 }
 

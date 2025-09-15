@@ -56,11 +56,15 @@ void	*free_canvas(t_all *all, t_canvas *canvas)
 {
 	int	i;
 
-	i = -1;
+	if (canvas->pix_y)
+		free(canvas->pix_y);
+	if (canvas->pix_x)
+		free(canvas->pix_x);
 	if (!canvas->rays)
 		return (NULL);
 	if (!canvas->rays_save)
 		return (free(canvas->rays), NULL);
+	i = -1;
 	while (++i < all->win_width)
 	{
 		if (!canvas->rays[i])
@@ -70,17 +74,12 @@ void	*free_canvas(t_all *all, t_canvas *canvas)
 			return (NULL);
 		free(canvas->rays_save[i]);
 	}
-	if (canvas->pix_y)
-		free(canvas->pix_y);
-	if (canvas->pix_x)
-		free(canvas->pix_x);
 	return (NULL);
 }
 
 int	free_all(void *content)
 {
 	t_all	*all;
-	unsigned long	nb_objs; 
 
 	all = content;
 	end_thread(all, all->n_thread);
@@ -89,11 +88,10 @@ int	free_all(void *content)
 	all->planes = free_pl(all->planes);
 	all->cylinders = free_cy(all->cylinders);
 	all->boxes = free_bx(all->boxes);
-	nb_objs = get_depth_objs(all->objects);
-	all->objects = free_objs(all->objects);
 	free_canvas(all, &all->canvas);
+	all->objects = free_objs(all->objects);
 	free(all->shapes);
-	if (free_hitboxes(all->bvh, 2 * (all->nb_shapes + nb_objs)))
+	if (free_hitboxes(all->bvh, all->nb_items))
 		return (printf("error freeing\n"), 1);
 	return (0);
 }

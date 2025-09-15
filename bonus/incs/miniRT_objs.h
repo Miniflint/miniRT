@@ -57,6 +57,7 @@ typedef struct S_object
 	t_point			*points;
 	t_minuint		curr_smoothing;
 	t_coord			coord;
+	t_material		material;
 	unsigned long	indexes[2];
 	unsigned long	i_vertice[3];
 	unsigned long	line_count;
@@ -67,5 +68,19 @@ typedef struct S_object
 	unsigned long	nb_points;
 	struct S_object	*next;
 }	t_object;
+
+typedef struct	S_triange_inter
+{
+	double	t;
+	t_vec	normale;
+	int		found;
+	t_face	*face;
+	t_vec	p;
+	t_vec	q;
+	double	det;
+	double	u;
+	double	v;
+}	t_inter;
+
 
 #endif

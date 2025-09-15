@@ -191,5 +191,4 @@ typedef struct s_threads
 	t_queue			queue;
 	t_all			*all;
 }					t_threads;
-
 #endif

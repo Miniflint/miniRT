@@ -106,6 +106,10 @@ int	get_obj(t_object **head, char **const restrict s)
 		return (3);
 	if (get_coord(&((*head)->coord), s))
 		return (1);
+	if (skip_till_number(s, 0))
+		return (3);
+	if (get_material(&((*head)->material), s))
+		return (3);
 	if (!**s)
 		return (2);
 	return (skip_whitespace_hashtag(s, &(__get_all()->line_count)));
