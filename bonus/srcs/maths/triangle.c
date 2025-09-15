@@ -122,9 +122,9 @@ void intersect_quad(t_ray *ray, t_face *face)
 	intersect_triangle_quad(ray, &new, &inter);
 	if (face->vertices[3])
 	{
-		new.vertices[0] = face->vertices[2];
-		new.vertices[1] = face->vertices[3];
-		new.vertices[2] = face->vertices[0];
+		new.vertices[0] = face->vertices[0];
+		new.vertices[1] = face->vertices[2];
+		new.vertices[2] = face->vertices[3];
 		intersect_triangle_quad(ray, &new, &inter);
 	}
 	if (!inter.found)
