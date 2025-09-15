@@ -42,25 +42,13 @@ void	_draw_render_to_render(t_render *top, t_render *base)
 void	_draw_window(t_win *win)
 {
 	t_tri_lib	*lib;
-	// t_render	*cursor;
 	t_all		*all;
 
 	lib = tri_lib();
 	all = __get_all();
-	// cursor = win->_renders;
-	#ifdef THREADS
 	change_threads_mode(all, PAUSE);
-	#endif
-	draw_rays_to_render(all, &win->_base_render._render);//get rays color
-	// if (all->render_hitbox)
-	// 	while (cursor)
-	// 	{
-	// 		_draw_render_to_render(cursor, &win->_base_render._render);
-	// 		cursor = cursor->_next;
-	// 	}
-	#ifdef THREADS
+	draw_rays_to_render(all, &win->_base_render._render);
 	change_threads_mode(all, CONTINUE);
-	#endif
 	win->fps = _get_fps(&win->last_draw);
 	printf("\rfps: %.2lf                   ", win->fps);
 	fflush(stdout);

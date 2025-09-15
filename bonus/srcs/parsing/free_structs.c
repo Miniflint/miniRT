@@ -45,7 +45,7 @@ t_box	*free_bx(t_box *box)
 	return (NULL);
 }
 
-unsigned long get_depth_objs(t_object *root)
+unsigned long	get_depth_objs(t_object *root)
 {
 	if (!root)
 		return (0);
@@ -64,8 +64,8 @@ void	*free_canvas(t_all *all, t_canvas *canvas)
 		return (NULL);
 	if (!canvas->rays_save)
 		return (free(canvas->rays), NULL);
-	i = -1;
-	while (++i < all->win_width)
+	i = 0;
+	while (i < all->win_height)
 	{
 		if (!canvas->rays[i])
 			return (NULL);
@@ -73,7 +73,10 @@ void	*free_canvas(t_all *all, t_canvas *canvas)
 		if (!canvas->rays_save[i])
 			return (NULL);
 		free(canvas->rays_save[i]);
+		i++;
 	}
+	free(canvas->rays);
+	free(canvas->rays_save);
 	return (NULL);
 }
 

@@ -27,10 +27,11 @@ void	make_perpendicular(t_cam *cam)
 double	distance_formula(t_vec *a, t_vec *b)
 {
 	return (sqrt(
-		((a->x - b->x) * (a->x - b->x))
-		- ((a->y - b->y) * (a->y - b->y))
-		- ((a->z - b->z) * (a->z - b->z))
-	));
+			((a->x - b->x) * (a->x - b->x))
+			- ((a->y - b->y) * (a->y - b->y))
+			- ((a->z - b->z) * (a->z - b->z))
+		)
+	);
 }
 
 t_vec	distance_box(t_vec *a, t_vec *b)

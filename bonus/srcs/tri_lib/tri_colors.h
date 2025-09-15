@@ -22,7 +22,7 @@ typedef struct s_argb
 	t_color	b;
 }			t_argb;
 
-#ifdef LIMITED_MEMORY
+# ifdef LIMITED_MEMORY
 
 typedef struct s_rgb_f
 {
@@ -31,7 +31,7 @@ typedef struct s_rgb_f
 	float	b;
 }			t_rgb_f;
 
-#else
+# else
 
 typedef struct s_rgb_f
 {
@@ -40,8 +40,7 @@ typedef struct s_rgb_f
 	double	b;
 }			t_rgb_f;
 
-#endif
-
+# endif
 
 t_argb			unsigned_to_argb(unsigned int color);
 unsigned int	argb_to_unsigned(t_argb color);

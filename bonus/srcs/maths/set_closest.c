@@ -2,9 +2,12 @@
 
 void	set_cylinder(t_ray *ray, t_cylinder *cylinder)
 {
-	ray->shape.cyl_v = scalar_multiplication_no_v(&cylinder->vec, ray->shape.cyl_mag);
-	ray->shape.cyl_normal = sub_vectors_no_v(&ray->shape.cyl_p, &ray->shape.cyl_v);
-	ray->shape.cyl_normal_mag = vec_magnitude(&ray->shape.cyl_normal);
+	ray->shape.cyl_v
+		= scalar_multiplication_no_v(&cylinder->vec, ray->shape.cyl_mag);
+	ray->shape.cyl_normal
+		= sub_vectors_no_v(&ray->shape.cyl_p, &ray->shape.cyl_v);
+	ray->shape.cyl_normal_mag
+		= vec_magnitude(&ray->shape.cyl_normal);
 	ray->shape.origin = cylinder->coord;
 	ray->shape.normal = ray->shape.cyl_normal;
 	norm_vectors(&ray->shape.normal,
@@ -13,21 +16,23 @@ void	set_cylinder(t_ray *ray, t_cylinder *cylinder)
 	ray->shape.material = cylinder->material;
 }
 
+void	set_sphere(t_ray *ray, t_sphere *sphere)
+{
+	ray->shape.origin = sphere->coord;
+	sub_vectors(&ray->hit, &ray->shape.origin, &ray->shape.normal);
+	norm_vectors(&ray->shape.normal,
+		vec_magnitude(&ray->shape.normal), &ray->shape.normal);
+	ray->color_shape = sphere->color;
+	ray->shape.material = sphere->material;
+}
+
+// reminder: put t__material in threads to get object's material
 void	set_shapes(t_ray *ray)
 {
 	if (ray->shape.type == SPHERE)
-	{
-		ray->shape.origin = ((t_sphere *)(ray->shape.shape))->coord;
-		sub_vectors(&ray->hit, &ray->shape.origin, &ray->shape.normal);
-		norm_vectors(&ray->shape.normal,
-			vec_magnitude(&ray->shape.normal), &ray->shape.normal);
-		ray->color_shape = ((t_sphere *)(ray->shape.shape))->color;
-		ray->shape.material = ((t_sphere *)(ray->shape.shape))->material;
-	}
+		set_sphere(ray, (t_sphere *)ray->shape.shape);
 	else if (ray->shape.type == PLANE)
-	{	
-
-		//ray->shape.origin = ((t_plane *)(ray->shape.shape))->coord;
+	{
 		ray->shape.normal = ((t_plane *)(ray->shape.shape))->vec;
 		ray->color_shape = ((t_plane *)(ray->shape.shape))->color;
 		ray->shape.material = ((t_plane *)(ray->shape.shape))->material;
@@ -41,17 +46,8 @@ void	set_shapes(t_ray *ray)
 	}
 	else if (ray->shape.type == TRIANGLE)
 	{
-		//ray->shape.normal = cross_product(&edge1, &edge2, &normal);
-		ray->color_shape =  (t_rgb_f){0.5, 0.5, 0.5};//((t_face *)(ray->shape.shape))->color;
-		//ray->shape.material = ((t_face *)(ray->shape.shape))->material;
-		ray->shape.material =(t_material){
-			.ks=0.8,
-			.shininess=256,
-			//.reflection={1 - ray->color_shape.r,
-			//	1 - ray->color_shape.g,
-			//	1 - ray->color_shape.b
-			//}
-			.reflection={0,0,0}
-		};
+		ray->color_shape = (t_rgb_f){1, 1, 1};
+		ray->shape.material = (t_material){
+			.ks = 0.8, .shininess = 256, .reflection = {0.5, 0.5, 0.5}};
 	}
 }

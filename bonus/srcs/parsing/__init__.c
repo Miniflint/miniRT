@@ -50,7 +50,7 @@ void	ft_zeroes(t_all *all)
 	all->win_height = WIN_HEIGHT_ALL;
 	all->shadow_on = 1;
 	all->render_on = 1;
-	all->canvas.pixel_values = 3;
+	all->canvas.pixel_values = 1;
 	all->light_ratio = 1;
 	all->distance_light = DISTANCE_LIGHT_MIDDLE * DISTANCE_LIGHT_MIDDLE;
 	all->threads = NULL;
@@ -110,26 +110,20 @@ int	init_canvas(t_all *all, t_canvas *canvas)
 {
 	int	i;
 
-	canvas->rays = NULL;
-	canvas->rays_save = NULL;
-	canvas->pix_y = NULL;
-	canvas->pix_x = NULL;
-	canvas->rays = malloc((all->win_height + 1) * sizeof(t_ray *));
+	canvas->rays = malloc((all->win_height) * sizeof(t_ray *));
 	if (!canvas->rays)
 		return (1);
-	canvas->rays[0] = NULL;
-	canvas->rays_save = malloc((all->win_height + 1) * sizeof(t_ray *));
+	canvas->rays_save = malloc((all->win_height) * sizeof(t_ray *));
 	if (!canvas->rays_save)
 		return (1);
-	canvas->rays_save[0] = NULL;
 	canvas->pix_y = malloc((all->win_height) * sizeof(double));
 	if (!canvas->pix_y)
 		return (1);
 	canvas->pix_x = malloc((all->win_width) * sizeof(double));
 	if (!canvas->pix_x)
 		return (1);
-	i = 0;
-	while (i < all->win_height)
+	i = -1;
+	while (++i < all->win_height)
 	{
 		canvas->rays[i] = malloc((all->win_width) * sizeof(t_ray));
 		if (!canvas->rays[i])
@@ -137,21 +131,18 @@ int	init_canvas(t_all *all, t_canvas *canvas)
 		canvas->rays_save[i] = malloc((all->win_width) * sizeof(t_ray));
 		if (!canvas->rays_save[i])
 			return (1);
-		i++;
 	}
 	return (0);
 }
 
+	//print_all_structs(all);
+
 int	__init__(t_all *all, char **argv, int argc)
 {
 	ft_zeroes(all);
-	if (init_canvas(all, &all->canvas))
-		return (1);
 	all->argv = argv;
 	all->argc = argc;
-	if (check_ext(all->argv))
-		return (1);
-	if (__parse_file_scene(all))
+	if (check_ext(all->argv) || __parse_file_scene(all))
 		return (1);
 	if (all->ambient_light.nb <= 0)
 		return (printf("Error: you must have 1 ambient light\n"), 1);
@@ -159,9 +150,10 @@ int	__init__(t_all *all, char **argv, int argc)
 		return (printf("Error: you must have 1 camera\n"), 1);
 	if (__parse_file_objs(all))
 		return (1);
+	if (init_canvas(all, &all->canvas))
+		return (1);
 	apply_rgb_all_shape(all);
 	all->nb_items = all->nb_shapes + get_depth_objs(all->objects);
-	//print_all_structs(all);
 	create_shape_array(all);
 	sort_shape(all->shapes);
 	all->bvh = create_bvh_iter(all, all->nb_shapes, 0);

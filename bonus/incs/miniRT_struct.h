@@ -73,6 +73,15 @@ typedef struct s_light_vec
 	double	light_lenght;
 }			t_light_vec;
 
+typedef struct s_inter_box
+{
+	t_vec	*best;
+	double	top;
+	double	bottom;
+	double	start;
+	double	dir;
+}			t_inter_box;
+
 typedef enum E_obj_type
 {
 	AMBIENT_LIGHT,

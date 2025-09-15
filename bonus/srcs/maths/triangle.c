@@ -4,8 +4,6 @@ static void	set_ts(double t, t_ray *ray, t_face *face, t_vec *normale)
 {
 	if (t >= 1e-6 && (isinf(ray->shape.t1) || t < ray->shape.t1))
 	{
-		// tri_lib()->put_pixel_to_render(__get_all()->render_hb, (t_argb){.a=0.25, .r=255,
-		// .g=0,.b=0}, ray->y, ray->x);
 		norm_vectors(normale, vec_magnitude(normale), normale);
 		ray->shape.t1 = t;
 		ray->shape.shape = face;
@@ -15,10 +13,10 @@ static void	set_ts(double t, t_ray *ray, t_face *face, t_vec *normale)
 	}
 }
 
-void intersect_triangle_quad(t_ray *ray, t_inter *inter)
+void	intersect_triangle_quad(t_ray *ray, t_inter *inter)
 {
-	t_vec e[2];
-	t_vec d;
+	t_vec	e[2];
+	t_vec	d;
 	double	t;
 
 	e[0] = sub_vectors_no_v(inter->face->vertices[1], inter->face->vertices[0]);
@@ -26,7 +24,7 @@ void intersect_triangle_quad(t_ray *ray, t_inter *inter)
 	cross_product(&ray->dir, &e[1], &d);
 	inter->det = dot_product(&e[0], &d);
 	if (fabs(inter->det) < 1e-6)
-		return;
+		return ;
 	inter->p = sub_vectors_no_v(&ray->start, inter->face->vertices[0]);
 	inter->u = dot_product(&inter->p, &d) / inter->det;
 	if (inter->u < 0.0f || inter->u > 1)
@@ -36,16 +34,14 @@ void intersect_triangle_quad(t_ray *ray, t_inter *inter)
 	if (inter->v < 0.0f || inter->u + inter->v > 1)
 		return ;
 	t = dot_product(&e[1], &inter->q) / inter->det;
-	if (t < -1e-6)
-		return ;
-	if (t > inter->t)
+	if (t < -1e-6 || t > inter->t)
 		return ;
 	inter->t = t;
 	cross_product(&e[0], &e[1], &inter->normale);
 	inter->found += 1;
 }
 
-void intersect_quad(t_ray *ray, t_face *face)
+void	intersect_quad(t_ray *ray, t_face *face)
 {
 	t_face	new;
 	t_inter	inter;
@@ -67,16 +63,15 @@ void intersect_quad(t_ray *ray, t_face *face)
 		intersect_triangle_quad(ray, &inter);
 	}
 	if (!inter.found)
-			return ;
+		return ;
 	set_ts(inter.t, ray, face, &inter.normale);
 }
 
-
-int shadow_intersect_triangle_quad(t_ray *ray, t_inter *inter,
+int	shadow_intersect_triangle_quad(t_ray *ray, t_inter *inter,
 	t_vec light_dir, double light_length)
 {
-	t_vec e[2];
-	t_vec d;
+	t_vec	e[2];
+	t_vec	d;
 	double	t;
 
 	e[0] = sub_vectors_no_v(inter->face->vertices[1], inter->face->vertices[0]);
@@ -94,19 +89,14 @@ int shadow_intersect_triangle_quad(t_ray *ray, t_inter *inter,
 	if (inter->v < 0.0f || inter->u + inter->v > 1)
 		return (0);
 	t = dot_product(&e[1], &inter->q) / inter->det;
-	if (t < -1e-6)
-		return (0);
-	if (t > inter->t)
+	if (t < -1e-6 || t > inter->t || t > light_length)
 		return (0);
 	inter->t = t;
-	cross_product(&e[0], &e[1], &inter->normale);
-	if (inter->t > light_length)
-		return (0);
 	inter->found += 1;
 	return (1);
 }
 
-int shadow_intersect_quad(t_ray *ray, t_face *face,
+int	shadow_intersect_quad(t_ray *ray, t_face *face,
 	t_vec light_dir, double light_length)
 {
 	t_face	new;

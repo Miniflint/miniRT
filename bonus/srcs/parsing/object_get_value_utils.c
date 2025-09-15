@@ -18,11 +18,11 @@ int	count_duplicates(void *arr[4])
 
 void	__init_faces(t_face *face, unsigned char vert_ind[3], int *err, int *i)
 {
-	*err = 0;
-	*i = -1;
 	unsigned int	j;
 
 	j = -1;
+	*err = 0;
+	*i = -1;
 	while (++j < 3)
 	{
 		vert_ind[j] = 0;
@@ -102,13 +102,9 @@ int	get_obj(t_object **head, char **const restrict s)
 		return (printf("file path cannot be empty\n"), 3);
 	if (!create_obj_path(head, &name[0]))
 		return (1);
-	if (skip_till_number(s, 1))
+	if (skip_till_number(s, 1) || get_coord(&((*head)->coord), s))
 		return (3);
-	if (get_coord(&((*head)->coord), s))
-		return (1);
-	if (skip_till_number(s, 0))
-		return (3);
-	if (get_material(&((*head)->material), s))
+	if (skip_till_number(s, 0) || get_material(&((*head)->material), s))
 		return (3);
 	if (!**s)
 		return (2);

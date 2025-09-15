@@ -1,16 +1,15 @@
 #include "miniRT.h"
 
-
-void swap_shapes(t_shape *arr, int i, int closest)
+void	swap_shapes(t_shape *arr, int i, int closest)
 {
 	t_shape	tmp;
-	
+
 	tmp = arr[i];
 	arr[i] = arr[closest];
 	arr[closest] = tmp;
 }
 
-void sort_shape(t_shape *arr)
+void	sort_shape(t_shape *arr)
 {
 	int	i;
 	int	j;
@@ -23,15 +22,10 @@ void sort_shape(t_shape *arr)
 		closest = j;
 		while (arr[j].type != END_SHAPE)
 		{
-			if (arr[j].type == OBJECT)
-			{
-				j++;
-				continue ;
-			}
-			// Compare distances
-			if (distance_formula(&arr[i].origin, &arr[j].origin)
-				< distance_formula(&arr[i].origin, &arr[closest].origin))
-				closest = j;
+			if (arr[j].type != OBJECT)
+				if (distance_formula(&arr[i].origin, &arr[j].origin)
+					< distance_formula(&arr[i].origin, &arr[closest].origin))
+					closest = j;
 			j++;
 		}
 		if (closest != i + 1)

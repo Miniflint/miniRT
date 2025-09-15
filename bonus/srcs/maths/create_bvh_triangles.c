@@ -1,6 +1,6 @@
 #include "miniRT.h"
 
-double lowest_2(double a, double b)
+double	lowest_2(double a, double b)
 {
 	if (a < b)
 		return (a);
@@ -12,7 +12,7 @@ double	lowest_3(double a, double b, double c)
 	return (lowest_2(lowest_2(a, b), c));
 }
 
-double highest_2(double a, double b)
+double	highest_2(double a, double b)
 {
 	if (a > b)
 		return (a);
@@ -30,12 +30,18 @@ t_hitbox	*box_around_triangle(t_face *face)
 	double		lowest[3];
 	double		highest[3];
 
-	lowest[0] = lowest_3(face->vertices[0]->x, face->vertices[1]->x, face->vertices[2]->x);
-	lowest[1] = lowest_3(face->vertices[0]->y, face->vertices[1]->y, face->vertices[2]->y);
-	lowest[2] = lowest_3(face->vertices[0]->z, face->vertices[1]->z, face->vertices[2]->z);
-	highest[0] = highest_3(face->vertices[0]->x, face->vertices[1]->x, face->vertices[2]->x);
-	highest[1] = highest_3(face->vertices[0]->y, face->vertices[1]->y, face->vertices[2]->y);
-	highest[2] = highest_3(face->vertices[0]->z, face->vertices[1]->z, face->vertices[2]->z);
+	lowest[0] = lowest_3(face->vertices[0]->x, face->vertices[1]->x,
+			face->vertices[2]->x);
+	lowest[1] = lowest_3(face->vertices[0]->y, face->vertices[1]->y,
+			face->vertices[2]->y);
+	lowest[2] = lowest_3(face->vertices[0]->z, face->vertices[1]->z,
+			face->vertices[2]->z);
+	highest[0] = highest_3(face->vertices[0]->x, face->vertices[1]->x,
+			face->vertices[2]->x);
+	highest[1] = highest_3(face->vertices[0]->y, face->vertices[1]->y,
+			face->vertices[2]->y);
+	highest[2] = highest_3(face->vertices[0]->z, face->vertices[1]->z,
+			face->vertices[2]->z);
 	if (face->vertices[3])
 	{
 		lowest[0] = lowest_2(lowest[0], face->vertices[3]->x);
@@ -45,22 +51,20 @@ t_hitbox	*box_around_triangle(t_face *face)
 		highest[1] = highest_2(highest[1], face->vertices[3]->y);
 		highest[2] = highest_2(highest[2], face->vertices[3]->z);
 	}
-
 	new = create_bvh_node(NULL, NULL);
 	if (!new)
 		return (NULL);
 	new->box = create_box(
-		(t_vec){
+			(t_vec){
 			lowest[0],
 			lowest[1],
 			lowest[2]
 		},
-		(t_vec){
+			(t_vec){
 			highest[0],
 			highest[1],
 			highest[2]
-	});
-	//print_box(&new->box);
+		});
 	new->shape = (void *)face;
 	new->type = TRIANGLE;
 	new->node_type = LEAF;

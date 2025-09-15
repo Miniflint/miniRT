@@ -55,34 +55,32 @@ int	check_t(t_quad q, t_ray *ray, t_cylinder *cylinder, t_light_vec l)
 	return (0);
 }
 
-int	shadow_traverse_bvh(t_ray *ray,
-	t_hitbox *bvh,
-	t_render *render,
-	t_vec light_dir,
-	double light_length
-)
+int	shadow_traverse_bvh_core(t_ray *ray, t_hitbox *curr, t_light_vec l)
 {
-	if (!bvh)
-		return (0);
-	if (shadow_intersect_bvh(ray, &bvh->box, light_dir))
-	{
-		if (bvh->node_type == LEAF)
-		{
-			if ((bvh->type == SPHERE && shadow_intersect_sphere(ray, (t_sphere *)bvh->shape,
-				light_dir, light_length))
-				|| (bvh->type == BOX && shadow_intersect_bvh(ray, bvh->shape,
-					light_dir)) // Manque light length
-				|| (bvh->type == CYLINDER && shadow_intersect_cylinder(ray, bvh->shape,
-					light_dir, light_length))
-				|| (bvh->type == TRIANGLE && shadow_intersect_quad(ray, (t_face *)bvh->shape,
-					light_dir, light_length)))
-				return (1);
-		}
-		if ((bvh->left && shadow_traverse_bvh(ray, bvh->left, render, light_dir, light_length))
-			|| (bvh->right && shadow_traverse_bvh(ray, bvh->right, render, light_dir, light_length)))
-			return (1);
-	}
+	if (curr->type == SPHERE
+		&& shadow_intersect_sphere(ray, curr->shape,
+			l.light_dir, l.light_lenght))
+		return (1);
+	else if (curr->type == BOX
+		&& shadow_intersect_bvh(ray, curr->shape, l.light_dir))
+		return (1);
+	else if (curr->type == CYLINDER
+		&& shadow_intersect_cylinder(ray, curr->shape,
+			l.light_dir, l.light_lenght))
+		return (1);
+	else if (curr->type == TRIANGLE
+		&& shadow_intersect_quad(ray, curr->shape,
+			l.light_dir, l.light_lenght))
+		return (1);
 	return (0);
+}
+
+void	push_correct_hitbox(t_queue *q, t_hitbox *curr)
+{
+	if (curr->left)
+		queue_push(q, curr->left);
+	if (curr->right)
+		queue_push(q, curr->right);
 }
 
 int	shadow_traverse_bvh_iter(t_ray *ray, t_hitbox *bvh,
@@ -102,34 +100,21 @@ int	shadow_traverse_bvh_iter(t_ray *ray, t_hitbox *bvh,
 			continue ;
 		if (curr->node_type == LEAF)
 		{
-			if (curr->type == SPHERE
-				&& shadow_intersect_sphere(ray, curr->shape, light_dir, light_length))
-				return (queue_free(&q), 1);
-			else if (curr->type == BOX
-				&& shadow_intersect_bvh(ray, curr->shape, light_dir))
-				return (queue_free(&q), 1);
-			else if (curr->type == CYLINDER
-				&& shadow_intersect_cylinder(ray, curr->shape, light_dir, light_length))
-				return (queue_free(&q), 1);
-			else if (curr->type == TRIANGLE
-				&& shadow_intersect_quad(ray, curr->shape, light_dir, light_length))
+			if (shadow_traverse_bvh_core(ray, curr,
+					(t_light_vec){light_dir, light_length}))
 				return (queue_free(&q), 1);
 		}
 		else
-		{
-			if (curr->left)
-				queue_push(&q, curr->left);
-			if (curr->right)
-				queue_push(&q, curr->right);
-		}
+			push_correct_hitbox(&q, curr);
 	}
 	queue_free(&q);
 	return (0);
 }
 
-void	specular(t_ray *ray, t_vec light_dir, t_light *light, double light_scale)
+void	specular(t_ray *ray, t_vec light_dir,
+	t_light *light, double light_scale)
 {
-	t_vec	v; //= ray->dir inverser
+	t_vec	v;
 	t_vec	h;
 	double	ndoth;
 	double	intensity;
@@ -140,10 +125,19 @@ void	specular(t_ray *ray, t_vec light_dir, t_light *light, double light_scale)
 	ndoth = dot_product(&ray->shape.normal, &h);
 	if (ndoth <= 0)
 		return ;
-	intensity = ray->shape.material.ks * pow(ndoth, ray->shape.material.shininess) * light_scale;
+	intensity = ray->shape.material.ks
+		* pow(ndoth, ray->shape.material.shininess) * light_scale;
 	ray->color_specular.r += light->rgb_norm.r * intensity;
 	ray->color_specular.g += light->rgb_norm.g * intensity;
 	ray->color_specular.b += light->rgb_norm.b * intensity;
+}
+
+t_rgb_f	add_multiply_rgb_f(t_rgb_f a, t_rgb_f b, double mult)
+{
+	return ((t_rgb_f){
+		a.r + (b.r * mult),
+		a.g + (b.g * mult),
+		a.b + (b.b * mult)});
 }
 
 void	get_rgb_norm_light_intensity(t_ray *ray, t_all *all, t_light *light)
@@ -161,20 +155,17 @@ void	get_rgb_norm_light_intensity(t_ray *ray, t_all *all, t_light *light)
 	norm_vectors(&light_dir, light_length, &light_dir);
 	intensity = dot_product(&ray->shape.normal, &light_dir);
 	if (intensity >= 0)
-	{	
-		if (all->shadow_on
-			&&
-				((plane_on_the_path(ray, all->planes,
-					light_dir, light_length))
-				|| shadow_traverse_bvh_iter(ray, all->bvh, light_dir, light_length)))
-				return ;
+	{
+		if (all->shadow_on && ((plane_on_the_path(ray, all->planes,
+						light_dir, light_length))
+				|| shadow_traverse_bvh_iter(
+					ray, all->bvh, light_dir, light_length)))
+			return ;
 		light_scale = (light->ratio * (all->distance_light
 					/ (light_length_square + all->distance_light)));
 		specular(ray, light_dir, light, light_scale);
-		intensity *= light_scale;
-		ray->color_diffuse.r += light->rgb_norm.r * intensity;
-		ray->color_diffuse.g += light->rgb_norm.g * intensity;
-		ray->color_diffuse.b += light->rgb_norm.b * intensity;
+		ray->color_diffuse = add_multiply_rgb_f(ray->color_diffuse,
+				light->rgb_norm, intensity * light_scale);
 	}
 }
 
