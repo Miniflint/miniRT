@@ -151,32 +151,25 @@ int	__init__(t_all *all, char **argv, int argc)
 	all->argc = argc;
 	if (check_ext(all->argv))
 		return (1);
-	printf("all0\n");
 	if (__parse_file_scene(all))
 		return (1);
-	printf("all0\n");
 	if (all->ambient_light.nb <= 0)
 		return (printf("Error: you must have 1 ambient light\n"), 1);
 	if (all->camera.nb <= 0)
 		return (printf("Error: you must have 1 camera\n"), 1);
 	if (__parse_file_objs(all))
 		return (1);
-	printf("all0\n");
 	apply_rgb_all_shape(all);
-	printf("all1\n");
 	all->nb_items = all->nb_shapes + get_depth_objs(all->objects);
-	printf("all2\n");
 	//print_all_structs(all);
 	create_shape_array(all);
-	printf("all3\n");
 	sort_shape(all->shapes);
 	all->bvh = create_bvh_iter(all, all->nb_shapes, 0);
-	printf("all4\n");
+	if (!all->bvh)
+		return (1);
 	if (all->bvh->node_type != LEAF)
 		all->bvh->node_type = ROOT;
-	printf("all5\n");
 	make_perpendicular(&all->camera);
-	printf("all6\n");
 	cal_fov(all);
 	return (0);
 }

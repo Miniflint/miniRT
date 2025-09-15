@@ -34,12 +34,13 @@ int	on_configure(int x, int y, void *param)
 	return (0);
 }
 
-void print_bvh_dot_iter(t_hitbox *root, FILE *file)
+void	print_bvh_dot_iter(t_hitbox *root, FILE *file)
 {
 	t_queue 	q;
 	t_hitbox	*curr;
 
-	if (queue_init(&q, __get_all()->nb_shapes + get_depth_objs(__get_all()->objects)))
+	if (queue_init(&q,
+		__get_all()->nb_shapes + get_depth_objs(__get_all()->objects)))
 		return ;
 	queue_push(&q, root);
 	while (!queue_is_empty(&q))
@@ -47,7 +48,6 @@ void print_bvh_dot_iter(t_hitbox *root, FILE *file)
 		curr = queue_pop(&q);
 		if (!curr)
 			continue ;
-		//printf("[label=\"%p\"];\n", (void *)curr);
 		if (curr->node_type == LEAF)
 		{
 			if (curr->type == SPHERE)

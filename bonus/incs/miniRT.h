@@ -120,6 +120,8 @@ void			apply_argb_save_rgb(t_rgb *rgb_save,
 					t_rgb_f ambient_rgb, t_rgb *into);
 void			apply_rgb_all_shape(t_all *all);
 void			_init_canvas(t_all *all);
+unsigned long 	get_depth_objs(t_object *root);
+void 			sort_shape(t_shape *arr);
 
 /* PARSING */
 int				get_rgb(t_rgb *rgb, char **const restrict s);
@@ -202,8 +204,8 @@ int				shadow_intersect_sphere(t_ray *ray, t_sphere *sphere,
 					t_vec light_dir, double light_lenght);
 int				shadow_intersect_plane(t_ray *ray, t_plane *plane,
 					t_vec light_dir, double light_lenght);
-int 			shadow_intersect_triangle(t_ray *ray, t_face *face,
-					t_vec light_dir, double light_length);
+int 			shadow_intersect_quad(t_ray *ray,t_face *face,
+					t_vec light_dir,double light_length);
 void			set_cylinder(t_ray *ray, t_cylinder *cylinder);
 void			set_shapes(t_ray *ray);
 int				check_t(t_quad q, t_ray *ray, t_cylinder *cylinder,
@@ -243,22 +245,16 @@ int				bvh_on_path(t_ray *ray, t_box *box);
 t_bvh			create_box(t_vec a, t_vec b);
 void			print_box(t_bvh *bvh);
 int				intersect_hitbox(t_ray *ray, t_bvh *box);
-t_hitbox		*create_bvh(t_all *all, int start, int end, int depth);
 t_shape			*create_shape_array(t_all *all);
 t_bvh			box_around_two_box(t_bvh *first, t_bvh *second);
 void			intersect_box(t_ray *ray, t_box *box);
 int				shadow_intersect_bvh(t_ray *ray, t_bvh *box, t_vec light_dir);
 int				box_on_path(t_ray *ray, t_box *boxes, t_vec light_dir);
-
 t_hitbox		*create_bvh_triangles(t_object *obj);
 t_hitbox		*create_bvh_node(t_hitbox *l, t_hitbox *r);
 int				free_hitboxes(t_hitbox *root, unsigned long capacity);
 
-void			intersect_triangle(t_ray *ray, t_face *face);
 void 			intersect_quad(t_ray *ray, t_face *face);
-unsigned long 	get_depth_objs(t_object *root);
-
-void 			sort_shape(t_shape *arr);
 
 /* DATA STRUCTURE */
 t_hitbox	*queue_free(t_queue *q);

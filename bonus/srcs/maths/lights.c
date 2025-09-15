@@ -73,6 +73,8 @@ int	shadow_traverse_bvh(t_ray *ray,
 				|| (bvh->type == BOX && shadow_intersect_bvh(ray, bvh->shape,
 					light_dir)) // Manque light length
 				|| (bvh->type == CYLINDER && shadow_intersect_cylinder(ray, bvh->shape,
+					light_dir, light_length))
+				|| (bvh->type == TRIANGLE && shadow_intersect_quad(ray, (t_face *)bvh->shape,
 					light_dir, light_length)))
 				return (1);
 		}
@@ -100,8 +102,8 @@ int	shadow_traverse_bvh_iter(t_ray *ray, t_hitbox *bvh,
 			continue ;
 		if (curr->node_type == LEAF)
 		{
-			if (curr->type == SPHERE &&
-				shadow_intersect_sphere(ray, curr->shape, light_dir, light_length))
+			if (curr->type == SPHERE
+				&& shadow_intersect_sphere(ray, curr->shape, light_dir, light_length))
 				return (queue_free(&q), 1);
 			else if (curr->type == BOX
 				&& shadow_intersect_bvh(ray, curr->shape, light_dir))
@@ -110,7 +112,7 @@ int	shadow_traverse_bvh_iter(t_ray *ray, t_hitbox *bvh,
 				&& shadow_intersect_cylinder(ray, curr->shape, light_dir, light_length))
 				return (queue_free(&q), 1);
 			else if (curr->type == TRIANGLE
-				&& shadow_intersect_triangle(ray, curr->shape, light_dir, light_length))
+				&& shadow_intersect_quad(ray, curr->shape, light_dir, light_length))
 				return (queue_free(&q), 1);
 		}
 		else
@@ -164,16 +166,7 @@ void	get_rgb_norm_light_intensity(t_ray *ray, t_all *all, t_light *light)
 			&&
 				((plane_on_the_path(ray, all->planes,
 					light_dir, light_length))
-			#ifndef BVH
-				|| (sphere_on_the_path(ray, all->spheres,
-					light_dir, light_length))
-				|| (box_on_path(ray, all->boxes,
-					light_dir))
-				|| (cylinder_on_the_path(ray, all->cylinders,
-					light_dir, light_length))))
-			# else
 				|| shadow_traverse_bvh_iter(ray, all->bvh, light_dir, light_length)))
-			# endif
 				return ;
 		light_scale = (light->ratio * (all->distance_light
 					/ (light_length_square + all->distance_light)));

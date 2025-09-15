@@ -69,4 +69,18 @@ typedef struct S_object
 	struct S_object	*next;
 }	t_object;
 
+typedef struct	S_triange_inter
+{
+	double	t;
+	t_vec	normale;
+	int		found;
+	t_face	*face;
+	t_vec	p;
+	t_vec	q;
+	double	det;
+	double	u;
+	double	v;
+}	t_inter;
+
+
 #endif
