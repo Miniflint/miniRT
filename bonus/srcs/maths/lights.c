@@ -84,30 +84,24 @@ void	push_correct_hitbox(t_queue *q, t_hitbox *curr)
 }
 
 int	shadow_traverse_bvh_iter(t_ray *ray, t_hitbox *bvh,
-	t_vec light_dir,
-	double light_length)
+	t_threads *thread, t_light_vec l)
 {
-	t_queue		q;
 	t_hitbox	*curr;
 
-	if (queue_init(&q, __get_all()->nb_shapes))
-		return (1);
-	queue_push(&q, bvh);
-	while (!queue_is_empty(&q))
+	queue_push(&thread->queue, bvh);
+	while (!queue_is_empty(&thread->queue))
 	{
-		curr = queue_pop(&q);
-		if (!curr || !shadow_intersect_bvh(ray, &curr->box, light_dir))
+		curr = queue_pop(&thread->queue);
+		if (!curr || !shadow_intersect_bvh(ray, &curr->box, l.light_dir))
 			continue ;
 		if (curr->node_type == LEAF)
 		{
-			if (shadow_traverse_bvh_core(ray, curr,
-					(t_light_vec){light_dir, light_length}))
-				return (queue_free(&q), 1);
+			if (shadow_traverse_bvh_core(ray, curr, l))
+				return (1);
 		}
 		else
-			push_correct_hitbox(&q, curr);
+			push_correct_hitbox(&thread->queue, curr);
 	}
-	queue_free(&q);
 	return (0);
 }
 
@@ -140,7 +134,7 @@ t_rgb_f	add_multiply_rgb_f(t_rgb_f a, t_rgb_f b, double mult)
 		a.b + (b.b * mult)});
 }
 
-void	get_rgb_norm_light_intensity(t_ray *ray, t_all *all, t_light *light)
+void	get_rgb_norm_light_intensity(t_ray *ray, t_all *all, t_light *light, t_threads *thread)
 {
 	t_vec		light_dir;
 	double		light_length;
@@ -159,7 +153,7 @@ void	get_rgb_norm_light_intensity(t_ray *ray, t_all *all, t_light *light)
 		if (all->shadow_on && ((plane_on_the_path(ray, all->planes,
 						light_dir, light_length))
 				|| shadow_traverse_bvh_iter(
-					ray, all->bvh, light_dir, light_length)))
+					ray, all->bvh, thread, (t_light_vec){light_dir, light_length})))
 			return ;
 		light_scale = (light->ratio * (all->distance_light
 					/ (light_length_square + all->distance_light)));
@@ -169,13 +163,13 @@ void	get_rgb_norm_light_intensity(t_ray *ray, t_all *all, t_light *light)
 	}
 }
 
-void	diffuse_light(t_ray *ray, t_all *all, t_light *light)
+void	diffuse_light(t_ray *ray, t_all *all, t_threads *thread, t_light *light)
 {
 	t_rgb_f	ambiant_light;
 
 	while (light)
 	{
-		get_rgb_norm_light_intensity(ray, all, light);
+		get_rgb_norm_light_intensity(ray, all, light, thread);
 		light = light->next;
 	}
 	ambiant_light = all->ambient_light.rgb_norm;

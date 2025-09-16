@@ -1,14 +1,15 @@
 #include "miniRT.h"
 
-static void	set_ts(double t, t_ray *ray, t_face *face, t_vec *normale)
+static void	set_ts(t_inter inter, t_ray *ray, t_vec *normale, t_threads *thread)
 {
-	if (t >= 1e-6 && (isinf(ray->shape.t1) || t < ray->shape.t1))
+	if (inter.t >= 1e-6 && (isinf(ray->shape.t1) || inter.t < ray->shape.t1))
 	{
 		norm_vectors(normale, vec_magnitude(normale), normale);
-		ray->shape.t1 = t;
-		ray->shape.shape = face;
+		ray->shape.t1 = inter.t;
+		ray->shape.shape = inter.face;
 		ray->shape.type = TRIANGLE;
 		ray->shape.normal = *normale;
+		ray->shape.material = thread->material;
 		return ;
 	}
 }
@@ -41,7 +42,7 @@ void	intersect_triangle_quad(t_ray *ray, t_inter *inter)
 	inter->found += 1;
 }
 
-void	intersect_quad(t_ray *ray, t_face *face)
+void	intersect_quad(t_ray *ray, t_face *face, t_threads *thread)
 {
 	t_face	new;
 	t_inter	inter;
@@ -64,7 +65,7 @@ void	intersect_quad(t_ray *ray, t_face *face)
 	}
 	if (!inter.found)
 		return ;
-	set_ts(inter.t, ray, face, &inter.normale);
+	set_ts(inter, ray, &inter.normale, thread);
 }
 
 int	shadow_intersect_triangle_quad(t_ray *ray, t_inter *inter,

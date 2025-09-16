@@ -1,6 +1,6 @@
 #include "miniRT.h"
 
-void	iter_sphere(t_shape *shapes, t_all *all, int *i)
+void	iter_sphere(t_shape *shapes, t_all *all, unsigned long *i)
 {
 	t_sphere	*tmp;
 
@@ -15,7 +15,7 @@ void	iter_sphere(t_shape *shapes, t_all *all, int *i)
 	}
 }
 
-void	iter_cylinder(t_shape *shapes, t_all *all, int *i)
+void	iter_cylinder(t_shape *shapes, t_all *all, unsigned long *i)
 {
 	t_cylinder	*tmp;
 
@@ -30,7 +30,7 @@ void	iter_cylinder(t_shape *shapes, t_all *all, int *i)
 	}
 }
 
-void	iter_box(t_shape *shapes, t_all *all, int *i)
+void	iter_box(t_shape *shapes, t_all *all, unsigned long *i)
 {
 	t_box	*tmp;
 
@@ -45,7 +45,7 @@ void	iter_box(t_shape *shapes, t_all *all, int *i)
 	}
 }
 
-void	iter_obj(t_shape *shapes, t_all *all, int *i)
+void	iter_obj(t_shape *shapes, t_all *all, unsigned long *i)
 {
 	t_object	*tmp;
 
@@ -61,8 +61,8 @@ void	iter_obj(t_shape *shapes, t_all *all, int *i)
 
 t_shape	*create_shape_array(t_all *all)
 {
-	int		i;
-	t_shape	*shapes;
+	unsigned long	i;
+	t_shape			*shapes;
 
 	shapes = malloc(sizeof(t_shape) * (all->nb_shapes + 1));
 	if (!shapes)

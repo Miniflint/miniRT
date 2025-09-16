@@ -13,6 +13,17 @@ int	queue_init(t_queue *q, int capacity)
 	return (0);
 }
 
+void	queue_reset(t_queue *q)
+{
+	// int	i;
+
+	// i = -1;
+	// while (++i < q->capacity)
+	// 	q->nodes[i] = NULL;
+	q->front = 0;
+	q->back = 0;
+}
+
 int	queue_is_empty(t_queue *q)
 {
 	return (q->front == q->back);

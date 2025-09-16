@@ -50,8 +50,8 @@ typedef struct S_all
 	t_hitbox		*bvh;
 	t_render		*render_hb;
 	int				render_hitbox;
-	int				nb_shapes;
-	int				nb_items;
+	unsigned long	nb_shapes;
+	unsigned long	nb_items;
 	char			**argv;
 	int				argc;
 	int				win_height;
@@ -181,14 +181,14 @@ void			intersect_plane(t_ray *ray, t_plane *plane);
 void			make_perpendicular(t_cam *cam);
 void			cal_fov(t_all *all);
 void			cal_rays(t_all *all);
-void			init_start_ray(t_all *all);
+// void			init_start_ray(t_all *all);
 void			reset_rays(t_all *all);
 int				rotate_camera(t_vec *original, t_vec *axis,
 					t_vec *for_perpendicular, double angle);
-void			diffuse_light(t_ray *ray, t_all *all, t_light *light);
-void			get_local_color(t_ray *ray, t_all *all);
+void			diffuse_light(t_ray *ray, t_all *all, t_threads *thread, t_light *light);
+void			get_local_color(t_ray *ray, t_all *all, t_threads *thread);
 void			init_color_ray(t_ray *ray);
-void			traceray_reflection(t_ray *ray, t_all *all);
+void			traceray_reflection(t_ray *ray, t_all *all, t_threads *thread);
 void			closest_cylinder(t_ray *ray, t_cylinder *cylinder);
 void			closest_box(t_ray *ray, t_box *boxes);
 
@@ -206,8 +206,8 @@ int				shadow_intersect_plane(t_ray *ray, t_plane *plane,
 					t_vec light_dir, double light_lenght);
 int 			shadow_intersect_quad(t_ray *ray,t_face *face,
 					t_vec light_dir,double light_length);
-void			set_cylinder(t_ray *ray, t_cylinder *cylinder);
-void			set_shapes(t_ray *ray);
+void			set_cylinder(t_ray *ray, t_cylinder *cylinder, t_threads *thread);
+void			set_shapes(t_ray *ray, t_threads *thread);
 int				check_t(t_quad q, t_ray *ray, t_cylinder *cylinder,
 					t_light_vec l);
 /* THREADS */
@@ -233,12 +233,13 @@ int				move_point(t_tri_lib *lib, t_coord *point,
 
 /* RAYS SPECIAL */
 void			iter_rays(t_all *all, t_threads *thread, void (*f)(t_ray *));
-t_thread_mode	iter_rays_line_stop(t_all *all, t_threads *thread, void (*f)(t_ray *, t_all *));
-void			get_closest_color(t_ray *ray, t_all *all);
-void			get_diffuse_light(t_ray *ray, t_all *all);
+t_thread_mode	iter_rays_line_stop(t_all *all, t_threads *thread, void (*f)(t_ray *, t_all *, t_threads *));
+void			get_closest_color(t_ray *ray, t_all *all, t_threads *thread);
+void			get_diffuse_light(t_ray *ray, t_all *all, t_threads *thread);
 
-void			intersect_cylinder(t_ray *ray, t_cylinder *cylinder);
+void			intersect_cylinder(t_ray *ray, t_cylinder *cylinder, t_threads *thread);
 
+void			traverse_bvh_iter(t_ray *ray, t_all *all, t_threads *t, int hb);
 t_hitbox		*create_bvh_iter(t_all *all, int end, int depth);
 t_vec			distance_box(t_vec *a, t_vec *b);
 t_bvh			create_box(t_vec a, t_vec b);
@@ -252,8 +253,7 @@ int				box_on_path(t_ray *ray, t_box *boxes, t_vec light_dir);
 t_hitbox		*create_bvh_triangles(t_object *obj);
 t_hitbox		*create_bvh_node(t_hitbox *l, t_hitbox *r);
 int				free_hitboxes(t_hitbox *root, unsigned long capacity);
-
-void 			intersect_quad(t_ray *ray, t_face *face);
+void			intersect_quad(t_ray *ray, t_face *face, t_threads *thread);
 
 void			export_bvh_to_dot(t_hitbox *root);
 
@@ -265,5 +265,6 @@ int			queue_size(t_queue *q);
 int			queue_is_empty(t_queue *q);
 int			queue_init(t_queue *q, int capacity);
 void		queue_print(t_queue queue);
+void		queue_reset(t_queue *q);
 
 #endif

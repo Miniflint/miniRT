@@ -273,6 +273,9 @@ int	end_thread(t_all *all, unsigned int n_thread)
 	i = 0;
 	while (i < n_thread)
 		pthread_join(all->threads[i++].thread, NULL);
+	i = 0;
+	while (i < n_thread)
+		queue_free(&all->threads[i++].queue);
 	free(all->threads);
 	all->threads = NULL;
 	return (1);
@@ -317,17 +320,20 @@ int	init_threads(t_all *all)
 	return (0);
 }
 
-void	init_one_thread(
+int	init_one_thread(
 		t_threads *thread, t_all *all, unsigned int i, unsigned int n_lines)
 {
 	if (i + 1 == all->n_thread)
 		thread->end = all->win_height;
 	else
 		thread->end = thread->start + n_lines;
+	if (queue_init(&thread->queue, all->nb_items))
+		return (1);
 	thread->average_time = 0;
 	thread->all = all;
 	thread->mode = PAUSE;
 	++all->thread_states[(t_thread_mode)PAUSE];
+	return (0);
 }
 
 #ifdef SSAA

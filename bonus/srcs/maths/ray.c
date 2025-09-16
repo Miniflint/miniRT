@@ -20,12 +20,10 @@ void	init_ray(t_ray *ray, t_all *all)
 	ray->color_shape = (t_rgb_f){0, 0, 0};
 	ray->color_diffuse = (t_rgb_f){0, 0, 0};
 	ray->color_specular = (t_rgb_f){0, 0, 0};
-	ray->color_ray = (t_rgb_f){0, 0, 0};
 	ray->shape.type = CAMERA;
 	ray->shape.shape = NULL;
 	ray->reflection = (t_rgb_f){1, 1, 1};
 	ray->shape.t1 = INFINITY;
-	ray->shape.t2 = INFINITY;
 }
 
 #else
@@ -39,12 +37,10 @@ void	init_ray(t_ray *ray, t_all *all)
 	ray->color_shape = (t_rgb_f){0, 0, 0};
 	ray->color_diffuse = (t_rgb_f){0, 0, 0};
 	ray->color_specular = (t_rgb_f){0, 0, 0};
-	ray->color_ray = (t_rgb_f){0, 0, 0};
 	ray->shape.type = CAMERA;
 	ray->shape.shape = NULL;
 	ray->reflection = (t_rgb_f){1, 1, 1};
 	ray->shape.t1 = INFINITY;
-	ray->shape.t2 = INFINITY;
 }
 
 #endif
@@ -66,26 +62,27 @@ void	init_reflect_ray(t_ray *ray, t_all *all)
 	ray->shape.type = CAMERA;
 	ray->shape.shape = NULL;
 	ray->shape.t1 = INFINITY;
-	ray->shape.t2 = INFINITY;
 }
 
-static void	if_leaf_internal(t_all *all, t_ray *ray, t_hitbox *curr, t_queue *q)
+static void	if_leaf_internal(t_ray *ray, t_hitbox *curr, t_queue *q, t_threads *thread)
 {
 	if (curr->node_type == LEAF)
 	{
-		if (!all->render_on)
+		if (!__get_all()->render_on)
 			return ;
 		if (curr->type == SPHERE)
 			intersect_ray_sphere(ray, (t_sphere *)curr->shape);
 		else if (curr->type == CYLINDER)
-			intersect_cylinder(ray, (t_cylinder *)curr->shape);
+			intersect_cylinder(ray, (t_cylinder *)curr->shape, thread);
 		else if (curr->type == BOX)
 			intersect_box(ray, (t_box *)curr->shape);
 		else if (curr->type == TRIANGLE)
-			intersect_quad(ray, (t_face *)curr->shape);
+			intersect_quad(ray, (t_face *)curr->shape, thread);
 	}
 	else
 	{
+		if (curr->type == OBJECT)
+			thread->material = ((t_object *)curr->shape)->material;
 		if (curr->left)
 			queue_push(q, curr->left);
 		if (curr->right)
@@ -95,57 +92,48 @@ static void	if_leaf_internal(t_all *all, t_ray *ray, t_hitbox *curr, t_queue *q)
 
 #ifdef SSAA
 
-void	traverse_bvh_iter(t_ray *ray, t_hitbox *bvh, t_render *render, int hb)
+void	traverse_bvh_iter(t_ray *ray, t_all *all, t_threads *t, int hb)
 {
 	t_queue			q;
 	t_hitbox		*curr;
-	const t_all		*all = __get_all();
 	const t_tri_lib	*lib = tri_lib();
 
-	if (queue_init(&q, all->nb_items))
-		return ;
-	queue_push(&q, bvh);
-	while (!queue_is_empty(&q))
+	queue_push(&thread->queue, all->bvh);
+	while (!queue_is_empty(&thread->queue))
 	{
-		curr = queue_pop(&q);
+		curr = queue_pop(&thread->queue);
 		if (!curr || !intersect_hitbox(ray, &curr->box))
 			continue ;
 		if (hb && !(ray->x % 2) && !(ray->y % 2))
-			lib->put_pixel_to_render(render, (t_argb){.a = 0.25,
+			lib->put_pixel_to_render(all->render_hb, (t_argb){.a = 0.25,
 				.r = 255, .g = 255, .b = 255}, ray->y >> 1, ray->x >> 1);
-		if_leaf_internal((t_all *)all, ray, curr, &q);
+		if_leaf_internal(ray, curr, &thread->queue, t);
 	}
-	queue_free(&q);
 }
 
 #else
 
-void	traverse_bvh_iter(t_ray *ray, t_hitbox *bvh, t_render *render, int hb)
+void	traverse_bvh_iter(t_ray *ray, t_all *all, __attribute_maybe_unused__ t_threads *thread, int hb)
 {
-	t_queue			q;
 	t_hitbox		*curr;
-	const t_all		*all = __get_all();
 	const t_tri_lib	*lib = tri_lib();
 
-	if (queue_init(&q, all->nb_items))
-		return ;
-	queue_push(&q, bvh);
-	while (!queue_is_empty(&q))
+	queue_push(&thread->queue, all->bvh);
+	while (!queue_is_empty(&thread->queue))
 	{
-		curr = queue_pop(&q);
+		curr = queue_pop(&thread->queue);
 		if (!curr || !intersect_hitbox(ray, &curr->box))
 			continue ;
-		if (hb)
-			lib->put_pixel_to_render(render, (t_argb){.a = 0.25, .r = 255,
-				.g = 255, .b = 255}, ray->y, ray->x);
-		if_leaf_internal((t_all *)all, ray, curr, &q);
+		if (hb && !(ray->x % 2) && !(ray->y % 2))
+			lib->put_pixel_to_render(all->render_hb, (t_argb){.a = 0.25,
+				.r = 255, .g = 255, .b = 255}, ray->y >> 1, ray->x >> 1);
+		if_leaf_internal(ray, curr, &thread->queue, thread);
 	}
-	queue_free(&q);
 }
 
 #endif
 
-void	get_local_color(t_ray *ray, t_all *all)
+void	get_local_color(t_ray *ray, t_all *all, t_threads *thread)
 {
 	t_rgb_f	reflection;
 
@@ -156,11 +144,11 @@ void	get_local_color(t_ray *ray, t_all *all)
 	}
 	ray->hit = scalar_multiplication_no_v(&ray->dir, ray->shape.t1);
 	add_vectors(&ray->hit, &ray->start, &ray->hit);
-	set_shapes(ray);
+	set_shapes(ray, thread);
 	if (dot_product(&ray->shape.normal, &ray->dir) > 0)
 		ray->shape.normal = (t_vec){-ray->shape.normal.x,
 			-ray->shape.normal.y, -ray->shape.normal.z};
-	diffuse_light(ray, all, all->lights);
+	diffuse_light(ray, all, thread, all->lights);
 	reflection = ray->shape.material.reflection;
 	ray->color_ray.r += (ray->color_shape.r * ray->color_diffuse.r
 			+ ray->color_specular.r) * (1.0 - reflection.r) * ray->reflection.r;
@@ -182,16 +170,13 @@ void	init_color_ray(t_ray *ray)
 		ray->color_ray = (t_rgb_f){0, 0, 0};
 }
 
-void	get_closest_color(t_ray *ray, t_all *all)
+void	get_closest_color(t_ray *ray, t_all *all, t_threads *thread)
 {
 	init_ray(ray, all);
 	closest_plane(ray, all->planes);
-	traverse_bvh_iter(ray, all->bvh, all->render_hb, all->render_hitbox);
+	traverse_bvh_iter(ray, all, thread, all->render_hitbox);
 	if (isinf(ray->shape.t1))
-	{
 		ray->end = 1;
-		ray->color_ray = ray->color;
-	}
 	else if (ray->shape.type == (t_obj_type)CYLINDER)
 		ray->color_ray = ((t_cylinder *)(ray->shape.shape))->color;
 	else if (ray->shape.type == (t_obj_type)SPHERE)
@@ -203,14 +188,14 @@ void	get_closest_color(t_ray *ray, t_all *all)
 	ray->to_draw = 1;
 }
 
-void	traceray_reflection(t_ray *ray, t_all *all)
+void	traceray_reflection(t_ray *ray, t_all *all, t_threads *thread)
 {
 	if (ray->end)
 		return ;
 	init_reflect_ray(ray, all);
 	closest_plane(ray, all->planes);
-	traverse_bvh_iter(ray, all->bvh, all->render_hb, 0);
-	get_local_color(ray, all);
+	traverse_bvh_iter(ray, all, thread, 0);
+	get_local_color(ray, all, thread);
 }
 
 #ifdef SSAA
@@ -231,7 +216,7 @@ t_thread_mode	iter_rays_line_stop(t_all *all,
 		{
 			all->canvas.rays[i][j].y = j;
 			all->canvas.rays[i][j].x = i;
-			f(&all->canvas.rays[i][j], all);
+			f(&all->canvas.rays[i][j], all, thread);
 			++j;
 		}
 		if (get_thread_mode_pause(all, thread) == (t_thread_mode)STOP)
@@ -245,8 +230,8 @@ t_thread_mode	iter_rays_line_stop(t_all *all,
 
 void	iter_rays(t_all *all, t_threads *thread, void (*f)(t_ray *))
 {
-	int				i;
-	int				j;
+	int	i;
+	int	j;
 
 	i = thread->start;
 	while (i < thread->end)
@@ -265,21 +250,19 @@ void	iter_rays(t_all *all, t_threads *thread, void (*f)(t_ray *))
 
 void	if_iter_rays_line(t_all *all,
 	int index[2],
-	int real[2],
-	void (*f)(t_ray *, t_all *)
+	int real[2]
 )
 {
 	if (index[1] >= all->win_width)
 		index[1] = all->win_width - 1;
 	all->canvas.rays[index[0]][index[1]].y = index[1];
 	all->canvas.rays[index[0]][index[1]].x = index[0];
-	f(&all->canvas.rays[index[0]][index[1]], all);
 	real[1] += all->canvas.pixel_values;
 }
 
 t_thread_mode	iter_rays_line_stop(t_all *all,
 	t_threads *thread,
-	void (*f)(t_ray *, t_all *)
+	void (*f)(t_ray *, t_all *, t_threads *)
 )
 {
 	int				index[2];
@@ -296,7 +279,8 @@ t_thread_mode	iter_rays_line_stop(t_all *all,
 			index[0] = thread->end - 1;
 		while (real[1] < all->win_width)
 		{
-			if_iter_rays_line(all, index, real, f);
+			if_iter_rays_line(all, index, real);
+			f(&all->canvas.rays[index[0]][index[1]], all, thread);
 			index[1] = real[1] + mi_pix;
 		}
 		if (get_thread_mode_pause(all, thread) == (t_thread_mode)STOP

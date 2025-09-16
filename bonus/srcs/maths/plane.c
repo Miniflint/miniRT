@@ -17,7 +17,6 @@ void	intersect_plane(t_ray *ray, t_plane *plane)
 	if (t >= 1e-6 && (isinf(ray->shape.t1) || t < ray->shape.t1))
 	{
 		ray->shape.t1 = t;
-		ray->shape.t2 = INFINITY;
 		ray->shape.shape = plane;
 		ray->shape.type = PLANE;
 	}

@@ -1,8 +1,10 @@
 #include "miniRT.h"
 
 static void	if_queue_internal(t_queue *q, t_hitbox *curr, FILE *file)
-{
-	if (curr->node_type == INTERNAL)
+{	
+	if (curr->type == OBJECT)
+		fprintf(file, "\t\"%p\" [label=\"OBJECT\"];\n", (void *)curr);
+	else if (curr->node_type == INTERNAL)
 		fprintf(file, "\t\"%p\" [label=\"%p\"];\n",
 			(void *)curr, (void *)curr);
 	else if (curr->node_type == ROOT)
@@ -30,8 +32,6 @@ static void	if_queue_leaf(t_hitbox *curr, FILE *file)
 		fprintf(file, "\t\"%p\" [label=\"BOX\"];\n", (void *)curr);
 	else if (curr->type == CYLINDER)
 		fprintf(file, "\t\"%p\" [label=\"CYLINDER\"];\n", (void *)curr);
-	else if (curr->type == OBJECT)
-		fprintf(file, "\t\"%p\" [label=\"OBJECT\"];\n", (void *)curr);
 	else if (curr->type == TRIANGLE)
 		fprintf(file, "\t\"%p\" [label=\"TRIANGLE\"];\n", (void *)curr);
 }

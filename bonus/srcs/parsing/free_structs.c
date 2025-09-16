@@ -47,15 +47,32 @@ t_box	*free_bx(t_box *box)
 
 unsigned long	get_depth_objs(t_object *root)
 {
-	if (!root)
-		return (0);
-	return (get_depth_objs(root->next), root->nb_faces);
+	unsigned long	n;
+
+	n = 0;
+	while (root)
+	{
+		n += root->nb_faces;
+		printf("n in get_depth_objs: %ld\n", root->nb_faces);
+		root = root->next;
+	}
+	printf("n in get_depth_objs: %ld\n", n);
+	return (n);
 }
+
+// unsigned long	get_depth_objs(t_object *root)
+// {
+// 	if (!root)
+// 		return (0);
+// 	return (get_depth_objs(root->next), root->nb_faces);
+// }
 
 void	*free_canvas(t_all *all, t_canvas *canvas)
 {
 	int	i;
 
+	if (canvas->gradient)
+		free(canvas->gradient);
 	if (canvas->pix_y)
 		free(canvas->pix_y);
 	if (canvas->pix_x)

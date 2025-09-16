@@ -11,7 +11,7 @@
 // b = 2(CO * d)
 // c = CO * CO - r^2
 
-static int	set_ts(double t, t_ray *ray, t_cylinder *cylinder)
+static int	set_ts(double t, t_ray *ray, t_cylinder *cylinder, t_threads *thread)
 {
 	t_vec	p;
 	double	mag;
@@ -23,8 +23,8 @@ static int	set_ts(double t, t_ray *ray, t_cylinder *cylinder)
 		mag = dot_product(&p, &cylinder->vec);
 		if (mag < 0 || mag > cylinder->height || isnan(mag) || isinf(mag))
 			return (0);
-		ray->shape.cyl_p = p;
-		ray->shape.cyl_mag = mag;
+		thread->cyl_p = p;
+		thread->cyl_mag = mag;
 		ray->shape.t1 = t;
 		ray->shape.shape = cylinder;
 		ray->shape.type = CYLINDER;
@@ -33,7 +33,7 @@ static int	set_ts(double t, t_ray *ray, t_cylinder *cylinder)
 	return (0);
 }
 
-void	intersect_cylinder(t_ray *ray, t_cylinder *cylinder)
+void	intersect_cylinder(t_ray *ray, t_cylinder *cylinder, t_threads *thread)
 {
 	t_vec	co;
 	t_vec	tmp;
@@ -57,16 +57,16 @@ void	intersect_cylinder(t_ray *ray, t_cylinder *cylinder)
 	q.a = 2 * q.a;
 	q.discriminant = sqrt(q.discriminant);
 	q.t = (q.b - q.discriminant) / q.a;
-	set_ts(q.t, ray, cylinder);
+	set_ts(q.t, ray, cylinder, thread);
 	q.t = (q.b + q.discriminant) / q.a;
-	set_ts(q.t, ray, cylinder);
+	set_ts(q.t, ray, cylinder, thread);
 }
 
-void	closest_cylinder(t_ray *ray, t_cylinder *cylinder)
-{
-	while (cylinder)
-	{
-		intersect_cylinder(ray, cylinder);
-		cylinder = cylinder->next;
-	}
-}
+// void	closest_cylinder(t_ray *ray, t_cylinder *cylinder)
+// {
+// 	while (cylinder)
+// 	{
+// 		intersect_cylinder(ray, cylinder);
+// 		cylinder = cylinder->next;
+// 	}
+// }

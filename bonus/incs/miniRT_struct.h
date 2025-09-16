@@ -108,14 +108,8 @@ typedef struct s_shape
 {
 	t_obj_type	type;
 	double		t1;
-	double		t2;
 	t_vec		normal;
 	t_coord		origin;
-	t_vec		cyl_normal;
-	double		cyl_normal_mag;
-	t_vec		cyl_p;
-	t_vec		cyl_v;
-	double		cyl_mag;
 	t_material	material;
 	void		*shape;
 }				t_shape;
@@ -125,13 +119,11 @@ typedef struct S_ray
 	t_coord		start;
 	t_coord		hit;
 	t_vec		dir;
-	t_rgb_f		color;
 	t_rgb_f		color_ray;
 	t_rgb_f		color_shape;
 	t_rgb_f		color_diffuse;
 	t_rgb_f		color_specular;
 	t_shape		shape;
-	t_threads	*curr;
 	t_rgb_f		reflection;
 	char		end;
 	char		to_draw;
@@ -148,7 +140,8 @@ typedef struct S_Canvas
 	double			*pix_x;
 	double			*pix_y;
 	t_ray			**rays;
-	t_ray			**rays_save;
+	t_vec			**rays_save;
+	t_rgb_f			*gradient;
 }	t_canvas;	
 
 /* TRISTAN */
@@ -198,6 +191,12 @@ typedef struct s_threads
 	struct timeval	start_time;
 	unsigned long	average_time;
 	t_queue			queue;
+	t_material		material;
 	t_all			*all;
+	t_vec			cyl_normal;
+	double			cyl_normal_mag;
+	t_vec			cyl_p;
+	t_vec			cyl_v;
+	double			cyl_mag;
 }					t_threads;
 #endif

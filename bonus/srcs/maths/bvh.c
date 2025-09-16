@@ -173,7 +173,7 @@ t_hitbox	*create_bvh_iter(t_all *all, int end, int depth)
 	if (dad->node_type == INTERNAL)
 	{
 		dad->node_type = ROOT;
-		dad->type = OBJECT;
+		dad->type = HITBOX;
 	}
 	return (dad);
 }

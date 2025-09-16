@@ -114,12 +114,20 @@ t_hitbox	*iterative_triangles(t_face *faces,
 	}
 	dad = queue_pop(&q);
 	queue_free(&q);
-	if (dad->node_type == INTERNAL)
-		dad->node_type = ROOT;
 	return (dad);
 }
 
 t_hitbox	*create_bvh_triangles(t_object *obj)
 {
-	return (iterative_triangles(obj->faces, obj->nb_faces, 0));
+	t_hitbox	*root;
+
+	root = iterative_triangles(obj->faces, obj->nb_faces, 0);
+	if (!root)
+		return (NULL);
+	if (root->node_type == LEAF)
+		return (root);
+	root->node_type = ROOT;
+	root->type = OBJECT;
+	root->shape = (void *)obj;
+	return (root);
 }

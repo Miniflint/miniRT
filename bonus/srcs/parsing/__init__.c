@@ -27,6 +27,11 @@ void	ft_zeroes(t_all *all)
 	all->threads = NULL;
 	all->nb_shapes = 0;
 	all->render_hitbox = 1;
+	all->canvas.rays = NULL;
+	all->canvas.rays_save = NULL;
+	all->canvas.pix_x = NULL;
+	all->canvas.pix_y = NULL;
+	all->canvas.gradient = NULL;
 }
 
 #else
@@ -56,6 +61,11 @@ void	ft_zeroes(t_all *all)
 	all->threads = NULL;
 	all->nb_shapes = 0;
 	all->render_hitbox = 1;
+	all->canvas.rays = NULL;
+	all->canvas.rays_save = NULL;
+	all->canvas.pix_x = NULL;
+	all->canvas.pix_y = NULL;
+	all->canvas.gradient = NULL;
 }
 
 #endif
@@ -106,14 +116,15 @@ void	zeroes_two(t_object *object, char *path)
 		object->curr_group[i] = 0;
 }
 
-int	init_canvas(t_all *all, t_canvas *canvas)
+int	init_canvas_utils(t_all *all, t_canvas *canvas)
 {
-	int	i;
-
+	canvas->gradient = malloc((all->win_height) * sizeof(t_rgb_f));
+	if (!canvas->gradient)
+		return (1);
 	canvas->rays = malloc((all->win_height) * sizeof(t_ray *));
 	if (!canvas->rays)
 		return (1);
-	canvas->rays_save = malloc((all->win_height) * sizeof(t_ray *));
+	canvas->rays_save = malloc((all->win_height) * sizeof(t_vec *));
 	if (!canvas->rays_save)
 		return (1);
 	canvas->pix_y = malloc((all->win_height) * sizeof(double));
@@ -122,15 +133,48 @@ int	init_canvas(t_all *all, t_canvas *canvas)
 	canvas->pix_x = malloc((all->win_width) * sizeof(double));
 	if (!canvas->pix_x)
 		return (1);
+	return (0);
+}
+
+t_rgb_f	get_background_color(int win_height, int i)
+{
+	double			alpha;
+	int				select;
+	t_rgb_f const	color[5] = {
+	{0.1569, 0.2078, 0.3098},
+	{0.2902, 0.3882, 0.5882},
+	{0.6, 0.6078, 0.7686},
+	{0.9294, 0.6156, 0.5019},
+	{0.7098, 0.3725, 0.3412}
+	};
+
+	alpha = ((double)i * ((double)4.0 / (double)win_height));
+	select = alpha;
+	if (select >= 4)
+		return (color[4]);
+	alpha -= (double)select;
+	return ((t_rgb_f){
+		color[select + 1].r * alpha + color[select].r * (1.0 - alpha),
+		color[select + 1].g * alpha + color[select].g * (1.0 - alpha),
+		color[select + 1].b * alpha + color[select].b * (1.0 - alpha)});
+}
+
+int	init_canvas(t_all *all, t_canvas *canvas)
+{
+	int	i;
+
+	if (init_canvas_utils(all, canvas))
+		return (1);
 	i = -1;
 	while (++i < all->win_height)
 	{
 		canvas->rays[i] = malloc((all->win_width) * sizeof(t_ray));
 		if (!canvas->rays[i])
 			return (1);
-		canvas->rays_save[i] = malloc((all->win_width) * sizeof(t_ray));
+		canvas->rays_save[i] = malloc((all->win_width) * sizeof(t_vec));
 		if (!canvas->rays_save[i])
 			return (1);
+		canvas->gradient[i] = get_background_color(all->win_height, i);
 	}
 	return (0);
 }

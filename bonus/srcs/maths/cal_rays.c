@@ -17,25 +17,27 @@ void	_init_canvas(t_all *all)
 // 	all->canvas.pix_y[0] = -(all->canvas.size_y / 2);
 // }
 
-void	init_start_ray(t_all *all)
-{
-	int	i;
-	int	j;
+// void	init_start_ray(t_all *all)
+// {
+// 	int	i;
+// 	int	j;
 
-	i = 0;
-	while (i < all->win_height)
-	{
-		j = 0;
-		while (j < all->win_width)
-			all->canvas.rays[i][j++].start = all->camera.viewpoint;
-		++i;
-	}
-}
+// 	i = 0;
+// 	while (i < all->win_height)
+// 	{
+// 		j = 0;
+// 		while (j < all->win_width)
+// 			all->canvas.rays[i][j++].start = all->camera.viewpoint;
+// 		++i;
+// 	}
+// }
 
 void	_cal_rays_ext(t_all *all, int i, int *j)
 {
-	all->canvas.rays_save[i][*j].start = all->camera.viewpoint;
-	all->canvas.rays[i][*j] = all->canvas.rays_save[i][*j];
+	all->canvas.rays[i][*j].start = all->camera.viewpoint;
+	all->canvas.rays[i][*j].dir = all->canvas.rays_save[i][*j];
+	all->canvas.rays[i][*j].color_ray = all->canvas.gradient[i];
+	all->canvas.rays[i][*j].to_draw = 0;
 	++(*j);
 }
 
@@ -56,12 +58,12 @@ void	cal_rays(t_all *all)
 			scalar_multiplication(&all->camera.dir_x,
 				all->canvas.pix_x[j], &dir_x);
 			add_vectors(&all->camera.dir, &dir_x,
-				&all->canvas.rays_save[i][j].dir);
-			add_vectors(&all->canvas.rays_save[i][j].dir,
-				&dir_y, &all->canvas.rays_save[i][j].dir);
-			norm_vectors(&all->canvas.rays_save[i][j].dir,
-				vec_magnitude(&all->canvas.rays_save[i][j].dir),
-				&all->canvas.rays_save[i][j].dir);
+				&all->canvas.rays_save[i][j]);
+			add_vectors(&all->canvas.rays_save[i][j],
+				&dir_y, &all->canvas.rays_save[i][j]);
+			norm_vectors(&all->canvas.rays_save[i][j],
+				vec_magnitude(&all->canvas.rays_save[i][j]),
+				&all->canvas.rays_save[i][j]);
 			_cal_rays_ext(all, i, &j);
 		}
 		++i;
@@ -79,8 +81,10 @@ void	reset_rays(t_all *all)
 		j = 0;
 		while (j < all->win_width)
 		{
-			all->canvas.rays_save[i][j].start = all->camera.viewpoint;
-			all->canvas.rays[i][j] = all->canvas.rays_save[i][j];
+			all->canvas.rays[i][j].start = all->camera.viewpoint;
+			all->canvas.rays[i][j].dir = all->canvas.rays_save[i][j];
+			all->canvas.rays[i][j].color_ray = all->canvas.gradient[i];
+			all->canvas.rays[i][j].to_draw = 0;
 			++j;
 		}
 		++i;
