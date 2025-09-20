@@ -243,7 +243,7 @@ t_hitbox		*create_bvh_iter(t_all *all, int end, int depth);
 t_vec			distance_box(t_vec *a, t_vec *b);
 t_bvh			create_box(t_vec a, t_vec b);
 void			print_box(t_bvh *bvh);
-int				intersect_hitbox(t_ray *ray, t_bvh *box);
+float			intersect_hitbox(t_ray *ray, t_bvh *box);
 t_shape			*create_shape_array(t_all *all);
 t_bvh			box_around_two_box(t_bvh *first, t_bvh *second);
 void			intersect_box(t_ray *ray, t_box *box);

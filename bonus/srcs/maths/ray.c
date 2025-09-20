@@ -71,6 +71,9 @@ void	init_reflect_ray(t_ray *ray, t_all *all)
 
 static void	if_leaf_internal(t_all *all, t_ray *ray, t_hitbox *curr, t_stack *s)
 {
+	float	hitl;
+	float	hitr;
+
 	if (curr->node_type == LEAF)
 	{
 		if (!all->render_on)
@@ -86,15 +89,37 @@ static void	if_leaf_internal(t_all *all, t_ray *ray, t_hitbox *curr, t_stack *s)
 	}
 	else
 	{
-		if (curr->left)
-			stack_push(s, curr->left);
-		if (curr->right)
-			stack_push(s, curr->right);
+		if (curr->left && curr->right)
+		{
+			hitr = intersect_hitbox(ray, &curr->right->box);
+			hitl = intersect_hitbox(ray, &curr->left->box);
+			if (hitr < hitl)
+			{
+				if (hitr != -1)
+					stack_push(s, curr->right);
+				if (hitl != -1)
+					stack_push(s, curr->left);
+			}
+			else
+			{
+				if (hitl != -1)
+					stack_push(s, curr->left);
+				if (hitr != -1)
+					stack_push(s, curr->right);
+			}
+		}
+		else
+		{
+			if (curr->left && intersect_hitbox(ray, &curr->left->box) != -1)
+				stack_push(s, curr->left);
+			if (curr->right && intersect_hitbox(ray, &curr->left->box) != -1)
+				stack_push(s, curr->right);
+		}
 	}
 }
 
 #ifdef SSAA
-
+left
 void	traverse_bvh_iter(t_ray *ray, t_hitbox *bvh, t_render *render, int hb)
 {
 	t_stack			s;
@@ -130,10 +155,17 @@ void	traverse_bvh_iter(t_ray *ray, t_hitbox *bvh, t_render *render, int hb)
 	if (stack_init(&s))
 		return ;
 	stack_push(&s, bvh);
+	curr = stack_pop(&s);
+	if (intersect_hitbox(ray, &curr->box) == -1)
+		return ;
+	if_leaf_internal((t_all *)all, ray, curr, &s);
 	while (!stack_is_empty(&s))
-	{
+	{		
+		if (hb && curr->node_type != INTERNAL)
+		lib->put_pixel_to_render(render, (t_argb){.a = 0.25, .r = 255,
+				.g = 255, .b = 255}, ray->y, ray->x);
 		curr = stack_pop(&s);
-		if (!curr || !intersect_hitbox(ray, &curr->box))
+		if (!curr)
 			continue ;
 		if (hb && curr->node_type != INTERNAL)
 			lib->put_pixel_to_render(render, (t_argb){.a = 0.25, .r = 255,

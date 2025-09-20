@@ -142,7 +142,7 @@ void	intersect_box(t_ray *ray, t_box *box)
 	}
 }
 
-int	intersect_hitbox(t_ray *ray, t_bvh *box)
+float	intersect_hitbox(t_ray *ray, t_bvh *box)
 {
 	double	t[2];
 	double	t_values[2];
@@ -167,7 +167,13 @@ int	intersect_hitbox(t_ray *ray, t_bvh *box)
 		t[1] = (box->top[3].z - ray->start.z) / ray->dir.z;
 		update_t_values(t, t_values);
 	}
-	return (t_values[1] >= t_values[0] && t_values[1] >= 1e-6);
+	if (t_values[1] >= t_values[0] && t_values[1] >= 1e-6)
+	{
+		if (t_values[0] < 1e-6)
+			return (t_values[1]);
+		return (t_values[0]);
+	}
+	return (-1);
 }
 
 void	closest_box(t_ray *ray, t_box *boxes)
