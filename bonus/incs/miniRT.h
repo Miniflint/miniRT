@@ -256,7 +256,7 @@ int				free_hitboxes(t_hitbox *root, unsigned long capacity);
 void 			intersect_quad(t_ray *ray, t_face *face);
 
 void			export_bvh_to_dot(t_hitbox *root);
-
+unsigned long	bvh_nb_leafs(t_hitbox *root);
 /* DATA STRUCTURE */
 t_hitbox	*queue_free(t_queue *q);
 t_hitbox	*queue_pop(t_queue *q);
@@ -265,5 +265,12 @@ int			queue_size(t_queue *q);
 int			queue_is_empty(t_queue *q);
 int			queue_init(t_queue *q, int capacity);
 void		queue_print(t_queue queue);
+
+t_hitbox	*stack_free(t_stack *s);
+t_hitbox	*stack_pop(t_stack *s);
+int			stack_push(t_stack *s, t_hitbox *curr);
+int			stack_size(t_stack *s);
+int			stack_is_empty(t_stack *s);
+int			stack_init(t_stack *s);
 
 #endif

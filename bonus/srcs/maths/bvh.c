@@ -177,3 +177,26 @@ t_hitbox	*create_bvh_iter(t_all *all, int end, int depth)
 	}
 	return (dad);
 }
+
+unsigned long	bvh_nb_leafs(t_hitbox *root)
+{
+	t_stack			s;
+	unsigned long	res;
+	t_hitbox		*curr;
+
+	if (stack_init(&s))
+		return (0);
+	res = 0;
+	stack_push(&s, root);
+	while (!stack_is_empty(&s))
+	{
+		curr = stack_pop(&s);
+		if (curr->node_type == LEAF)
+			res += 1;
+		if (curr->right)
+			stack_push(&s, curr->right);
+		if (curr->left)
+			stack_push(&s, curr->left);
+	}
+	return (res);
+}

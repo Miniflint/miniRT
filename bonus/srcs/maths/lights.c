@@ -75,39 +75,39 @@ int	shadow_traverse_bvh_core(t_ray *ray, t_hitbox *curr, t_light_vec l)
 	return (0);
 }
 
-void	push_correct_hitbox(t_queue *q, t_hitbox *curr)
+void	push_correct_hitbox(t_stack *s, t_hitbox *curr)
 {
 	if (curr->left)
-		queue_push(q, curr->left);
+		stack_push(s, curr->left);
 	if (curr->right)
-		queue_push(q, curr->right);
+		stack_push(s, curr->right);
 }
 
 int	shadow_traverse_bvh_iter(t_ray *ray, t_hitbox *bvh,
 	t_vec light_dir,
 	double light_length)
 {
-	t_queue		q;
+	t_stack		s;
 	t_hitbox	*curr;
 
-	if (queue_init(&q, __get_all()->nb_shapes))
+	if (stack_init(&s))
 		return (1);
-	queue_push(&q, bvh);
-	while (!queue_is_empty(&q))
+	stack_push(&s, bvh);
+	while (!stack_is_empty(&s))
 	{
-		curr = queue_pop(&q);
+		curr = stack_pop(&s);
 		if (!curr || !shadow_intersect_bvh(ray, &curr->box, light_dir))
 			continue ;
 		if (curr->node_type == LEAF)
 		{
 			if (shadow_traverse_bvh_core(ray, curr,
 					(t_light_vec){light_dir, light_length}))
-				return (queue_free(&q), 1);
+				return (stack_free(&s), 1);
 		}
 		else
-			push_correct_hitbox(&q, curr);
+			push_correct_hitbox(&s, curr);
 	}
-	queue_free(&q);
+	stack_free(&s);
 	return (0);
 }
 

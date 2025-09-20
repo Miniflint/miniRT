@@ -69,7 +69,7 @@ void	init_reflect_ray(t_ray *ray, t_all *all)
 	ray->shape.t2 = INFINITY;
 }
 
-static void	if_leaf_internal(t_all *all, t_ray *ray, t_hitbox *curr, t_queue *q)
+static void	if_leaf_internal(t_all *all, t_ray *ray, t_hitbox *curr, t_stack *s)
 {
 	if (curr->node_type == LEAF)
 	{
@@ -87,9 +87,9 @@ static void	if_leaf_internal(t_all *all, t_ray *ray, t_hitbox *curr, t_queue *q)
 	else
 	{
 		if (curr->left)
-			queue_push(q, curr->left);
+			stack_push(s, curr->left);
 		if (curr->right)
-			queue_push(q, curr->right);
+			stack_push(s, curr->right);
 	}
 }
 
@@ -97,50 +97,50 @@ static void	if_leaf_internal(t_all *all, t_ray *ray, t_hitbox *curr, t_queue *q)
 
 void	traverse_bvh_iter(t_ray *ray, t_hitbox *bvh, t_render *render, int hb)
 {
-	t_queue			q;
+	t_stack			s;
 	t_hitbox		*curr;
 	const t_all		*all = __get_all();
 	const t_tri_lib	*lib = tri_lib();
 
-	if (queue_init(&q, all->nb_items))
+	if (stack_init(&s))
 		return ;
-	queue_push(&q, bvh);
-	while (!queue_is_empty(&q))
+	stack_push(&s, bvh);
+	while (!stack_is_empty(&s))
 	{
-		curr = queue_pop(&q);
+		curr = stack_pop(&s);
 		if (!curr || !intersect_hitbox(ray, &curr->box))
 			continue ;
 		if (hb && !(ray->x % 2) && !(ray->y % 2))
 			lib->put_pixel_to_render(render, (t_argb){.a = 0.25,
 				.r = 255, .g = 255, .b = 255}, ray->y >> 1, ray->x >> 1);
-		if_leaf_internal((t_all *)all, ray, curr, &q);
+		if_leaf_internal((t_all *)all, ray, curr, &s);
 	}
-	queue_free(&q);
+	stack_free(&s);
 }
 
 #else
 
 void	traverse_bvh_iter(t_ray *ray, t_hitbox *bvh, t_render *render, int hb)
 {
-	t_queue			q;
+	t_stack			s;
 	t_hitbox		*curr;
 	const t_all		*all = __get_all();
 	const t_tri_lib	*lib = tri_lib();
 
-	if (queue_init(&q, all->nb_items))
+	if (stack_init(&s))
 		return ;
-	queue_push(&q, bvh);
-	while (!queue_is_empty(&q))
+	stack_push(&s, bvh);
+	while (!stack_is_empty(&s))
 	{
-		curr = queue_pop(&q);
+		curr = stack_pop(&s);
 		if (!curr || !intersect_hitbox(ray, &curr->box))
 			continue ;
-		if (hb)
+		if (hb && curr->node_type != INTERNAL)
 			lib->put_pixel_to_render(render, (t_argb){.a = 0.25, .r = 255,
 				.g = 255, .b = 255}, ray->y, ray->x);
-		if_leaf_internal((t_all *)all, ray, curr, &q);
+		if_leaf_internal((t_all *)all, ray, curr, &s);
 	}
-	queue_free(&q);
+	stack_free(&s);
 }
 
 #endif

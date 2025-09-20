@@ -54,7 +54,7 @@ void	intersect_quad(t_ray *ray, t_face *face)
 	new.vertices[2] = face->vertices[2];
 	inter.face = &new;
 	intersect_triangle_quad(ray, &inter);
-	if (face->vertices[3])
+	if (face->vertices[3] && !inter.found)
 	{
 		new.vertices[0] = face->vertices[0];
 		new.vertices[1] = face->vertices[2];
@@ -89,7 +89,7 @@ int	shadow_intersect_triangle_quad(t_ray *ray, t_inter *inter,
 	if (inter->v < 0.0f || inter->u + inter->v > 1)
 		return (0);
 	t = dot_product(&e[1], &inter->q) / inter->det;
-	if (t < -1e-6 || t > inter->t || t > light_length)
+	if (t < 1e-6 || t > inter->t || t > light_length)
 		return (0);
 	inter->t = t;
 	inter->found += 1;
@@ -109,7 +109,8 @@ int	shadow_intersect_quad(t_ray *ray, t_face *face,
 	new.vertices[1] = face->vertices[1];
 	new.vertices[2] = face->vertices[2];
 	inter.face = &new;
-	shadow_intersect_triangle_quad(ray, &inter, light_dir, light_length);
+	if (shadow_intersect_triangle_quad(ray, &inter, light_dir, light_length))
+		return (1);
 	if (face->vertices[3])
 	{
 		new.vertices[0] = face->vertices[0];

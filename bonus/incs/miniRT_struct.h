@@ -175,10 +175,17 @@ typedef struct S_queue
 {
 	unsigned long	back;
 	unsigned long	front;
-    unsigned long	capacity;
-	t_threads		*thread;
+	unsigned long	capacity;
 	t_hitbox 		**nodes;
 }	t_queue;
+
+
+typedef struct S_stack
+{
+	unsigned long	front;
+	unsigned long	capacity;
+	t_hitbox 		*nodes[64];
+}	t_stack;
 
 typedef enum e_thread_mode
 {

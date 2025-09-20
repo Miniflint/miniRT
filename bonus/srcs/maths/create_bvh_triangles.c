@@ -91,11 +91,7 @@ t_hitbox	*iterative_triangles(t_face *faces,
 		if (faces[i].is_wrong == 0)
 			leaf = box_around_triangle(&faces[i]);
 		if (!leaf)
-		{
-			while (i && --i)
-				free(q.nodes[i]);
 			return (queue_free(&q));
-		}
 		queue_push(&q, leaf);
 	}
 	while (queue_size(&q) > 1)
@@ -121,5 +117,11 @@ t_hitbox	*iterative_triangles(t_face *faces,
 
 t_hitbox	*create_bvh_triangles(t_object *obj)
 {
-	return (iterative_triangles(obj->faces, obj->nb_faces, 0));
+	t_hitbox		*dad_object;
+	unsigned long	check;
+
+	dad_object = iterative_triangles(obj->faces, obj->nb_faces, 0);
+	check = bvh_nb_leafs(dad_object);
+	printf("the number of triangle in the struct is: %lu\n", check);
+	return (dad_object);
 }

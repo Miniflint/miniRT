@@ -20,7 +20,7 @@ OBJS_DIR := ./objs
 SRCS_TRILIB =	tri_auto_draw.c  tri_colors_convert.c  tri_create_window.c  tri_destroy_render.c  tri_draw.c               tri_error.c  tri_get_key.c        tri_init.c        tri_lib.c     tri_loop.c   tri_put_pixel_render.c  tri_put_pixel_window.c tri_colors.c     tri_create_render.c   tri_destroy.c        tri_destroy_window.c  tri_erase_fill_render.c  tri_fps.c    tri_get_key_event.c  tri_init_event.c  tri_lib_gb.c  tri_mouse.c  tri_put_pixel_utils.c   tri_quit.c
 
 SRC := main.c main_utils.c
-SRCS_PARSING := __fake_globals.c  free_structs.c  __init__.c  __init_utils.c  nodes.c  object_get_shape.c  object_get_value_utils.c  printing.c  scene_get_value_utils.c  scene_get_light_camera.c  scene_get_shape.c  utils.c  utils_util.c  object_free.c read_file.c check_errors.c rgb_shapes.c __init_objs.c printing_obj.c set_values_objs.c get_values_objs.c scene_get_box.c create_shapes_array.c create_bvh_triangles.c queue.c free_hitboxes.c
+SRCS_PARSING := __fake_globals.c  free_structs.c  __init__.c  __init_utils.c  nodes.c  object_get_shape.c  object_get_value_utils.c  printing.c  scene_get_value_utils.c  scene_get_light_camera.c  scene_get_shape.c  utils.c  utils_util.c  object_free.c read_file.c check_errors.c rgb_shapes.c __init_objs.c printing_obj.c set_values_objs.c get_values_objs.c scene_get_box.c create_shapes_array.c create_bvh_triangles.c queue.c stack.c free_hitboxes.c
 SRCS_MATHS := utils_maths.c ray.c cal_rays.c lights.c matrice_rotation.c plane.c cylinder.c movements.c fov.c intersect.c on_path.c set_closest.c shadows.c vectors_utils.c vectors_magic.c threads.c boxes.c bvh.c triangle.c sort_shape.c
 
 
